@@ -7,7 +7,7 @@ import { useSession } from "next-auth/react"
 import { useCart } from "@/hooks/useCart"
 import { ShoppingCart, Minus, Plus, ChevronLeft, Truck, RotateCcw, ShieldCheck } from "lucide-react"
 import { toast } from "sonner"
-import type { Product } from "@/types"
+import type { Product, SelectedOption } from "@/types"
 import { formatPrice } from "@/lib/utils"
 
 export default function ProductDetailPage({ params }: { params: Promise<{ id: string }> }) {
@@ -19,6 +19,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
   const [selectedImage, setSelectedImage] = useState(0)
   const [quantity, setQuantity] = useState(1)
   const [activeTab, setActiveTab] = useState<"reviews" | "details">("reviews")
+  const [selectedOptions, setSelectedOptions] = useState<Record<string, string>>({})
   const [reviewRating, setReviewRating] = useState(5)
   const [reviewComment, setReviewComment] = useState("")
   const [submittingReview, setSubmittingReview] = useState(false)
@@ -37,11 +38,18 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
     ? product.reviews.reduce((sum, r) => sum + r.rating, 0) / product.reviews.length
     : null
 
+  const productOptions = product?.options as { name: string; values: string[] }[] | null | undefined
+  const allOptionsSelected = !productOptions?.length ||
+    productOptions.every((opt) => !!selectedOptions[opt.name])
+
   function handleAddToCart() {
     if (!product) return
-    addItem(product, quantity)
+    const opts: SelectedOption[] = Object.entries(selectedOptions).map(([name, value]) => ({ name, value }))
+    addItem(product, quantity, opts.length ? opts : undefined)
     toast.success(`ADDED: ${product.name.toUpperCase().slice(0, 24)}`, {
-      description: `QTY ${quantity} // ${formatPrice(product.price * quantity)}`,
+      description: opts.length
+        ? opts.map((o) => `${o.name}: ${o.value}`).join(" · ")
+        : `QTY ${quantity} // ${formatPrice(product.price * quantity)}`,
       className: "font-mono text-xs",
     })
   }
@@ -175,6 +183,45 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
             </span>
           </div>
 
+          {/* Variant selectors */}
+          {productOptions && productOptions.length > 0 && (
+            <div className="space-y-3 border-t border-white/5 pt-4">
+              {productOptions.map((opt) => (
+                <div key={opt.name}>
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-[8px] tracking-widest text-foreground/40">{opt.name.toUpperCase()}</span>
+                    {selectedOptions[opt.name] && (
+                      <span className="text-[8px] text-foreground/60 border border-white/15 px-1.5 py-0.5">
+                        {selectedOptions[opt.name]}
+                      </span>
+                    )}
+                  </div>
+                  <div className="flex flex-wrap gap-1.5">
+                    {opt.values.map((val) => (
+                      <button
+                        key={val}
+                        type="button"
+                        onClick={() => setSelectedOptions((prev) => ({ ...prev, [opt.name]: val }))}
+                        className={`px-3 py-1.5 text-[9px] tracking-widest border transition-all ${
+                          selectedOptions[opt.name] === val
+                            ? "border-foreground/70 text-foreground bg-foreground/10"
+                            : "border-white/15 text-foreground/50 hover:border-white/40 hover:text-foreground"
+                        }`}
+                      >
+                        {val}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              ))}
+              {!allOptionsSelected && (
+                <p className="text-[8px] text-foreground/30 tracking-widest">
+                  SELECT ALL OPTIONS TO ADD TO CART
+                </p>
+              )}
+            </div>
+          )}
+
           {/* Quantity */}
           <div className="flex items-center gap-4">
             <span className="text-[9px] tracking-widest text-foreground/40">QTY:</span>
@@ -199,11 +246,11 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
           {/* Add to cart */}
           <button
             onClick={handleAddToCart}
-            disabled={product.stock === 0}
+            disabled={product.stock === 0 || !allOptionsSelected}
             className="w-full flex items-center justify-center gap-2 py-2.5 bg-foreground text-background text-[10px] tracking-widest font-bold hover:bg-foreground/90 transition-colors disabled:opacity-30"
           >
             <ShoppingCart className="h-3.5 w-3.5" />
-            ADD.TO.CART
+            {!allOptionsSelected ? "SELECT.OPTIONS" : "ADD.TO.CART"}
           </button>
 
           {/* Trust badges */}
@@ -321,6 +368,17 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                   </div>
                 ))}
               </div>
+              {productOptions && productOptions.length > 0 && (
+                <div className="border-t border-white/10 pt-4 space-y-2">
+                  <p className="text-[8px] tracking-widest text-foreground/30">AVAILABLE.OPTIONS</p>
+                  {productOptions.map((opt) => (
+                    <div key={opt.name} className="flex items-start justify-between gap-3 text-[9px] border-b border-white/5 pb-2">
+                      <span className="text-foreground/30 tracking-widest shrink-0">{opt.name.toUpperCase()}</span>
+                      <span className="text-foreground/50 text-right">{opt.values.join(" · ")}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         )}

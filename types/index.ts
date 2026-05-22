@@ -1,3 +1,13 @@
+export interface ProductOption {
+  name: string
+  values: string[]
+}
+
+export interface SelectedOption {
+  name: string
+  value: string
+}
+
 export interface Product {
   id: string
   name: string
@@ -7,6 +17,7 @@ export interface Product {
   originalPrice?: number | null
   stock: number
   images: string[]
+  options?: ProductOption[] | null
   featured: boolean
   categoryId: string
   category: Category
@@ -77,18 +88,20 @@ export interface User {
 }
 
 export interface CartStoreItem {
-  id: string
+  id: string          // variant key: productId or productId:optionHash
+  productId: string   // actual product ID for checkout
   name: string
   price: number
   originalPrice?: number | null
   image: string
   quantity: number
   stock: number
+  selectedOptions?: SelectedOption[]
 }
 
 export interface CartStore {
   items: CartStoreItem[]
-  addItem: (product: Product, quantity?: number) => void
+  addItem: (product: Product, quantity?: number, selectedOptions?: SelectedOption[]) => void
   removeItem: (id: string) => void
   updateQuantity: (id: string, quantity: number) => void
   clearCart: () => void

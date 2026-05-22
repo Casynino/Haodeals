@@ -45,6 +45,7 @@ model Product {
   originalPrice Float?
   stock         Int         @default(0)
   images        String
+  options       Json?
   featured      Boolean     @default(false)
   categoryId    String
   category      Category    @relation(fields: [categoryId], references: [id])
