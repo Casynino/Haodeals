@@ -8,12 +8,13 @@ const registerSchema = z.object({
   name: z.string().min(2).max(50),
   email: z.string().email(),
   password: z.string().min(6),
+  phone: z.string().min(9).max(20).optional(),
 })
 
 export async function POST(request: Request) {
   try {
     const body = await request.json()
-    const { name, email, password } = registerSchema.parse(body)
+    const { name, email, password, phone } = registerSchema.parse(body)
 
     const existing = await prisma.user.findUnique({ where: { email } })
     if (existing) {
@@ -22,8 +23,8 @@ export async function POST(request: Request) {
 
     const hashed = await bcrypt.hash(password, 10)
     const user = await prisma.user.create({
-      data: { name, email, password: hashed },
-      select: { id: true, name: true, email: true },
+      data: { name, email, password: hashed, phone: phone ?? null },
+      select: { id: true, name: true, email: true, phone: true },
     })
 
     // Provision nTZS wallet in the background — don't block registration if it fails

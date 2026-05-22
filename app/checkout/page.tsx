@@ -31,10 +31,12 @@ export default function CheckoutPage() {
 
   useEffect(() => {
     if (session?.user) {
+      const u = session.user as { name?: string; email?: string; phone?: string | null }
       setForm((f) => ({
         ...f,
-        fullName: session.user?.name ?? "",
-        email: session.user?.email ?? "",
+        fullName: u.name ?? "",
+        email: u.email ?? "",
+        phoneNumber: u.phone ?? f.phoneNumber,
       }))
     }
   }, [session])
