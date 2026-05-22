@@ -25,10 +25,9 @@ async function getCategories() {
 
 async function getDealsProducts() {
   const products = await prisma.product.findMany({
-    where: { originalPrice: { not: null } },
     include: { category: true, reviews: { select: { rating: true } } },
     take: 8,
-    orderBy: { price: "asc" },
+    orderBy: { createdAt: "desc" },
   })
   return products.map((p) => ({ ...p, images: JSON.parse(p.images) as string[] }))
 }
