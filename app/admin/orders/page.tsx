@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { Search, Package, X } from "lucide-react"
+import { Search, Package, X, Phone, MapPin, ChevronDown, ChevronUp } from "lucide-react"
 import { formatPrice } from "@/lib/utils"
 
 interface Order {
@@ -10,7 +10,7 @@ interface Order {
   status: string
   address: string
   createdAt: string
-  user: { name?: string | null; email: string }
+  user: { name?: string | null; email: string; phone?: string | null }
   items: { id: string; quantity: number; price: number; product: { name: string } }[]
 }
 
@@ -26,6 +26,7 @@ export default function AdminOrdersPage() {
   const [orders, setOrders] = useState<Order[]>([])
   const [loading, setLoading] = useState(true)
   const [search, setSearch] = useState("")
+  const [expanded, setExpanded] = useState<string | null>(null)
 
   useEffect(() => {
     fetch("/api/admin/all-orders")
@@ -80,39 +81,77 @@ export default function AdminOrdersPage() {
       ) : (
         <div className="space-y-2">
           {filtered.map((order) => (
-            <div key={order.id} className="border border-white/10 hover:border-white/20 transition-colors p-4">
-              <div className="flex items-start justify-between gap-3 mb-3">
-                <div className="min-w-0 flex-1">
-                  <p className="text-[10px] text-foreground/70 uppercase tracking-wide truncate">
-                    {order.user.name ?? order.user.email}
-                  </p>
-                  <p className="text-[8px] text-foreground/25 mt-0.5 truncate">
-                    #{order.id.slice(0, 8).toUpperCase()} ·{" "}
-                    {new Date(order.createdAt).toLocaleDateString("en-US", {
-                      year: "numeric",
-                      month: "short",
-                      day: "numeric",
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })}
-                  </p>
+            <div key={order.id} className="border border-white/10 hover:border-white/20 transition-colors">
+              {/* Header row — always visible */}
+              <button
+                className="w-full text-left p-4"
+                onClick={() => setExpanded(expanded === order.id ? null : order.id)}
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <div className="min-w-0 flex-1">
+                    <p className="text-[10px] text-foreground/70 uppercase tracking-wide truncate">
+                      {order.user.name ?? order.user.email}
+                    </p>
+                    <p className="text-[8px] text-foreground/25 mt-0.5">
+                      #{order.id.slice(0, 8).toUpperCase()} ·{" "}
+                      {new Date(order.createdAt).toLocaleDateString("en-US", {
+                        year: "numeric", month: "short", day: "numeric",
+                        hour: "2-digit", minute: "2-digit",
+                      })}
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-2 flex-shrink-0">
+                    <span className={`text-[8px] tracking-widest border px-1.5 py-0.5 ${statusConfig[order.status] ?? "text-foreground/40 border-white/15"}`}>
+                      {order.status.toUpperCase()}
+                    </span>
+                    <span className="text-green-400/70 text-sm font-mono">{formatPrice(order.total)}</span>
+                    {expanded === order.id
+                      ? <ChevronUp className="h-3 w-3 text-foreground/30" />
+                      : <ChevronDown className="h-3 w-3 text-foreground/30" />}
+                  </div>
                 </div>
-                <div className="flex items-center gap-2 flex-shrink-0">
-                  <span className={`text-[8px] tracking-widest border px-1.5 py-0.5 ${statusConfig[order.status] ?? "text-foreground/40 border-white/15"}`}>
-                    {order.status.toUpperCase()}
-                  </span>
-                  <span className="text-green-400/70 text-sm font-mono">{formatPrice(order.total)}</span>
+              </button>
+
+              {/* Expanded details */}
+              {expanded === order.id && (
+                <div className="border-t border-white/10 px-4 pb-4 pt-3 space-y-3">
+                  {/* Customer */}
+                  <div className="grid sm:grid-cols-2 gap-3">
+                    <div className="space-y-1.5">
+                      <p className="text-[8px] tracking-widest text-foreground/30">CUSTOMER</p>
+                      <p className="text-[10px] text-foreground/70">{order.user.name ?? "—"}</p>
+                      <p className="text-[9px] text-foreground/40">{order.user.email}</p>
+                      {order.user.phone && (
+                        <p className="flex items-center gap-1 text-[9px] text-foreground/50">
+                          <Phone className="h-2.5 w-2.5" /> {order.user.phone}
+                        </p>
+                      )}
+                    </div>
+                    <div className="space-y-1.5">
+                      <p className="text-[8px] tracking-widest text-foreground/30">DELIVERY ADDRESS</p>
+                      <p className="flex items-start gap-1 text-[9px] text-foreground/50 leading-relaxed">
+                        <MapPin className="h-2.5 w-2.5 mt-0.5 shrink-0" /> {order.address}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Items */}
+                  <div>
+                    <p className="text-[8px] tracking-widest text-foreground/30 mb-2">ORDER ITEMS</p>
+                    <div className="space-y-1">
+                      {order.items.map((item) => (
+                        <div key={item.id} className="flex items-center justify-between text-[9px] border border-white/5 px-3 py-1.5">
+                          <span className="text-foreground/60 uppercase tracking-wide">{item.product.name}</span>
+                          <div className="flex items-center gap-3 text-foreground/40">
+                            <span>×{item.quantity}</span>
+                            <span className="text-green-400/60">{formatPrice(item.price * item.quantity)}</span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <div className="text-[9px] text-foreground/25 space-y-0.5">
-                <p className="truncate">{order.address}</p>
-                <p>
-                  {order.items.length} ITEM{order.items.length !== 1 ? "S" : ""}:{" "}
-                  <span className="text-foreground/40">
-                    {order.items.map((i) => `${i.product.name.toUpperCase().slice(0, 20)} ×${i.quantity}`).join(" / ")}
-                  </span>
-                </p>
-              </div>
+              )}
             </div>
           ))}
         </div>

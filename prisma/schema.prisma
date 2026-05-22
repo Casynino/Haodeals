@@ -120,3 +120,13 @@ model OrderItem {
   order     Order   @relation(fields: [orderId], references: [id])
   product   Product @relation(fields: [productId], references: [id])
 }
+
+model Notification {
+  id        String   @id @default(cuid())
+  type      String   // "new_order" | "new_user"
+  title     String
+  body      String
+  read      Boolean  @default(false)
+  metadata  Json?
+  createdAt DateTime @default(now())
+}

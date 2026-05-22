@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma"
 import bcrypt from "bcryptjs"
 import { z } from "zod"
 import { ntzs, normalizePhone } from "@/lib/ntzs"
+import { sendWelcomeEmail } from "@/lib/email"
 
 const registerSchema = z.object({
   name: z.string().min(2).max(50),
@@ -26,6 +27,17 @@ export async function POST(request: Request) {
       data: { name, email, password: hashed, phone: phone ?? null },
       select: { id: true, name: true, email: true, phone: true },
     })
+
+    // Welcome email + admin notification — non-blocking
+    sendWelcomeEmail(email, name).catch(() => {})
+    prisma.notification.create({
+      data: {
+        type: "new_user",
+        title: `New user registered`,
+        body: `${name} (${email}) just created an account`,
+        metadata: { userId: user.id, email },
+      },
+    }).catch(() => {})
 
     // Provision nTZS wallet in the background — don't block registration if it fails
     ntzs.createUser({
