@@ -15,7 +15,7 @@ import {
 import { ThemeToggle } from "@/components/ThemeToggle"
 import { CartDrawer } from "@/components/CartDrawer"
 import { useCart } from "@/hooks/useCart"
-import { Package, LogOut, User, ShieldCheck, Search } from "lucide-react"
+import { Package, LogOut, User, ShieldCheck, Search, Wallet } from "lucide-react"
 import { useState, useEffect } from "react"
 
 export function Navbar() {
@@ -111,6 +111,12 @@ export function Navbar() {
                   <User className="h-3 w-3" /> PROFILE
                 </DropdownMenuItem>
                 <DropdownMenuItem
+                  onClick={() => router.push("/wallet")}
+                  className="px-3 py-2 text-[10px] tracking-widest text-foreground/60 hover:text-foreground hover:bg-foreground/5 flex items-center gap-2"
+                >
+                  <Wallet className="h-3 w-3" /> WALLET
+                </DropdownMenuItem>
+                <DropdownMenuItem
                   onClick={() => router.push("/orders")}
                   className="px-3 py-2 text-[10px] tracking-widest text-foreground/60 hover:text-foreground hover:bg-foreground/5 flex items-center gap-2"
                 >
@@ -157,6 +163,14 @@ export function Navbar() {
               {link.label}
             </Link>
           ))}
+          {session && (
+            <Link
+              href="/wallet"
+              className="flex-shrink-0 px-4 py-2.5 text-[10px] font-mono tracking-widest text-foreground/50 hover:text-foreground border-r border-foreground/10 hover:bg-foreground/5 transition-colors"
+            >
+              WALLET
+            </Link>
+          )}
           {session && isAdmin && (
             <Link
               href="/admin"

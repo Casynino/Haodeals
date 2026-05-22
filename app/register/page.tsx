@@ -37,7 +37,7 @@ export default function RegisterPage() {
         password: form.password,
         redirect: false,
       })
-      router.push("/")
+      router.push("/wallet")
       router.refresh()
     } else {
       const data = await res.json()
