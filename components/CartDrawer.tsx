@@ -18,8 +18,7 @@ export function CartDrawer() {
 
   const itemCount = mounted ? count() : 0
   const cartTotal = mounted ? total() : 0
-  const shipping = cartTotal >= 50000 ? 0 : (cartTotal > 0 ? 2000 : 0)
-  const finalTotal = cartTotal + shipping
+  const finalTotal = cartTotal
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
@@ -111,21 +110,9 @@ export function CartDrawer() {
             </div>
 
             <div className="border-t border-white/10 p-4 space-y-3">
-              <div className="space-y-1.5 text-[9px]">
-                <div className="flex justify-between text-foreground/40">
-                  <span className="tracking-widest">SUBTOTAL</span>
-                  <span className="font-mono">{formatPrice(cartTotal)}</span>
-                </div>
-                <div className="flex justify-between text-foreground/40">
-                  <span className="tracking-widest">SHIPPING</span>
-                  {shipping === 0
-                    ? <span className="text-green-400/60">FREE</span>
-                    : <span className="font-mono">{formatPrice(shipping)}</span>}
-                </div>
-                <div className="flex justify-between pt-1.5 border-t border-white/10">
-                  <span className="tracking-widest text-foreground/60">TOTAL</span>
-                  <span className="font-mono text-green-400/80 text-[11px]">{formatPrice(finalTotal)}</span>
-                </div>
+              <div className="flex justify-between items-center text-[10px]">
+                <span className="tracking-widest text-foreground/40">TOTAL</span>
+                <span className="font-mono text-green-400/80 text-[11px]">{formatPrice(finalTotal)}</span>
               </div>
               <button
                 onClick={() => { setOpen(false); router.push("/checkout") }}

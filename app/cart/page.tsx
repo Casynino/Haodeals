@@ -10,8 +10,8 @@ import { formatPrice } from "@/lib/utils"
 export default function CartPage() {
   const { items, removeItem, updateQuantity, total, clearCart } = useCart()
   const cartTotal = total()
-  const shipping = cartTotal >= 50000 ? 0 : 2000
-  const finalTotal = cartTotal + shipping
+  const shipping = 0
+  const finalTotal = cartTotal
 
   if (items.length === 0) {
     return (
@@ -107,19 +107,6 @@ export default function CartPage() {
                 <span className="text-foreground/40 tracking-widest">SUBTOTAL [{items.length}]</span>
                 <span className="text-foreground/70">{formatPrice(cartTotal)}</span>
               </div>
-              <div className="flex justify-between">
-                <span className="text-foreground/40 tracking-widest">SHIPPING</span>
-                {shipping === 0 ? (
-                  <span className="text-green-400/70 tracking-widest">FREE</span>
-                ) : (
-                  <span className="text-foreground/70">{formatPrice(shipping)}</span>
-                )}
-              </div>
-              {cartTotal < 50000 && (
-                <p className="text-[8px] tracking-wide text-foreground/30 border border-white/10 px-2 py-1.5">
-                  ADD {formatPrice(50000 - cartTotal)} MORE FOR FREE.SHIPPING
-                </p>
-              )}
             </div>
 
             <div className="border-t border-white/10 pt-3 flex justify-between items-center">

@@ -46,8 +46,8 @@ export default function CheckoutPage() {
   }, [session])
 
   const cartTotal = total()
-  const shipping = cartTotal >= 50000 ? 0 : 2000
-  const finalTotal = cartTotal + shipping
+  const shipping = 0
+  const finalTotal = cartTotal
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setForm({ ...form, [e.target.name]: e.target.value })
@@ -230,12 +230,6 @@ export default function CheckoutPage() {
                 <div className="flex justify-between">
                   <span className="text-foreground/40 tracking-widest">SUBTOTAL</span>
                   <span className="text-foreground/60">{formatPrice(cartTotal)}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-foreground/40 tracking-widest">SHIPPING</span>
-                  {shipping === 0
-                    ? <span className="text-green-400/70">FREE</span>
-                    : <span className="text-foreground/60">{formatPrice(shipping)}</span>}
                 </div>
               </div>
 
