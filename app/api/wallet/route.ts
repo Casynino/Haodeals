@@ -32,7 +32,8 @@ export async function GET() {
       return NextResponse.json({
         ntzsUserId: ntzsUser.id,
         walletAddress: ntzsUser.walletAddress,
-        balances: { ntzs: "0", usdc: 0 },
+        balanceTzs: 0,
+        balanceUsdc: 0,
       })
     } catch {
       return NextResponse.json({ error: "Wallet not yet provisioned" }, { status: 503 })
@@ -44,14 +45,16 @@ export async function GET() {
     return NextResponse.json({
       ntzsUserId: ntzsUser.id,
       walletAddress: ntzsUser.walletAddress ?? user.ntzsWalletAddress,
-      balances: ntzsUser.balances,
+      balanceTzs: ntzsUser.balanceTzs,
+      balanceUsdc: ntzsUser.balanceUsdc,
     })
   } catch {
     // Return stored data with unknown balance if nTZS is unreachable
     return NextResponse.json({
       ntzsUserId: user.ntzsUserId,
       walletAddress: user.ntzsWalletAddress,
-      balances: null,
+      balanceTzs: null,
+      balanceUsdc: null,
     })
   }
 }
