@@ -38,6 +38,14 @@ export const metadata: Metadata = {
     title: "HaoDeals — Good Deals Delivered",
     description: "Tanzania's best deals on electronics, fashion, home goods, and more.",
   },
+  icons: {
+    icon: [
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/icon", type: "image/png", sizes: "512x512" },
+    ],
+    apple: [{ url: "/apple-icon", type: "image/png", sizes: "180x180" }],
+    shortcut: "/favicon.svg",
+  },
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
