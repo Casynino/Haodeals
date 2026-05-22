@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react"
 import Image from "next/image"
 import { Plus, Pencil, Trash2, Search, Package, X, Upload, ImageIcon } from "lucide-react"
+import { formatPrice } from "@/lib/utils"
 import { toast } from "sonner"
 import {
   Dialog,
@@ -387,9 +388,9 @@ export default function AdminProductsPage() {
                     </td>
                     <td className="p-3 text-[9px] text-foreground/30 uppercase">{product.category.name}</td>
                     <td className="p-3 text-right">
-                      <span className="text-[10px] text-green-400/70">${product.price.toFixed(2)}</span>
+                      <span className="text-[10px] text-green-400/70">{formatPrice(product.price)}</span>
                       {product.originalPrice && (
-                        <span className="text-[8px] text-foreground/20 line-through ml-1">${product.originalPrice.toFixed(2)}</span>
+                        <span className="text-[8px] text-foreground/20 line-through ml-1">{formatPrice(product.originalPrice)}</span>
                       )}
                     </td>
                     <td className="p-3 text-right">

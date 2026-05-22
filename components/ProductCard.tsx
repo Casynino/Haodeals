@@ -6,6 +6,7 @@ import { ShoppingCart, Star } from "lucide-react"
 import { useCart } from "@/hooks/useCart"
 import type { Product } from "@/types"
 import { toast } from "sonner"
+import { formatPrice } from "@/lib/utils"
 
 interface ProductCardProps {
   product: Product
@@ -30,7 +31,7 @@ export function ProductCard({ product }: ProductCardProps) {
     e.preventDefault()
     addItem(product)
     toast.success(`ADDED: ${product.name.toUpperCase().slice(0, 24)}`, {
-      description: `QTY +1 // $${product.price.toFixed(2)}`,
+      description: `QTY +1 // ${formatPrice(product.price)}`,
       className: "font-mono text-xs",
     })
   }
@@ -111,9 +112,9 @@ export function ProductCard({ product }: ProductCardProps) {
           {/* Price row */}
           <div className="flex items-center justify-between pt-1 border-t border-white/5">
             <div className="flex items-baseline gap-1.5">
-              <span className="text-xs font-mono text-green-400/80">${product.price.toFixed(2)}</span>
+              <span className="text-xs font-mono text-green-400/80">{formatPrice(product.price)}</span>
               {product.originalPrice && (
-                <span className="text-[8px] text-foreground/30 line-through">${product.originalPrice.toFixed(2)}</span>
+                <span className="text-[8px] text-foreground/30 line-through">{formatPrice(product.originalPrice)}</span>
               )}
             </div>
             <span className="text-[8px] text-foreground/30">{product.stock > 0 ? `${product.stock} LEFT` : "—"}</span>

@@ -5,11 +5,12 @@ import Image from "next/image"
 import Link from "next/link"
 import { ShoppingCart, Minus, Plus, Trash2, ArrowRight, ShieldCheck, Truck } from "lucide-react"
 import { toast } from "sonner"
+import { formatPrice } from "@/lib/utils"
 
 export default function CartPage() {
   const { items, removeItem, updateQuantity, total, clearCart } = useCart()
   const cartTotal = total()
-  const shipping = cartTotal >= 50 ? 0 : 9.99
+  const shipping = cartTotal >= 100000 ? 0 : 5000
   const finalTotal = cartTotal + shipping
 
   if (items.length === 0) {
@@ -67,9 +68,9 @@ export default function CartPage() {
                   </button>
                 </div>
                 <div className="flex items-center gap-1.5 mt-0.5">
-                  <span className="text-xs text-green-400/80">${item.price.toFixed(2)}</span>
+                  <span className="text-xs text-green-400/80">{formatPrice(item.price)}</span>
                   {item.originalPrice && item.originalPrice > item.price && (
-                    <span className="text-[8px] text-foreground/25 line-through">${item.originalPrice.toFixed(2)}</span>
+                    <span className="text-[8px] text-foreground/25 line-through">{formatPrice(item.originalPrice)}</span>
                   )}
                 </div>
                 <div className="flex items-center justify-between mt-2">
@@ -89,7 +90,7 @@ export default function CartPage() {
                       <Plus className="h-2.5 w-2.5" />
                     </button>
                   </div>
-                  <span className="text-[10px] text-foreground/60">${(item.price * item.quantity).toFixed(2)}</span>
+                  <span className="text-[10px] text-foreground/60">{formatPrice(item.price * item.quantity)}</span>
                 </div>
               </div>
             </div>
@@ -104,26 +105,26 @@ export default function CartPage() {
             <div className="space-y-2.5 text-[10px]">
               <div className="flex justify-between">
                 <span className="text-foreground/40 tracking-widest">SUBTOTAL [{items.length}]</span>
-                <span className="text-foreground/70">${cartTotal.toFixed(2)}</span>
+                <span className="text-foreground/70">{formatPrice(cartTotal)}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-foreground/40 tracking-widest">SHIPPING</span>
                 {shipping === 0 ? (
                   <span className="text-green-400/70 tracking-widest">FREE</span>
                 ) : (
-                  <span className="text-foreground/70">${shipping.toFixed(2)}</span>
+                  <span className="text-foreground/70">{formatPrice(shipping)}</span>
                 )}
               </div>
               {cartTotal < 50 && (
                 <p className="text-[8px] tracking-wide text-foreground/30 border border-white/10 px-2 py-1.5">
-                  ADD ${(50 - cartTotal).toFixed(2)} MORE FOR FREE.SHIPPING
+                  ADD {formatPrice(100000 - cartTotal)} MORE FOR FREE.SHIPPING
                 </p>
               )}
             </div>
 
             <div className="border-t border-white/10 pt-3 flex justify-between items-center">
               <span className="text-[9px] tracking-widest text-foreground/40">TOTAL.AMOUNT</span>
-              <span className="text-green-400/80 font-mono">${finalTotal.toFixed(2)}</span>
+              <span className="text-green-400/80 font-mono">{formatPrice(finalTotal)}</span>
             </div>
 
             <div className="space-y-1.5">
@@ -158,7 +159,7 @@ export default function CartPage() {
         <div className="flex items-center justify-between gap-4">
           <div>
             <p className="text-[8px] tracking-widest text-foreground/30">TOTAL.AMOUNT</p>
-            <p className="text-green-400/80 font-mono text-sm font-bold">${finalTotal.toFixed(2)}</p>
+            <p className="text-green-400/80 font-mono text-sm font-bold">{formatPrice(finalTotal)}</p>
           </div>
           <Link
             href="/checkout"

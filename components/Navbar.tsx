@@ -48,7 +48,7 @@ export function Navbar() {
             <span>◦</span>
             <span>SECURE.CONNECTION</span>
             <span>◦</span>
-            <span>FREE.SHIPPING.ON.$50+</span>
+            <span>FREE.SHIPPING.ON.TSh 100,000+</span>
           </div>
           <div className="flex items-center gap-3 text-[9px] text-foreground/30">
             <div className="w-1 h-1 bg-green-400 rounded-full animate-pulse" />

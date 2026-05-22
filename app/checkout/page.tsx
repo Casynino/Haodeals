@@ -8,6 +8,7 @@ import { ShieldCheck, Truck, Lock } from "lucide-react"
 import { toast } from "sonner"
 import Image from "next/image"
 import Link from "next/link"
+import { formatPrice } from "@/lib/utils"
 
 export default function CheckoutPage() {
   const router = useRouter()
@@ -28,7 +29,7 @@ export default function CheckoutPage() {
   })
 
   const cartTotal = total()
-  const shipping = cartTotal >= 50 ? 0 : 9.99
+  const shipping = cartTotal >= 100000 ? 0 : 5000
   const finalTotal = cartTotal + shipping
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -207,7 +208,7 @@ export default function CheckoutPage() {
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-[9px] text-foreground/60 truncate uppercase">{item.name}</p>
-                      <p className="text-[10px] text-green-400/80">${(item.price * item.quantity).toFixed(2)}</p>
+                      <p className="text-[10px] text-green-400/80">{formatPrice(item.price * item.quantity)}</p>
                     </div>
                   </div>
                 ))}
@@ -216,20 +217,20 @@ export default function CheckoutPage() {
               <div className="border-t border-white/10 pt-3 space-y-2 text-[10px]">
                 <div className="flex justify-between">
                   <span className="text-foreground/40 tracking-widest">SUBTOTAL</span>
-                  <span className="text-foreground/60">${cartTotal.toFixed(2)}</span>
+                  <span className="text-foreground/60">{formatPrice(cartTotal)}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-foreground/40 tracking-widest">SHIPPING</span>
                   {shipping === 0
                     ? <span className="text-green-400/70">FREE</span>
-                    : <span className="text-foreground/60">${shipping.toFixed(2)}</span>
+                    : <span className="text-foreground/60">{formatPrice(shipping)}</span>
                   }
                 </div>
               </div>
 
               <div className="border-t border-white/10 pt-3 flex justify-between items-center">
                 <span className="text-[9px] tracking-widest text-foreground/40">TOTAL</span>
-                <span className="text-green-400/80 font-mono">${finalTotal.toFixed(2)}</span>
+                <span className="text-green-400/80 font-mono">{formatPrice(finalTotal)}</span>
               </div>
 
               <button
@@ -254,7 +255,7 @@ export default function CheckoutPage() {
         <div className="flex items-center justify-between gap-4">
           <div>
             <p className="text-[8px] tracking-widest text-foreground/30">TOTAL</p>
-            <p className="text-green-400/80 font-mono text-sm font-bold">${finalTotal.toFixed(2)}</p>
+            <p className="text-green-400/80 font-mono text-sm font-bold">{formatPrice(finalTotal)}</p>
           </div>
           <button
             type="submit"

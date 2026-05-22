@@ -5,6 +5,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { Package, ShoppingCart } from "lucide-react"
 import type { Order } from "@/types"
+import { formatPrice } from "@/lib/utils"
 
 const statusConfig: Record<string, { label: string; color: string }> = {
   pending:   { label: "PENDING",   color: "text-yellow-400/70 border-yellow-400/30" },
@@ -88,7 +89,7 @@ export default function OrdersPage() {
                   <span className={`text-[8px] tracking-widest border px-2 py-0.5 ${status.color}`}>
                     {status.label}
                   </span>
-                  <span className="text-green-400/80 text-sm font-mono">${order.total.toFixed(2)}</span>
+                  <span className="text-green-400/80 text-sm font-mono">{formatPrice(order.total)}</span>
                 </div>
               </div>
 

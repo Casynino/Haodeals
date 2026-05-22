@@ -8,6 +8,7 @@ import { useCart } from "@/hooks/useCart"
 import { ShoppingCart, Minus, Plus, ChevronLeft, Truck, RotateCcw, ShieldCheck } from "lucide-react"
 import { toast } from "sonner"
 import type { Product } from "@/types"
+import { formatPrice } from "@/lib/utils"
 
 export default function ProductDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params)
@@ -40,7 +41,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
     if (!product) return
     addItem(product, quantity)
     toast.success(`ADDED: ${product.name.toUpperCase().slice(0, 24)}`, {
-      description: `QTY ${quantity} // $${(product.price * quantity).toFixed(2)}`,
+      description: `QTY ${quantity} // ${formatPrice(product.price * quantity)}`,
       className: "font-mono text-xs",
     })
   }
@@ -154,9 +155,9 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
           )}
 
           <div className="flex items-baseline gap-3">
-            <span className="text-2xl font-mono text-green-400/80">${product.price.toFixed(2)}</span>
+            <span className="text-2xl font-mono text-green-400/80">{formatPrice(product.price)}</span>
             {product.originalPrice && (
-              <span className="text-sm text-foreground/30 line-through">${product.originalPrice.toFixed(2)}</span>
+              <span className="text-sm text-foreground/30 line-through">{formatPrice(product.originalPrice)}</span>
             )}
             {discount && (
               <span className="text-[9px] tracking-widest text-green-400/60 border border-green-400/30 px-1.5 py-0.5">

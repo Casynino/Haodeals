@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react"
 import Link from "next/link"
 import { ShoppingBag, Users, Package, DollarSign, ArrowRight, TrendingUp, Plus } from "lucide-react"
+import { formatPrice } from "@/lib/utils"
 
 interface Stats {
   totalOrders: number
@@ -39,7 +40,7 @@ export default function AdminPage() {
   }, [])
 
   const statCards = [
-    { label: "TOTAL.REVENUE", value: stats ? `$${stats.totalRevenue.toFixed(2)}` : "—", icon: DollarSign, accent: "text-green-400/70" },
+    { label: "TOTAL.REVENUE", value: stats ? formatPrice(stats.totalRevenue) : "—", icon: DollarSign, accent: "text-green-400/70" },
     { label: "TOTAL.ORDERS",  value: stats?.totalOrders ?? "—",   icon: ShoppingBag, accent: "text-blue-400/70" },
     { label: "TOTAL.USERS",   value: stats?.totalUsers ?? "—",    icon: Users,       accent: "text-purple-400/70" },
     { label: "PRODUCTS",      value: stats?.totalProducts ?? "—", icon: Package,     accent: "text-foreground/60" },
@@ -144,7 +145,7 @@ export default function AdminPage() {
                   <span className={`text-[8px] tracking-widest border px-1.5 py-0.5 hidden sm:inline ${statusConfig[order.status] ?? "text-foreground/40 border-white/15"}`}>
                     {order.status.toUpperCase()}
                   </span>
-                  <span className="text-green-400/70 text-xs font-mono">${order.total.toFixed(2)}</span>
+                  <span className="text-green-400/70 text-xs font-mono">{formatPrice(order.total)}</span>
                 </div>
               </div>
             ))}

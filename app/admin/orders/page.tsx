@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { Search, Package, X } from "lucide-react"
+import { formatPrice } from "@/lib/utils"
 
 interface Order {
   id: string
@@ -100,7 +101,7 @@ export default function AdminOrdersPage() {
                   <span className={`text-[8px] tracking-widest border px-1.5 py-0.5 ${statusConfig[order.status] ?? "text-foreground/40 border-white/15"}`}>
                     {order.status.toUpperCase()}
                   </span>
-                  <span className="text-green-400/70 text-sm font-mono">${order.total.toFixed(2)}</span>
+                  <span className="text-green-400/70 text-sm font-mono">{formatPrice(order.total)}</span>
                 </div>
               </div>
               <div className="text-[9px] text-foreground/25 space-y-0.5">
