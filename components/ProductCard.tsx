@@ -7,6 +7,7 @@ import { useCart } from "@/hooks/useCart"
 import type { Product } from "@/types"
 import { toast } from "sonner"
 import { formatPrice } from "@/lib/utils"
+import { ProductTilt } from "@/components/ui/product-tilt"
 
 interface ProductCardProps {
   product: Product
@@ -39,27 +40,27 @@ export function ProductCard({ product }: ProductCardProps) {
   return (
     <Link href={`/products/${product.id}`} className="group block">
       <div className="border border-white/10 hover:border-white/30 transition-colors bg-card relative overflow-hidden">
-        {/* Image */}
-        <div className="relative aspect-square overflow-hidden bg-foreground/5">
+        {/* Image with 3D tilt */}
+        <ProductTilt className="relative aspect-square overflow-hidden bg-foreground/5">
           <Image
             src={images[0] ?? "/placeholder.jpg"}
             alt={product.name}
             fill
-            className="object-cover opacity-70 group-hover:opacity-90 transition-opacity duration-500 group-hover:scale-105 transform transition-transform duration-700"
+            className="object-cover opacity-70 group-hover:opacity-90 transition-opacity duration-500"
           />
           {/* Scan line overlay */}
           <div className="absolute inset-0 scanline-overlay pointer-events-none" />
 
           {/* Discount tag */}
           {discount && (
-            <div className="absolute top-0 left-0 bg-foreground text-background text-[9px] font-mono font-bold px-1.5 py-0.5 tracking-widest">
+            <div className="absolute top-0 left-0 bg-foreground text-background text-[9px] font-mono font-bold px-1.5 py-0.5 tracking-widest z-10">
               -{discount}%
             </div>
           )}
 
           {/* Out of stock */}
           {product.stock === 0 && (
-            <div className="absolute inset-0 bg-background/60 flex items-center justify-center">
+            <div className="absolute inset-0 bg-background/60 flex items-center justify-center z-10">
               <span className="text-[9px] font-mono tracking-widest text-foreground/60 border border-white/20 px-2 py-1">
                 OUT.OF.STOCK
               </span>
@@ -68,7 +69,7 @@ export function ProductCard({ product }: ProductCardProps) {
 
           {/* Featured */}
           {product.featured && (
-            <div className="absolute top-0 right-0 bg-yellow-400/10 border-l border-b border-yellow-400/30 text-yellow-400/70 text-[8px] font-mono px-1.5 py-0.5 tracking-widest">
+            <div className="absolute top-0 right-0 bg-yellow-400/10 border-l border-b border-yellow-400/30 text-yellow-400/70 text-[8px] font-mono px-1.5 py-0.5 tracking-widest z-10">
               FEATURED
             </div>
           )}
@@ -77,12 +78,12 @@ export function ProductCard({ product }: ProductCardProps) {
           <button
             onClick={handleAddToCart}
             disabled={product.stock === 0}
-            className="absolute bottom-0 left-0 right-0 py-1.5 bg-foreground text-background text-[9px] font-mono tracking-widest text-center sm:opacity-0 sm:group-hover:opacity-100 transition-opacity flex items-center justify-center gap-1.5 hover:bg-foreground/90 disabled:opacity-0"
+            className="absolute bottom-0 left-0 right-0 py-1.5 bg-foreground text-background text-[9px] font-mono tracking-widest text-center sm:opacity-0 sm:group-hover:opacity-100 transition-opacity flex items-center justify-center gap-1.5 hover:bg-foreground/90 disabled:opacity-0 z-10"
           >
             <ShoppingCart className="h-2.5 w-2.5" />
             ADD.TO.CART
           </button>
-        </div>
+        </ProductTilt>
 
         {/* Info */}
         <div className="p-2.5 space-y-1.5 border-t border-white/5">
