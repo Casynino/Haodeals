@@ -2,7 +2,7 @@ import { NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
 import bcrypt from "bcryptjs"
 import { z } from "zod"
-import { ntzs } from "@/lib/ntzs"
+import { ntzs, normalizePhone } from "@/lib/ntzs"
 
 const registerSchema = z.object({
   name: z.string().min(2).max(50),
@@ -28,7 +28,12 @@ export async function POST(request: Request) {
     })
 
     // Provision nTZS wallet in the background — don't block registration if it fails
-    ntzs.createUser({ email, name: name ?? undefined, externalId: user.id })
+    ntzs.createUser({
+      email,
+      name: name ?? undefined,
+      externalId: user.id,
+      phone: phone ? normalizePhone(phone) : undefined,
+    })
       .then((ntzsUser) =>
         prisma.user.update({
           where: { id: user.id },
