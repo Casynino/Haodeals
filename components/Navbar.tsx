@@ -56,10 +56,12 @@ export function Navbar() {
   }
   const itemCount = mounted ? count() : 0
   const navLinks = [
-    { href: "/products", label: "DEALS" },
-    { href: "/products?category=electronics", label: "ELECTRONICS" },
+    { href: "/products", label: "ALL DEALS" },
+    { href: "/products?category=tech-deals", label: "TECH" },
     { href: "/products?category=fashion", label: "FASHION" },
-    { href: "/products?category=home", label: "HOME" },
+    { href: "/products?category=accessories", label: "ACCESSORIES" },
+    { href: "/products?category=shoes", label: "SHOES" },
+    { href: "/products?category=sports", label: "SPORTS" },
   ]
 
   return (
