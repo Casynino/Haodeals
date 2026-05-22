@@ -64,8 +64,7 @@ function ProductsContent() {
       {/* Header */}
       <div className="border-b border-white/10 pb-6 mb-6">
         <div className="flex items-center gap-3 mb-1">
-          <span className="text-foreground/30 text-[10px]">//</span>
-          <h1 className="text-[11px] tracking-[0.3em] text-foreground/70">PRODUCTS.INDEX</h1>
+          <h1 className="text-[11px] tracking-[0.3em] text-foreground/70">PRODUCTS</h1>
           {!loading && (
             <span className="text-[9px] text-foreground/30 ml-auto">
               [{sorted.length}.RESULTS]
