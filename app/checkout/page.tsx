@@ -1,16 +1,16 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { useSession } from "next-auth/react"
 import { useCart } from "@/hooks/useCart"
-import { ShieldCheck, Truck, Smartphone, CheckCircle2, Loader2, RefreshCw } from "lucide-react"
+import { ShieldCheck, Truck, Wallet, CheckCircle2, Loader2, AlertCircle } from "lucide-react"
 import { toast } from "sonner"
 import Image from "next/image"
 import Link from "next/link"
 import { formatPrice } from "@/lib/utils"
 
-type Stage = "form" | "awaiting" | "confirmed"
+type Stage = "form" | "confirmed"
 
 export default function CheckoutPage() {
   const router = useRouter()
@@ -19,25 +19,29 @@ export default function CheckoutPage() {
   const [stage, setStage] = useState<Stage>("form")
   const [loading, setLoading] = useState(false)
   const [orderId, setOrderId] = useState<string | null>(null)
-  const pollRef = useRef<ReturnType<typeof setInterval> | null>(null)
+  const [balanceError, setBalanceError] = useState<string | null>(null)
+  const [walletBalance, setWalletBalance] = useState<number | null>(null)
 
   const [form, setForm] = useState({
     fullName: "",
     email: "",
     address: "",
     city: "",
-    phoneNumber: "",
   })
 
   useEffect(() => {
     if (session?.user) {
-      const u = session.user as { name?: string; email?: string; phone?: string | null }
-      setForm((f) => ({
-        ...f,
-        fullName: u.name ?? "",
-        email: u.email ?? "",
-        phoneNumber: u.phone ?? f.phoneNumber,
-      }))
+      const u = session.user as { name?: string; email?: string }
+      setForm((f) => ({ ...f, fullName: u.name ?? "", email: u.email ?? "" }))
+    }
+  }, [session])
+
+  // Fetch wallet balance for display
+  useEffect(() => {
+    if (session?.user) {
+      fetch("/api/wallet").then(r => r.ok ? r.json() : null).then(d => {
+        if (d) setWalletBalance(d.balanceTzs ?? 0)
+      })
     }
   }, [session])
 
@@ -49,24 +53,6 @@ export default function CheckoutPage() {
     setForm({ ...form, [e.target.name]: e.target.value })
   }
 
-  // Poll order status every 4 seconds while awaiting payment
-  useEffect(() => {
-    if (stage !== "awaiting" || !orderId) return
-
-    pollRef.current = setInterval(async () => {
-      const res = await fetch(`/api/orders/${orderId}`)
-      if (res.ok) {
-        const order = await res.json()
-        if (order.status === "confirmed") {
-          clearInterval(pollRef.current!)
-          clearCart()
-          setStage("confirmed")
-        }
-      }
-    }, 4000)
-
-    return () => { if (pollRef.current) clearInterval(pollRef.current) }
-  }, [stage, orderId, clearCart])
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -77,6 +63,7 @@ export default function CheckoutPage() {
     }
 
     setLoading(true)
+    setBalanceError(null)
     const address = `${form.address}, ${form.city}`
 
     const res = await fetch("/api/checkout/payment", {
@@ -84,7 +71,6 @@ export default function CheckoutPage() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         address,
-        phoneNumber: form.phoneNumber,
         items: items.map((i) => ({ productId: i.id, quantity: i.quantity })),
       }),
     })
@@ -92,28 +78,17 @@ export default function CheckoutPage() {
     const data = await res.json()
 
     if (res.ok) {
+      clearCart()
       setOrderId(data.orderId)
-      setStage("awaiting")
+      setStage("confirmed")
+    } else if (data.code === "insufficient_balance") {
+      setBalanceError(data.error)
     } else {
       toast.error(data.error ?? "PAYMENT.FAILED // RETRY", { className: "font-mono text-xs" })
     }
     setLoading(false)
   }
 
-  async function checkStatus() {
-    if (!orderId) return
-    const res = await fetch(`/api/orders/${orderId}`)
-    if (res.ok) {
-      const order = await res.json()
-      if (order.status === "confirmed") {
-        if (pollRef.current) clearInterval(pollRef.current)
-        clearCart()
-        setStage("confirmed")
-      } else {
-        toast("PAYMENT.PENDING // CHECK.YOUR.PHONE", { className: "font-mono text-xs" })
-      }
-    }
-  }
 
   if (stage === "confirmed") {
     return (
@@ -140,43 +115,6 @@ export default function CheckoutPage() {
     )
   }
 
-  if (stage === "awaiting") {
-    return (
-      <div className="container mx-auto px-4 py-24 flex flex-col items-center gap-6 text-center font-mono max-w-sm">
-        <div className="border border-foreground/15 p-8 relative w-full">
-          <div className="absolute top-0 left-0 w-3 h-3 border-t border-l border-foreground/20" />
-          <div className="absolute bottom-0 right-0 w-3 h-3 border-b border-r border-foreground/20" />
-
-          <Smartphone className="h-8 w-8 text-foreground/40 mx-auto mb-4" />
-          <p className="text-[9px] tracking-widest text-foreground/40 mb-2">AWAITING.PAYMENT</p>
-          <h1 className="text-lg font-black tracking-widest mb-3">CHECK.YOUR.PHONE</h1>
-          <p className="text-[10px] text-foreground/50 leading-relaxed mb-6">
-            A MOBILE MONEY PROMPT HAS BEEN SENT TO <span className="text-foreground">{form.phoneNumber}</span>. APPROVE THE PAYMENT TO CONFIRM YOUR ORDER.
-          </p>
-
-          <div className="border-t border-foreground/10 pt-4 mb-6">
-            <p className="text-[8px] text-foreground/30 tracking-widest mb-1">AMOUNT.DUE</p>
-            <p className="text-xl font-mono text-green-400/80">{formatPrice(finalTotal)}</p>
-          </div>
-
-          <div className="flex items-center justify-center gap-2 mb-6 text-[8px] text-foreground/30">
-            <Loader2 className="h-3 w-3 animate-spin" />
-            <span>WAITING FOR CONFIRMATION...</span>
-          </div>
-
-          <button
-            onClick={checkStatus}
-            className="w-full flex items-center justify-center gap-2 py-2 border border-foreground/20 text-[10px] tracking-widest text-foreground/50 hover:text-foreground hover:border-foreground/40 transition-colors"
-          >
-            <RefreshCw className="h-3 w-3" /> CHECK.STATUS
-          </button>
-        </div>
-        <p className="text-[8px] text-foreground/25 tracking-widest">
-          ORDER #{orderId?.slice(0, 8).toUpperCase()}
-        </p>
-      </div>
-    )
-  }
 
   if (items.length === 0) {
     return (
@@ -229,36 +167,39 @@ export default function CheckoutPage() {
               </div>
             </div>
 
-            {/* Mobile Money Payment */}
-            <div className="border border-foreground/10 p-5 space-y-4">
+            {/* Wallet Payment */}
+            <div className="border border-foreground/10 p-5 space-y-3">
               <div className="flex items-center gap-2">
-                <Smartphone className="h-3 w-3 text-foreground/30" />
-                <p className="text-[9px] tracking-widest text-foreground/40">// MOBILE.MONEY.PAYMENT</p>
+                <Wallet className="h-3 w-3 text-foreground/30" />
+                <p className="text-[9px] tracking-widest text-foreground/40">// NTZS.WALLET.PAYMENT</p>
                 <span className="ml-auto flex items-center gap-1 text-[8px] text-green-400/60">
                   <span className="w-1 h-1 bg-green-400/60 rounded-full animate-pulse" />
                   POWERED BY nTZS
                 </span>
               </div>
 
-              <div>
-                <label className="text-[8px] tracking-widest text-foreground/30 block mb-1">PHONE.NUMBER</label>
-                <input
-                  type="tel"
-                  name="phoneNumber"
-                  value={form.phoneNumber}
-                  onChange={handleChange}
-                  placeholder="+255 712 345 678"
-                  required
-                  className="w-full bg-transparent border border-foreground/15 px-3 py-2 text-[10px] tracking-wide text-foreground/70 placeholder:text-foreground/20 focus:outline-none focus:border-foreground/40 transition-colors"
-                />
-                <p className="text-[8px] text-foreground/25 mt-1">
-                  SUPPORTS M-PESA, AIRTEL.MONEY, TIGOPESA, HALOPESA AND MORE
-                </p>
+              <div className="flex items-center justify-between py-2 border border-foreground/10 px-3">
+                <span className="text-[8px] tracking-widest text-foreground/30">WALLET.BALANCE</span>
+                <span className={`text-[11px] font-mono font-bold ${walletBalance !== null && walletBalance >= finalTotal ? "text-green-400/80" : "text-red-400/70"}`}>
+                  {walletBalance !== null ? formatPrice(walletBalance) : "—"}
+                </span>
               </div>
+
+              {balanceError && (
+                <div className="flex items-start gap-2 p-3 border border-red-400/20 bg-red-400/5">
+                  <AlertCircle className="h-3.5 w-3.5 text-red-400/70 flex-shrink-0 mt-0.5" />
+                  <div className="space-y-1">
+                    <p className="text-[9px] text-red-400/80">{balanceError}</p>
+                    <Link href="/wallet" className="text-[8px] text-foreground/50 hover:text-foreground underline underline-offset-2 transition-colors">
+                      TOP UP WALLET →
+                    </Link>
+                  </div>
+                </div>
+              )}
 
               <div className="flex items-center gap-1.5 text-[8px] text-foreground/20">
                 <ShieldCheck className="h-2.5 w-2.5" />
-                PAYMENTS SECURED BY nTZS · BASE BLOCKCHAIN
+                INSTANT ON-CHAIN TRANSFER · BASE BLOCKCHAIN
               </div>
             </div>
           </div>
@@ -309,8 +250,8 @@ export default function CheckoutPage() {
                 className="w-full flex items-center justify-center gap-2 py-2.5 bg-foreground text-background text-[10px] tracking-widest font-bold hover:bg-foreground/90 transition-colors disabled:opacity-50"
               >
                 {loading
-                  ? <><Loader2 className="h-3.5 w-3.5 animate-spin" /> INITIATING...</>
-                  : <><Smartphone className="h-3.5 w-3.5" /> PAY.WITH.MOBILE.MONEY</>}
+                  ? <><Loader2 className="h-3.5 w-3.5 animate-spin" /> PROCESSING...</>
+                  : <><Wallet className="h-3.5 w-3.5" /> PAY.FROM.WALLET</>}
               </button>
             </div>
           </div>
@@ -331,8 +272,8 @@ export default function CheckoutPage() {
             className="flex-1 flex items-center justify-center gap-2 py-2.5 bg-foreground text-background text-[10px] tracking-widest font-bold hover:bg-foreground/90 transition-colors disabled:opacity-50"
           >
             {loading
-              ? <><Loader2 className="h-3.5 w-3.5 animate-spin" /> INITIATING...</>
-              : <><Smartphone className="h-3.5 w-3.5" /> PAY.NOW</>}
+              ? <><Loader2 className="h-3.5 w-3.5 animate-spin" /> PROCESSING...</>
+              : <><Wallet className="h-3.5 w-3.5" /> PAY.FROM.WALLET</>}
           </button>
         </div>
       </div>
