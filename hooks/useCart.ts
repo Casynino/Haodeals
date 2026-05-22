@@ -2,11 +2,11 @@
 
 import { create } from "zustand"
 import { persist } from "zustand/middleware"
-import type { CartStoreItem, Product } from "@/types"
+import type { CartStoreItem, Product, SelectedOption } from "@/types"
 
 interface CartStore {
   items: CartStoreItem[]
-  addItem: (product: Product, quantity?: number) => void
+  addItem: (product: Product, quantity?: number, selectedOptions?: SelectedOption[]) => void
   removeItem: (id: string) => void
   updateQuantity: (id: string, quantity: number) => void
   clearCart: () => void
@@ -14,14 +14,21 @@ interface CartStore {
   count: () => number
 }
 
+function variantKey(productId: string, selectedOptions?: SelectedOption[]): string {
+  if (!selectedOptions?.length) return productId
+  const sorted = [...selectedOptions].sort((a, b) => a.name.localeCompare(b.name))
+  return `${productId}:${sorted.map((o) => `${o.name}=${o.value}`).join(",")}`
+}
+
 export const useCart = create<CartStore>()(
   persist(
     (set, get) => ({
       items: [],
 
-      addItem: (product, quantity = 1) => {
+      addItem: (product, quantity = 1, selectedOptions) => {
         const items = get().items
-        const existing = items.find((i) => i.id === product.id)
+        const id = variantKey(product.id, selectedOptions)
+        const existing = items.find((i) => i.id === id)
         const rawImages = product.images
         const images = Array.isArray(rawImages)
           ? rawImages
@@ -30,7 +37,7 @@ export const useCart = create<CartStore>()(
         if (existing) {
           set({
             items: items.map((i) =>
-              i.id === product.id
+              i.id === id
                 ? { ...i, quantity: Math.min(i.quantity + quantity, product.stock) }
                 : i
             ),
@@ -40,13 +47,15 @@ export const useCart = create<CartStore>()(
             items: [
               ...items,
               {
-                id: product.id,
+                id,
+                productId: product.id,
                 name: product.name,
                 price: product.price,
                 originalPrice: product.originalPrice,
                 image: images[0] ?? "",
                 quantity,
                 stock: product.stock,
+                selectedOptions: selectedOptions?.length ? selectedOptions : undefined,
               },
             ],
           })

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react"
 import Image from "next/image"
 import { Plus, Pencil, Trash2, Search, Package, X, Upload, ImageIcon } from "lucide-react"
+import type { ProductOption } from "@/types"
 import { formatPrice } from "@/lib/utils"
 import { toast } from "sonner"
 import {
@@ -43,6 +44,14 @@ const EMPTY_FORM = {
   categoryId: "",
 }
 
+const PRESET_OPTIONS: ProductOption[] = [
+  { name: "Size", values: ["XS", "S", "M", "L", "XL", "XXL"] },
+  { name: "Color", values: ["Black", "White", "Red", "Blue", "Green", "Yellow", "Pink", "Grey"] },
+  { name: "Storage", values: ["64GB", "128GB", "256GB", "512GB", "1TB", "2TB"] },
+  { name: "RAM", values: ["4GB", "8GB", "16GB", "32GB", "64GB"] },
+  { name: "Material", values: ["Cotton", "Polyester", "Leather", "Wool", "Silk", "Denim"] },
+]
+
 export default function AdminProductsPage() {
   const [products, setProducts] = useState<Product[]>([])
   const [categories, setCategories] = useState<Category[]>([])
@@ -54,6 +63,9 @@ export default function AdminProductsPage() {
   const [saving, setSaving] = useState(false)
   const [uploading, setUploading] = useState(false)
   const [uploadedUrls, setUploadedUrls] = useState<string[]>([])
+  const [options, setOptions] = useState<ProductOption[]>([])
+  const [newOptionName, setNewOptionName] = useState("")
+  const [newOptionValues, setNewOptionValues] = useState<Record<number, string>>({})
 
   async function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const files = Array.from(e.target.files ?? [])
@@ -100,12 +112,18 @@ export default function AdminProductsPage() {
     setEditing(null)
     setForm(EMPTY_FORM)
     setUploadedUrls([])
+    setOptions([])
+    setNewOptionName("")
+    setNewOptionValues({})
     setOpen(true)
   }
 
   function openEdit(product: Product) {
     setEditing(product)
     setUploadedUrls(product.images)
+    setOptions((product as Product & { options?: ProductOption[] }).options ?? [])
+    setNewOptionName("")
+    setNewOptionValues({})
     setForm({
       name: product.name,
       description: "",
@@ -119,6 +137,34 @@ export default function AdminProductsPage() {
     setOpen(true)
   }
 
+  function addPresetOption(preset: ProductOption) {
+    if (options.find((o) => o.name === preset.name)) return
+    setOptions([...options, { ...preset }])
+  }
+
+  function addCustomOption() {
+    const name = newOptionName.trim()
+    if (!name || options.find((o) => o.name === name)) return
+    setOptions([...options, { name, values: [] }])
+    setNewOptionName("")
+  }
+
+  function removeOption(idx: number) {
+    setOptions(options.filter((_, i) => i !== idx))
+  }
+
+  function addOptionValue(idx: number) {
+    const val = (newOptionValues[idx] ?? "").trim()
+    if (!val || options[idx].values.includes(val)) return
+    const next = options.map((o, i) => i === idx ? { ...o, values: [...o.values, val] } : o)
+    setOptions(next)
+    setNewOptionValues({ ...newOptionValues, [idx]: "" })
+  }
+
+  function removeOptionValue(optIdx: number, val: string) {
+    setOptions(options.map((o, i) => i === optIdx ? { ...o, values: o.values.filter((v) => v !== val) } : o))
+  }
+
   async function handleSave() {
     if (!form.name || !form.price || !form.categoryId) {
       toast.error("REQUIRED.FIELDS.MISSING", { className: "font-mono text-xs" })
@@ -128,6 +174,7 @@ export default function AdminProductsPage() {
     const body = {
       ...form,
       images: form.images.split(",").map((s) => s.trim()).filter(Boolean),
+      options: options.filter((o) => o.values.length > 0),
     }
     const url = editing ? `/api/admin/products/${editing.id}` : "/api/admin/products"
     const method = editing ? "PUT" : "POST"
@@ -245,6 +292,83 @@ export default function AdminProductsPage() {
                     ))}
                   </SelectContent>
                 </Select>
+              </div>
+
+              {/* Product Options */}
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <label className="text-[8px] tracking-widest text-foreground/30">PRODUCT.OPTIONS</label>
+                  <span className="text-[7px] text-foreground/20">SIZE · COLOR · STORAGE · ETC</span>
+                </div>
+
+                {/* Preset chips */}
+                <div className="flex flex-wrap gap-1">
+                  {PRESET_OPTIONS.map((preset) => (
+                    <button
+                      key={preset.name}
+                      type="button"
+                      onClick={() => addPresetOption(preset)}
+                      disabled={!!options.find((o) => o.name === preset.name)}
+                      className="px-2 py-0.5 text-[8px] tracking-widest border border-white/15 text-foreground/40 hover:text-foreground hover:border-white/40 transition-colors disabled:opacity-20 disabled:cursor-not-allowed"
+                    >
+                      + {preset.name.toUpperCase()}
+                    </button>
+                  ))}
+                </div>
+
+                {/* Custom option */}
+                <div className="flex gap-1">
+                  <input
+                    type="text"
+                    value={newOptionName}
+                    onChange={(e) => setNewOptionName(e.target.value)}
+                    onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), addCustomOption())}
+                    placeholder="CUSTOM OPTION NAME..."
+                    className="flex-1 bg-transparent border border-white/15 px-2 py-1.5 text-[9px] text-foreground/70 placeholder:text-foreground/20 focus:outline-none focus:border-white/40 transition-colors"
+                  />
+                  <button
+                    type="button"
+                    onClick={addCustomOption}
+                    className="px-3 border border-white/15 text-[9px] text-foreground/40 hover:text-foreground hover:border-white/40 transition-colors"
+                  >
+                    <Plus className="h-3 w-3" />
+                  </button>
+                </div>
+
+                {/* Option groups */}
+                {options.map((opt, idx) => (
+                  <div key={idx} className="border border-white/10 p-2.5 space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[9px] tracking-widest text-foreground/60">{opt.name.toUpperCase()}</span>
+                      <button type="button" onClick={() => removeOption(idx)} className="text-foreground/20 hover:text-red-400/70 transition-colors">
+                        <X className="h-3 w-3" />
+                      </button>
+                    </div>
+                    <div className="flex flex-wrap gap-1">
+                      {opt.values.map((val) => (
+                        <span key={val} className="flex items-center gap-1 px-1.5 py-0.5 bg-foreground/5 border border-white/10 text-[8px] text-foreground/60">
+                          {val}
+                          <button type="button" onClick={() => removeOptionValue(idx, val)} className="text-foreground/20 hover:text-red-400/70 transition-colors">
+                            <X className="h-2 w-2" />
+                          </button>
+                        </span>
+                      ))}
+                      <div className="flex gap-1">
+                        <input
+                          type="text"
+                          value={newOptionValues[idx] ?? ""}
+                          onChange={(e) => setNewOptionValues({ ...newOptionValues, [idx]: e.target.value })}
+                          onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), addOptionValue(idx))}
+                          placeholder="Add value..."
+                          className="w-24 bg-transparent border border-dashed border-white/15 px-1.5 py-0.5 text-[8px] text-foreground/60 placeholder:text-foreground/20 focus:outline-none focus:border-white/40"
+                        />
+                        <button type="button" onClick={() => addOptionValue(idx)} className="px-1.5 border border-dashed border-white/15 text-[8px] text-foreground/30 hover:text-foreground hover:border-white/40 transition-colors">
+                          +
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
 
               {/* Image upload */}

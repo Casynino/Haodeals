@@ -14,7 +14,7 @@ export async function POST(request: Request) {
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 403 })
 
   const body = await request.json()
-  const { name, description, price, originalPrice, stock, images, featured, categoryId } = body
+  const { name, description, price, originalPrice, stock, images, featured, categoryId, options } = body
 
   const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "")
 
@@ -27,6 +27,7 @@ export async function POST(request: Request) {
       originalPrice: originalPrice ? parseFloat(originalPrice) : null,
       stock: parseInt(stock),
       images: JSON.stringify(images),
+      options: options?.length ? options : undefined,
       featured: !!featured,
       categoryId,
     },

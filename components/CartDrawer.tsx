@@ -70,6 +70,15 @@ export function CartDrawer() {
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-[10px] text-foreground/70 truncate uppercase tracking-wide">{item.name}</p>
+                    {item.selectedOptions && item.selectedOptions.length > 0 && (
+                      <div className="flex flex-wrap gap-1 mt-0.5">
+                        {item.selectedOptions.map((opt) => (
+                          <span key={opt.name} className="text-[7px] tracking-widest text-foreground/40 border border-white/10 px-1 py-0.5">
+                            {opt.name.toUpperCase()}: {opt.value}
+                          </span>
+                        ))}
+                      </div>
+                    )}
                     <div className="flex items-center gap-1.5 mt-0.5">
                       <span className="text-xs text-green-400/80 font-mono">{formatPrice(item.price)}</span>
                       {item.originalPrice && item.originalPrice > item.price && (
