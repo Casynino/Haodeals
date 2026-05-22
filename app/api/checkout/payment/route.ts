@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
 import { auth } from "@/auth"
-import { ntzs } from "@/lib/ntzs"
+import { ntzs, normalizePhone } from "@/lib/ntzs"
 
 export async function POST(request: Request) {
   const session = await auth()
@@ -79,11 +79,10 @@ export async function POST(request: Request) {
   try {
     const deposit = await ntzs.createDeposit({
       userId: user.ntzsUserId!,
-      amount: Math.round(total),
+      amountTzs: Math.round(total),
       paymentMethod: "mobile_money",
-      phoneNumber,
+      phoneNumber: normalizePhone(phoneNumber),
       collectToTreasury: true,
-      metadata: { orderId: order.id },
     })
 
     await prisma.order.update({

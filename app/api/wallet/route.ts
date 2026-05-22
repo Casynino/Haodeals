@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server"
 import { auth } from "@/auth"
 import { prisma } from "@/lib/prisma"
-import { ntzs } from "@/lib/ntzs"
+import { ntzs, normalizePhone } from "@/lib/ntzs"
 
 export async function GET() {
   const session = await auth()
@@ -11,7 +11,7 @@ export async function GET() {
 
   const user = await prisma.user.findUnique({
     where: { id: session.user.id as string },
-    select: { ntzsUserId: true, ntzsWalletAddress: true, email: true, name: true },
+    select: { ntzsUserId: true, ntzsWalletAddress: true, email: true, name: true, phone: true },
   })
 
   if (!user) return NextResponse.json({ error: "User not found" }, { status: 404 })
@@ -23,6 +23,7 @@ export async function GET() {
         email: user.email,
         name: user.name ?? undefined,
         externalId: session.user.id as string,
+        phone: user.phone ? normalizePhone(user.phone) : undefined,
       })
       await prisma.user.update({
         where: { id: session.user.id as string },
@@ -79,9 +80,9 @@ export async function POST(req: Request) {
   try {
     const deposit = await ntzs.createDeposit({
       userId: user.ntzsUserId,
-      amount: Math.round(amount),
+      amountTzs: Math.round(amount),
       paymentMethod: "mobile_money",
-      phoneNumber,
+      phoneNumber: normalizePhone(phoneNumber),
       collectToTreasury: false,
     })
     return NextResponse.json({ depositId: deposit.id, status: deposit.status })

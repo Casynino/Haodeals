@@ -14,9 +14,18 @@ async function request<T>(path: string, options?: RequestInit): Promise<T> {
   })
   const json = await res.json()
   if (!res.ok) {
-    throw new Error(json.message ?? `nTZS error ${res.status}`)
+    throw new Error(json.message ?? `nTZS error ${res.status}: ${JSON.stringify(json)}`)
   }
   return json as T
+}
+
+// Normalize to Tanzanian format: 255712345678 (no +, no spaces)
+export function normalizePhone(phone: string): string {
+  let p = phone.replace(/[\s\-\(\)]/g, "")
+  if (p.startsWith("+")) p = p.slice(1)
+  if (p.startsWith("0")) p = "255" + p.slice(1)
+  if (!p.startsWith("255")) p = "255" + p
+  return p
 }
 
 export interface NtzsUser {
@@ -28,12 +37,12 @@ export interface NtzsUser {
 export interface NtzsDeposit {
   id: string
   status: "pending" | "completed" | "failed"
-  amount: number
+  amountTzs: number
   userId: string
 }
 
 export const ntzs = {
-  createUser(data: { email: string; name?: string; externalId: string }): Promise<NtzsUser> {
+  createUser(data: { email: string; name?: string; externalId: string; phone?: string }): Promise<NtzsUser> {
     return request("/api/v1/users", {
       method: "POST",
       body: JSON.stringify(data),
@@ -46,15 +55,27 @@ export const ntzs = {
 
   createDeposit(data: {
     userId: string
-    amount: number
+    amountTzs: number
     paymentMethod: "mobile_money"
     phoneNumber: string
     collectToTreasury?: boolean
-    metadata?: Record<string, string>
   }): Promise<NtzsDeposit> {
     return request("/api/v1/deposits", {
       method: "POST",
-      body: JSON.stringify({ collectToTreasury: true, ...data }),
+      body: JSON.stringify(data),
+    })
+  },
+
+  transfer(data: {
+    fromUserId: string
+    toUserId?: string
+    toAddress?: string
+    amountTzs: number
+    metadata?: Record<string, string>
+  }): Promise<{ id: string; status: string }> {
+    return request("/api/v1/transfers", {
+      method: "POST",
+      body: JSON.stringify(data),
     })
   },
 }

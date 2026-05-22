@@ -28,20 +28,18 @@ export async function POST(req: NextRequest) {
   }
 
   if (event.event === "deposit.completed") {
-    const orderId = event.data.metadata?.orderId
-    if (orderId) {
+    const depositId = event.data.id
+    // Find the order that has this deposit ID (checkout payments)
+    const order = await prisma.order.findFirst({
+      where: { ntzsDepositId: depositId, status: "pending_payment" },
+      select: { id: true, userId: true },
+    })
+    if (order) {
       await prisma.order.update({
-        where: { id: orderId },
+        where: { id: order.id },
         data: { status: "confirmed" },
       })
-      // Clear the user's cart
-      const order = await prisma.order.findUnique({
-        where: { id: orderId },
-        select: { userId: true },
-      })
-      if (order) {
-        await prisma.cart.deleteMany({ where: { userId: order.userId } })
-      }
+      await prisma.cart.deleteMany({ where: { userId: order.userId } })
     }
   }
 
