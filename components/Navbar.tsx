@@ -15,7 +15,7 @@ import {
 import { ThemeToggle } from "@/components/ThemeToggle"
 import { CartDrawer } from "@/components/CartDrawer"
 import { useCart } from "@/hooks/useCart"
-import { Package, LogOut, User, ShieldCheck, Search, Wallet } from "lucide-react"
+import { Package, LogOut, User, ShieldCheck, Search, Wallet, Settings } from "lucide-react"
 import { useState, useEffect } from "react"
 
 export function Navbar() {
@@ -109,6 +109,12 @@ export function Navbar() {
                   className="px-3 py-2 text-[10px] tracking-widest text-foreground/60 hover:text-foreground hover:bg-foreground/5 flex items-center gap-2"
                 >
                   <User className="h-3 w-3" /> PROFILE
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => router.push("/settings")}
+                  className="px-3 py-2 text-[10px] tracking-widest text-foreground/60 hover:text-foreground hover:bg-foreground/5 flex items-center gap-2"
+                >
+                  <Settings className="h-3 w-3" /> SETTINGS
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   onClick={() => router.push("/wallet")}

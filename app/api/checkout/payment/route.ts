@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
 import { auth } from "@/auth"
-import { ntzs, normalizePhone } from "@/lib/ntzs"
+import { ntzs } from "@/lib/ntzs"
 
 export async function POST(request: Request) {
   const session = await auth()
@@ -9,10 +9,15 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
 
-  const { address, items, phoneNumber } = await request.json()
+  const treasuryUserId = process.env.NTZS_TREASURY_USER_ID
+  if (!treasuryUserId) {
+    return NextResponse.json({ error: "Payment service not configured" }, { status: 503 })
+  }
+
+  const { address, items } = await request.json()
   const userId = session.user.id as string
 
-  if (!address || !items?.length || !phoneNumber) {
+  if (!address || !items?.length) {
     return NextResponse.json({ error: "Missing required fields" }, { status: 400 })
   }
 
@@ -28,38 +33,33 @@ export async function POST(request: Request) {
     0
   )
   const shipping = subtotal >= 100000 ? 0 : 5000
-  const total = subtotal + shipping
+  const total = Math.round(subtotal + shipping)
 
-  if (total < 500) {
-    return NextResponse.json({ error: "Minimum order amount is TSh 500" }, { status: 400 })
-  }
-
-  // Ensure user has a nTZS wallet; provision on-the-fly if missing
-  let user = await prisma.user.findUnique({
+  // Check user has a wallet
+  const user = await prisma.user.findUnique({
     where: { id: userId },
-    select: { id: true, email: true, name: true, ntzsUserId: true },
+    select: { id: true, ntzsUserId: true },
   })
-  if (!user) return NextResponse.json({ error: "User not found" }, { status: 404 })
-
-  if (!user.ntzsUserId) {
-    try {
-      const ntzsUser = await ntzs.createUser({
-        email: user.email,
-        name: user.name ?? undefined,
-        externalId: user.id,
-      })
-      await prisma.user.update({
-        where: { id: userId },
-        data: { ntzsUserId: ntzsUser.id, ntzsWalletAddress: ntzsUser.walletAddress },
-      })
-      user = { ...user, ntzsUserId: ntzsUser.id }
-    } catch (err) {
-      console.error("[nTZS] wallet provisioning failed:", err)
-      return NextResponse.json({ error: "Payment service unavailable" }, { status: 503 })
-    }
+  if (!user?.ntzsUserId) {
+    return NextResponse.json({ error: "Wallet not provisioned. Please top up your wallet first." }, { status: 400 })
   }
 
-  // Create order with pending_payment status
+  // Check live balance is sufficient
+  try {
+    const ntzsUser = await ntzs.getUser(user.ntzsUserId)
+    if ((ntzsUser.balanceTzs ?? 0) < total) {
+      return NextResponse.json({
+        error: `Insufficient balance. You have ${ntzsUser.balanceTzs?.toLocaleString()} TZS, need ${total.toLocaleString()} TZS.`,
+        code: "insufficient_balance",
+        balance: ntzsUser.balanceTzs,
+        required: total,
+      }, { status: 402 })
+    }
+  } catch {
+    return NextResponse.json({ error: "Could not verify wallet balance. Try again." }, { status: 503 })
+  }
+
+  // Create order
   const order = await prisma.order.create({
     data: {
       userId,
@@ -75,26 +75,26 @@ export async function POST(request: Request) {
     },
   })
 
-  // Initiate mobile money deposit
+  // Transfer from user wallet → treasury
   try {
-    const deposit = await ntzs.createDeposit({
-      userId: user.ntzsUserId!,
-      amountTzs: Math.round(total),
-      paymentMethod: "mobile_money",
-      phoneNumber: normalizePhone(phoneNumber),
-      collectToTreasury: true,
+    const transfer = await ntzs.transfer({
+      fromUserId: user.ntzsUserId,
+      toUserId: treasuryUserId,
+      amountTzs: total,
+      metadata: { orderId: order.id },
     })
 
+    // Transfer is synchronous & on-chain — confirm the order immediately
     await prisma.order.update({
       where: { id: order.id },
-      data: { ntzsDepositId: deposit.id },
+      data: { status: "confirmed", ntzsDepositId: transfer.id },
     })
+    await prisma.cart.deleteMany({ where: { userId } })
 
-    return NextResponse.json({ orderId: order.id, depositId: deposit.id, status: "pending" })
+    return NextResponse.json({ orderId: order.id, transferId: transfer.id, status: "confirmed" })
   } catch (err) {
-    // Clean up order if payment initiation fails
     await prisma.order.delete({ where: { id: order.id } })
-    console.error("[nTZS] deposit initiation failed:", err)
-    return NextResponse.json({ error: "Failed to initiate payment. Check your phone number." }, { status: 502 })
+    console.error("[nTZS] transfer failed:", err)
+    return NextResponse.json({ error: "Transfer failed. Please try again." }, { status: 502 })
   }
 }
