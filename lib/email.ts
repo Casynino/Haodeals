@@ -37,6 +37,31 @@ export async function sendWelcomeEmail(to: string, name: string) {
   }).catch((err) => console.error("[email] welcome failed:", err))
 }
 
+export async function sendDealAnnouncement(recipients: string[], subject: string, message: string, link?: string) {
+  const transport = createTransport()
+  if (!transport) return { sent: 0, failed: 0 }
+  const appUrl = APP_URL
+  let sent = 0, failed = 0
+  for (const to of recipients) {
+    await transport.sendMail({
+      from: `HaoDeals <${process.env.GMAIL_USER}>`,
+      to,
+      subject,
+      html: `
+        <div style="font-family:monospace;max-width:520px;margin:0 auto;background:#0a0a0a;color:#e5e5e5;padding:32px;border:1px solid #222">
+          <p style="font-size:10px;letter-spacing:0.3em;color:#555;margin:0 0 24px">// HAODEALS.ANNOUNCEMENT</p>
+          <h1 style="font-size:16px;font-weight:900;letter-spacing:0.15em;margin:0 0 20px">${subject.toUpperCase()}</h1>
+          <hr style="border:none;border-top:1px solid #222;margin:0 0 20px"/>
+          <p style="font-size:11px;color:#aaa;line-height:1.7;margin:0 0 24px;white-space:pre-line">${message}</p>
+          ${link ? `<a href="${link.startsWith("http") ? link : appUrl + link}" style="display:inline-block;padding:10px 24px;background:#e5e5e5;color:#0a0a0a;font-size:10px;font-weight:700;letter-spacing:0.2em;text-decoration:none">VIEW.DEAL →</a>` : `<a href="${appUrl}/products" style="display:inline-block;padding:10px 24px;background:#e5e5e5;color:#0a0a0a;font-size:10px;font-weight:700;letter-spacing:0.2em;text-decoration:none">BROWSE.DEALS →</a>`}
+          <p style="font-size:8px;color:#333;margin:32px 0 0;letter-spacing:0.1em">HAODEALS · YOU RECEIVED THIS BECAUSE YOU HAVE AN ACCOUNT WITH US</p>
+        </div>
+      `,
+    }).then(() => sent++).catch(() => failed++)
+  }
+  return { sent, failed }
+}
+
 export async function sendOrderNotificationToAdmin(order: {
   id: string
   total: number

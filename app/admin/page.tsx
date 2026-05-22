@@ -2,8 +2,9 @@
 
 import { useEffect, useState } from "react"
 import Link from "next/link"
-import { ShoppingBag, Users, Package, DollarSign, ArrowRight, TrendingUp, Plus } from "lucide-react"
+import { ShoppingBag, Users, Package, DollarSign, ArrowRight, TrendingUp, Plus, Megaphone, Loader2, CheckCircle2 } from "lucide-react"
 import { formatPrice } from "@/lib/utils"
+import { toast } from "sonner"
 
 interface Stats {
   totalOrders: number
@@ -31,6 +32,9 @@ const statusConfig: Record<string, string> = {
 export default function AdminPage() {
   const [stats, setStats] = useState<Stats | null>(null)
   const [loading, setLoading] = useState(true)
+  const [announce, setAnnounce] = useState({ subject: "", message: "", link: "" })
+  const [sending, setSending] = useState(false)
+  const [sentResult, setSentResult] = useState<{ sent: number; total: number } | null>(null)
 
   useEffect(() => {
     fetch("/api/admin/stats")
@@ -38,6 +42,27 @@ export default function AdminPage() {
       .then((data) => { setStats(data); setLoading(false) })
       .catch(() => setLoading(false))
   }, [])
+
+  async function handleAnnounce(e: React.FormEvent) {
+    e.preventDefault()
+    if (!announce.subject.trim() || !announce.message.trim()) return
+    setSending(true)
+    setSentResult(null)
+    const res = await fetch("/api/admin/announce", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(announce),
+    })
+    const data = await res.json()
+    if (res.ok) {
+      setSentResult({ sent: data.sent, total: data.total })
+      setAnnounce({ subject: "", message: "", link: "" })
+      toast.success(`SENT TO ${data.sent} USERS`, { className: "font-mono text-xs" })
+    } else {
+      toast.error(data.error ?? "SEND FAILED", { className: "font-mono text-xs" })
+    }
+    setSending(false)
+  }
 
   const statCards = [
     { label: "TOTAL.REVENUE", value: stats ? formatPrice(stats.totalRevenue) : "—", icon: DollarSign, accent: "text-green-400/70" },
@@ -151,6 +176,66 @@ export default function AdminPage() {
             ))}
           </div>
         )}
+      </div>
+
+      {/* Announce Deal */}
+      <div className="mt-6 border border-white/10">
+        <div className="flex items-center gap-2 px-4 py-3 border-b border-white/10">
+          <Megaphone className="h-3.5 w-3.5 text-yellow-400/60" />
+          <p className="text-[9px] tracking-widest text-foreground/40">// ANNOUNCE.DEAL</p>
+          <span className="ml-auto text-[8px] text-foreground/20">SENDS EMAIL TO ALL {stats?.totalUsers ?? "—"} USERS</span>
+        </div>
+        <form onSubmit={handleAnnounce} className="p-4 space-y-3">
+          <div>
+            <label className="text-[8px] tracking-widest text-foreground/30 block mb-1">SUBJECT</label>
+            <input
+              type="text"
+              value={announce.subject}
+              onChange={(e) => setAnnounce({ ...announce, subject: e.target.value })}
+              placeholder="🔥 New deals just dropped..."
+              required
+              className="w-full bg-transparent border border-white/15 px-3 py-2 text-[10px] text-foreground/70 placeholder:text-foreground/20 focus:outline-none focus:border-white/40 transition-colors"
+            />
+          </div>
+          <div>
+            <label className="text-[8px] tracking-widest text-foreground/30 block mb-1">MESSAGE</label>
+            <textarea
+              value={announce.message}
+              onChange={(e) => setAnnounce({ ...announce, message: e.target.value })}
+              placeholder="Hey! We just added new deals you don't want to miss..."
+              required
+              rows={3}
+              className="w-full bg-transparent border border-white/15 px-3 py-2 text-[10px] text-foreground/70 placeholder:text-foreground/20 focus:outline-none focus:border-white/40 transition-colors resize-none"
+            />
+          </div>
+          <div>
+            <label className="text-[8px] tracking-widest text-foreground/30 block mb-1">LINK <span className="text-foreground/20">(OPTIONAL — e.g. /products or full URL)</span></label>
+            <input
+              type="text"
+              value={announce.link}
+              onChange={(e) => setAnnounce({ ...announce, link: e.target.value })}
+              placeholder="/products?category=electronics"
+              className="w-full bg-transparent border border-white/15 px-3 py-2 text-[10px] text-foreground/70 placeholder:text-foreground/20 focus:outline-none focus:border-white/40 transition-colors"
+            />
+          </div>
+          <div className="flex items-center gap-3 pt-1">
+            <button
+              type="submit"
+              disabled={sending}
+              className="flex items-center gap-2 px-5 py-2 bg-yellow-400/90 text-black text-[9px] tracking-widest font-bold hover:bg-yellow-400 transition-colors disabled:opacity-50"
+            >
+              {sending
+                ? <><Loader2 className="h-3 w-3 animate-spin" /> SENDING...</>
+                : <><Megaphone className="h-3 w-3" /> SEND.TO.ALL.USERS</>}
+            </button>
+            {sentResult && (
+              <span className="flex items-center gap-1.5 text-[9px] text-green-400/70">
+                <CheckCircle2 className="h-3 w-3" />
+                SENT TO {sentResult.sent}/{sentResult.total} USERS
+              </span>
+            )}
+          </div>
+        </form>
       </div>
     </div>
   )
