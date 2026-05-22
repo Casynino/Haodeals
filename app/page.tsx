@@ -95,7 +95,9 @@ export default async function HomePage() {
             </div>
 
             <p className="text-[11px] md:text-sm text-foreground/50 font-mono leading-relaxed mb-7 max-w-xs">
-              TERMINAL-GRADE SAVINGS ON ELECTRONICS, FASHION & MORE. UP TO 70% OFF. DAILY.
+              Shop the latest deals available right now and enjoy fast, reliable delivery anywhere in Tanzania 🇹🇿
+              <br /><br />
+              Premium products. Limited-time offers. Nationwide delivery.
             </p>
 
             {/* Stats */}
