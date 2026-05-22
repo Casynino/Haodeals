@@ -9,6 +9,7 @@ import { ShoppingCart, Minus, Plus, ChevronLeft, Truck, RotateCcw, ShieldCheck }
 import { toast } from "sonner"
 import type { Product, SelectedOption } from "@/types"
 import { formatPrice } from "@/lib/utils"
+import { ProductTilt } from "@/components/ui/product-tilt"
 
 export default function ProductDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params)
@@ -110,7 +111,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
       <div className="grid md:grid-cols-2 gap-10 mb-12">
         {/* Images */}
         <div className="space-y-3">
-          <div className="relative aspect-square overflow-hidden bg-foreground/5 border border-white/10">
+          <ProductTilt className="relative aspect-square overflow-hidden bg-foreground/5 border border-white/10" intensity={10}>
             <Image
               src={product.images[selectedImage] ?? ""}
               alt={product.name}
@@ -119,12 +120,12 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
               priority
             />
             {discount && (
-              <div className="absolute top-0 left-0 bg-foreground text-background text-[9px] font-bold px-2 py-0.5 tracking-widest">
+              <div className="absolute top-0 left-0 bg-foreground text-background text-[9px] font-bold px-2 py-0.5 tracking-widest z-10">
                 -{discount}%
               </div>
             )}
             <div className="absolute inset-0 scanline-overlay pointer-events-none" />
-          </div>
+          </ProductTilt>
           {product.images.length > 1 && (
             <div className="flex gap-2 overflow-x-auto">
               {product.images.map((img, i) => (
