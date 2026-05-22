@@ -49,7 +49,7 @@ export const ntzs = {
     })
   },
 
-  getUser(id: string): Promise<NtzsUser & { balances: { ntzs: string; usdc: number } }> {
+  getUser(id: string): Promise<NtzsUser & { balanceTzs: number; balanceUsdc: number }> {
     return request(`/api/v1/users/${id}`)
   },
 

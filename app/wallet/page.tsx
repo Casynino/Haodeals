@@ -10,7 +10,8 @@ import { formatPrice } from "@/lib/utils"
 interface WalletData {
   ntzsUserId: string
   walletAddress: string | null
-  balances: { ntzs: string; usdc: number } | null
+  balanceTzs: number | null
+  balanceUsdc: number | null
 }
 
 type DepositStage = "idle" | "form" | "pending" | "done"
@@ -76,9 +77,7 @@ export default function WalletPage() {
     }
   }
 
-  const ntzsBalance = wallet?.balances
-    ? parseFloat(wallet.balances.ntzs) / 1e18
-    : null
+  const ntzsBalance = wallet?.balanceTzs ?? null
 
   if (status === "loading" || loading) {
     return (
@@ -124,7 +123,7 @@ export default function WalletPage() {
         {/* Balance */}
         <div className="mb-5">
           <p className="text-[8px] tracking-widest text-foreground/30 mb-1">NTZS.BALANCE</p>
-          {wallet?.balances === null ? (
+          {wallet && wallet.balanceTzs === null ? (
             <p className="text-2xl font-black text-foreground/30">UNAVAILABLE</p>
           ) : ntzsBalance !== null ? (
             <p className="text-2xl font-black text-green-400/80">
@@ -134,9 +133,9 @@ export default function WalletPage() {
           ) : (
             <div className="h-8 w-40 bg-foreground/10 animate-pulse" />
           )}
-          {wallet?.balances && (
+          {wallet?.balanceUsdc !== null && wallet?.balanceUsdc !== undefined && (
             <p className="text-[9px] text-foreground/30 mt-1">
-              USDC: {wallet.balances.usdc.toFixed(2)}
+              USDC: {wallet.balanceUsdc.toFixed(2)}
             </p>
           )}
         </div>
