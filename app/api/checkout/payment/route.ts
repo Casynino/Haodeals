@@ -32,8 +32,7 @@ export async function POST(request: Request) {
     },
     0
   )
-  const shipping = subtotal >= 50000 ? 0 : 2000
-  const total = Math.round(subtotal + shipping)
+  const total = Math.round(subtotal)
 
   // Check user has a wallet
   const user = await prisma.user.findUnique({
