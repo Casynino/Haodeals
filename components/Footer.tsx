@@ -27,13 +27,20 @@ export function Footer() {
           <div>
             <p className="text-[9px] text-foreground/30 tracking-widest mb-3">// SHOP</p>
             <ul className="space-y-1.5">
-              {["ALL.DEALS", "ELECTRONICS", "FASHION", "HOME", "SPORTS", "BEAUTY"].map((item) => (
-                <li key={item}>
+              {[
+                { label: "ALL.DEALS", slug: "" },
+                { label: "TECH DEALS", slug: "tech-deals" },
+                { label: "FASHION", slug: "fashion" },
+                { label: "ACCESSORIES", slug: "accessories" },
+                { label: "SHOES", slug: "shoes" },
+                { label: "SPORTS", slug: "sports" },
+              ].map(({ label, slug }) => (
+                <li key={label}>
                   <Link
-                    href="/products"
+                    href={slug ? `/products?category=${slug}` : "/products"}
                     className="text-[10px] text-foreground/50 hover:text-foreground transition-colors flex items-center gap-1"
                   >
-                    <span className="text-foreground/20">&gt;</span> {item}
+                    <span className="text-foreground/20">&gt;</span> {label}
                   </Link>
                 </li>
               ))}

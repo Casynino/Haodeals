@@ -7,11 +7,11 @@ import { Search, SlidersHorizontal, X } from "lucide-react"
 import type { Product } from "@/types"
 
 const CATEGORIES = [
-  { slug: "electronics", name: "ELECTRONICS" },
+  { slug: "tech-deals", name: "TECH DEALS" },
   { slug: "fashion", name: "FASHION" },
-  { slug: "home", name: "HOME" },
+  { slug: "accessories", name: "ACCESSORIES" },
+  { slug: "shoes", name: "SHOES" },
   { slug: "sports", name: "SPORTS" },
-  { slug: "beauty", name: "BEAUTY" },
 ]
 
 const SORT_OPTIONS = [

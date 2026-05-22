@@ -5,8 +5,8 @@ const prisma = new PrismaClient()
 
 const categories = [
   {
-    name: "Electronics",
-    slug: "electronics",
+    name: "Tech Deals",
+    slug: "tech-deals",
     description: "Latest gadgets and tech",
     image: "https://images.unsplash.com/photo-1498049794561-7780e7231661?w=400&h=300&fit=crop",
   },
@@ -17,28 +17,22 @@ const categories = [
     image: "https://images.unsplash.com/photo-1445205170230-053b83016050?w=400&h=300&fit=crop",
   },
   {
-    name: "Home",
-    slug: "home",
-    description: "Furniture and home decor",
-    image: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400&h=300&fit=crop",
+    name: "Accessories",
+    slug: "accessories",
+    description: "Bags, watches, jewellery and more",
+    image: "https://images.unsplash.com/photo-1523293182086-7651a899d37f?w=400&h=300&fit=crop",
+  },
+  {
+    name: "Shoes",
+    slug: "shoes",
+    description: "Sneakers, heels, sandals and more",
+    image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&h=300&fit=crop",
   },
   {
     name: "Sports",
     slug: "sports",
     description: "Fitness and outdoor gear",
     image: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=300&fit=crop",
-  },
-  {
-    name: "Beauty",
-    slug: "beauty",
-    description: "Skincare and cosmetics",
-    image: "https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=400&h=300&fit=crop",
-  },
-  {
-    name: "Books",
-    slug: "books",
-    description: "Best-sellers and classics",
-    image: "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=400&h=300&fit=crop",
   },
 ]
 
