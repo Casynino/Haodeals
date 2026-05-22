@@ -66,6 +66,17 @@ export const ntzs = {
     })
   },
 
+  createWithdrawal(data: {
+    userId: string
+    amountTzs: number
+    phoneNumber: string
+  }): Promise<{ id: string; status: string; amountTzs: number; message: string }> {
+    return request("/api/v1/withdrawals", {
+      method: "POST",
+      body: JSON.stringify(data),
+    })
+  },
+
   transfer(data: {
     fromUserId: string
     toUserId?: string

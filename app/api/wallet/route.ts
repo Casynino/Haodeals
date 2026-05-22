@@ -80,13 +80,24 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Wallet not provisioned" }, { status: 400 })
   }
 
+  const normalizedPhone = normalizePhone(phoneNumber)
   try {
     const deposit = await ntzs.createDeposit({
       userId: user.ntzsUserId,
       amountTzs: Math.round(amount),
       paymentMethod: "mobile_money",
-      phoneNumber: normalizePhone(phoneNumber),
+      phoneNumber: normalizedPhone,
       collectToTreasury: false,
+    })
+    await prisma.transaction.create({
+      data: {
+        userId: session.user.id as string,
+        type: "deposit",
+        amountTzs: Math.round(amount),
+        status: "pending",
+        phoneNumber: normalizedPhone,
+        ntzsId: deposit.id,
+      },
     })
     return NextResponse.json({ depositId: deposit.id, status: deposit.status })
   } catch (err) {
