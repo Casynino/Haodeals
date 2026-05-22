@@ -46,7 +46,7 @@ export default function CheckoutPage() {
   }, [session])
 
   const cartTotal = total()
-  const shipping = cartTotal >= 100000 ? 0 : 5000
+  const shipping = cartTotal >= 50000 ? 0 : 2000
   const finalTotal = cartTotal + shipping
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {

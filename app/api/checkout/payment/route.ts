@@ -32,7 +32,7 @@ export async function POST(request: Request) {
     },
     0
   )
-  const shipping = subtotal >= 100000 ? 0 : 5000
+  const shipping = subtotal >= 50000 ? 0 : 2000
   const total = Math.round(subtotal + shipping)
 
   // Check user has a wallet

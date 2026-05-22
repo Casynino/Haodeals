@@ -1,30 +1,28 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { ShoppingCart, Plus, Minus, Trash2 } from "lucide-react"
-import { Separator } from "@/components/ui/separator"
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet"
+import { ShoppingCart, Plus, Minus, Trash2, ArrowRight } from "lucide-react"
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 import { useCart } from "@/hooks/useCart"
 import Image from "next/image"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { formatPrice } from "@/lib/utils"
 
 export function CartDrawer() {
   const { items, removeItem, updateQuantity, total, count } = useCart()
   const [mounted, setMounted] = useState(false)
+  const [open, setOpen] = useState(false)
+  const router = useRouter()
   useEffect(() => setMounted(true), [])
 
   const itemCount = mounted ? count() : 0
   const cartTotal = mounted ? total() : 0
+  const shipping = cartTotal >= 50000 ? 0 : (cartTotal > 0 ? 2000 : 0)
+  const finalTotal = cartTotal + shipping
 
   return (
-    <Sheet>
+    <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger className="relative w-8 h-8 flex items-center justify-center text-foreground/40 hover:text-foreground hover:bg-foreground/5 transition-colors border border-transparent hover:border-white/10">
         <ShoppingCart className="h-3.5 w-3.5" />
         {itemCount > 0 && (
@@ -113,24 +111,34 @@ export function CartDrawer() {
             </div>
 
             <div className="border-t border-white/10 p-4 space-y-3">
-              <div className="flex justify-between items-center text-[10px]">
-                <span className="text-foreground/40 tracking-widest">TOTAL.AMOUNT</span>
-                <span className="text-green-400/80 font-mono">{formatPrice(cartTotal)}</span>
+              <div className="space-y-1.5 text-[9px]">
+                <div className="flex justify-between text-foreground/40">
+                  <span className="tracking-widest">SUBTOTAL</span>
+                  <span className="font-mono">{formatPrice(cartTotal)}</span>
+                </div>
+                <div className="flex justify-between text-foreground/40">
+                  <span className="tracking-widest">SHIPPING</span>
+                  {shipping === 0
+                    ? <span className="text-green-400/60">FREE</span>
+                    : <span className="font-mono">{formatPrice(shipping)}</span>}
+                </div>
+                <div className="flex justify-between pt-1.5 border-t border-white/10">
+                  <span className="tracking-widest text-foreground/60">TOTAL</span>
+                  <span className="font-mono text-green-400/80 text-[11px]">{formatPrice(finalTotal)}</span>
+                </div>
               </div>
-              <div className="grid gap-1.5">
-                <Link
-                  href="/cart"
-                  className="block text-center py-1.5 text-[10px] tracking-widest border border-white/20 text-foreground/60 hover:text-foreground hover:border-white/40 transition-colors"
-                >
-                  VIEW.CART
-                </Link>
-                <Link
-                  href="/checkout"
-                  className="block text-center py-1.5 text-[10px] tracking-widest bg-foreground text-background hover:bg-foreground/90 transition-colors font-bold"
-                >
-                  EXECUTE.CHECKOUT
-                </Link>
-              </div>
+              <button
+                onClick={() => { setOpen(false); router.push("/checkout") }}
+                className="w-full flex items-center justify-center gap-2 py-2.5 bg-foreground text-background text-[10px] tracking-widest font-bold hover:bg-foreground/90 transition-colors"
+              >
+                CHECKOUT <ArrowRight className="h-3 w-3" />
+              </button>
+              <button
+                onClick={() => { setOpen(false); router.push("/cart") }}
+                className="w-full text-center py-1.5 text-[9px] tracking-widest text-foreground/30 hover:text-foreground transition-colors"
+              >
+                VIEW.FULL.CART
+              </button>
             </div>
           </>
         )}
