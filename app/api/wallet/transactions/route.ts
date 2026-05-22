@@ -1,0 +1,47 @@
+import { NextResponse } from "next/server"
+import { auth } from "@/auth"
+import { prisma } from "@/lib/prisma"
+
+export async function GET() {
+  const session = await auth()
+  if (!session?.user) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+  }
+
+  const userId = session.user.id as string
+
+  const [transactions, orders] = await Promise.all([
+    prisma.transaction.findMany({
+      where: { userId },
+      orderBy: { createdAt: "desc" },
+      take: 50,
+    }),
+    prisma.order.findMany({
+      where: { userId, status: { not: "pending_payment" } },
+      orderBy: { createdAt: "desc" },
+      take: 50,
+      select: { id: true, total: true, status: true, createdAt: true },
+    }),
+  ])
+
+  const history = [
+    ...transactions.map((t) => ({
+      id: t.id,
+      type: t.type as "deposit" | "withdrawal",
+      amountTzs: t.amountTzs,
+      status: t.status,
+      phoneNumber: t.phoneNumber,
+      createdAt: t.createdAt,
+    })),
+    ...orders.map((o) => ({
+      id: o.id,
+      type: "purchase" as const,
+      amountTzs: o.total,
+      status: o.status,
+      phoneNumber: null,
+      createdAt: o.createdAt,
+    })),
+  ].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+
+  return NextResponse.json(history)
+}

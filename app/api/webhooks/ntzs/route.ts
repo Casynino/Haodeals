@@ -29,18 +29,31 @@ export async function POST(req: NextRequest) {
 
   if (event.event === "deposit.completed") {
     const depositId = event.data.id
-    // Find the order that has this deposit ID (checkout payments)
-    const order = await prisma.order.findFirst({
-      where: { ntzsDepositId: depositId, status: "pending_payment" },
-      select: { id: true, userId: true },
+    await Promise.all([
+      // Confirm checkout orders linked to this deposit
+      prisma.order.findFirst({
+        where: { ntzsDepositId: depositId, status: "pending_payment" },
+        select: { id: true, userId: true },
+      }).then(async (order) => {
+        if (order) {
+          await prisma.order.update({ where: { id: order.id }, data: { status: "confirmed" } })
+          await prisma.cart.deleteMany({ where: { userId: order.userId } })
+        }
+      }),
+      // Mark wallet deposit transaction as completed
+      prisma.transaction.updateMany({
+        where: { ntzsId: depositId, type: "deposit" },
+        data: { status: "completed" },
+      }),
+    ])
+  }
+
+  if (event.event === "withdrawal.completed") {
+    const withdrawalId = event.data.id
+    await prisma.transaction.updateMany({
+      where: { ntzsId: withdrawalId, type: "withdrawal" },
+      data: { status: "completed" },
     })
-    if (order) {
-      await prisma.order.update({
-        where: { id: order.id },
-        data: { status: "confirmed" },
-      })
-      await prisma.cart.deleteMany({ where: { userId: order.userId } })
-    }
   }
 
   return NextResponse.json({ received: true })
