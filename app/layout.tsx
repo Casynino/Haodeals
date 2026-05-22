@@ -13,16 +13,37 @@ const geistMono = Geist_Mono({
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
+  themeColor: "#ee0000",
 }
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://haodeals.vercel.app"),
   title: {
-    default: "HAODEALS // MARKET.SYS",
-    template: "%s // HAODEALS",
+    default: "HaoDeals — Good Deals Delivered",
+    template: "%s | HaoDeals",
   },
   description:
-    "HAODEALS — Terminal-grade deals on electronics, fashion, and more. Best prices. No noise.",
-  keywords: ["deals", "discounts", "ecommerce", "terminal", "tech", "fashion"],
+    "HaoDeals — Tanzania's best deals on electronics, fashion, home goods, and more. Good deals delivered.",
+  keywords: ["deals", "Tanzania", "electronics", "fashion", "shopping", "haodeals", "discounts"],
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "https://haodeals.vercel.app",
+    siteName: "HaoDeals",
+    title: "HaoDeals — Good Deals Delivered",
+    description: "Tanzania's best deals on electronics, fashion, home goods, and more.",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "HaoDeals — Good Deals Delivered",
+    description: "Tanzania's best deals on electronics, fashion, home goods, and more.",
+  },
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "HaoDeals",
+  },
 }
 
 export default function RootLayout({
