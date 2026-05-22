@@ -9,17 +9,19 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(cuid())
-  name      String?
-  email     String   @unique
-  password  String?
-  image     String?
-  role      String   @default("customer")
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  orders    Order[]
-  reviews   Review[]
-  cart      Cart?
+  id                  String   @id @default(cuid())
+  name                String?
+  email               String   @unique
+  password            String?
+  image               String?
+  role                String   @default("customer")
+  ntzsUserId          String?
+  ntzsWalletAddress   String?
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+  orders              Order[]
+  reviews             Review[]
+  cart                Cart?
 }
 
 model Category {
@@ -82,15 +84,16 @@ model CartItem {
 }
 
 model Order {
-  id        String      @id @default(cuid())
-  userId    String
-  status    String      @default("pending")
-  total     Float
-  address   String
-  user      User        @relation(fields: [userId], references: [id])
-  items     OrderItem[]
-  createdAt DateTime    @default(now())
-  updatedAt DateTime    @updatedAt
+  id              String      @id @default(cuid())
+  userId          String
+  status          String      @default("pending_payment")
+  total           Float
+  address         String
+  ntzsDepositId   String?
+  user            User        @relation(fields: [userId], references: [id])
+  items           OrderItem[]
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
 }
 
 model OrderItem {
