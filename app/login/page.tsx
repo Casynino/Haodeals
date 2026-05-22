@@ -48,15 +48,6 @@ function LoginForm() {
         <p className="text-[10px] text-foreground/40 tracking-wide">ENTER.CREDENTIALS.TO.PROCEED</p>
       </div>
 
-      {/* Demo credentials */}
-      <div className="border border-foreground/15 p-3 space-y-1.5">
-        <p className="text-[8px] tracking-widest text-foreground/30">// DEMO.CREDENTIALS</p>
-        <div className="text-[9px] text-foreground/40 space-y-1">
-          <p><span className="text-foreground/20">ADMIN</span> admin@haodeals.com / admin123</p>
-          <p><span className="text-foreground/20">USER </span> user@haodeals.com / user1234</p>
-        </div>
-      </div>
-
       {/* Form */}
       <form onSubmit={handleSubmit} className="border border-foreground/15 p-5 space-y-4 relative">
         {/* Corner accents */}
