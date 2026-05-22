@@ -15,13 +15,12 @@ import {
 import { ThemeToggle } from "@/components/ThemeToggle"
 import { CartDrawer } from "@/components/CartDrawer"
 import { useCart } from "@/hooks/useCart"
-import { Package, LogOut, User, ShieldCheck, Search, Menu, X } from "lucide-react"
+import { Package, LogOut, User, ShieldCheck, Search } from "lucide-react"
 import { useState, useEffect } from "react"
 
 export function Navbar() {
   const { data: session } = useSession()
   const router = useRouter()
-  const [mobileOpen, setMobileOpen] = useState(false)
   const [mounted, setMounted] = useState(false)
   const { count } = useCart()
   useEffect(() => setMounted(true), [])
@@ -81,6 +80,7 @@ export function Navbar() {
             </Link>
           ))}
         </nav>
+
 
         <div className="flex items-center gap-1 ml-auto">
           <Link href="/products">
@@ -142,57 +142,31 @@ export function Navbar() {
             </Link>
           )}
 
-          <button
-            className="md:hidden w-8 h-8 flex items-center justify-center text-foreground/50 hover:text-foreground transition-colors"
-            onClick={() => setMobileOpen(!mobileOpen)}
-          >
-            {mobileOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
-          </button>
         </div>
       </div>
 
-      {/* Mobile nav */}
-      {mobileOpen && (
-        <div className="md:hidden border-t border-white/10 bg-background">
-          <div className="container mx-auto px-4 py-2">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="flex items-center gap-2 px-2 py-3 text-[10px] font-mono tracking-widest text-foreground/50 hover:text-foreground border-b border-white/5"
-                onClick={() => setMobileOpen(false)}
-              >
-                <span className="text-foreground/25">&gt;</span>{link.label}
-              </Link>
-            ))}
-            {session ? (
-              <>
-                <Link href="/orders" className="flex items-center gap-2 px-2 py-3 text-[10px] font-mono tracking-widest text-foreground/50 hover:text-foreground border-b border-white/5" onClick={() => setMobileOpen(false)}>
-                  <span className="text-foreground/25">&gt;</span>MY.ORDERS
-                </Link>
-                <Link href="/profile" className="flex items-center gap-2 px-2 py-3 text-[10px] font-mono tracking-widest text-foreground/50 hover:text-foreground border-b border-white/5" onClick={() => setMobileOpen(false)}>
-                  <span className="text-foreground/25">&gt;</span>PROFILE
-                </Link>
-                {isAdmin && (
-                  <Link href="/admin" className="flex items-center gap-2 px-2 py-3 text-[10px] font-mono tracking-widest text-yellow-400/60 hover:text-yellow-400 border-b border-white/5" onClick={() => setMobileOpen(false)}>
-                    <span className="text-yellow-400/30">&gt;</span>ADMIN.PANEL
-                  </Link>
-                )}
-                <button
-                  className="flex items-center gap-2 w-full px-2 py-3 text-[10px] font-mono tracking-widest text-red-400/60 hover:text-red-400"
-                  onClick={() => { setMobileOpen(false); signOut({ callbackUrl: "/" }) }}
-                >
-                  <span className="text-red-400/30">&gt;</span>TERMINATE.SESSION
-                </button>
-              </>
-            ) : (
-              <Link href="/login" className="flex items-center gap-2 px-2 py-3 text-[10px] font-mono tracking-widest text-foreground/50 hover:text-foreground" onClick={() => setMobileOpen(false)}>
-                <span className="text-foreground/25">&gt;</span>SIGN.IN
-              </Link>
-            )}
-          </div>
+      {/* Mobile nav tabs — always visible below header bar */}
+      <div className="md:hidden border-t border-foreground/10 overflow-x-auto scrollbar-none">
+        <div className="flex items-center">
+          {navLinks.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              className="flex-shrink-0 px-4 py-2.5 text-[10px] font-mono tracking-widest text-foreground/50 hover:text-foreground border-r border-foreground/10 hover:bg-foreground/5 transition-colors"
+            >
+              {link.label}
+            </Link>
+          ))}
+          {session && isAdmin && (
+            <Link
+              href="/admin"
+              className="flex-shrink-0 px-4 py-2.5 text-[10px] font-mono tracking-widest text-yellow-400/60 hover:text-yellow-400 border-r border-foreground/10 transition-colors"
+            >
+              ADMIN
+            </Link>
+          )}
         </div>
-      )}
+      </div>
     </header>
   )
 }
