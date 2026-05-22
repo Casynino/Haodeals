@@ -95,9 +95,9 @@ export default async function HomePage() {
             </div>
 
             <p className="text-[11px] md:text-sm text-foreground/50 font-mono leading-relaxed mb-7 max-w-xs">
-              Shop the latest deals available right now and enjoy fast, reliable delivery anywhere in Tanzania 🇹🇿
+              Save up to 70% OFF on TECH · FASHION · ACCESSORIES · SHOES · SPORTS
               <br /><br />
-              Premium products. Limited-time offers. Nationwide delivery.
+              Shop now &amp; get fast delivery across Tanzania 🇹🇿
             </p>
 
             {/* Stats */}
