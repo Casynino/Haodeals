@@ -2,6 +2,7 @@ import { NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
 import { auth } from "@/auth"
 import { ntzs } from "@/lib/ntzs"
+import { sendOrderNotificationToAdmin } from "@/lib/email"
 
 export async function POST(request: Request) {
   const session = await auth()
@@ -37,7 +38,7 @@ export async function POST(request: Request) {
   // Check user has a wallet
   const user = await prisma.user.findUnique({
     where: { id: userId },
-    select: { id: true, ntzsUserId: true },
+    select: { id: true, name: true, email: true, phone: true, ntzsUserId: true },
   })
   if (!user?.ntzsUserId) {
     return NextResponse.json({ error: "Wallet not provisioned. Please top up your wallet first." }, { status: 400 })
@@ -89,6 +90,29 @@ export async function POST(request: Request) {
       data: { status: "confirmed", ntzsDepositId: transfer.id },
     })
     await prisma.cart.deleteMany({ where: { userId } })
+
+    // Notify admin (in-app + email) — non-blocking
+    const orderItems = products.map((p) => {
+      const item = items.find((i: { productId: string; quantity: number }) => i.productId === p.id)
+      return { name: p.name, quantity: item?.quantity ?? 1, price: p.price }
+    })
+    prisma.notification.create({
+      data: {
+        type: "new_order",
+        title: `New order — TSh ${total.toLocaleString()}`,
+        body: `${user?.name ?? user?.email} placed an order for ${orderItems.length} item(s)`,
+        metadata: { orderId: order.id, userEmail: user?.email, total },
+      },
+    }).catch(() => {})
+    sendOrderNotificationToAdmin({
+      id: order.id,
+      total,
+      address,
+      userName: user?.name ?? "Customer",
+      userEmail: user?.email ?? "",
+      userPhone: user?.phone,
+      items: orderItems,
+    })
 
     return NextResponse.json({ orderId: order.id, transferId: transfer.id, status: "confirmed" })
   } catch (err) {
