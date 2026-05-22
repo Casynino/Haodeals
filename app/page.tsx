@@ -147,7 +147,7 @@ export default async function HomePage() {
         <div className="absolute bottom-0 left-0 right-0 z-20 border-t border-foreground/10 bg-background/80 backdrop-blur-sm">
           <div className="container mx-auto px-4 py-2 flex items-center justify-between">
             <div className="flex items-center gap-4 text-[8px] font-mono text-foreground/30">
-              <span>FREE.SHIP.$50+</span>
+              <span>FREE.SHIP.TSh100K+</span>
               <span className="text-foreground/10">|</span>
               <span>30D.RETURNS</span>
               <span className="text-foreground/10">|</span>

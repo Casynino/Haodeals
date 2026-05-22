@@ -13,6 +13,7 @@ import {
 import { useCart } from "@/hooks/useCart"
 import Image from "next/image"
 import Link from "next/link"
+import { formatPrice } from "@/lib/utils"
 
 export function CartDrawer() {
   const { items, removeItem, updateQuantity, total, count } = useCart()
@@ -70,9 +71,9 @@ export function CartDrawer() {
                   <div className="flex-1 min-w-0">
                     <p className="text-[10px] text-foreground/70 truncate uppercase tracking-wide">{item.name}</p>
                     <div className="flex items-center gap-1.5 mt-0.5">
-                      <span className="text-xs text-green-400/80 font-mono">${item.price.toFixed(2)}</span>
+                      <span className="text-xs text-green-400/80 font-mono">{formatPrice(item.price)}</span>
                       {item.originalPrice && item.originalPrice > item.price && (
-                        <span className="text-[9px] text-foreground/30 line-through">${item.originalPrice.toFixed(2)}</span>
+                        <span className="text-[9px] text-foreground/30 line-through">{formatPrice(item.originalPrice)}</span>
                       )}
                     </div>
                     <div className="flex items-center gap-1.5 mt-2">
@@ -105,7 +106,7 @@ export function CartDrawer() {
             <div className="border-t border-white/10 p-4 space-y-3">
               <div className="flex justify-between items-center text-[10px]">
                 <span className="text-foreground/40 tracking-widest">TOTAL.AMOUNT</span>
-                <span className="text-green-400/80 font-mono">${cartTotal.toFixed(2)}</span>
+                <span className="text-green-400/80 font-mono">{formatPrice(cartTotal)}</span>
               </div>
               <div className="grid gap-1.5">
                 <Link
