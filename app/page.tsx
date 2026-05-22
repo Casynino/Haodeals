@@ -135,12 +135,14 @@ export default async function HomePage() {
           </div>
         </div>
 
-        {/* Right: Spline robot */}
-        <div className="hidden md:block absolute right-0 top-0 w-1/2 h-full">
+        {/* Spline robot — right half on desktop, full bg on mobile */}
+        <div className="absolute right-0 top-0 w-full md:w-1/2 h-full z-0">
           <SplineScene
             scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
             className="w-full h-full"
           />
+          {/* Mobile: gradient so left-side text stays legible */}
+          <div className="md:hidden absolute inset-0 bg-gradient-to-r from-background via-background/75 to-transparent pointer-events-none" />
         </div>
 
         {/* Bottom status bar */}
