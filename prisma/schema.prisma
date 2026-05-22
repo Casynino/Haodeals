@@ -15,6 +15,7 @@ model User {
   password            String?
   image               String?
   role                String   @default("customer")
+  phone               String?
   ntzsUserId          String?
   ntzsWalletAddress   String?
   createdAt           DateTime @default(now())

@@ -18,7 +18,7 @@ export default function RegisterPage() {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
-  const [form, setForm] = useState({ name: "", email: "", password: "" })
+  const [form, setForm] = useState({ name: "", email: "", password: "", phone: "" })
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -100,6 +100,18 @@ export default function RegisterPage() {
               required
               className="w-full bg-transparent border border-foreground/15 px-3 py-2 text-[10px] tracking-wide text-foreground/80 placeholder:text-foreground/20 focus:outline-none focus:border-foreground/40 transition-colors"
             />
+          </div>
+
+          <div className="space-y-1.5">
+            <label className="text-[8px] tracking-widest text-foreground/30">PHONE.NUMBER</label>
+            <input
+              type="tel"
+              placeholder="+255 712 345 678"
+              value={form.phone}
+              onChange={(e) => setForm({ ...form, phone: e.target.value })}
+              className="w-full bg-transparent border border-foreground/15 px-3 py-2 text-[10px] tracking-wide text-foreground/80 placeholder:text-foreground/20 focus:outline-none focus:border-foreground/40 transition-colors"
+            />
+            <p className="text-[8px] text-foreground/20">USED FOR MOBILE MONEY PAYMENTS</p>
           </div>
 
           <div className="space-y-1.5">
