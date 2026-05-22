@@ -10,7 +10,7 @@ import { formatPrice } from "@/lib/utils"
 export default function CartPage() {
   const { items, removeItem, updateQuantity, total, clearCart } = useCart()
   const cartTotal = total()
-  const shipping = cartTotal >= 100000 ? 0 : 5000
+  const shipping = cartTotal >= 50000 ? 0 : 2000
   const finalTotal = cartTotal + shipping
 
   if (items.length === 0) {
@@ -115,9 +115,9 @@ export default function CartPage() {
                   <span className="text-foreground/70">{formatPrice(shipping)}</span>
                 )}
               </div>
-              {cartTotal < 50 && (
+              {cartTotal < 50000 && (
                 <p className="text-[8px] tracking-wide text-foreground/30 border border-white/10 px-2 py-1.5">
-                  ADD {formatPrice(100000 - cartTotal)} MORE FOR FREE.SHIPPING
+                  ADD {formatPrice(50000 - cartTotal)} MORE FOR FREE.SHIPPING
                 </p>
               )}
             </div>
