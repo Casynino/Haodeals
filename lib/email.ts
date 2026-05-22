@@ -1,13 +1,23 @@
-import { Resend } from "resend"
+import nodemailer from "nodemailer"
 
-const resend = new Resend(process.env.RESEND_API_KEY)
-const FROM = process.env.RESEND_FROM_EMAIL ?? "HaoDeals <onboarding@resend.dev>"
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL ?? "haodealtz@gmail.com"
+const APP_URL = process.env.AUTH_URL ?? "https://haodeals.vercel.app"
+
+function createTransport() {
+  const user = process.env.GMAIL_USER
+  const pass = process.env.GMAIL_APP_PASSWORD
+  if (!user || !pass) return null
+  return nodemailer.createTransport({
+    service: "gmail",
+    auth: { user, pass },
+  })
+}
 
 export async function sendWelcomeEmail(to: string, name: string) {
-  if (!process.env.RESEND_API_KEY) return
-  await resend.emails.send({
-    from: FROM,
+  const transport = createTransport()
+  if (!transport) return
+  await transport.sendMail({
+    from: `HaoDeals <${process.env.GMAIL_USER}>`,
     to,
     subject: "Welcome to HaoDeals",
     html: `
@@ -17,7 +27,7 @@ export async function sendWelcomeEmail(to: string, name: string) {
         <p style="font-size:11px;color:#888;letter-spacing:0.1em;margin:0 0 24px">YOUR ACCOUNT HAS BEEN ACTIVATED</p>
         <hr style="border:none;border-top:1px solid #222;margin:0 0 24px"/>
         <p style="font-size:10px;color:#666;margin:0 0 8px">ACCESS YOUR WALLET TO TOP UP AND START SHOPPING THE BEST DEALS IN TANZANIA.</p>
-        <a href="${process.env.AUTH_URL ?? "https://haodeals.vercel.app"}/products"
+        <a href="${APP_URL}/products"
            style="display:inline-block;margin-top:16px;padding:10px 24px;background:#e5e5e5;color:#0a0a0a;font-size:10px;font-weight:700;letter-spacing:0.2em;text-decoration:none">
           BROWSE.DEALS →
         </a>
@@ -36,13 +46,14 @@ export async function sendOrderNotificationToAdmin(order: {
   userPhone?: string | null
   items: { name: string; quantity: number; price: number }[]
 }) {
-  if (!process.env.RESEND_API_KEY) return
+  const transport = createTransport()
+  if (!transport) return
   const itemRows = order.items
     .map((i) => `<tr><td style="padding:4px 0;color:#888;font-size:10px">${i.name.toUpperCase()}</td><td style="padding:4px 0;color:#888;font-size:10px;text-align:right">×${i.quantity}</td><td style="padding:4px 0;color:#4ade80;font-size:10px;text-align:right">TSh ${(i.price * i.quantity).toLocaleString()}</td></tr>`)
     .join("")
 
-  await resend.emails.send({
-    from: FROM,
+  await transport.sendMail({
+    from: `HaoDeals <${process.env.GMAIL_USER}>`,
     to: ADMIN_EMAIL,
     subject: `[NEW ORDER] #${order.id.slice(0, 8).toUpperCase()} — TSh ${order.total.toLocaleString()}`,
     html: `
@@ -53,12 +64,12 @@ export async function sendOrderNotificationToAdmin(order: {
         <hr style="border:none;border-top:1px solid #222;margin:0 0 20px"/>
         <table style="width:100%;border-collapse:collapse;margin-bottom:20px">${itemRows}</table>
         <hr style="border:none;border-top:1px solid #222;margin:0 0 20px"/>
-        <div style="font-size:10px;color:#666;space-y:4px">
+        <div style="font-size:10px;color:#666">
           <p style="margin:0 0 4px"><span style="color:#444;letter-spacing:0.1em">CUSTOMER:</span> ${order.userName} &lt;${order.userEmail}&gt;</p>
           ${order.userPhone ? `<p style="margin:0 0 4px"><span style="color:#444;letter-spacing:0.1em">PHONE:</span> ${order.userPhone}</p>` : ""}
           <p style="margin:0 0 4px"><span style="color:#444;letter-spacing:0.1em">ADDRESS:</span> ${order.address}</p>
         </div>
-        <a href="${process.env.AUTH_URL ?? "https://haodeals.vercel.app"}/admin/orders"
+        <a href="${APP_URL}/admin/orders"
            style="display:inline-block;margin-top:24px;padding:10px 24px;background:#e5e5e5;color:#0a0a0a;font-size:10px;font-weight:700;letter-spacing:0.2em;text-decoration:none">
           VIEW IN ADMIN →
         </a>
