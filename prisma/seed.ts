@@ -42,14 +42,15 @@ const categories = [
   },
 ]
 
+// All prices in TZS (1 USD ≈ 2,600 TZS, rounded to nearest 1,000)
 const products = [
   // Electronics
   {
     name: "Sony WH-1000XM5 Wireless Headphones",
     slug: "sony-wh1000xm5-headphones",
     description: "Industry-leading noise canceling with two processors and eight microphones. Up to 30-hour battery life with quick charging.",
-    price: 279.99,
-    originalPrice: 399.99,
+    price: 728000,
+    originalPrice: 1040000,
     stock: 45,
     images: JSON.stringify([
       "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&h=600&fit=crop",
@@ -62,8 +63,8 @@ const products = [
     name: "Apple AirPods Pro 2nd Generation",
     slug: "airpods-pro-2nd-gen",
     description: "Active Noise Cancellation, Adaptive Transparency, and Personalized Spatial Audio. H2 chip delivers smarter noise cancellation.",
-    price: 189.99,
-    originalPrice: 249.00,
+    price: 494000,
+    originalPrice: 647000,
     stock: 30,
     images: JSON.stringify([
       "https://images.unsplash.com/photo-1600294037681-c80b4cb5b434?w=600&h=600&fit=crop",
@@ -76,8 +77,8 @@ const products = [
     name: "Samsung Galaxy Watch 6 Classic",
     slug: "samsung-galaxy-watch-6-classic",
     description: "Premium smartwatch with rotating bezel, advanced health monitoring, and 40-hour battery life.",
-    price: 299.95,
-    originalPrice: 429.99,
+    price: 780000,
+    originalPrice: 1118000,
     stock: 22,
     images: JSON.stringify([
       "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&h=600&fit=crop",
@@ -90,8 +91,8 @@ const products = [
     name: "MacBook Air M3 13-inch",
     slug: "macbook-air-m3-13",
     description: "Supercharged by Apple M3 chip. Fanless design, all-day battery, and stunning Liquid Retina display.",
-    price: 1099.00,
-    originalPrice: 1299.00,
+    price: 2857000,
+    originalPrice: 3377000,
     stock: 12,
     images: JSON.stringify([
       "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=600&h=600&fit=crop",
@@ -104,8 +105,8 @@ const products = [
     name: "iPhone 15 Pro Max",
     slug: "iphone-15-pro-max",
     description: "Titanium design. A17 Pro chip. 48MP main camera with 5x optical zoom. USB-C with USB 3 speeds.",
-    price: 999.00,
-    originalPrice: 1199.00,
+    price: 2597000,
+    originalPrice: 3117000,
     stock: 18,
     images: JSON.stringify([
       "https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=600&h=600&fit=crop",
@@ -118,8 +119,8 @@ const products = [
     name: "Sony Alpha A7 IV Camera",
     slug: "sony-alpha-a7-iv",
     description: "33MP full-frame BSI CMOS sensor. 4K 60fps video. 10fps continuous shooting with real-time tracking.",
-    price: 2099.00,
-    originalPrice: 2499.00,
+    price: 5457000,
+    originalPrice: 6497000,
     stock: 8,
     images: JSON.stringify([
       "https://images.unsplash.com/photo-1502920917128-1aa500764cbd?w=600&h=600&fit=crop",
@@ -133,8 +134,8 @@ const products = [
     name: "Nike Air Max 270",
     slug: "nike-air-max-270",
     description: "Max Air cushioning in a lightweight, breathable design. Perfect for all-day comfort and style.",
-    price: 89.99,
-    originalPrice: 150.00,
+    price: 234000,
+    originalPrice: 390000,
     stock: 60,
     images: JSON.stringify([
       "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600&h=600&fit=crop",
@@ -147,8 +148,8 @@ const products = [
     name: "Levi's 501 Original Jeans",
     slug: "levis-501-original",
     description: "The iconic straight-fit jean that started it all. Rigid denim with a button fly — timeless American style.",
-    price: 49.99,
-    originalPrice: 89.50,
+    price: 130000,
+    originalPrice: 233000,
     stock: 80,
     images: JSON.stringify([
       "https://images.unsplash.com/photo-1541840031508-3ea10bc1fcd4?w=600&h=600&fit=crop",
@@ -161,8 +162,8 @@ const products = [
     name: "Ray-Ban Aviator Classic Sunglasses",
     slug: "rayban-aviator-classic",
     description: "The original aviator since 1937. Crystal lenses with UV protection and lightweight metal frame.",
-    price: 99.99,
-    originalPrice: 179.00,
+    price: 260000,
+    originalPrice: 465000,
     stock: 35,
     images: JSON.stringify([
       "https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=600&h=600&fit=crop",
@@ -175,8 +176,8 @@ const products = [
     name: "Luxury Leather Crossbody Bag",
     slug: "luxury-leather-crossbody",
     description: "Italian genuine leather. Adjustable strap, gold hardware, and multiple compartments for everyday elegance.",
-    price: 149.99,
-    originalPrice: 299.00,
+    price: 390000,
+    originalPrice: 777000,
     stock: 20,
     images: JSON.stringify([
       "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=600&h=600&fit=crop",
@@ -190,8 +191,8 @@ const products = [
     name: "Dyson V15 Detect Vacuum",
     slug: "dyson-v15-detect",
     description: "Laser detects invisible dust. 60-minute runtime. HEPA filtration captures 99.99% of particles.",
-    price: 549.99,
-    originalPrice: 749.99,
+    price: 1430000,
+    originalPrice: 1950000,
     stock: 14,
     images: JSON.stringify([
       "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&h=600&fit=crop",
@@ -203,8 +204,8 @@ const products = [
     name: "Premium Coffee Maker with Grinder",
     slug: "premium-coffee-maker",
     description: "Built-in burr grinder, programmable 12-cup carafe, and thermal insulation to keep coffee hot for hours.",
-    price: 129.99,
-    originalPrice: 199.99,
+    price: 338000,
+    originalPrice: 520000,
     stock: 40,
     images: JSON.stringify([
       "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=600&h=600&fit=crop",
@@ -217,8 +218,8 @@ const products = [
     name: "Modern LED Desk Lamp",
     slug: "modern-led-desk-lamp",
     description: "5 color modes, 7 brightness levels, USB charging port. Eye-care technology for comfortable reading.",
-    price: 39.99,
-    originalPrice: 69.99,
+    price: 104000,
+    originalPrice: 182000,
     stock: 70,
     images: JSON.stringify([
       "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=600&h=600&fit=crop",
@@ -232,8 +233,8 @@ const products = [
     name: "Hydro Flask 32oz Water Bottle",
     slug: "hydro-flask-32oz",
     description: "TempShield double-wall vacuum insulation keeps drinks cold for 24 hrs and hot for 12 hrs.",
-    price: 34.95,
-    originalPrice: 49.95,
+    price: 91000,
+    originalPrice: 130000,
     stock: 100,
     images: JSON.stringify([
       "https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=600&h=600&fit=crop",
@@ -245,8 +246,8 @@ const products = [
     name: "Lululemon Align Leggings",
     slug: "lululemon-align-leggings",
     description: "Buttery-soft Nulu fabric. Four-way stretch and weightless feel for yoga and daily wear.",
-    price: 68.00,
-    originalPrice: 98.00,
+    price: 177000,
+    originalPrice: 255000,
     stock: 55,
     images: JSON.stringify([
       "https://images.unsplash.com/photo-1506629082955-511b1aa562c8?w=600&h=600&fit=crop",
@@ -259,8 +260,8 @@ const products = [
     name: "Adjustable Dumbbell Set 5-52.5 lbs",
     slug: "adjustable-dumbbell-set",
     description: "Replaces 15 sets of weights. Quick adjust dial. Compact and perfect for home gym.",
-    price: 279.00,
-    originalPrice: 429.00,
+    price: 725000,
+    originalPrice: 1115000,
     stock: 25,
     images: JSON.stringify([
       "https://images.unsplash.com/photo-1571902943202-507ec2618e8f?w=600&h=600&fit=crop",
@@ -273,8 +274,8 @@ const products = [
     name: "La Mer Moisturizing Cream",
     slug: "la-mer-moisturizing-cream",
     description: "Legendary moisturizer with the miraculous broth. Transforms skin appearance in days.",
-    price: 185.00,
-    originalPrice: 340.00,
+    price: 481000,
+    originalPrice: 884000,
     stock: 15,
     images: JSON.stringify([
       "https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?w=600&h=600&fit=crop",
@@ -286,8 +287,8 @@ const products = [
     name: "Charlotte Tilbury Pillow Talk Lipstick",
     slug: "charlotte-tilbury-pillow-talk",
     description: "The iconic universal flattering nude-pink. Creamy formula with long-lasting color.",
-    price: 28.00,
-    originalPrice: 45.00,
+    price: 73000,
+    originalPrice: 117000,
     stock: 90,
     images: JSON.stringify([
       "https://images.unsplash.com/photo-1586495777744-4e6232bf2f9b?w=600&h=600&fit=crop",
@@ -301,8 +302,8 @@ const products = [
     name: "Atomic Habits by James Clear",
     slug: "atomic-habits-james-clear",
     description: "A proven framework for improving every day. One of the most popular self-improvement books of all time.",
-    price: 11.99,
-    originalPrice: 27.00,
+    price: 31000,
+    originalPrice: 70000,
     stock: 200,
     images: JSON.stringify([
       "https://images.unsplash.com/photo-1592496431122-2349e0fbc666?w=600&h=600&fit=crop",
@@ -314,8 +315,8 @@ const products = [
     name: "The Lean Startup",
     slug: "the-lean-startup",
     description: "How today's entrepreneurs use continuous innovation to create radically successful businesses.",
-    price: 13.99,
-    originalPrice: 28.00,
+    price: 36000,
+    originalPrice: 73000,
     stock: 150,
     images: JSON.stringify([
       "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=600&h=600&fit=crop",
@@ -373,7 +374,10 @@ async function main() {
     const { categorySlug, ...productData } = product
     await prisma.product.upsert({
       where: { slug: product.slug },
-      update: {},
+      update: {
+        price: productData.price,
+        originalPrice: productData.originalPrice,
+      },
       create: {
         ...productData,
         categoryId: categoryMap[categorySlug],
