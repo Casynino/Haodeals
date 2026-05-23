@@ -1,4 +1,5 @@
 import NextAuth from "next-auth"
+import { authConfig } from "./auth.config"
 import CredentialsProvider from "next-auth/providers/credentials"
 import GoogleProvider from "next-auth/providers/google"
 import { prisma } from "@/lib/prisma"
@@ -6,7 +7,7 @@ import { sendWelcomeEmail } from "@/lib/email"
 import bcrypt from "bcryptjs"
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
-  trustHost: true,
+  ...authConfig,
   providers: [
     CredentialsProvider({
       name: "credentials",
@@ -34,8 +35,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       allowDangerousEmailAccountLinking: true,
     }),
   ],
-  session: { strategy: "jwt" },
-  pages: { signIn: "/login" },
   callbacks: {
     // Create user in DB on first Google sign-in
     async signIn({ user, account }) {
@@ -85,6 +84,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       return token
     },
 
+    // Extends the session callback from authConfig
     async session({ session, token }) {
       if (token && session.user) {
         session.user.id    = token.id    as string
