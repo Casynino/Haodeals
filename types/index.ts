@@ -58,13 +58,23 @@ export interface Cart {
   items: CartItem[]
 }
 
+export interface TrackingEvent {
+  id: string
+  orderId: string
+  status: string
+  message: string
+  createdAt: string
+}
+
 export interface Order {
   id: string
   userId: string
   status: string
+  trackingId?: string | null
   total: number
   address: string
   items: OrderItem[]
+  trackingEvents?: TrackingEvent[]
   createdAt: string
   updatedAt: string
 }

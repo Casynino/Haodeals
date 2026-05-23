@@ -213,6 +213,72 @@ export async function sendPasswordResetEmail(to: string, name: string, resetUrl:
 }
 
 /* ─────────────────────────────────────────────
+   Order status update  (transactional — customer)
+───────────────────────────────────────────── */
+
+const STATUS_LABELS: Record<string, string> = {
+  payment_confirmed:  "Payment Confirmed",
+  order_received:     "Order Received",
+  packaging:          "Packaging in Progress",
+  ready_for_delivery: "Ready for Delivery",
+  in_transit:         "In Transit",
+  out_for_delivery:   "Out for Delivery",
+  delivered:          "Delivered",
+  cancelled:          "Order Cancelled",
+  refund_processing:  "Refund Processing",
+  refunded:           "Refund Completed",
+}
+
+const STATUS_COLORS: Record<string, string> = {
+  delivered: "#16a34a",
+  cancelled: "#dc2626",
+  refunded:  "#16a34a",
+  refund_processing: "#ea580c",
+}
+
+export async function sendOrderStatusEmail(
+  to: string,
+  name: string,
+  order: {
+    orderId: string
+    trackingId?: string | null
+    status: string
+    message: string
+  }
+) {
+  const transport = createTransport()
+  if (!transport) return
+
+  const displayName = name.charAt(0).toUpperCase() + name.slice(1)
+  const statusLabel = STATUS_LABELS[order.status] ?? order.status
+  const accentColor = STATUS_COLORS[order.status] ?? "#ee0000"
+  const shortId = order.orderId.slice(0, 8).toUpperCase()
+  const trackingUrl = `${APP_URL}/orders/${order.orderId}`
+
+  const body = `
+    <h1 style="font-family:Arial,sans-serif;font-size:20px;font-weight:800;color:#0a0a0a;margin:0 0 4px;">Order Update</h1>
+    <p style="font-family:monospace;font-size:12px;color:#666;margin:0 0 4px;">#${shortId}${order.trackingId ? ` · ${order.trackingId}` : ""}</p>
+    <p style="font-family:Arial,sans-serif;font-size:22px;font-weight:900;color:${accentColor};margin:0 0 24px;">${statusLabel}</p>
+    <hr style="border:none;border-top:1px solid #e5e5e5;margin:0 0 20px;"/>
+    <p style="font-family:Arial,sans-serif;font-size:15px;color:#333;line-height:1.7;margin:0 0 28px;">Hi ${displayName},<br/><br/>${order.message}</p>
+    <a href="${trackingUrl}"
+       style="display:inline-block;padding:13px 32px;background:#ee0000;color:#ffffff;font-family:Arial,sans-serif;font-size:14px;font-weight:700;text-decoration:none;">
+      Track Your Order &rarr;
+    </a>
+  `
+
+  await transport.sendMail({
+    from: `HaoDeals <${process.env.GMAIL_USER}>`,
+    replyTo: ADMIN_EMAIL,
+    to,
+    subject: `Order #${shortId} — ${statusLabel}`,
+    headers: transactionalHeaders,
+    text: `Hi ${displayName},\n\nYour order #${shortId} status: ${statusLabel}\n\n${order.message}\n\nTrack your order: ${trackingUrl}\n\n— HaoDeals`,
+    html: wrapHtml(`Order #${shortId}: ${statusLabel}`, body),
+  }).catch((err) => console.error("[email] order status failed:", err))
+}
+
+/* ─────────────────────────────────────────────
    New order alert  (transactional — admin only)
 ───────────────────────────────────────────── */
 export async function sendOrderNotificationToAdmin(order: {

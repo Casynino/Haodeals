@@ -9,11 +9,26 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
   }
 
   const { id } = await params
+
+  // Allow lookup by order ID or tracking ID
   const order = await prisma.order.findFirst({
-    where: { id, userId: session.user.id as string },
-    select: { id: true, status: true, total: true, createdAt: true },
+    where: {
+      userId: session.user.id as string,
+      OR: [{ id }, { trackingId: id }],
+    },
+    include: {
+      items: { include: { product: true } },
+      trackingEvents: { orderBy: { createdAt: "asc" } },
+    },
   })
 
   if (!order) return NextResponse.json({ error: "Not found" }, { status: 404 })
-  return NextResponse.json(order)
+
+  return NextResponse.json({
+    ...order,
+    items: order.items.map((item) => ({
+      ...item,
+      product: { ...item.product, images: JSON.parse(item.product.images) },
+    })),
+  })
 }

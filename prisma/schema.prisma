@@ -87,16 +87,29 @@ model CartItem {
 }
 
 model Order {
-  id              String      @id @default(cuid())
+  id              String           @id @default(cuid())
   userId          String
-  status          String      @default("pending_payment")
+  status          String           @default("payment_confirmed")
+  trackingId      String?          @unique
   total           Float
   address         String
   ntzsDepositId   String?
-  user            User        @relation(fields: [userId], references: [id])
+  user            User             @relation(fields: [userId], references: [id])
   items           OrderItem[]
-  createdAt       DateTime    @default(now())
-  updatedAt       DateTime    @updatedAt
+  trackingEvents  TrackingEvent[]
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+}
+
+model TrackingEvent {
+  id        String   @id @default(cuid())
+  orderId   String
+  status    String
+  message   String
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@index([orderId])
 }
 
 model Transaction {
