@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
 import { auth } from "@/auth"
+import { autoAdvanceOrder } from "@/lib/order-utils"
 
 export async function GET(_req: Request, { params }: { params: Promise<{ id: string }> }) {
   const session = await auth()
@@ -10,7 +11,10 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
 
   const { id } = await params
 
-  // Allow lookup by order ID or tracking ID
+  // Fire lazy auto-advance (payment_confirmed → packaging after 5 min)
+  // Runs non-blocking — if it fails, the GET still succeeds
+  autoAdvanceOrder(id).catch(() => {})
+
   const order = await prisma.order.findFirst({
     where: {
       userId: session.user.id as string,

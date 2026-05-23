@@ -144,6 +144,19 @@ model Notification {
   createdAt DateTime @default(now())
 }
 
+model DiscountCode {
+  id        String   @id @default(cuid())
+  code      String   @unique
+  userId    String
+  percent   Int      @default(10)
+  used      Boolean  @default(false)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([code])
+}
+
 model PasswordResetToken {
   id        String   @id @default(cuid())
   email     String
