@@ -2,7 +2,6 @@
 
 import { useState } from "react"
 import { signIn } from "next-auth/react"
-import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { Eye, EyeOff, Loader2, CheckCircle } from "lucide-react"
 import { toast } from "sonner"
@@ -15,7 +14,6 @@ const PERKS = [
 ]
 
 export default function RegisterPage() {
-  const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [oauthLoading, setOauthLoading] = useState<"google" | "apple" | null>(null)
   const [showPassword, setShowPassword] = useState(false)
@@ -34,8 +32,8 @@ export default function RegisterPage() {
     if (res.ok) {
       toast.success("Account created! Welcome to HaoDeals 🎉", { className: "font-mono text-xs" })
       await signIn("credentials", { email: form.email, password: form.password, redirect: false })
-      router.push("/products")
-      router.refresh()
+      // Hard navigate so the server re-reads the fresh session cookie.
+      window.location.href = "/products"
     } else {
       const data = await res.json()
       toast.error(data.error ?? "Something went wrong. Please try again.", { className: "font-mono text-xs" })
