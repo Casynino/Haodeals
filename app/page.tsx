@@ -7,6 +7,9 @@ import type { Product } from "@/types"
 import { SplineScene } from "@/components/ui/splite"
 import { Spotlight } from "@/components/ui/spotlight"
 
+// Always fetch fresh data so new products appear immediately
+export const dynamic = "force-dynamic"
+
 async function getFeaturedProducts() {
   const products = await prisma.product.findMany({
     where: { featured: true },
@@ -26,7 +29,7 @@ async function getCategories() {
 async function getDealsProducts() {
   const products = await prisma.product.findMany({
     include: { category: true, reviews: { select: { rating: true } } },
-    take: 8,
+    take: 16,
     orderBy: { createdAt: "desc" },
   })
   return products.map((p) => ({ ...p, images: JSON.parse(p.images) as string[] }))
