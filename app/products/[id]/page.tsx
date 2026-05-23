@@ -257,9 +257,9 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
           {/* Trust badges */}
           <div className="grid grid-cols-3 gap-2 pt-2 border-t border-white/5">
             {[
-              { icon: Truck, label: "FREE.SHIP", sub: "ON $50+" },
-              { icon: RotateCcw, label: "30D.RETURNS", sub: "EASY.POLICY" },
-              { icon: ShieldCheck, label: "AES-256", sub: "ENCRYPTED" },
+              { icon: Truck, label: "Free Shipping", sub: "Over TSh 100K" },
+              { icon: RotateCcw, label: "30-Day Returns", sub: "Easy returns" },
+              { icon: ShieldCheck, label: "Secure", sub: "Safe checkout" },
             ].map(({ icon: Icon, label, sub }) => (
               <div key={label} className="flex flex-col items-center gap-1 text-center p-2 border border-white/5">
                 <Icon className="h-3.5 w-3.5 text-foreground/30" />

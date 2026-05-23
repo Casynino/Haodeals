@@ -2,8 +2,12 @@
 
 import { useEffect } from 'react';
 import Link from 'next/link';
+import { useSession } from 'next-auth/react';
 
 export default function HeroAscii() {
+  const { data: session } = useSession()
+  const isLoggedIn = !!session?.user
+
   useEffect(() => {
     const embedScript = document.createElement('script');
     embedScript.type = 'text/javascript';
@@ -170,21 +174,22 @@ export default function HeroAscii() {
                 <button className="relative px-5 lg:px-6 py-2 lg:py-2.5 bg-transparent text-white font-mono text-xs lg:text-sm border border-white hover:bg-white hover:text-black transition-all duration-200 group">
                   <span className="hidden lg:block absolute -top-1 -left-1 w-2 h-2 border-t border-l border-white opacity-0 group-hover:opacity-100 transition-opacity" />
                   <span className="hidden lg:block absolute -bottom-1 -right-1 w-2 h-2 border-b border-r border-white opacity-0 group-hover:opacity-100 transition-opacity" />
-                  ACCESS.DEALS
+                  Shop Now
                 </button>
               </Link>
-              <Link href="/register">
-                <button className="relative px-5 lg:px-6 py-2 lg:py-2.5 bg-transparent border border-white text-white font-mono text-xs lg:text-sm hover:bg-white hover:text-black transition-all duration-200">
-                  JOIN.FREE
-                </button>
-              </Link>
+              {!isLoggedIn && (
+                <Link href="/register">
+                  <button className="relative px-5 lg:px-6 py-2 lg:py-2.5 bg-transparent border border-white text-white font-mono text-xs lg:text-sm hover:bg-white hover:text-black transition-all duration-200">
+                    Create Free Account
+                  </button>
+                </Link>
+              )}
             </div>
 
             {/* Bottom rule */}
             <div className="hidden lg:flex items-center gap-2 mt-6 opacity-40">
               <span className="text-white text-[9px] font-mono">∞</span>
               <div className="flex-1 h-px bg-white" />
-              <span className="text-white text-[9px] font-mono">MARKET.PROTOCOL</span>
             </div>
 
           </div>
@@ -198,24 +203,24 @@ export default function HeroAscii() {
       >
         <div className="container mx-auto px-4 lg:px-8 py-2 lg:py-3 flex items-center justify-between">
           <div className="flex items-center gap-3 lg:gap-6 text-[8px] lg:text-[9px] font-mono text-white/50">
-            <span className="hidden lg:inline">FREE.SHIP.$50+</span>
-            <span className="lg:hidden">FREE.SHIP</span>
+            <span className="hidden lg:inline">Free shipping over TSh 100K</span>
+            <span className="lg:hidden">Free shipping</span>
             <div className="hidden lg:flex gap-1">
               {Array.from({ length: 8 }).map((_, i) => (
                 <div key={i} className="w-1 bg-white/30" style={{ height: `${(i % 3) * 4 + 4}px` }} />
               ))}
             </div>
-            <span className="hidden lg:inline">30D.RETURNS</span>
-            <span className="hidden lg:inline">AES-256.SECURE</span>
+            <span className="hidden lg:inline">30-day returns</span>
+            <span className="hidden lg:inline">Secure checkout</span>
           </div>
           <div className="flex items-center gap-2 lg:gap-4 text-[8px] lg:text-[9px] font-mono text-white/50">
-            <span className="hidden lg:inline">◐ LIVE.DEALS</span>
+            <span className="hidden lg:inline">◐ Live deals</span>
             <div className="flex gap-1">
               <div className="w-1 h-1 bg-white/60 rounded-full animate-pulse" />
               <div className="w-1 h-1 bg-white/40 rounded-full animate-pulse" style={{ animationDelay: '0.2s' }} />
               <div className="w-1 h-1 bg-white/20 rounded-full animate-pulse" style={{ animationDelay: '0.4s' }} />
             </div>
-            <span className="hidden lg:inline">HAODEALS.SYS</span>
+            <span className="hidden lg:inline">HaoDeals</span>
           </div>
         </div>
       </div>

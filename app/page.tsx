@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma"
+import { auth } from "@/auth"
 import { ProductCard } from "@/components/ProductCard"
 import { ArrowRight } from "lucide-react"
 import Link from "next/link"
@@ -44,11 +45,13 @@ const categoryImages: Record<string, string> = {
 }
 
 export default async function HomePage() {
-  const [featuredProducts, categories, dealProducts] = await Promise.all([
+  const [session, featuredProducts, categories, dealProducts] = await Promise.all([
+    auth(),
     getFeaturedProducts(),
     getCategories(),
     getDealsProducts(),
   ])
+  const isLoggedIn = !!session?.user
 
   return (
     <div className="flex flex-col">
@@ -78,7 +81,7 @@ export default async function HomePage() {
             {/* Top rule */}
             <div className="flex items-center gap-2 mb-4 opacity-50">
               <div className="w-6 h-px bg-foreground" />
-              <span className="text-foreground text-[9px] font-mono tracking-widest">HAODEALS.SYS</span>
+              <span className="text-foreground text-[9px] font-mono tracking-widest">HAODEALS</span>
               <div className="flex-1 h-px bg-foreground" />
             </div>
 
@@ -105,7 +108,7 @@ export default async function HomePage() {
 
             {/* Stats */}
             <div className="flex gap-6 mb-7 text-[9px] font-mono text-foreground/40">
-              {[["20+", "PRODUCTS"], ["6", "CATEGORIES"], ["70%", "MAX.OFF"]].map(([val, label]) => (
+              {[["20+", "PRODUCTS"], ["5", "CATEGORIES"], ["70%", "MAX OFF"]].map(([val, label]) => (
                 <div key={label}>
                   <div className="text-xl text-foreground font-bold">{val}</div>
                   <div className="text-[7px] tracking-widest">{label}</div>
@@ -119,21 +122,22 @@ export default async function HomePage() {
                 <button className="relative px-5 py-2 bg-transparent text-foreground font-mono text-xs border border-foreground hover:bg-foreground hover:text-background transition-all duration-200 tracking-widest group">
                   <span className="absolute -top-px -left-px w-2 h-2 border-t border-l border-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
                   <span className="absolute -bottom-px -right-px w-2 h-2 border-b border-r border-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
-                  ACCESS.DEALS
+                  Shop Now
                 </button>
               </Link>
-              <Link href="/register">
-                <button className="px-5 py-2 bg-transparent text-foreground/50 font-mono text-xs border border-foreground/30 hover:border-foreground hover:text-foreground transition-all duration-200 tracking-widest">
-                  JOIN.FREE
-                </button>
-              </Link>
+              {!isLoggedIn && (
+                <Link href="/register">
+                  <button className="px-5 py-2 bg-transparent text-foreground/50 font-mono text-xs border border-foreground/30 hover:border-foreground hover:text-foreground transition-all duration-200 tracking-widest">
+                    Create Free Account
+                  </button>
+                </Link>
+              )}
             </div>
 
             {/* Bottom rule */}
             <div className="flex items-center gap-2 mt-7 opacity-25">
               <span className="text-foreground text-[9px] font-mono">∞</span>
               <div className="flex-1 h-px bg-foreground" />
-              <span className="text-foreground text-[9px] font-mono">MARKET.PROTOCOL</span>
             </div>
           </div>
         </div>
@@ -152,11 +156,11 @@ export default async function HomePage() {
         <div className="absolute bottom-0 left-0 right-0 z-20 border-t border-foreground/10 bg-background/80 backdrop-blur-sm">
           <div className="container mx-auto px-4 py-2 flex items-center justify-between">
             <div className="flex items-center gap-4 text-[8px] font-mono text-foreground/30">
-              <span>FREE.SHIP.TSh100K+</span>
+              <span>Free shipping over TSh 100K</span>
               <span className="text-foreground/10">|</span>
-              <span>30D.RETURNS</span>
+              <span>30-day returns</span>
               <span className="text-foreground/10">|</span>
-              <span>AES-256.SECURE</span>
+              <span>Secure checkout</span>
             </div>
             <div className="flex items-center gap-2 text-[8px] font-mono text-foreground/30">
               <div className="flex gap-1">
@@ -164,7 +168,7 @@ export default async function HomePage() {
                   <div key={i} className="w-1 h-1 bg-foreground/40 rounded-full animate-pulse" style={{ animationDelay: `${i * 0.2}s` }} />
                 ))}
               </div>
-              <span>LIVE</span>
+              <span>Live deals</span>
             </div>
           </div>
         </div>
@@ -179,7 +183,7 @@ export default async function HomePage() {
                 <h2 className="text-[11px] font-mono tracking-[0.3em] text-foreground/70">CATEGORIES</h2>
               </div>
               <Link href="/products" className="flex items-center gap-1 text-[9px] font-mono text-foreground/40 hover:text-foreground tracking-widest transition-colors">
-                VIEW.ALL <ArrowRight className="h-2.5 w-2.5" />
+                View All <ArrowRight className="h-2.5 w-2.5" />
               </Link>
             </div>
             <div className="grid grid-cols-3 md:grid-cols-6 gap-2">
@@ -214,14 +218,14 @@ export default async function HomePage() {
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-3">
                 <span className="text-foreground/30 text-[10px]">//</span>
-                <h2 className="text-[11px] font-mono tracking-[0.3em] text-foreground/70">FLASH.DEALS</h2>
+                <h2 className="text-[11px] font-mono tracking-[0.3em] text-foreground/70">Flash Deals</h2>
                 <div className="flex items-center gap-1 text-[9px] font-mono text-green-400/60">
                   <div className="w-1.5 h-1.5 bg-green-400/60 rounded-full animate-pulse" />
-                  LIVE
+                  Live
                 </div>
               </div>
               <Link href="/products" className="flex items-center gap-1 text-[9px] font-mono text-foreground/40 hover:text-foreground tracking-widest transition-colors">
-                ALL.DEALS <ArrowRight className="h-2.5 w-2.5" />
+                All Deals <ArrowRight className="h-2.5 w-2.5" />
               </Link>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
@@ -240,10 +244,10 @@ export default async function HomePage() {
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-3">
                 <span className="text-foreground/30 text-[10px]">//</span>
-                <h2 className="text-[11px] font-mono tracking-[0.3em] text-foreground/70">FEATURED.ITEMS</h2>
+                <h2 className="text-[11px] font-mono tracking-[0.3em] text-foreground/70">Featured</h2>
               </div>
               <Link href="/products?featured=true" className="flex items-center gap-1 text-[9px] font-mono text-foreground/40 hover:text-foreground tracking-widest transition-colors">
-                VIEW.ALL <ArrowRight className="h-2.5 w-2.5" />
+                View All <ArrowRight className="h-2.5 w-2.5" />
               </Link>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
@@ -255,7 +259,7 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* ── CTA Terminal Block ── */}
+      {/* ── CTA Block ── */}
       <section className="py-16 border-b border-white/5">
         <div className="container mx-auto px-4 max-w-2xl">
           <div className="border border-white/15 p-8 relative">
@@ -265,23 +269,44 @@ export default async function HomePage() {
             <div className="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-white/30" />
             <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-white/30" />
 
-            <div className="text-center space-y-4">
-              <p className="text-[9px] font-mono text-foreground/30 tracking-widest">// SPECIAL.OFFER.PROTOCOL</p>
-              <h2 className="text-2xl md:text-3xl font-black font-mono tracking-widest">
-                GET 20% OFF<br />
-                <span className="text-foreground/40">FIRST ORDER</span>
-              </h2>
-              <div className="w-full h-px bg-white/10" />
-              <p className="text-[11px] font-mono text-foreground/50 leading-relaxed">
-                SIGN UP NOW. UNLOCK EXCLUSIVE DEALS, EARLY ACCESS TO FLASH SALES, AND PERSONALIZED RECOMMENDATIONS.
-              </p>
-              <Link href="/register">
-                <button className="mt-2 px-8 py-2.5 bg-foreground text-background font-mono text-xs tracking-widest hover:bg-foreground/90 transition-colors font-bold">
-                  INITIALIZE.ACCOUNT
-                </button>
-              </Link>
-              <p className="text-[9px] font-mono text-foreground/20 tracking-widest">NO.SPAM. EVER.</p>
-            </div>
+            {isLoggedIn ? (
+              /* Logged-in: push straight to deals */
+              <div className="text-center space-y-4">
+                <p className="text-[9px] font-mono text-foreground/30 tracking-widest">Today&apos;s Deals</p>
+                <h2 className="text-2xl md:text-3xl font-black font-mono tracking-widest">
+                  Welcome Back!<br />
+                  <span className="text-foreground/40">Deals Are Waiting</span>
+                </h2>
+                <div className="w-full h-px bg-white/10" />
+                <p className="text-sm text-foreground/50 leading-relaxed">
+                  New deals added daily across Tech, Fashion, Accessories, Shoes &amp; Sports.
+                </p>
+                <Link href="/products">
+                  <button className="mt-2 px-8 py-2.5 bg-foreground text-background font-mono text-xs tracking-widest hover:bg-foreground/90 transition-colors font-bold flex items-center gap-2 mx-auto">
+                    View All Deals <ArrowRight className="h-3.5 w-3.5" />
+                  </button>
+                </Link>
+              </div>
+            ) : (
+              /* Guest: drive signup with offer */
+              <div className="text-center space-y-4">
+                <p className="text-[9px] font-mono text-foreground/30 tracking-widest">Limited Time Offer</p>
+                <h2 className="text-2xl md:text-3xl font-black font-mono tracking-widest">
+                  Get 20% Off<br />
+                  <span className="text-foreground/40">Your First Order</span>
+                </h2>
+                <div className="w-full h-px bg-white/10" />
+                <p className="text-sm text-foreground/50 leading-relaxed">
+                  Sign up today and unlock exclusive deals, early access to flash sales, and personalised recommendations.
+                </p>
+                <Link href="/register">
+                  <button className="mt-2 px-8 py-2.5 bg-foreground text-background font-mono text-xs tracking-widest hover:bg-foreground/90 transition-colors font-bold">
+                    Create Free Account
+                  </button>
+                </Link>
+                <p className="text-[9px] font-mono text-foreground/20 tracking-widest">No spam, ever.</p>
+              </div>
+            )}
           </div>
         </div>
       </section>
