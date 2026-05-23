@@ -2,13 +2,12 @@
 
 import { Suspense, useState } from "react"
 import { signIn } from "next-auth/react"
-import { useRouter, useSearchParams } from "next/navigation"
+import { useSearchParams } from "next/navigation"
 import Link from "next/link"
 import { Eye, EyeOff, Loader2 } from "lucide-react"
 import { toast } from "sonner"
 
 function LoginForm() {
-  const router = useRouter()
   const searchParams = useSearchParams()
   const callbackUrl = searchParams.get("callbackUrl") ?? "/"
   const [loading, setLoading] = useState(false)
@@ -22,8 +21,9 @@ function LoginForm() {
     const result = await signIn("credentials", { email: form.email, password: form.password, redirect: false })
     if (result?.ok) {
       toast.success("Welcome back!", { className: "font-mono text-xs" })
-      router.push(callbackUrl)
-      router.refresh()
+      // Hard navigate so the server re-reads the fresh session cookie.
+      // router.push + router.refresh has a race condition in App Router.
+      window.location.href = callbackUrl
     } else {
       toast.error("Incorrect email or password.", { className: "font-mono text-xs" })
     }
