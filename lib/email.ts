@@ -1,7 +1,8 @@
 import nodemailer from "nodemailer"
 
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL ?? "haodealtz@gmail.com"
-const APP_URL = process.env.AUTH_URL ?? "https://haodeals.vercel.app"
+// APP_URL used for links in emails. Set APP_URL env var in Vercel → https://haodealtz.com
+const APP_URL = process.env.APP_URL ?? process.env.AUTH_URL ?? "https://haodealtz.com"
 
 function createTransport() {
   const user = process.env.GMAIL_USER
@@ -135,6 +136,58 @@ ${htmlFooter(unsubscribeMailto)}
   }
 
   return { sent, failed }
+}
+
+/* ─────────────────────────────────────────────
+   Password reset email
+───────────────────────────────────────────── */
+export async function sendPasswordResetEmail(to: string, name: string, resetUrl: string) {
+  const transport = createTransport()
+  if (!transport) return
+
+  const displayName = name.charAt(0).toUpperCase() + name.slice(1)
+
+  await transport.sendMail({
+    from: `HaoDeals <${process.env.GMAIL_USER}>`,
+    replyTo: ADMIN_EMAIL,
+    to,
+    subject: "Reset your HaoDeals password",
+    text: `
+Hi ${displayName},
+
+We received a request to reset your HaoDeals password.
+
+Click the link below to set a new password. This link expires in 1 hour.
+
+Reset link: ${resetUrl}
+
+If you didn't request a password reset, you can safely ignore this email. Your password won't change.
+
+—
+HaoDeals · Tanzania's best deals platform
+${APP_URL}
+    `.trim(),
+    html: `
+${htmlHeader}
+      <h1 style="font-size:22px;font-weight:800;color:#0a0a0a;margin:0 0 6px">Reset your password</h1>
+      <p style="font-size:13px;color:#666;margin:0 0 24px">Hi ${displayName},</p>
+      <hr style="border:none;border-top:1px solid #e5e5e5;margin:0 0 24px"/>
+      <p style="font-size:14px;color:#333;line-height:1.6;margin:0 0 16px">
+        We received a request to reset your HaoDeals password.
+        Click the button below to set a new password.
+      </p>
+      <p style="font-size:12px;color:#999;margin:0 0 24px">This link expires in <strong>1 hour</strong>.</p>
+      <a href="${resetUrl}"
+         style="display:inline-block;padding:13px 32px;background:#ee0000;color:#ffffff;font-size:14px;font-weight:700;text-decoration:none;border-radius:3px;letter-spacing:0.02em">
+        Reset Password →
+      </a>
+      <p style="font-size:12px;color:#aaa;margin:32px 0 0;line-height:1.6">
+        If you didn't request a password reset, you can safely ignore this email.
+        Your password won't change.
+      </p>
+${htmlFooter()}
+    `,
+  }).catch((err) => console.error("[email] password reset failed:", err))
 }
 
 /* ─────────────────────────────────────────────

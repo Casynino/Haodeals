@@ -15,9 +15,14 @@ const registerSchema = z.object({
 export async function POST(request: Request) {
   try {
     const body = await request.json()
-    const { name, email, password, phone } = registerSchema.parse(body)
+    const parsed = registerSchema.parse(body)
+    const email = parsed.email.toLowerCase().trim()
+    const { name, password, phone } = parsed
 
-    const existing = await prisma.user.findUnique({ where: { email } })
+    // Case-insensitive check to prevent duplicate accounts
+    const existing = await prisma.user.findFirst({
+      where: { email: { equals: email, mode: "insensitive" } },
+    })
     if (existing) {
       return NextResponse.json({ error: "Email already in use" }, { status: 409 })
     }

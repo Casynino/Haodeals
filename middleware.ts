@@ -34,7 +34,8 @@ export default auth((req) => {
 
   // Redirect OAuth users who haven't added a phone number yet
   const needsPhone = isAuthenticated && (req.auth?.user as { needsPhone?: boolean })?.needsPhone
-  if (needsPhone && !pathname.startsWith("/onboarding")) {
+  const isAuthFlow = pathname.startsWith("/onboarding") || pathname.startsWith("/forgot-password") || pathname.startsWith("/reset-password")
+  if (needsPhone && !isAuthFlow) {
     return NextResponse.redirect(new URL("/onboarding", req.url))
   }
 
