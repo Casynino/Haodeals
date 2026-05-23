@@ -279,6 +279,53 @@ export async function sendOrderStatusEmail(
 }
 
 /* ─────────────────────────────────────────────
+   Loyalty promo code  (transactional)
+───────────────────────────────────────────── */
+export async function sendPromoCodeEmail(
+  to: string,
+  name: string,
+  code: string,
+  percent: number
+) {
+  const transport = createTransport()
+  if (!transport) return
+
+  const displayName = name.charAt(0).toUpperCase() + name.slice(1)
+
+  const body = `
+    <h1 style="font-family:Arial,sans-serif;font-size:20px;font-weight:800;color:#0a0a0a;margin:0 0 6px;">A gift from us 🎁</h1>
+    <p style="font-family:Arial,sans-serif;font-size:13px;color:#777;margin:0 0 24px;">Thank you, ${displayName}!</p>
+    <hr style="border:none;border-top:1px solid #e5e5e5;margin:0 0 24px;"/>
+    <p style="font-family:Arial,sans-serif;font-size:15px;color:#333;line-height:1.7;margin:0 0 20px;">
+      Your order has been delivered — thank you for shopping with HaoDeals! As a token of our appreciation, here's an exclusive discount code just for you:
+    </p>
+    <div style="text-align:center;margin:0 0 28px;">
+      <div style="display:inline-block;padding:16px 32px;background:#f9f9f9;border:2px dashed #ee0000;">
+        <p style="font-family:monospace;font-size:22px;font-weight:900;color:#ee0000;letter-spacing:0.12em;margin:0;">${code}</p>
+        <p style="font-family:Arial,sans-serif;font-size:11px;color:#999;margin:6px 0 0;">${percent}% off your next order · Valid for 30 days</p>
+      </div>
+    </div>
+    <a href="${APP_URL}/products"
+       style="display:inline-block;padding:13px 32px;background:#ee0000;color:#ffffff;font-family:Arial,sans-serif;font-size:14px;font-weight:700;text-decoration:none;">
+      Shop Now &rarr;
+    </a>
+    <p style="font-family:Arial,sans-serif;font-size:12px;color:#aaa;margin:28px 0 0;line-height:1.6;">
+      Enter this code at checkout. One-time use. Cannot be combined with other offers.
+    </p>
+  `
+
+  await transport.sendMail({
+    from: `HaoDeals <${process.env.GMAIL_USER}>`,
+    replyTo: ADMIN_EMAIL,
+    to,
+    subject: `${displayName}, here's ${percent}% off your next order! 🎁`,
+    headers: transactionalHeaders,
+    text: `Hi ${displayName},\n\nThank you for your order! Here's ${percent}% off your next purchase:\n\nCode: ${code}\nValid for 30 days.\n\nShop now: ${APP_URL}/products\n\n— HaoDeals`,
+    html: wrapHtml(`Your exclusive ${percent}% discount code: ${code}`, body),
+  }).catch((err) => console.error("[email] promo code failed:", err))
+}
+
+/* ─────────────────────────────────────────────
    New order alert  (transactional — admin only)
 ───────────────────────────────────────────── */
 export async function sendOrderNotificationToAdmin(order: {

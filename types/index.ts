@@ -88,6 +88,16 @@ export interface OrderItem {
   product: Product
 }
 
+export interface DiscountCode {
+  id: string
+  code: string
+  userId: string
+  percent: number
+  used: boolean
+  expiresAt: string
+  createdAt: string
+}
+
 export interface User {
   id: string
   name?: string | null
