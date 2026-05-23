@@ -15,25 +15,25 @@ export function Footer() {
               <span className="text-foreground/30">]</span>
             </div>
             <p className="text-[10px] text-foreground/40 leading-relaxed">
-              TERMINAL-GRADE DEALS ON TOP PRODUCTS. NO NOISE. JUST SAVINGS.
+              The best deals delivered to your door. Up to 70% off. Fast delivery across Tanzania 🇹🇿
             </p>
             <div className="flex items-center gap-1.5 text-[9px] text-foreground/30">
               <div className="w-1.5 h-1.5 bg-green-400/60 rounded-full" />
-              <span>SYSTEM.OPERATIONAL</span>
+              <span>Online &amp; delivering</span>
             </div>
           </div>
 
           {/* Shop */}
           <div>
-            <p className="text-[9px] text-foreground/30 tracking-widest mb-3">// SHOP</p>
+            <p className="text-[9px] text-foreground/30 tracking-widest mb-3">Shop</p>
             <ul className="space-y-1.5">
               {[
-                { label: "ALL.DEALS", slug: "" },
-                { label: "TECH DEALS", slug: "tech-deals" },
-                { label: "FASHION", slug: "fashion" },
-                { label: "ACCESSORIES", slug: "accessories" },
-                { label: "SHOES", slug: "shoes" },
-                { label: "SPORTS", slug: "sports" },
+                { label: "All Deals", slug: "" },
+                { label: "Tech Deals", slug: "tech-deals" },
+                { label: "Fashion", slug: "fashion" },
+                { label: "Accessories", slug: "accessories" },
+                { label: "Shoes", slug: "shoes" },
+                { label: "Sports", slug: "sports" },
               ].map(({ label, slug }) => (
                 <li key={label}>
                   <Link
@@ -49,41 +49,47 @@ export function Footer() {
 
           {/* Support */}
           <div>
-            <p className="text-[9px] text-foreground/30 tracking-widest mb-3">// SUPPORT</p>
+            <p className="text-[9px] text-foreground/30 tracking-widest mb-3">Support</p>
             <ul className="space-y-1.5">
-              {["HELP.CENTER", "TRACK.ORDER", "RETURNS", "SHIPPING.POLICY", "CONTACT"].map((item) => (
-                <li key={item}>
-                  <a href="#" className="text-[10px] text-foreground/50 hover:text-foreground transition-colors flex items-center gap-1">
-                    <span className="text-foreground/20">&gt;</span> {item}
+              {[
+                { label: "Help Center", href: "#" },
+                { label: "Track Your Order", href: "#" },
+                { label: "Returns", href: "#" },
+                { label: "Shipping Policy", href: "#" },
+                { label: "Contact Us", href: "#" },
+              ].map((item) => (
+                <li key={item.label}>
+                  <a href={item.href} className="text-[10px] text-foreground/50 hover:text-foreground transition-colors flex items-center gap-1">
+                    <span className="text-foreground/20">&gt;</span> {item.label}
                   </a>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* System */}
+          {/* Info */}
           <div>
-            <p className="text-[9px] text-foreground/30 tracking-widest mb-3">// SYSTEM</p>
+            <p className="text-[9px] text-foreground/30 tracking-widest mb-3">Info</p>
             <div className="space-y-1.5 text-[10px] text-foreground/40 font-mono">
               <div className="flex justify-between">
-                <span>VERSION</span>
-                <span className="text-foreground/60">v2.0.0</span>
+                <span>Status</span>
+                <span className="text-green-400/70">Online</span>
               </div>
               <div className="flex justify-between">
-                <span>STATUS</span>
-                <span className="text-green-400/70">ONLINE</span>
-              </div>
-              <div className="flex justify-between">
-                <span>UPTIME</span>
+                <span>Uptime</span>
                 <span className="text-foreground/60">99.9%</span>
               </div>
               <div className="flex justify-between">
-                <span>PRODUCTS</span>
+                <span>Products</span>
                 <span className="text-foreground/60">20+</span>
               </div>
               <div className="flex justify-between">
-                <span>ENCRYPTION</span>
-                <span className="text-green-400/70">AES-256</span>
+                <span>Checkout</span>
+                <span className="text-green-400/70">Secure</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Delivery</span>
+                <span className="text-foreground/60">Nationwide</span>
               </div>
             </div>
           </div>
@@ -93,18 +99,18 @@ export function Footer() {
       {/* Bottom bar */}
       <div className="container mx-auto px-4 py-3 flex flex-col sm:flex-row items-center justify-between gap-2">
         <div className="flex items-center gap-3 text-[9px] text-foreground/30">
-          <span>© 2024 HAODEALS.SYS</span>
+          <span>© 2025 HaoDeals</span>
           <span className="text-foreground/15">|</span>
-          <span>ALL.RIGHTS.RESERVED</span>
+          <span>All rights reserved</span>
         </div>
         <div className="flex items-center gap-3 text-[9px] text-foreground/30">
-          <span>PRIVACY.POLICY</span>
+          <a href="#" className="hover:text-foreground/60 transition-colors">Privacy Policy</a>
           <span className="text-foreground/15">|</span>
-          <span>TERMS.OF.SERVICE</span>
+          <a href="#" className="hover:text-foreground/60 transition-colors">Terms of Service</a>
           <span className="text-foreground/15">|</span>
           <div className="flex items-center gap-1">
             <div className="w-1 h-1 bg-green-400/60 rounded-full animate-pulse" />
-            <span>LIVE</span>
+            <span>Live</span>
           </div>
         </div>
       </div>

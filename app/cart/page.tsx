@@ -19,10 +19,10 @@ export default function CartPage() {
         <div className="border border-white/10 p-8">
           <ShoppingCart className="h-12 w-12 opacity-20" />
         </div>
-        <p className="text-[11px] tracking-widest text-foreground/40">CART.EMPTY</p>
-        <p className="text-[9px] text-foreground/20">NO.ITEMS.QUEUED</p>
+        <p className="text-[11px] tracking-widest text-foreground/40">Your cart is empty</p>
+        <p className="text-[9px] text-foreground/20">Add some items to get started</p>
         <Link href="/products" className="px-6 py-2 text-[10px] tracking-widest border border-white/20 text-foreground/60 hover:text-foreground hover:border-white/40 transition-colors flex items-center gap-2">
-          BROWSE.DEALS <ArrowRight className="h-3 w-3" />
+          Browse Deals <ArrowRight className="h-3 w-3" />
         </Link>
       </div>
     )
@@ -33,15 +33,14 @@ export default function CartPage() {
       {/* Header */}
       <div className="flex items-center justify-between mb-6 border-b border-white/10 pb-4">
         <div className="flex items-center gap-3">
-          <span className="text-foreground/30 text-[10px]">//</span>
-          <h1 className="text-[11px] tracking-[0.3em] text-foreground/70">CART.CONTENTS</h1>
-          <span className="text-[9px] text-foreground/30">[{items.length}.ITEMS]</span>
+          <h1 className="text-[11px] tracking-[0.3em] text-foreground/70">Your Cart</h1>
+          <span className="text-[9px] text-foreground/30">({items.length} {items.length === 1 ? "item" : "items"})</span>
         </div>
         <button
-          onClick={() => { clearCart(); toast.success("CART.CLEARED") }}
+          onClick={() => { clearCart(); toast.success("Cart cleared") }}
           className="text-[9px] tracking-widest text-foreground/30 hover:text-red-400/70 transition-colors"
         >
-          CLEAR.ALL
+          Clear Cart
         </button>
       </div>
 
@@ -61,7 +60,7 @@ export default function CartPage() {
                     </h3>
                   </Link>
                   <button
-                    onClick={() => { removeItem(item.id); toast.success("ITEM.REMOVED") }}
+                    onClick={() => { removeItem(item.id); toast.success("Item removed") }}
                     className="ml-2 text-foreground/20 hover:text-red-400/70 transition-colors flex-shrink-0"
                   >
                     <Trash2 className="h-3 w-3" />
@@ -100,17 +99,17 @@ export default function CartPage() {
         {/* Order summary — desktop only (mobile gets sticky bottom bar) */}
         <div className="hidden lg:block lg:col-span-1">
           <div className="border border-white/10 p-5 space-y-4 sticky top-24">
-            <p className="text-[9px] tracking-widest text-foreground/40">// ORDER.SUMMARY</p>
+            <p className="text-[9px] tracking-widest text-foreground/40">Order Summary</p>
 
             <div className="space-y-2.5 text-[10px]">
               <div className="flex justify-between">
-                <span className="text-foreground/40 tracking-widest">SUBTOTAL [{items.length}]</span>
+                <span className="text-foreground/40 tracking-widest">Subtotal ({items.length} {items.length === 1 ? "item" : "items"})</span>
                 <span className="text-foreground/70">{formatPrice(cartTotal)}</span>
               </div>
             </div>
 
             <div className="border-t border-white/10 pt-3 flex justify-between items-center">
-              <span className="text-[9px] tracking-widest text-foreground/40">TOTAL.AMOUNT</span>
+              <span className="text-[9px] tracking-widest text-foreground/40">Total</span>
               <span className="text-green-400/80 font-mono">{formatPrice(finalTotal)}</span>
             </div>
 
@@ -119,22 +118,22 @@ export default function CartPage() {
                 href="/checkout"
                 className="block text-center py-2 text-[10px] tracking-widest bg-foreground text-background hover:bg-foreground/90 transition-colors font-bold flex items-center justify-center gap-2"
               >
-                EXECUTE.CHECKOUT <ArrowRight className="h-3 w-3" />
+                Proceed to Checkout <ArrowRight className="h-3 w-3" />
               </Link>
               <Link
                 href="/products"
                 className="block text-center py-2 text-[10px] tracking-widest border border-white/20 text-foreground/50 hover:text-foreground hover:border-white/40 transition-colors"
               >
-                CONTINUE.SHOPPING
+                Continue Shopping
               </Link>
             </div>
 
             <div className="flex items-center justify-center gap-4 text-[8px] text-foreground/25 pt-1">
               <div className="flex items-center gap-1">
-                <ShieldCheck className="h-2.5 w-2.5" /> AES-256.SECURE
+                <ShieldCheck className="h-2.5 w-2.5" /> Secure checkout
               </div>
               <div className="flex items-center gap-1">
-                <Truck className="h-2.5 w-2.5" /> FAST.DELIVERY
+                <Truck className="h-2.5 w-2.5" /> Fast delivery
               </div>
             </div>
           </div>
@@ -145,14 +144,14 @@ export default function CartPage() {
       <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-background border-t border-white/15 px-4 py-3">
         <div className="flex items-center justify-between gap-4">
           <div>
-            <p className="text-[8px] tracking-widest text-foreground/30">TOTAL.AMOUNT</p>
+            <p className="text-[8px] tracking-widest text-foreground/30">Total</p>
             <p className="text-green-400/80 font-mono text-sm font-bold">{formatPrice(finalTotal)}</p>
           </div>
           <Link
             href="/checkout"
             className="flex-1 text-center py-2.5 text-[10px] tracking-widest bg-foreground text-background hover:bg-foreground/90 transition-colors font-bold flex items-center justify-center gap-2"
           >
-            EXECUTE.CHECKOUT <ArrowRight className="h-3 w-3" />
+            Proceed to Checkout <ArrowRight className="h-3 w-3" />
           </Link>
         </div>
       </div>
