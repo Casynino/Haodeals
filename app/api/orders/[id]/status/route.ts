@@ -15,13 +15,20 @@ const VALID_STATUSES = [
 ]
 
 const DEFAULT_MESSAGES: Record<string, string> = {
-  payment_confirmed:  "Great news! We have received your payment and your order is confirmed.",
-  packaging:          "Your order is now being processed and packed. Please wait while we prepare it with care.",
-  in_transit:         "Your package is on the way to you.",
-  delivered:          "Your order has been delivered successfully. Thank you for shopping with us!",
-  cancelled:          "Your order has been cancelled. If you paid, a refund will be processed shortly.",
-  refund_processing:  "Your refund is being processed. This usually takes 3–5 business days.",
-  refunded:           "Your refund has been completed. The amount should appear in your account.",
+  payment_confirmed:
+    "Great news! We have received your payment and your order is confirmed. Thank you for choosing a great deal with us today.",
+  packaging:
+    "Good news! Your order has been reviewed by our team and is now being packed with care in our facility. We make sure every item is handled carefully so it reaches you safely and in perfect condition.",
+  in_transit:
+    "Great news! Your order has been carefully packed and is now ready for shipping. It is on its way to you. We truly appreciate your trust in us.",
+  delivered:
+    "Your order has been delivered successfully! We hope you love your purchase. Thank you for choosing a great deal with us today.",
+  cancelled:
+    "Your order has been cancelled. If you have already paid, a full refund will be processed shortly.",
+  refund_processing:
+    "We are processing your refund. This typically takes 3–5 business days. We apologize for any inconvenience.",
+  refunded:
+    "Your refund has been completed. The amount should appear in your account. Thank you for your patience.",
 }
 
 export async function PATCH(

@@ -71,7 +71,7 @@ function StageMini({ status }: { status: string }) {
   )
 }
 
-/* ── Quick action button ───────────────────────────────────────── */
+/* ── Quick action panel ────────────────────────────────────────── */
 function QuickAction({
   orderId,
   currentStatus,
@@ -84,18 +84,18 @@ function QuickAction({
   const [saving, setSaving] = useState(false)
   const [showCancel, setShowCancel] = useState(false)
 
-  async function advance(status: string, message?: string) {
+  async function advance(status: string) {
     setSaving(true)
     try {
       const res = await fetch(`/api/orders/${orderId}/status`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ status, message }),
+        body: JSON.stringify({ status }),
       })
       if (!res.ok) throw new Error()
       const updated = await res.json()
       onUpdated(updated)
-      toast.success(`Order marked as "${statusLabel(status)}"`)
+      toast.success(`Order updated — ${statusLabel(status)}`)
     } catch {
       toast.error("Failed to update order")
     } finally {
@@ -104,39 +104,94 @@ function QuickAction({
     }
   }
 
-  const displayStage = statusToDisplayStage(currentStatus)
+  const isDone = ["delivered", "cancelled", "refunded"].includes(currentStatus)
 
   return (
-    <div className="mt-4 space-y-2">
-      {/* Primary action based on current stage */}
-      {displayStage === 1 && ( // packaging → dispatch
-        <button
-          onClick={() => advance("in_transit")}
-          disabled={saving}
-          className="w-full flex items-center justify-center gap-2 py-2.5 bg-purple-400/10 border border-purple-400/30 text-purple-400/80 text-[10px] tracking-widest font-bold hover:bg-purple-400/15 transition-colors disabled:opacity-40"
-        >
-          {saving ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Truck className="h-3.5 w-3.5" />}
-          Dispatch Order — Mark In Transit
-        </button>
+    <div className="mt-4 space-y-2.5">
+
+      {/* ── STAGE 1: payment confirmed → admin approves for packing ── */}
+      {currentStatus === "payment_confirmed" && (
+        <div className="space-y-2">
+          <div className="border border-yellow-400/20 bg-yellow-400/[0.03] px-3 py-2.5">
+            <p className="text-[9px] font-bold text-yellow-400/70 tracking-wider mb-0.5">
+              📋 New order — awaiting your review
+            </p>
+            <p className="text-[8px] text-foreground/40 leading-relaxed">
+              Payment confirmed. Review the order below, then approve it for packing or issue a refund.
+            </p>
+          </div>
+          <button
+            onClick={() => advance("packaging")}
+            disabled={saving}
+            className="w-full flex items-center justify-center gap-2 py-3 bg-yellow-400/10 border border-yellow-400/35 text-yellow-400/85 text-[10px] tracking-widest font-bold hover:bg-yellow-400/16 transition-colors disabled:opacity-40"
+          >
+            {saving ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Package className="h-3.5 w-3.5" />}
+            ✓ Approve &amp; Start Packaging
+          </button>
+        </div>
       )}
 
-      {displayStage === 2 && ( // in_transit → delivered
-        <button
-          onClick={() => advance("delivered")}
-          disabled={saving}
-          className="w-full flex items-center justify-center gap-2 py-2.5 bg-green-400/10 border border-green-400/30 text-green-400/80 text-[10px] tracking-widest font-bold hover:bg-green-400/15 transition-colors disabled:opacity-40"
-        >
-          {saving ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <CheckCircle2 className="h-3.5 w-3.5" />}
-          Mark as Delivered
-        </button>
+      {/* ── STAGE 2: packaging complete → dispatch ── */}
+      {currentStatus === "packaging" && (
+        <div className="space-y-2">
+          <div className="border border-purple-400/20 bg-purple-400/[0.03] px-3 py-2.5">
+            <p className="text-[9px] font-bold text-purple-400/70 tracking-wider mb-0.5">
+              📦 Order is being packed
+            </p>
+            <p className="text-[8px] text-foreground/40 leading-relaxed">
+              When packaging is complete and handed to the delivery driver, mark it as ready for delivery.
+            </p>
+          </div>
+          <button
+            onClick={() => advance("in_transit")}
+            disabled={saving}
+            className="w-full flex items-center justify-center gap-2 py-3 bg-purple-400/10 border border-purple-400/35 text-purple-400/85 text-[10px] tracking-widest font-bold hover:bg-purple-400/16 transition-colors disabled:opacity-40"
+          >
+            {saving ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Truck className="h-3.5 w-3.5" />}
+            🚚 Mark as Ready for Delivery
+          </button>
+        </div>
       )}
 
-      {/* Cancel / refund (exceptions) */}
-      {!["delivered", "cancelled", "refunded"].includes(currentStatus) && (
+      {/* ── STAGE 3: in transit → delivered ── */}
+      {currentStatus === "in_transit" && (
+        <div className="space-y-2">
+          <div className="border border-green-400/20 bg-green-400/[0.03] px-3 py-2.5">
+            <p className="text-[9px] font-bold text-green-400/70 tracking-wider mb-0.5">
+              🚚 Out for delivery
+            </p>
+            <p className="text-[8px] text-foreground/40 leading-relaxed">
+              Once the customer has received the package, confirm delivery below.
+            </p>
+          </div>
+          <button
+            onClick={() => advance("delivered")}
+            disabled={saving}
+            className="w-full flex items-center justify-center gap-2 py-3 bg-green-400/10 border border-green-400/35 text-green-400/85 text-[10px] tracking-widest font-bold hover:bg-green-400/16 transition-colors disabled:opacity-40"
+          >
+            {saving ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <CheckCircle2 className="h-3.5 w-3.5" />}
+            ✓ Mark as Delivered
+          </button>
+        </div>
+      )}
+
+      {/* ── Delivered confirmation ── */}
+      {currentStatus === "delivered" && (
+        <div className="border border-green-400/15 bg-green-400/[0.03] px-3 py-2.5">
+          <p className="text-[9px] text-green-400/60 tracking-wider">
+            ✓ Order delivered — promo code sent to customer
+          </p>
+        </div>
+      )}
+
+      {/* ── Cancel / Refund (available until delivered) ── */}
+      {!isDone && (
         <div>
           {showCancel ? (
             <div className="border border-red-400/20 bg-red-400/[0.04] p-3 space-y-2">
-              <p className="text-[8px] tracking-widest text-red-400/60">CONFIRM CANCEL OR REFUND</p>
+              <p className="text-[8px] tracking-widest text-red-400/55 mb-1">
+                This will notify the customer. Proceed?
+              </p>
               <div className="flex gap-2">
                 <button
                   onClick={() => advance("cancelled")}
@@ -154,7 +209,7 @@ function QuickAction({
                 </button>
                 <button
                   onClick={() => setShowCancel(false)}
-                  className="px-3 border border-white/10 text-foreground/30 text-[9px] hover:text-foreground/50 transition-colors"
+                  className="px-3 border border-white/10 text-foreground/30 hover:text-foreground/50 transition-colors"
                 >
                   <X className="h-3 w-3" />
                 </button>
@@ -163,9 +218,9 @@ function QuickAction({
           ) : (
             <button
               onClick={() => setShowCancel(true)}
-              className="flex items-center gap-1.5 text-[8px] text-foreground/25 hover:text-red-400/60 transition-colors"
+              className="flex items-center gap-1.5 text-[8px] text-foreground/22 hover:text-red-400/55 transition-colors"
             >
-              <XCircle className="h-3 w-3" /> Cancel / issue refund
+              <XCircle className="h-3 w-3" /> Cancel order / issue refund
             </button>
           )}
         </div>
@@ -175,10 +230,10 @@ function QuickAction({
         <button
           onClick={() => advance("refunded")}
           disabled={saving}
-          className="w-full flex items-center justify-center gap-2 py-2 border border-green-400/25 text-green-400/70 text-[9px] tracking-widest hover:bg-green-400/8 transition-colors disabled:opacity-40"
+          className="w-full flex items-center justify-center gap-2 py-2 border border-green-400/25 text-green-400/65 text-[9px] tracking-widest hover:bg-green-400/8 transition-colors disabled:opacity-40"
         >
           {saving ? <Loader2 className="h-3 w-3 animate-spin" /> : <CheckCircle2 className="h-3 w-3" />}
-          Mark Refund Complete
+          Confirm Refund Complete
         </button>
       )}
     </div>
@@ -207,9 +262,10 @@ export default function AdminOrdersPage() {
     setOrders((prev) => prev.map((o) => (o.id === updated.id ? { ...o, ...updated } : o)))
   }
 
-  // Stats
-  const needsAction = orders.filter((o) => ["packaging"].includes(o.status)).length
-  const inTransit   = orders.filter((o) => ["in_transit"].includes(o.status)).length
+  // Stats — payment_confirmed = new unreviewed orders (most urgent)
+  const newOrders   = orders.filter((o) => o.status === "payment_confirmed").length
+  const inPacking   = orders.filter((o) => o.status === "packaging").length
+  const inTransit   = orders.filter((o) => o.status === "in_transit").length
   const delivered   = orders.filter((o) => o.status === "delivered").length
   const issues      = orders.filter((o) => ["cancelled", "refund_processing"].includes(o.status)).length
 
@@ -222,11 +278,12 @@ export default function AdminOrdersPage() {
       (o.trackingId ?? "").toLowerCase().includes(q)
 
     const matchFilter =
-      filter === "all"        ? true :
-      filter === "action"     ? ["packaging"].includes(o.status) :
-      filter === "transit"    ? o.status === "in_transit" :
-      filter === "delivered"  ? o.status === "delivered" :
-      filter === "issues"     ? ["cancelled", "refund_processing", "refunded"].includes(o.status) :
+      filter === "all"       ? true :
+      filter === "new"       ? o.status === "payment_confirmed" :
+      filter === "packing"   ? o.status === "packaging" :
+      filter === "transit"   ? o.status === "in_transit" :
+      filter === "delivered" ? o.status === "delivered" :
+      filter === "issues"    ? ["cancelled", "refund_processing", "refunded"].includes(o.status) :
       true
 
     return matchQ && matchFilter
@@ -249,20 +306,24 @@ export default function AdminOrdersPage() {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-5">
+      <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 mb-5">
         {[
-          { label: "Needs Dispatch",  value: needsAction, color: "text-yellow-400/80", filter: "action"    },
-          { label: "In Transit",      value: inTransit,   color: "text-purple-400/80", filter: "transit"   },
-          { label: "Delivered",       value: delivered,   color: "text-green-400/80",  filter: "delivered"  },
-          { label: "Issues",          value: issues,      color: "text-red-400/80",    filter: "issues"    },
+          { label: "New Orders",  value: newOrders,  color: "text-blue-400/80",   filter: "new",       badge: newOrders > 0 },
+          { label: "Packaging",   value: inPacking,  color: "text-yellow-400/80", filter: "packing",   badge: false },
+          { label: "In Transit",  value: inTransit,  color: "text-purple-400/80", filter: "transit",   badge: false },
+          { label: "Delivered",   value: delivered,  color: "text-green-400/80",  filter: "delivered", badge: false },
+          { label: "Issues",      value: issues,     color: "text-red-400/80",    filter: "issues",    badge: issues > 0 },
         ].map((s) => (
           <button
             key={s.label}
             onClick={() => setFilter(filter === s.filter ? "all" : s.filter)}
-            className={`border px-4 py-3 text-left transition-colors ${
+            className={`relative border px-4 py-3 text-left transition-colors ${
               filter === s.filter ? "border-white/25 bg-white/4" : "border-white/10 hover:border-white/18"
             }`}
           >
+            {s.badge && (
+              <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-current rounded-full animate-ping opacity-70" style={{ color: s.color.replace("/80", "") }} />
+            )}
             <p className={`text-xl font-black ${s.color}`}>{s.value}</p>
             <p className="text-[8px] tracking-widest text-foreground/28 mt-0.5">{s.label.toUpperCase()}</p>
           </button>
@@ -288,11 +349,12 @@ export default function AdminOrdersPage() {
       {/* Filter pills */}
       <div className="flex gap-1.5 mb-4 flex-wrap">
         {[
-          { v: "all",      l: `All (${orders.length})` },
-          { v: "action",   l: `Needs Dispatch (${needsAction})` },
-          { v: "transit",  l: `In Transit (${inTransit})` },
-          { v: "delivered",l: `Delivered (${delivered})` },
-          { v: "issues",   l: `Issues (${issues})` },
+          { v: "all",       l: `All (${orders.length})` },
+          { v: "new",       l: `New Orders (${newOrders})` },
+          { v: "packing",   l: `Packaging (${inPacking})` },
+          { v: "transit",   l: `In Transit (${inTransit})` },
+          { v: "delivered", l: `Delivered (${delivered})` },
+          { v: "issues",    l: `Issues (${issues})` },
         ].map(({ v, l }) => (
           <button
             key={v}
@@ -348,9 +410,14 @@ export default function AdminOrdersPage() {
                       <StageMini status={order.status} />
                     </div>
                     <div className="flex items-center gap-2 flex-shrink-0 mt-0.5">
-                      {["packaging"].includes(order.status) && (
+                      {order.status === "payment_confirmed" && (
+                        <span className="text-[8px] text-blue-400/70 border border-blue-400/25 px-1.5 py-0.5 animate-pulse">
+                          NEW ORDER
+                        </span>
+                      )}
+                      {order.status === "packaging" && (
                         <span className="text-[8px] text-yellow-400/70 border border-yellow-400/25 px-1.5 py-0.5">
-                          ACTION NEEDED
+                          READY TO SHIP
                         </span>
                       )}
                       {["cancelled", "refund_processing"].includes(order.status) && (
