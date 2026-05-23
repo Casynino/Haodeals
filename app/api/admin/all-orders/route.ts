@@ -12,12 +12,22 @@ export async function GET() {
   const orders = await prisma.order.findMany({
     include: {
       user: { select: { name: true, email: true, phone: true } },
-      items: {
-        include: { product: { select: { name: true } } },
-      },
+      items: { include: { product: { select: { name: true, images: true } } } },
+      trackingEvents: { orderBy: { createdAt: "asc" } },
     },
     orderBy: { createdAt: "desc" },
   })
 
-  return NextResponse.json(orders)
+  return NextResponse.json(
+    orders.map((order) => ({
+      ...order,
+      items: order.items.map((item) => ({
+        ...item,
+        product: {
+          ...item.product,
+          images: (() => { try { return JSON.parse(item.product.images) } catch { return [] } })(),
+        },
+      })),
+    }))
+  )
 }
