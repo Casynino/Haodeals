@@ -27,6 +27,12 @@ export default auth((req) => {
     return NextResponse.redirect(new URL("/", req.url))
   }
 
+  // Redirect OAuth users who haven't added a phone number yet
+  const needsPhone = isAuthenticated && (req.auth?.user as { needsPhone?: boolean })?.needsPhone
+  if (needsPhone && !pathname.startsWith("/onboarding")) {
+    return NextResponse.redirect(new URL("/onboarding", req.url))
+  }
+
   return NextResponse.next()
 })
 

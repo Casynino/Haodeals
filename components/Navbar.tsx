@@ -70,15 +70,15 @@ export function Navbar() {
       <div className="border-b border-white/5 hidden md:block">
         <div className="container mx-auto px-4 py-1 flex items-center justify-between">
           <div className="flex items-center gap-4 text-[9px] text-foreground/30 font-mono">
-            <span>SYS.ACTIVE</span>
+            <span>Free delivery nationwide</span>
             <span>◦</span>
-            <span>SECURE.CONNECTION</span>
+            <span>Secure checkout</span>
             <span>◦</span>
-            <span>FREE.DELIVERY.NATIONWIDE</span>
+            <span>M-Pesa accepted</span>
           </div>
           <div className="flex items-center gap-3 text-[9px] text-foreground/30">
             <div className="w-1 h-1 bg-green-400 rounded-full animate-pulse" />
-            <span>MARKET.SYS v2.0.0</span>
+            <span>Tanzania 🇹🇿</span>
           </div>
         </div>
       </div>
@@ -136,12 +136,12 @@ export function Navbar() {
               {notifOpen && (
                 <div className="absolute right-0 top-full mt-1 w-72 bg-background border border-white/15 z-50 shadow-xl">
                   <div className="px-3 py-2 border-b border-white/10 flex items-center justify-between">
-                    <p className="text-[9px] tracking-widest text-foreground/50">// NOTIFICATIONS</p>
-                    <span className="text-[8px] text-foreground/30">{notifications.length} TOTAL</span>
+                    <p className="text-[9px] tracking-widest text-foreground/50">Notifications</p>
+                    <span className="text-[8px] text-foreground/30">{notifications.length} total</span>
                   </div>
                   <div className="max-h-72 overflow-y-auto divide-y divide-white/5">
                     {notifications.length === 0 ? (
-                      <p className="text-[9px] text-foreground/30 text-center py-6 tracking-widest">NO NOTIFICATIONS</p>
+                      <p className="text-[9px] text-foreground/30 text-center py-6 tracking-widest">No notifications yet</p>
                     ) : notifications.map((n) => (
                       <div key={n.id} className={`px-3 py-2.5 ${!n.read ? "bg-foreground/3" : ""}`}>
                         <div className="flex items-start justify-between gap-2">
@@ -169,39 +169,39 @@ export function Navbar() {
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-52 bg-background border border-white/10 p-0 font-mono text-xs" align="end">
                 <div className="px-3 py-2 border-b border-white/10">
-                  <p className="text-[9px] text-foreground/40 tracking-widest">SESSION.USER</p>
+                  <p className="text-[9px] text-foreground/40 tracking-widest">Signed in as</p>
                   <p className="text-xs text-foreground truncate mt-0.5">{user?.email}</p>
                 </div>
                 <DropdownMenuItem
                   onClick={() => router.push("/profile")}
                   className="px-3 py-2 text-[10px] tracking-widest text-foreground/60 hover:text-foreground hover:bg-foreground/5 flex items-center gap-2"
                 >
-                  <User className="h-3 w-3" /> PROFILE
+                  <User className="h-3 w-3" /> Profile
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   onClick={() => router.push("/settings")}
                   className="px-3 py-2 text-[10px] tracking-widest text-foreground/60 hover:text-foreground hover:bg-foreground/5 flex items-center gap-2"
                 >
-                  <Settings className="h-3 w-3" /> SETTINGS
+                  <Settings className="h-3 w-3" /> Settings
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   onClick={() => router.push("/wallet")}
                   className="px-3 py-2 text-[10px] tracking-widest text-foreground/60 hover:text-foreground hover:bg-foreground/5 flex items-center gap-2"
                 >
-                  <Wallet className="h-3 w-3" /> WALLET
+                  <Wallet className="h-3 w-3" /> Wallet
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   onClick={() => router.push("/orders")}
                   className="px-3 py-2 text-[10px] tracking-widest text-foreground/60 hover:text-foreground hover:bg-foreground/5 flex items-center gap-2"
                 >
-                  <Package className="h-3 w-3" /> ORDERS
+                  <Package className="h-3 w-3" /> My Orders
                 </DropdownMenuItem>
                 {isAdmin && (
                   <DropdownMenuItem
                     onClick={() => router.push("/admin")}
                     className="px-3 py-2 text-[10px] tracking-widest text-yellow-400/70 hover:text-yellow-400 hover:bg-yellow-400/5 flex items-center gap-2"
                   >
-                    <ShieldCheck className="h-3 w-3" /> ADMIN.PANEL
+                    <ShieldCheck className="h-3 w-3" /> Admin Panel
                   </DropdownMenuItem>
                 )}
                 <div className="border-t border-white/10">
@@ -209,7 +209,7 @@ export function Navbar() {
                     className="px-3 py-2 text-[10px] tracking-widest text-red-400/70 hover:text-red-400 hover:bg-red-400/5 flex items-center gap-2"
                     onClick={() => signOut({ callbackUrl: "/" })}
                   >
-                    <LogOut className="h-3 w-3" /> TERMINATE.SESSION
+                    <LogOut className="h-3 w-3" /> Sign Out
                   </DropdownMenuItem>
                 </div>
               </DropdownMenuContent>
@@ -217,7 +217,7 @@ export function Navbar() {
           ) : (
             <Link href="/login">
               <button className="px-3 py-1.5 text-[10px] font-mono tracking-widest border border-white/20 text-foreground/60 hover:text-foreground hover:border-white/40 hover:bg-foreground/5 transition-colors">
-                SIGN.IN
+                Sign In
               </button>
             </Link>
           )}
