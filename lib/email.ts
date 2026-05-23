@@ -1,8 +1,7 @@
 import nodemailer from "nodemailer"
 
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL ?? "haodealtz@gmail.com"
-// APP_URL used for links in emails. Set APP_URL env var in Vercel → https://haodealtz.com
-const APP_URL = process.env.APP_URL ?? process.env.AUTH_URL ?? "https://haodealtz.com"
+const APP_URL     = process.env.APP_URL ?? process.env.AUTH_URL ?? "https://haodealtz.com"
 
 function createTransport() {
   const user = process.env.GMAIL_USER
@@ -11,33 +10,81 @@ function createTransport() {
   return nodemailer.createTransport({
     service: "gmail",
     auth: { user, pass },
+    pool: true,
   })
 }
 
 /* ─────────────────────────────────────────────
-   Shared header / footer HTML snippets
+   Helpers
 ───────────────────────────────────────────── */
-const htmlHeader = `
-  <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;max-width:520px;margin:0 auto;background:#ffffff;border:1px solid #e5e5e5;border-radius:4px;overflow:hidden">
-    <div style="background:#ee0000;padding:20px 32px;display:flex;align-items:center">
-      <span style="font-family:monospace;font-weight:900;font-size:20px;color:#ffffff;letter-spacing:0.1em">hão<span style="color:rgba(255,255,255,0.7)">deals</span></span>
-    </div>
-    <div style="padding:32px">
-`
 
-const htmlFooter = (unsubscribeUrl?: string) => `
-    </div>
-    <div style="background:#f9f9f9;border-top:1px solid #e5e5e5;padding:16px 32px">
-      <p style="font-family:monospace;font-size:10px;color:#999;margin:0;letter-spacing:0.05em">
-        HaoDeals · Tanzania's best deals platform · ${APP_URL}
-        ${unsubscribeUrl ? `<br/><a href="${unsubscribeUrl}" style="color:#bbb;text-decoration:underline">Unsubscribe from these emails</a>` : ""}
-      </p>
-    </div>
-  </div>
-`
+/** Invisible preview text — controls inbox snippet, hides from rendered email */
+function previewText(text: string) {
+  return `<div style="display:none;max-height:0;overflow:hidden;mso-hide:all;font-size:1px;line-height:1px;color:#ffffff;opacity:0;">${text}&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌</div>`
+}
+
+/** Full HTML document wrapper — missing DOCTYPE is the #1 spam trigger */
+function wrapHtml(preview: string, body: string, unsubscribeUrl?: string) {
+  return `<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <title>HaoDeals</title>
+  <style>
+    body { margin:0; padding:0; background:#f4f4f4; }
+    a { color: #ee0000; }
+    @media only screen and (max-width:600px) {
+      .email-container { width:100% !important; }
+      .email-body { padding:24px 20px !important; }
+    }
+  </style>
+</head>
+<body style="margin:0;padding:0;background:#f4f4f4;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;">
+  ${previewText(preview)}
+  <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background:#f4f4f4;">
+    <tr><td style="padding:24px 16px;">
+      <table class="email-container" role="presentation" cellspacing="0" cellpadding="0" border="0" width="520" style="max-width:520px;margin:0 auto;background:#ffffff;border:1px solid #e0e0e0;">
+        <!-- Header -->
+        <tr>
+          <td style="background:#ee0000;padding:20px 32px;">
+            <span style="font-family:Georgia,serif;font-weight:900;font-size:22px;color:#ffffff;letter-spacing:0.05em;">hão<span style="color:rgba(255,255,255,0.75);">deals</span></span>
+          </td>
+        </tr>
+        <!-- Body -->
+        <tr>
+          <td class="email-body" style="padding:32px;">
+            ${body}
+          </td>
+        </tr>
+        <!-- Footer -->
+        <tr>
+          <td style="background:#f9f9f9;border-top:1px solid #e5e5e5;padding:16px 32px;">
+            <p style="font-family:Arial,sans-serif;font-size:11px;color:#999;margin:0;line-height:1.6;">
+              HaoDeals &middot; Tanzania&rsquo;s best deals &middot;
+              <a href="${APP_URL}" style="color:#bbb;text-decoration:underline;">${APP_URL.replace("https://", "")}</a>
+              ${unsubscribeUrl ? `<br/><a href="${unsubscribeUrl}" style="color:#bbb;text-decoration:underline;">Unsubscribe</a>` : ""}
+            </p>
+          </td>
+        </tr>
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>`
+}
+
+/** Standard transactional email headers (NOT bulk — avoids promotions tab) */
+const transactionalHeaders = {
+  "X-Mailer": "HaoDeals Mailer",
+  "X-Priority": "3",
+  "Importance": "Normal",
+  "Auto-Submitted": "auto-generated",
+}
 
 /* ─────────────────────────────────────────────
-   Welcome email
+   Welcome email  (transactional)
 ───────────────────────────────────────────── */
 export async function sendWelcomeEmail(to: string, name: string) {
   const transport = createTransport()
@@ -45,43 +92,35 @@ export async function sendWelcomeEmail(to: string, name: string) {
 
   const displayName = name.charAt(0).toUpperCase() + name.slice(1)
 
+  const body = `
+    <h1 style="font-family:Arial,sans-serif;font-size:22px;font-weight:800;color:#0a0a0a;margin:0 0 8px;">Welcome, ${displayName}!</h1>
+    <p style="font-family:Arial,sans-serif;font-size:13px;color:#777;margin:0 0 24px;">Your account is ready.</p>
+    <hr style="border:none;border-top:1px solid #e5e5e5;margin:0 0 24px;"/>
+    <p style="font-family:Arial,sans-serif;font-size:15px;color:#333;line-height:1.7;margin:0 0 8px;">
+      You&rsquo;re now part of HaoDeals &mdash; the best place to shop online in Tanzania.
+    </p>
+    <p style="font-family:Arial,sans-serif;font-size:15px;color:#333;line-height:1.7;margin:0 0 28px;">
+      Browse daily deals on tech, fashion, shoes, accessories and more. Get fast delivery anywhere in Tanzania.
+    </p>
+    <a href="${APP_URL}/products"
+       style="display:inline-block;padding:13px 32px;background:#ee0000;color:#ffffff;font-family:Arial,sans-serif;font-size:14px;font-weight:700;text-decoration:none;border-radius:3px;">
+      Browse Deals &rarr;
+    </a>
+  `
+
   await transport.sendMail({
     from: `HaoDeals <${process.env.GMAIL_USER}>`,
     replyTo: ADMIN_EMAIL,
     to,
     subject: `Welcome to HaoDeals, ${displayName}!`,
-    text: `
-Hi ${displayName},
-
-Welcome to HaoDeals! Your account is now active.
-
-Access your wallet, top up, and start shopping the best deals in Tanzania.
-
-Browse deals: ${APP_URL}/products
-
-—
-HaoDeals · Tanzania's best deals platform
-${APP_URL}
-    `.trim(),
-    html: `
-${htmlHeader}
-      <h1 style="font-size:22px;font-weight:800;color:#0a0a0a;margin:0 0 6px">Welcome, ${displayName}!</h1>
-      <p style="font-size:13px;color:#666;margin:0 0 24px">Your account is ready to go.</p>
-      <hr style="border:none;border-top:1px solid #e5e5e5;margin:0 0 24px"/>
-      <p style="font-size:14px;color:#333;line-height:1.6;margin:0 0 24px">
-        Access your wallet to top up and start shopping the best deals in Tanzania.
-      </p>
-      <a href="${APP_URL}/products"
-         style="display:inline-block;padding:12px 28px;background:#ee0000;color:#ffffff;font-size:13px;font-weight:700;letter-spacing:0.05em;text-decoration:none;border-radius:3px">
-        Browse Deals →
-      </a>
-${htmlFooter()}
-    `,
+    headers: transactionalHeaders,
+    text: `Hi ${displayName},\n\nWelcome to HaoDeals! Your account is ready.\n\nBrowse deals on tech, fashion, shoes, accessories and more — with fast delivery across Tanzania.\n\n${APP_URL}/products\n\n— HaoDeals`,
+    html: wrapHtml(`Hi ${displayName}, welcome to HaoDeals! Your account is now active.`, body),
   }).catch((err) => console.error("[email] welcome failed:", err))
 }
 
 /* ─────────────────────────────────────────────
-   Deal announcement broadcast
+   Deal announcement  (marketing — bulk)
 ───────────────────────────────────────────── */
 export async function sendDealAnnouncement(
   recipients: string[],
@@ -92,9 +131,24 @@ export async function sendDealAnnouncement(
   const transport = createTransport()
   if (!transport) return { sent: 0, failed: 0 }
 
-  const ctaUrl = link ? (link.startsWith("http") ? link : APP_URL + link) : `${APP_URL}/products`
-  const ctaLabel = link ? "View Deal →" : "Browse Deals →"
-  const unsubscribeMailto = `mailto:${ADMIN_EMAIL}?subject=Unsubscribe`
+  const ctaUrl   = link ? (link.startsWith("http") ? link : APP_URL + link) : `${APP_URL}/products`
+  const ctaLabel = "View Deal"
+  const unsubscribeUrl = `mailto:${ADMIN_EMAIL}?subject=Unsubscribe`
+
+  // Clean the subject — remove ALL CAPS words and excessive punctuation
+  const safeSubject = subject.replace(/!{2,}/g, "!").trim()
+
+  const body = `
+    <h1 style="font-family:Arial,sans-serif;font-size:20px;font-weight:800;color:#0a0a0a;margin:0 0 20px;">${safeSubject}</h1>
+    <hr style="border:none;border-top:1px solid #e5e5e5;margin:0 0 20px;"/>
+    <p style="font-family:Arial,sans-serif;font-size:15px;color:#444;line-height:1.8;margin:0 0 28px;white-space:pre-line;">${message}</p>
+    <a href="${ctaUrl}"
+       style="display:inline-block;padding:13px 32px;background:#ee0000;color:#ffffff;font-family:Arial,sans-serif;font-size:14px;font-weight:700;text-decoration:none;border-radius:3px;">
+      ${ctaLabel} &rarr;
+    </a>
+  `
+
+  const plainText = `${safeSubject}\n\n${message}\n\n${ctaLabel}: ${ctaUrl}\n\n---\nHaoDeals · ${APP_URL}\nTo unsubscribe, reply with "Unsubscribe" in the subject.`
 
   let sent = 0, failed = 0
 
@@ -103,35 +157,16 @@ export async function sendDealAnnouncement(
       from: `HaoDeals <${process.env.GMAIL_USER}>`,
       replyTo: ADMIN_EMAIL,
       to,
-      subject,
+      subject: safeSubject,
       headers: {
-        "List-Unsubscribe": `<${unsubscribeMailto}>`,
+        "List-Unsubscribe": `<${unsubscribeUrl}>`,
         "List-Unsubscribe-Post": "List-Unsubscribe=One-Click",
         "Precedence": "bulk",
+        "X-Mailer": "HaoDeals Mailer",
+        "Auto-Submitted": "auto-generated",
       },
-      text: `
-${subject}
-
-${message}
-
-${ctaLabel}: ${ctaUrl}
-
-—
-HaoDeals · Tanzania's best deals platform
-You received this because you have an account with us.
-To unsubscribe, reply to this email with "Unsubscribe" in the subject.
-      `.trim(),
-      html: `
-${htmlHeader}
-        <h1 style="font-size:20px;font-weight:800;color:#0a0a0a;margin:0 0 20px">${subject}</h1>
-        <hr style="border:none;border-top:1px solid #e5e5e5;margin:0 0 20px"/>
-        <p style="font-size:14px;color:#444;line-height:1.7;margin:0 0 24px;white-space:pre-line">${message}</p>
-        <a href="${ctaUrl}"
-           style="display:inline-block;padding:12px 28px;background:#ee0000;color:#ffffff;font-size:13px;font-weight:700;letter-spacing:0.05em;text-decoration:none;border-radius:3px">
-          ${ctaLabel}
-        </a>
-${htmlFooter(unsubscribeMailto)}
-      `,
+      text: plainText,
+      html: wrapHtml(message.slice(0, 120).replace(/\n/g, " "), body, unsubscribeUrl),
     }).then(() => sent++).catch(() => failed++)
   }
 
@@ -139,7 +174,7 @@ ${htmlFooter(unsubscribeMailto)}
 }
 
 /* ─────────────────────────────────────────────
-   Password reset email
+   Password reset  (transactional)
 ───────────────────────────────────────────── */
 export async function sendPasswordResetEmail(to: string, name: string, resetUrl: string) {
   const transport = createTransport()
@@ -147,51 +182,38 @@ export async function sendPasswordResetEmail(to: string, name: string, resetUrl:
 
   const displayName = name.charAt(0).toUpperCase() + name.slice(1)
 
+  const body = `
+    <h1 style="font-family:Arial,sans-serif;font-size:22px;font-weight:800;color:#0a0a0a;margin:0 0 6px;">Reset your password</h1>
+    <p style="font-family:Arial,sans-serif;font-size:13px;color:#777;margin:0 0 24px;">Hi ${displayName},</p>
+    <hr style="border:none;border-top:1px solid #e5e5e5;margin:0 0 24px;"/>
+    <p style="font-family:Arial,sans-serif;font-size:15px;color:#333;line-height:1.7;margin:0 0 8px;">
+      We received a request to reset your HaoDeals password.
+    </p>
+    <p style="font-family:Arial,sans-serif;font-size:13px;color:#999;margin:0 0 28px;">
+      This link expires in <strong style="color:#666;">1 hour</strong>. If you didn&rsquo;t request this, ignore this email.
+    </p>
+    <a href="${resetUrl}"
+       style="display:inline-block;padding:13px 32px;background:#ee0000;color:#ffffff;font-family:Arial,sans-serif;font-size:14px;font-weight:700;text-decoration:none;border-radius:3px;">
+      Reset Password &rarr;
+    </a>
+    <p style="font-family:Arial,sans-serif;font-size:12px;color:#aaa;margin:28px 0 0;line-height:1.6;">
+      Your password won&rsquo;t change unless you click the button above and set a new one.
+    </p>
+  `
+
   await transport.sendMail({
     from: `HaoDeals <${process.env.GMAIL_USER}>`,
     replyTo: ADMIN_EMAIL,
     to,
-    subject: "Reset your HaoDeals password",
-    text: `
-Hi ${displayName},
-
-We received a request to reset your HaoDeals password.
-
-Click the link below to set a new password. This link expires in 1 hour.
-
-Reset link: ${resetUrl}
-
-If you didn't request a password reset, you can safely ignore this email. Your password won't change.
-
-—
-HaoDeals · Tanzania's best deals platform
-${APP_URL}
-    `.trim(),
-    html: `
-${htmlHeader}
-      <h1 style="font-size:22px;font-weight:800;color:#0a0a0a;margin:0 0 6px">Reset your password</h1>
-      <p style="font-size:13px;color:#666;margin:0 0 24px">Hi ${displayName},</p>
-      <hr style="border:none;border-top:1px solid #e5e5e5;margin:0 0 24px"/>
-      <p style="font-size:14px;color:#333;line-height:1.6;margin:0 0 16px">
-        We received a request to reset your HaoDeals password.
-        Click the button below to set a new password.
-      </p>
-      <p style="font-size:12px;color:#999;margin:0 0 24px">This link expires in <strong>1 hour</strong>.</p>
-      <a href="${resetUrl}"
-         style="display:inline-block;padding:13px 32px;background:#ee0000;color:#ffffff;font-size:14px;font-weight:700;text-decoration:none;border-radius:3px;letter-spacing:0.02em">
-        Reset Password →
-      </a>
-      <p style="font-size:12px;color:#aaa;margin:32px 0 0;line-height:1.6">
-        If you didn't request a password reset, you can safely ignore this email.
-        Your password won't change.
-      </p>
-${htmlFooter()}
-    `,
+    subject: "Your HaoDeals password reset link",
+    headers: transactionalHeaders,
+    text: `Hi ${displayName},\n\nWe received a request to reset your HaoDeals password.\n\nReset link (expires in 1 hour):\n${resetUrl}\n\nIf you didn't request this, ignore this email.\n\n— HaoDeals`,
+    html: wrapHtml(`Reset your HaoDeals password — link expires in 1 hour.`, body),
   }).catch((err) => console.error("[email] password reset failed:", err))
 }
 
 /* ─────────────────────────────────────────────
-   New order alert to admin
+   New order alert  (transactional — admin only)
 ───────────────────────────────────────────── */
 export async function sendOrderNotificationToAdmin(order: {
   id: string
@@ -210,54 +232,40 @@ export async function sendOrderNotificationToAdmin(order: {
     .join("\n")
 
   const itemRows = order.items
-    .map(
-      (i) => `
+    .map((i) => `
       <tr>
-        <td style="padding:6px 0;font-size:13px;color:#333;border-bottom:1px solid #f0f0f0">${i.name}</td>
-        <td style="padding:6px 0;font-size:13px;color:#666;text-align:center;border-bottom:1px solid #f0f0f0">×${i.quantity}</td>
-        <td style="padding:6px 0;font-size:13px;color:#0a0a0a;font-weight:700;text-align:right;border-bottom:1px solid #f0f0f0">TSh ${(i.price * i.quantity).toLocaleString()}</td>
-      </tr>`,
-    )
+        <td style="padding:7px 0;font-family:Arial,sans-serif;font-size:13px;color:#333;border-bottom:1px solid #f0f0f0;">${i.name}</td>
+        <td style="padding:7px 0;font-family:Arial,sans-serif;font-size:13px;color:#666;text-align:center;border-bottom:1px solid #f0f0f0;">×${i.quantity}</td>
+        <td style="padding:7px 0;font-family:Arial,sans-serif;font-size:13px;color:#0a0a0a;font-weight:700;text-align:right;border-bottom:1px solid #f0f0f0;">TSh ${(i.price * i.quantity).toLocaleString()}</td>
+      </tr>`)
     .join("")
+
+  const body = `
+    <h1 style="font-family:Arial,sans-serif;font-size:18px;font-weight:800;color:#0a0a0a;margin:0 0 4px;">New Order</h1>
+    <p style="font-family:monospace;font-size:13px;color:#666;margin:0 0 4px;">#${order.id.slice(0, 8).toUpperCase()}</p>
+    <p style="font-family:Arial,sans-serif;font-size:32px;font-weight:900;color:#ee0000;margin:0 0 24px;">TSh ${order.total.toLocaleString()}</p>
+    <hr style="border:none;border-top:1px solid #e5e5e5;margin:0 0 20px;"/>
+    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin-bottom:20px;">
+      ${itemRows}
+    </table>
+    <hr style="border:none;border-top:1px solid #e5e5e5;margin:0 0 20px;"/>
+    <div style="font-family:Arial,sans-serif;font-size:13px;color:#555;line-height:1.9;">
+      <p style="margin:0;"><strong style="color:#333;">Customer:</strong> ${order.userName} &lt;${order.userEmail}&gt;</p>
+      ${order.userPhone ? `<p style="margin:0;"><strong style="color:#333;">Phone:</strong> ${order.userPhone}</p>` : ""}
+      <p style="margin:0;"><strong style="color:#333;">Address:</strong> ${order.address}</p>
+    </div>
+    <a href="${APP_URL}/admin/orders"
+       style="display:inline-block;margin-top:24px;padding:12px 28px;background:#0a0a0a;color:#ffffff;font-family:Arial,sans-serif;font-size:13px;font-weight:700;text-decoration:none;border-radius:3px;">
+      View in Admin &rarr;
+    </a>
+  `
 
   await transport.sendMail({
     from: `HaoDeals <${process.env.GMAIL_USER}>`,
     to: ADMIN_EMAIL,
-    subject: `New Order #${order.id.slice(0, 8).toUpperCase()} — TSh ${order.total.toLocaleString()}`,
-    text: `
-New Order Received
-
-Order: #${order.id.slice(0, 8).toUpperCase()}
-Total: TSh ${order.total.toLocaleString()}
-
-Items:
-${itemLines}
-
-Customer: ${order.userName} <${order.userEmail}>
-${order.userPhone ? `Phone: ${order.userPhone}\n` : ""}Address: ${order.address}
-
-View in admin: ${APP_URL}/admin/orders
-    `.trim(),
-    html: `
-${htmlHeader}
-      <h1 style="font-size:18px;font-weight:800;color:#0a0a0a;margin:0 0 4px">New Order Received</h1>
-      <p style="font-family:monospace;font-size:13px;color:#666;margin:0 0 4px">#${order.id.slice(0, 8).toUpperCase()}</p>
-      <p style="font-size:28px;font-weight:900;color:#ee0000;margin:0 0 24px">TSh ${order.total.toLocaleString()}</p>
-      <hr style="border:none;border-top:1px solid #e5e5e5;margin:0 0 20px"/>
-      <table style="width:100%;border-collapse:collapse;margin-bottom:20px">
-        ${itemRows}
-      </table>
-      <hr style="border:none;border-top:1px solid #e5e5e5;margin:0 0 20px"/>
-      <div style="font-size:13px;color:#555;line-height:1.8">
-        <p style="margin:0"><strong style="color:#333">Customer:</strong> ${order.userName} &lt;${order.userEmail}&gt;</p>
-        ${order.userPhone ? `<p style="margin:0"><strong style="color:#333">Phone:</strong> ${order.userPhone}</p>` : ""}
-        <p style="margin:0"><strong style="color:#333">Address:</strong> ${order.address}</p>
-      </div>
-      <a href="${APP_URL}/admin/orders"
-         style="display:inline-block;margin-top:24px;padding:12px 28px;background:#0a0a0a;color:#ffffff;font-size:13px;font-weight:700;letter-spacing:0.05em;text-decoration:none;border-radius:3px">
-        View in Admin →
-      </a>
-${htmlFooter()}
-    `,
+    subject: `New order #${order.id.slice(0, 8).toUpperCase()} — TSh ${order.total.toLocaleString()}`,
+    headers: transactionalHeaders,
+    text: `New Order #${order.id.slice(0, 8).toUpperCase()}\nTotal: TSh ${order.total.toLocaleString()}\n\nItems:\n${itemLines}\n\nCustomer: ${order.userName} <${order.userEmail}>\n${order.userPhone ? `Phone: ${order.userPhone}\n` : ""}Address: ${order.address}\n\nAdmin: ${APP_URL}/admin/orders`,
+    html: wrapHtml(`New order from ${order.userName} — TSh ${order.total.toLocaleString()}`, body),
   }).catch((err) => console.error("[email] order notification failed:", err))
 }
