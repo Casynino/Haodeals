@@ -19,10 +19,11 @@ function LoginForm() {
     e.preventDefault()
     setLoading(true)
     const result = await signIn("credentials", { email: form.email, password: form.password, redirect: false })
-    if (result?.ok) {
+    // In NextAuth v5, result.ok reflects HTTP 200 (always true).
+    // result.error is set to "CredentialsSignin" when credentials are wrong.
+    // We MUST check !result.error — not result.ok — to know if auth succeeded.
+    if (result && !result.error) {
       toast.success("Welcome back!", { className: "font-mono text-xs" })
-      // Hard navigate so the server re-reads the fresh session cookie.
-      // router.push + router.refresh has a race condition in App Router.
       window.location.href = callbackUrl
     } else {
       toast.error("Incorrect email or password.", { className: "font-mono text-xs" })
@@ -104,7 +105,12 @@ function LoginForm() {
         </div>
 
         <div className="space-y-1.5">
-          <label className="text-xs text-foreground/50 font-medium">Password</label>
+          <div className="flex items-center justify-between">
+            <label className="text-xs text-foreground/50 font-medium">Password</label>
+            <Link href="/forgot-password" className="text-xs text-foreground/40 hover:text-foreground transition-colors">
+              Forgot password?
+            </Link>
+          </div>
           <div className="relative">
             <input
               type={showPassword ? "text" : "password"}
