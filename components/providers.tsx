@@ -30,8 +30,8 @@ if (typeof window !== "undefined") {
     window.BroadcastChannel = function (name: string) {
       return name === "next-auth" ? _noopChannel : new _RealBC(name)
     }
-    // @ts-expect-error
-    window.BroadcastChannel.prototype = _RealBC.prototype
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ;(window.BroadcastChannel as any).prototype = _RealBC.prototype
   }
 }
 // ─────────────────────────────────────────────────────────────────────────────
