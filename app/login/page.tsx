@@ -1,10 +1,10 @@
 "use client"
 
 import { Suspense, useState } from "react"
-import { signIn } from "next-auth/react"
+import { signIn, useSession } from "next-auth/react"
 import { useSearchParams } from "next/navigation"
 import Link from "next/link"
-import { Eye, EyeOff, Loader2 } from "lucide-react"
+import { Eye, EyeOff, Loader2, UserCheck } from "lucide-react"
 import { toast } from "sonner"
 
 function LoginForm() {
@@ -14,6 +14,8 @@ function LoginForm() {
   const [oauthLoading, setOauthLoading] = useState<"google" | "apple" | null>(null)
   const [showPassword, setShowPassword] = useState(false)
   const [form, setForm] = useState({ email: "", password: "" })
+  const { data: session } = useSession()
+  const currentUser = session?.user as { name?: string; email?: string } | undefined
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -24,6 +26,14 @@ function LoginForm() {
     // We MUST check !result.error — not result.ok — to know if auth succeeded.
     if (result && !result.error) {
       toast.success("Welcome back!", { className: "font-mono text-xs" })
+      // Silently attempt admin token issuance — no-op for non-admin users
+      try {
+        await fetch("/api/auth/admin/callback/credentials", {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded", "X-Auth-Return-Redirect": "1" },
+          body: new URLSearchParams({ email: form.email, password: form.password }).toString(),
+        })
+      } catch { /* user is not admin — ignore */ }
       window.location.href = callbackUrl
     } else {
       toast.error("Incorrect email or password.", { className: "font-mono text-xs" })
@@ -38,6 +48,21 @@ function LoginForm() {
 
   return (
     <div className="w-full max-w-[360px] space-y-7">
+
+      {/* Already signed in — switching accounts banner */}
+      {currentUser && (
+        <div className="flex items-start gap-2.5 px-3 py-2.5 bg-foreground/5 border border-white/10 text-[10px] font-mono text-foreground/50">
+          <UserCheck className="h-3.5 w-3.5 mt-0.5 shrink-0 text-foreground/30" />
+          <span>
+            Signed in as <span className="text-foreground/70">{currentUser.email}</span>.{" "}
+            Sign in below to switch accounts, or{" "}
+            <Link href="/" className="text-foreground/60 hover:text-foreground underline underline-offset-2 transition-colors">
+              go to home
+            </Link>
+            .
+          </span>
+        </div>
+      )}
 
       {/* Brand + heading */}
       <div className="text-center space-y-2">

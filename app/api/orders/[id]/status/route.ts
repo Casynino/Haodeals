@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
-import { auth } from "@/auth"
+import { adminAuth as auth } from "@/auth-admin"
 import { sendOrderStatusEmail, sendPromoCodeEmail } from "@/lib/email"
 import { generatePromoCode } from "@/lib/order-utils"
 
