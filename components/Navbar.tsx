@@ -207,7 +207,13 @@ export function Navbar() {
                 <div className="border-t border-white/10">
                   <DropdownMenuItem
                     className="px-3 py-2 text-[10px] tracking-widest text-red-400/70 hover:text-red-400 hover:bg-red-400/5 flex items-center gap-2"
-                    onClick={() => signOut({ callbackUrl: "/" })}
+                    onClick={async () => {
+                      // Clear admin cookie alongside the customer session
+                      try {
+                        await fetch("/api/auth/admin/signout", { method: "POST", headers: { "X-Auth-Return-Redirect": "1" } })
+                      } catch { /* ignore if not admin */ }
+                      signOut({ callbackUrl: "/" })
+                    }}
                   >
                     <LogOut className="h-3 w-3" /> Sign Out
                   </DropdownMenuItem>
