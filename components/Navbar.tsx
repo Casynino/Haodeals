@@ -17,6 +17,7 @@ import { CartDrawer } from "@/components/CartDrawer"
 import { useCart } from "@/hooks/useCart"
 import { Package, LogOut, User, ShieldCheck, Search, Wallet, Settings, Bell } from "lucide-react"
 import { useState, useEffect, useRef } from "react"
+import { tryAdminSignOut } from "@/app/actions/admin-auth"
 
 export function Navbar() {
   const { data: session } = useSession()
@@ -208,9 +209,7 @@ export function Navbar() {
                   <DropdownMenuItem
                     className="px-4 py-2.5 text-xs tracking-wide text-red-400/75 hover:text-red-400 hover:bg-red-400/5 flex items-center gap-2.5"
                     onClick={async () => {
-                      try {
-                        await fetch("/api/auth/admin/signout", { method: "POST", headers: { "X-Auth-Return-Redirect": "1" } })
-                      } catch { /* ignore if not admin */ }
+                      await tryAdminSignOut()
                       signOut({ callbackUrl: "/" })
                     }}
                   >

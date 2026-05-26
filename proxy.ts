@@ -45,7 +45,7 @@ export default auth(async (req) => {
   if (adminPaths.some((p) => pathname.startsWith(p))) {
     const adminToken = await getAdminToken(req)
     if (!adminToken) {
-      return NextResponse.redirect(new URL("/login", req.url))
+      return NextResponse.redirect(new URL(`/login?callbackUrl=${encodeURIComponent(pathname)}`, req.url))
     }
     if ((adminToken as { role?: string }).role !== "admin") {
       return NextResponse.redirect(new URL("/", req.url))
