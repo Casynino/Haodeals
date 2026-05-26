@@ -74,8 +74,8 @@ export async function PATCH(
     }),
   ])
 
-  // Add status message to conversation — non-blocking
-  addOrderStatusMessage(id, status, eventMessage).catch(() => {})
+  // Add status message to conversation
+  await addOrderStatusMessage(id, status, eventMessage).catch(() => {})
 
   // Customer status email — non-blocking
   sendOrderStatusEmail(order.user.email, order.user.name ?? "Customer", {
