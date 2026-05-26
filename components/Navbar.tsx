@@ -2,13 +2,11 @@
 
 import Link from "next/link"
 import { useSession, signOut } from "next-auth/react"
-import { useRouter, usePathname } from "next/navigation"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { useRouter } from "next/navigation"
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
@@ -19,34 +17,11 @@ import { Package, LogOut, User, ShieldCheck, Search, Wallet, Settings, Bell } fr
 import { useState, useEffect, useRef } from "react"
 import { tryAdminSignOut } from "@/app/actions/admin-auth"
 
-type SessionUser = { name?: string; email?: string; image?: string; role?: string }
-
 export function Navbar() {
   const { data: session } = useSession()
   const router = useRouter()
-  const pathname = usePathname()
-
-  // ------------------------------------------------------------
-  // Admin session — read independently from hao-admin-token via
-  // /api/auth/admin/session so the Navbar stays correct even when
-  // the customer authjs.session-token is absent or mismatched.
-  // ------------------------------------------------------------
-  const [adminUser, setAdminUser] = useState<SessionUser | null>(null)
-
-  useEffect(() => {
-    fetch("/api/auth/admin/session")
-      .then((r) => (r.ok ? r.json() : null))
-      .then((data: { user?: SessionUser } | null) => {
-        setAdminUser(data?.user?.role === "admin" ? (data.user ?? null) : null)
-      })
-      .catch(() => setAdminUser(null))
-  }, [])
-
-  // Prefer adminUser for display; fall back to customer session
-  const user: SessionUser | undefined = adminUser ?? (session?.user as SessionUser | undefined)
-  // isAdmin: true only when hao-admin-token is present and valid
-  const isAdmin = !!adminUser
-  const isSignedIn = !!session || !!adminUser
+  const user = session?.user as { name?: string; email?: string; image?: string; role?: string } | undefined
+  const isAdmin = user?.role === "admin"
 
   const [mounted, setMounted] = useState(false)
   const [notifOpen, setNotifOpen] = useState(false)
@@ -79,26 +54,10 @@ export function Navbar() {
     }
   }
 
-  // ------------------------------------------------------------
-  // Context-aware sign-out:
-  //   - On admin routes: clear ONLY hao-admin-token — the customer
-  //     session (authjs.session-token) stays intact, so other tabs
-  //     that share the customer cookie are completely unaffected.
-  //   - Elsewhere: full sign-out (clears both tokens).
-  // ------------------------------------------------------------
   async function handleSignOut() {
-    const isAdminRoute = pathname.startsWith("/admin")
-    if (isAdminRoute && isAdmin) {
-      // Admin-panel sign-out: only revoke the admin token
-      await tryAdminSignOut()
-      setAdminUser(null)
-      router.push("/")
-      router.refresh()
-    } else {
-      // Full sign-out: clear admin token (if any) + customer session
-      if (adminUser) await tryAdminSignOut()
-      signOut({ callbackUrl: "/" })
-    }
+    // Always clear both tokens so there is no stale admin token left behind
+    if (isAdmin) await tryAdminSignOut()
+    signOut({ callbackUrl: "/" })
   }
 
   const itemCount = mounted ? count() : 0
@@ -206,7 +165,7 @@ export function Navbar() {
 
           <ThemeToggle />
 
-          {isSignedIn ? (
+          {session ? (
             <DropdownMenu>
               <DropdownMenuTrigger className="flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-mono tracking-wider text-foreground/60 hover:text-foreground hover:bg-foreground/5 transition-colors border border-transparent hover:border-white/15">
                 <span className="text-foreground/40">&gt;</span>
@@ -217,9 +176,6 @@ export function Navbar() {
                 <div className="px-4 py-3 border-b border-white/10">
                   <p className="text-[10px] text-foreground/50 tracking-widest mb-0.5">Signed in as</p>
                   <p className="text-xs text-foreground/85 truncate">{user?.email}</p>
-                  {isAdmin && (
-                    <p className="text-[10px] text-yellow-400/60 mt-0.5 tracking-widest">Admin session active</p>
-                  )}
                 </div>
                 <DropdownMenuItem
                   onClick={() => router.push("/profile")}
@@ -258,8 +214,7 @@ export function Navbar() {
                     className="px-4 py-2.5 text-xs tracking-wide text-red-400/75 hover:text-red-400 hover:bg-red-400/5 flex items-center gap-2.5"
                     onClick={handleSignOut}
                   >
-                    <LogOut className="h-3.5 w-3.5" />
-                    {isAdmin && pathname.startsWith("/admin") ? "Leave Admin Panel" : "Sign Out"}
+                    <LogOut className="h-3.5 w-3.5" /> Sign Out
                   </DropdownMenuItem>
                 </div>
               </DropdownMenuContent>
@@ -286,7 +241,7 @@ export function Navbar() {
               {link.label}
             </Link>
           ))}
-          {isSignedIn && (
+          {session && (
             <Link
               href="/wallet"
               className="flex-shrink-0 px-4 py-2.5 text-xs font-mono tracking-wider text-foreground/55 hover:text-foreground border-r border-foreground/10 hover:bg-foreground/5 transition-colors"
@@ -294,7 +249,7 @@ export function Navbar() {
               WALLET
             </Link>
           )}
-          {isSignedIn && isAdmin && (
+          {session && isAdmin && (
             <Link
               href="/admin"
               className="flex-shrink-0 px-4 py-2.5 text-xs font-mono tracking-wider text-yellow-400/65 hover:text-yellow-400 border-r border-foreground/10 transition-colors"
