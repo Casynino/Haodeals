@@ -104,8 +104,8 @@ export async function POST(request: Request) {
 
   await prisma.cart.deleteMany({ where: { userId } })
 
-  // Create messaging conversation for this order — non-blocking
-  createOrderConversation(order.id, userId, order.trackingId, order.total).catch(() => {})
+  // Create messaging conversation for this order
+  await createOrderConversation(order.id, userId, order.trackingId, order.total).catch(() => {})
 
   // Admin notification — non-blocking
   sendOrderNotificationToAdmin({
