@@ -76,9 +76,9 @@ export default function OrdersPage() {
     <div className="container mx-auto px-4 py-8 max-w-3xl font-mono">
       <div className="flex items-center justify-between mb-6 border-b border-white/10 pb-4">
         <div className="flex items-center gap-3">
-          <span className="text-foreground/30 text-[10px]">//</span>
-          <h1 className="text-[11px] tracking-[0.3em] text-foreground/70">MY ORDERS</h1>
-          <span className="text-[9px] text-foreground/30">[{orders.length}]</span>
+          <span className="text-foreground/45 text-xs">//</span>
+          <h1 className="text-lg font-semibold tracking-[0.2em] text-foreground/90">MY ORDERS</h1>
+          <span className="text-xs text-foreground/50">{orders.length} orders</span>
         </div>
       </div>
 
@@ -98,13 +98,13 @@ export default function OrdersPage() {
             >
               <div className="flex items-start justify-between">
                 <div className="space-y-0.5">
-                  <p className="text-[8px] tracking-widest text-foreground/30">
+                  <p className="text-[10px] tracking-widest text-foreground/55 font-medium">
                     ORDER #{order.id.slice(0, 8).toUpperCase()}
                     {order.trackingId && (
-                      <span className="ml-2 text-foreground/20">· {order.trackingId}</span>
+                      <span className="ml-2 text-foreground/40">· {order.trackingId}</span>
                     )}
                   </p>
-                  <p className="text-[9px] text-foreground/40">
+                  <p className="text-xs text-foreground/55 mt-0.5">
                     {new Date(order.createdAt).toLocaleDateString("en-US", {
                       year: "numeric", month: "long", day: "numeric",
                     })}
@@ -113,7 +113,7 @@ export default function OrdersPage() {
                 <div className="flex flex-col items-end gap-1.5">
                   <div className="flex items-center gap-1.5">
                     <span className={`inline-block w-1.5 h-1.5 ${cfg.dot}`} />
-                    <span className={`text-[8px] tracking-widest border px-2 py-0.5 ${cfg.color}`}>
+                    <span className={`text-[10px] tracking-wide border px-2 py-0.5 ${cfg.color}`}>
                       {cfg.label}
                     </span>
                   </div>
@@ -142,10 +142,10 @@ export default function OrdersPage() {
                 )}
               </div>
 
-              <div className="flex items-center justify-between text-[9px] text-foreground/30">
+              <div className="flex items-center justify-between text-xs text-foreground/50">
                 <span>{order.items.length} item{order.items.length !== 1 ? "s" : ""}</span>
-                <span className="flex items-center gap-1 text-foreground/30 group-hover:text-foreground/50 transition-colors">
-                  Track order <ChevronRight className="h-3 w-3" />
+                <span className="flex items-center gap-1 text-foreground/50 group-hover:text-foreground/70 transition-colors">
+                  Track order <ChevronRight className="h-3.5 w-3.5" />
                 </span>
               </div>
             </Link>

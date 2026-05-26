@@ -76,11 +76,11 @@ export default function AdminPage() {
       {/* Header */}
       <div className="flex items-center justify-between mb-6 border-b border-white/10 pb-4">
         <div className="flex items-center gap-3">
-          <span className="text-foreground/30 text-[10px]">//</span>
-          <h1 className="text-[11px] tracking-[0.3em] text-foreground/70">ADMIN.DASHBOARD</h1>
-          <div className="flex items-center gap-1 ml-2">
-            <div className="w-1.5 h-1.5 bg-green-400/60 rounded-full animate-pulse" />
-            <span className="text-[8px] text-green-400/60">SYS.ACTIVE</span>
+          <span className="text-foreground/45 text-xs">//</span>
+          <h1 className="text-lg font-semibold tracking-[0.2em] text-foreground/90">ADMIN DASHBOARD</h1>
+          <div className="flex items-center gap-1.5 ml-2">
+            <div className="w-1.5 h-1.5 bg-green-400/75 rounded-full animate-pulse" />
+            <span className="text-[10px] text-green-400/75">Active</span>
           </div>
         </div>
         <Link
@@ -101,7 +101,7 @@ export default function AdminPage() {
             ) : (
               <p className={`text-xl font-bold ${accent}`}>{value}</p>
             )}
-            <p className="text-[8px] tracking-widest text-foreground/30">{label}</p>
+            <p className="text-[10px] tracking-widest text-foreground/55">{label}</p>
           </div>
         ))}
       </div>
@@ -115,8 +115,8 @@ export default function AdminPage() {
           <div className="flex items-center gap-3">
             <Package className="h-4 w-4 text-foreground/30" />
             <div>
-              <p className="text-[10px] tracking-widest text-foreground/60 group-hover:text-foreground transition-colors">MANAGE.PRODUCTS</p>
-              <p className="text-[8px] text-foreground/25">ADD.EDIT.DELETE.PRODUCTS</p>
+              <p className="text-xs tracking-widest text-foreground/70 group-hover:text-foreground transition-colors">MANAGE PRODUCTS</p>
+              <p className="text-[10px] text-foreground/45 mt-0.5">Add, edit, delete products</p>
             </div>
           </div>
           <ArrowRight className="h-3.5 w-3.5 text-foreground/20 group-hover:text-foreground/60 transition-colors" />
@@ -128,8 +128,8 @@ export default function AdminPage() {
           <div className="flex items-center gap-3">
             <ShoppingBag className="h-4 w-4 text-foreground/30" />
             <div>
-              <p className="text-[10px] tracking-widest text-foreground/60 group-hover:text-foreground transition-colors">MANAGE.ORDERS</p>
-              <p className="text-[8px] text-foreground/25">TRACK.AND.MANAGE.ORDERS</p>
+              <p className="text-xs tracking-widest text-foreground/70 group-hover:text-foreground transition-colors">MANAGE ORDERS</p>
+              <p className="text-[10px] text-foreground/45 mt-0.5">Track and manage orders</p>
             </div>
           </div>
           <ArrowRight className="h-3.5 w-3.5 text-foreground/20 group-hover:text-foreground/60 transition-colors" />
@@ -159,15 +159,15 @@ export default function AdminPage() {
             {stats.recentOrders.map((order) => (
               <div key={order.id} className="flex items-center justify-between gap-3 px-4 py-3 hover:bg-foreground/3 transition-colors">
                 <div className="min-w-0 flex-1">
-                  <p className="text-[10px] text-foreground/60 uppercase truncate">
+                  <p className="text-xs text-foreground/75 uppercase truncate">
                     {order.user.name ?? order.user.email}
                   </p>
-                  <p className="text-[8px] text-foreground/25 truncate">
-                    #{order.id.slice(0, 8).toUpperCase()} · {(order.items as unknown[]).length} ITEMS · {new Date(order.createdAt).toLocaleDateString()}
+                  <p className="text-[10px] text-foreground/45 truncate mt-0.5">
+                    #{order.id.slice(0, 8).toUpperCase()} · {(order.items as unknown[]).length} items · {new Date(order.createdAt).toLocaleDateString()}
                   </p>
                 </div>
                 <div className="flex items-center gap-2 flex-shrink-0">
-                  <span className={`text-[8px] tracking-widest border px-1.5 py-0.5 hidden sm:inline ${statusConfig[order.status] ?? "text-foreground/40 border-white/15"}`}>
+                  <span className={`text-[10px] tracking-wide border px-2 py-0.5 hidden sm:inline ${statusConfig[order.status] ?? "text-foreground/55 border-white/20"}`}>
                     {order.status.toUpperCase()}
                   </span>
                   <span className="text-green-400/70 text-xs font-mono">{formatPrice(order.total)}</span>
@@ -187,7 +187,7 @@ export default function AdminPage() {
         </div>
         <form onSubmit={handleAnnounce} className="p-4 space-y-3">
           <div>
-            <label className="text-[8px] tracking-widest text-foreground/30 block mb-1">SUBJECT</label>
+            <label className="text-[10px] tracking-widest text-foreground/55 block mb-1.5">SUBJECT</label>
             <input
               type="text"
               value={announce.subject}
@@ -198,7 +198,7 @@ export default function AdminPage() {
             />
           </div>
           <div>
-            <label className="text-[8px] tracking-widest text-foreground/30 block mb-1">MESSAGE</label>
+            <label className="text-[10px] tracking-widest text-foreground/55 block mb-1.5">MESSAGE</label>
             <textarea
               value={announce.message}
               onChange={(e) => setAnnounce({ ...announce, message: e.target.value })}
@@ -209,7 +209,7 @@ export default function AdminPage() {
             />
           </div>
           <div>
-            <label className="text-[8px] tracking-widest text-foreground/30 block mb-1">LINK <span className="text-foreground/20">(OPTIONAL — e.g. /products or full URL)</span></label>
+            <label className="text-[10px] tracking-widest text-foreground/55 block mb-1.5">LINK <span className="text-foreground/35">(optional — e.g. /products)</span></label>
             <input
               type="text"
               value={announce.link}
