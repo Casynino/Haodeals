@@ -180,8 +180,8 @@ export default function CheckoutPage() {
   return (
     <div className="container mx-auto px-4 py-8 pb-24 lg:pb-8 max-w-6xl font-mono">
       <div className="flex items-center gap-3 mb-6 border-b border-foreground/10 pb-4">
-        <span className="text-foreground/25 text-[10px]">//</span>
-        <h1 className="text-[11px] tracking-[0.3em] text-foreground/65">CHECKOUT</h1>
+        <span className="text-foreground/45 text-xs">//</span>
+        <h1 className="text-lg font-semibold tracking-[0.2em] text-foreground/90">CHECKOUT</h1>
       </div>
 
       <form id="checkout-form" onSubmit={handleSubmit}>
@@ -191,8 +191,8 @@ export default function CheckoutPage() {
             {/* Shipping */}
             <div className="border border-foreground/10 p-5 space-y-4">
               <div className="flex items-center gap-2">
-                <Truck className="h-3 w-3 text-foreground/30" />
-                <p className="text-[9px] tracking-widest text-foreground/40">DELIVERY INFORMATION</p>
+                <Truck className="h-3.5 w-3.5 text-foreground/55" />
+                <p className="text-xs tracking-widest text-foreground/65 font-medium">DELIVERY INFORMATION</p>
               </div>
               <div className="grid grid-cols-2 gap-3">
                 {[
@@ -202,7 +202,7 @@ export default function CheckoutPage() {
                   { name: "city",     label: "City / Region",  placeholder: "Dar es Salaam",  colSpan: "col-span-2" },
                 ].map((field) => (
                   <div key={field.name} className={field.colSpan}>
-                    <label className="text-[8px] tracking-widest text-foreground/30 block mb-1">{field.label}</label>
+                    <label className="text-[10px] tracking-widest text-foreground/55 block mb-1.5">{field.label}</label>
                     <input
                       type={field.type ?? "text"}
                       name={field.name}
@@ -210,7 +210,7 @@ export default function CheckoutPage() {
                       onChange={handleChange}
                       placeholder={field.placeholder}
                       required
-                      className="w-full bg-transparent border border-foreground/15 px-3 py-2 text-[10px] text-foreground/70 placeholder:text-foreground/20 focus:outline-none focus:border-foreground/40 transition-colors"
+                      className="w-full bg-transparent border border-foreground/18 px-3 py-2.5 text-xs text-foreground/85 placeholder:text-foreground/30 focus:outline-none focus:border-foreground/45 transition-colors"
                     />
                   </div>
                 ))}
@@ -220,8 +220,8 @@ export default function CheckoutPage() {
             {/* Promo code */}
             <div className="border border-foreground/10 p-5 space-y-3">
               <div className="flex items-center gap-2">
-                <Tag className="h-3 w-3 text-foreground/30" />
-                <p className="text-[9px] tracking-widest text-foreground/40">PROMO CODE</p>
+                <Tag className="h-3.5 w-3.5 text-foreground/55" />
+                <p className="text-xs tracking-widest text-foreground/65 font-medium">PROMO CODE</p>
               </div>
               {appliedCode ? (
                 <div className="flex items-center justify-between border border-green-400/25 bg-green-400/[0.04] px-3 py-2">
@@ -270,8 +270,8 @@ export default function CheckoutPage() {
                 </span>
               </div>
               <div className="flex items-center justify-between py-2 border border-foreground/10 px-3">
-                <span className="text-[8px] tracking-widest text-foreground/30">WALLET BALANCE</span>
-                <span className={`text-[11px] font-mono font-bold ${walletBalance !== null && walletBalance >= finalTotal ? "text-green-400/80" : "text-red-400/70"}`}>
+                <span className="text-[10px] tracking-widest text-foreground/55">WALLET BALANCE</span>
+                <span className={`text-sm font-mono font-bold ${walletBalance !== null && walletBalance >= finalTotal ? "text-green-400" : "text-red-400/80"}`}>
                   {walletBalance !== null ? formatPrice(walletBalance) : "—"}
                 </span>
               </div>
@@ -296,7 +296,7 @@ export default function CheckoutPage() {
           {/* Right: Order Summary */}
           <div className="hidden lg:block">
             <div className="border border-foreground/10 p-5 space-y-4 sticky top-24">
-              <p className="text-[9px] tracking-widest text-foreground/40">ORDER SUMMARY</p>
+              <p className="text-xs tracking-widest text-foreground/65 font-semibold">ORDER SUMMARY</p>
               <div className="space-y-2 max-h-48 overflow-y-auto">
                 {items.map((item) => (
                   <div key={item.id} className="flex gap-2">

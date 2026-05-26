@@ -33,8 +33,8 @@ export default function CartPage() {
       {/* Header */}
       <div className="flex items-center justify-between mb-6 border-b border-white/10 pb-4">
         <div className="flex items-center gap-3">
-          <h1 className="text-[11px] tracking-[0.3em] text-foreground/70">Your Cart</h1>
-          <span className="text-[9px] text-foreground/30">({items.length} {items.length === 1 ? "item" : "items"})</span>
+          <h1 className="text-lg font-semibold tracking-[0.2em] text-foreground/90">Your Cart</h1>
+          <span className="text-xs text-foreground/55">{items.length} {items.length === 1 ? "item" : "items"}</span>
         </div>
         <button
           onClick={() => { clearCart(); toast.success("Cart cleared") }}
@@ -55,7 +55,7 @@ export default function CartPage() {
               <div className="flex-1 min-w-0">
                 <div className="flex items-start justify-between">
                   <Link href={`/products/${item.id}`}>
-                    <h3 className="text-[10px] tracking-wide uppercase text-foreground/70 hover:text-foreground transition-colors line-clamp-2">
+                    <h3 className="text-xs tracking-wide text-foreground/80 hover:text-foreground transition-colors line-clamp-2">
                       {item.name}
                     </h3>
                   </Link>
@@ -66,10 +66,10 @@ export default function CartPage() {
                     <Trash2 className="h-3 w-3" />
                   </button>
                 </div>
-                <div className="flex items-center gap-1.5 mt-0.5">
-                  <span className="text-xs text-green-400/80">{formatPrice(item.price)}</span>
+                <div className="flex items-center gap-2 mt-1">
+                  <span className="text-sm text-green-400 font-mono">{formatPrice(item.price)}</span>
                   {item.originalPrice && item.originalPrice > item.price && (
-                    <span className="text-[8px] text-foreground/25 line-through">{formatPrice(item.originalPrice)}</span>
+                    <span className="text-[10px] text-foreground/40 line-through">{formatPrice(item.originalPrice)}</span>
                   )}
                 </div>
                 <div className="flex items-center justify-between mt-2">
@@ -99,18 +99,18 @@ export default function CartPage() {
         {/* Order summary — desktop only (mobile gets sticky bottom bar) */}
         <div className="hidden lg:block lg:col-span-1">
           <div className="border border-white/10 p-5 space-y-4 sticky top-24">
-            <p className="text-[9px] tracking-widest text-foreground/40">Order Summary</p>
+            <p className="text-xs tracking-widest text-foreground/60 font-semibold">Order Summary</p>
 
             <div className="space-y-2.5 text-[10px]">
               <div className="flex justify-between">
-                <span className="text-foreground/40 tracking-widest">Subtotal ({items.length} {items.length === 1 ? "item" : "items"})</span>
-                <span className="text-foreground/70">{formatPrice(cartTotal)}</span>
+                <span className="text-foreground/55">Subtotal ({items.length} {items.length === 1 ? "item" : "items"})</span>
+                <span className="text-foreground/80">{formatPrice(cartTotal)}</span>
               </div>
             </div>
 
             <div className="border-t border-white/10 pt-3 flex justify-between items-center">
-              <span className="text-[9px] tracking-widest text-foreground/40">Total</span>
-              <span className="text-green-400/80 font-mono">{formatPrice(finalTotal)}</span>
+              <span className="text-xs tracking-widest text-foreground/60 font-semibold">Total</span>
+              <span className="text-green-400 font-mono text-base font-semibold">{formatPrice(finalTotal)}</span>
             </div>
 
             <div className="space-y-1.5">

@@ -62,12 +62,12 @@ function ProductsContent() {
   return (
     <div className="container mx-auto px-4 py-8 font-mono">
       {/* Header */}
-      <div className="border-b border-white/10 pb-6 mb-6">
+      <div className="border-b border-white/12 pb-6 mb-6">
         <div className="flex items-center gap-3 mb-1">
-          <h1 className="text-[11px] tracking-[0.3em] text-foreground/70">PRODUCTS</h1>
+          <h1 className="text-lg font-semibold tracking-[0.2em] text-foreground/90">PRODUCTS</h1>
           {!loading && (
-            <span className="text-[9px] text-foreground/30 ml-auto">
-              [{sorted.length}.RESULTS]
+            <span className="text-xs text-foreground/50 ml-auto">
+              {sorted.length} results
             </span>
           )}
         </div>
@@ -77,13 +77,13 @@ function ProductsContent() {
       <div className="flex flex-col sm:flex-row gap-2 mb-4">
         {/* Search */}
         <div className="relative flex-1 max-w-md">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3 w-3 text-foreground/30" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-foreground/40" />
           <input
             type="text"
-            placeholder="SEARCH.PRODUCTS..."
+            placeholder="Search products..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-8 pr-3 py-2 bg-transparent border border-white/15 text-[10px] tracking-widest text-foreground/70 placeholder:text-foreground/20 focus:outline-none focus:border-white/40 transition-colors"
+            className="w-full pl-9 pr-3 py-2.5 bg-transparent border border-white/18 text-xs text-foreground/80 placeholder:text-foreground/35 focus:outline-none focus:border-white/45 transition-colors"
           />
         </div>
 
@@ -91,24 +91,24 @@ function ProductsContent() {
         <div className="relative">
           <button
             onClick={() => setSortOpen(!sortOpen)}
-            className="flex items-center gap-2 px-3 py-2 border border-white/15 text-[10px] tracking-widest text-foreground/60 hover:border-white/30 hover:text-foreground transition-colors"
+            className="flex items-center gap-2 px-3.5 py-2.5 border border-white/18 text-xs text-foreground/65 hover:border-white/35 hover:text-foreground transition-colors"
           >
-            <SlidersHorizontal className="h-3 w-3" />
-            {SORT_OPTIONS.find((o) => o.value === sort)?.label ?? "SORT.BY"}
+            <SlidersHorizontal className="h-3.5 w-3.5" />
+            {SORT_OPTIONS.find((o) => o.value === sort)?.label ?? "SORT BY"}
           </button>
           {sortOpen && (
-            <div className="absolute right-0 top-full mt-1 z-50 bg-background border border-white/20 min-w-[180px]">
+            <div className="absolute right-0 top-full mt-1 z-50 bg-background border border-white/22 min-w-[190px] shadow-xl">
               {SORT_OPTIONS.map((opt) => (
                 <button
                   key={opt.value}
                   onClick={() => { setSort(opt.value); setSortOpen(false) }}
-                  className={`w-full text-left px-3 py-2 text-[9px] tracking-widest transition-colors ${
+                  className={`w-full text-left px-3.5 py-2.5 text-xs tracking-wide transition-colors ${
                     sort === opt.value
                       ? "bg-foreground/10 text-foreground"
-                      : "text-foreground/50 hover:bg-foreground/5 hover:text-foreground"
+                      : "text-foreground/60 hover:bg-foreground/5 hover:text-foreground"
                   }`}
                 >
-                  {sort === opt.value && <span className="mr-1">›</span>}
+                  {sort === opt.value && <span className="mr-1.5">›</span>}
                   {opt.label}
                 </button>
               ))}
@@ -118,25 +118,25 @@ function ProductsContent() {
       </div>
 
       {/* Category chips */}
-      <div className="flex flex-wrap gap-1.5 mb-6">
+      <div className="flex flex-wrap gap-2 mb-6">
         <button
           onClick={() => setActiveCategory("")}
-          className={`px-3 py-1 text-[9px] tracking-widest transition-colors border ${
+          className={`px-3.5 py-1.5 text-xs tracking-wide transition-colors border ${
             !activeCategory
               ? "bg-foreground text-background border-foreground"
-              : "border-white/15 text-foreground/50 hover:border-white/30 hover:text-foreground"
+              : "border-white/18 text-foreground/60 hover:border-white/35 hover:text-foreground"
           }`}
         >
-          ALL.DEALS
+          ALL DEALS
         </button>
         {CATEGORIES.map((cat) => (
           <button
             key={cat.slug}
             onClick={() => setActiveCategory(activeCategory === cat.slug ? "" : cat.slug)}
-            className={`px-3 py-1 text-[9px] tracking-widest transition-colors border ${
+            className={`px-3.5 py-1.5 text-xs tracking-wide transition-colors border ${
               activeCategory === cat.slug
                 ? "bg-foreground text-background border-foreground"
-                : "border-white/15 text-foreground/50 hover:border-white/30 hover:text-foreground"
+                : "border-white/18 text-foreground/60 hover:border-white/35 hover:text-foreground"
             }`}
           >
             {cat.name}
@@ -145,9 +145,9 @@ function ProductsContent() {
         {(activeCategory || search) && (
           <button
             onClick={() => { setActiveCategory(""); setSearch("") }}
-            className="px-3 py-1 text-[9px] tracking-widest border border-white/20 text-foreground/40 hover:border-red-400/40 hover:text-red-400/70 transition-colors flex items-center gap-1"
+            className="px-3.5 py-1.5 text-xs border border-white/22 text-foreground/50 hover:border-red-400/45 hover:text-red-400/80 transition-colors flex items-center gap-1.5"
           >
-            <X className="h-2.5 w-2.5" /> CLEAR.FILTERS
+            <X className="h-3 w-3" /> Clear filters
           </button>
         )}
       </div>
@@ -167,16 +167,16 @@ function ProductsContent() {
           ))}
         </div>
       ) : sorted.length === 0 ? (
-        <div className="flex flex-col items-center justify-center py-24 gap-4 border border-white/10">
-          <div className="border border-white/10 p-6">
-            <Search className="h-8 w-8 opacity-20" />
+        <div className="flex flex-col items-center justify-center py-24 gap-4 border border-white/12">
+          <div className="border border-white/12 p-6">
+            <Search className="h-8 w-8 opacity-30" />
           </div>
-          <p className="text-[10px] tracking-widest text-foreground/40">NO.RESULTS.FOUND</p>
+          <p className="text-sm tracking-widest text-foreground/55">No results found</p>
           <button
             onClick={() => { setActiveCategory(""); setSearch("") }}
-            className="px-4 py-1.5 text-[9px] tracking-widest border border-white/20 text-foreground/50 hover:text-foreground hover:border-white/40 transition-colors"
+            className="px-4 py-2 text-xs tracking-wide border border-white/22 text-foreground/60 hover:text-foreground hover:border-white/40 transition-colors"
           >
-            CLEAR.FILTERS
+            Clear filters
           </button>
         </div>
       ) : (

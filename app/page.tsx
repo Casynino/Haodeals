@@ -79,9 +79,9 @@ export default async function HomePage() {
           <div className="max-w-md">
 
             {/* Top rule */}
-            <div className="flex items-center gap-2 mb-4 opacity-50">
+            <div className="flex items-center gap-2 mb-4 opacity-60">
               <div className="w-6 h-px bg-foreground" />
-              <span className="text-foreground text-[9px] font-mono tracking-widest">HAODEALS</span>
+              <span className="text-foreground text-[10px] font-mono tracking-widest">HAODEALS</span>
               <div className="flex-1 h-px bg-foreground" />
             </div>
 
@@ -89,29 +89,29 @@ export default async function HomePage() {
               BEST
             </h1>
             <h1 className="text-3xl sm:text-4xl md:text-6xl font-black font-mono tracking-widest leading-none mb-4">
-              <span className="text-foreground/25">DEALS.</span>
+              <span className="text-foreground/35">DEALS.</span>
               <span className="text-foreground">EVER.</span>
             </h1>
 
             {/* Dot row */}
-            <div className="flex gap-0.5 mb-5 opacity-25">
+            <div className="flex gap-0.5 mb-5 opacity-30">
               {Array.from({ length: 28 }).map((_, i) => (
                 <div key={i} className="w-1 h-1 bg-foreground" />
               ))}
             </div>
 
-            <p className="text-[11px] md:text-sm text-foreground/50 font-mono leading-relaxed mb-7 max-w-xs">
+            <p className="text-xs md:text-sm text-foreground/65 font-mono leading-relaxed mb-7 max-w-xs">
               Save up to 70% OFF on TECH · FASHION · ACCESSORIES · SHOES · SPORTS
               <br /><br />
               Shop now &amp; get fast delivery across Tanzania 🇹🇿
             </p>
 
             {/* Stats */}
-            <div className="flex gap-6 mb-7 text-[9px] font-mono text-foreground/40">
+            <div className="flex gap-6 mb-7 font-mono text-foreground/55">
               {[["20+", "PRODUCTS"], ["5", "CATEGORIES"], ["70%", "MAX OFF"]].map(([val, label]) => (
                 <div key={label}>
                   <div className="text-xl text-foreground font-bold">{val}</div>
-                  <div className="text-[7px] tracking-widest">{label}</div>
+                  <div className="text-[10px] tracking-widest">{label}</div>
                 </div>
               ))}
             </div>
@@ -155,17 +155,17 @@ export default async function HomePage() {
         {/* Bottom status bar */}
         <div className="absolute bottom-0 left-0 right-0 z-20 border-t border-foreground/10 bg-background/80 backdrop-blur-sm">
           <div className="container mx-auto px-4 py-2 flex items-center justify-between">
-            <div className="flex items-center gap-4 text-[8px] font-mono text-foreground/30">
+            <div className="flex items-center gap-4 text-[10px] font-mono text-foreground/50">
               <span>Free shipping over TSh 100K</span>
-              <span className="text-foreground/10">|</span>
+              <span className="text-foreground/20">|</span>
               <span>30-day returns</span>
-              <span className="text-foreground/10">|</span>
+              <span className="text-foreground/20">|</span>
               <span>Secure checkout</span>
             </div>
-            <div className="flex items-center gap-2 text-[8px] font-mono text-foreground/30">
+            <div className="flex items-center gap-2 text-[10px] font-mono text-foreground/50">
               <div className="flex gap-1">
                 {[0, 1, 2].map((i) => (
-                  <div key={i} className="w-1 h-1 bg-foreground/40 rounded-full animate-pulse" style={{ animationDelay: `${i * 0.2}s` }} />
+                  <div key={i} className="w-1.5 h-1.5 bg-green-400/60 rounded-full animate-pulse" style={{ animationDelay: `${i * 0.2}s` }} />
                 ))}
               </div>
               <span>Live deals</span>
@@ -180,10 +180,10 @@ export default async function HomePage() {
           <div className="container mx-auto px-4">
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-3">
-                <h2 className="text-[11px] font-mono tracking-[0.3em] text-foreground/70">CATEGORIES</h2>
+                <h2 className="text-sm font-mono tracking-[0.25em] text-foreground/80 font-semibold">CATEGORIES</h2>
               </div>
-              <Link href="/products" className="flex items-center gap-1 text-[9px] font-mono text-foreground/40 hover:text-foreground tracking-widest transition-colors">
-                View All <ArrowRight className="h-2.5 w-2.5" />
+              <Link href="/products" className="flex items-center gap-1 text-[10px] font-mono text-foreground/55 hover:text-foreground tracking-widest transition-colors">
+                View All <ArrowRight className="h-3 w-3" />
               </Link>
             </div>
             <div className="grid grid-cols-3 md:grid-cols-6 gap-2">
@@ -191,18 +191,18 @@ export default async function HomePage() {
                 <Link
                   key={cat.id}
                   href={`/products?category=${cat.slug}`}
-                  className="group relative aspect-square overflow-hidden bg-foreground/5 border border-white/10 hover:border-white/30 transition-colors"
+                  className="group relative aspect-square overflow-hidden bg-foreground/5 border border-white/12 hover:border-white/35 transition-colors"
                 >
                   <Image
                     src={cat.image || categoryImages[cat.slug] || "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=400&h=400&fit=crop"}
                     alt={cat.name}
                     fill
-                    className="object-cover opacity-40 group-hover:opacity-60 transition-opacity grayscale"
+                    className="object-cover opacity-55 group-hover:opacity-75 transition-opacity grayscale"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
-                  <div className="absolute bottom-0 left-0 right-0 p-2">
-                    <p className="text-[9px] font-mono text-white tracking-widest uppercase">{cat.name}</p>
-                    <p className="text-[7px] text-white/40">{cat._count.products} ITEMS</p>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
+                  <div className="absolute bottom-0 left-0 right-0 p-2.5">
+                    <p className="text-[11px] font-mono text-white tracking-widest uppercase font-medium">{cat.name}</p>
+                    <p className="text-[10px] text-white/55 mt-0.5">{cat._count.products} items</p>
                   </div>
                 </Link>
               ))}
@@ -217,15 +217,15 @@ export default async function HomePage() {
           <div className="container mx-auto px-4">
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-3">
-                <span className="text-foreground/30 text-[10px]">//</span>
-                <h2 className="text-[11px] font-mono tracking-[0.3em] text-foreground/70">Flash Deals</h2>
-                <div className="flex items-center gap-1 text-[9px] font-mono text-green-400/60">
-                  <div className="w-1.5 h-1.5 bg-green-400/60 rounded-full animate-pulse" />
+                <span className="text-foreground/40 text-xs">//</span>
+                <h2 className="text-sm font-mono tracking-[0.25em] text-foreground/80 font-semibold">Flash Deals</h2>
+                <div className="flex items-center gap-1.5 text-[10px] font-mono text-green-400/75">
+                  <div className="w-1.5 h-1.5 bg-green-400/75 rounded-full animate-pulse" />
                   Live
                 </div>
               </div>
-              <Link href="/products" className="flex items-center gap-1 text-[9px] font-mono text-foreground/40 hover:text-foreground tracking-widest transition-colors">
-                All Deals <ArrowRight className="h-2.5 w-2.5" />
+              <Link href="/products" className="flex items-center gap-1 text-[10px] font-mono text-foreground/55 hover:text-foreground tracking-widest transition-colors">
+                All Deals <ArrowRight className="h-3 w-3" />
               </Link>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
@@ -243,11 +243,11 @@ export default async function HomePage() {
           <div className="container mx-auto px-4">
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-3">
-                <span className="text-foreground/30 text-[10px]">//</span>
-                <h2 className="text-[11px] font-mono tracking-[0.3em] text-foreground/70">Featured</h2>
+                <span className="text-foreground/40 text-xs">//</span>
+                <h2 className="text-sm font-mono tracking-[0.25em] text-foreground/80 font-semibold">Featured</h2>
               </div>
-              <Link href="/products?featured=true" className="flex items-center gap-1 text-[9px] font-mono text-foreground/40 hover:text-foreground tracking-widest transition-colors">
-                View All <ArrowRight className="h-2.5 w-2.5" />
+              <Link href="/products?featured=true" className="flex items-center gap-1 text-[10px] font-mono text-foreground/55 hover:text-foreground tracking-widest transition-colors">
+                View All <ArrowRight className="h-3 w-3" />
               </Link>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">

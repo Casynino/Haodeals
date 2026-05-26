@@ -146,41 +146,41 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
         {/* Info */}
         <div className="space-y-5">
           <div>
-            <p className="text-[8px] tracking-widest text-foreground/30 mb-1">{product.category?.name?.toUpperCase()}</p>
-            <h1 className="text-lg font-bold tracking-wide uppercase text-foreground/90">{product.name}</h1>
+            <p className="text-[10px] tracking-widest text-foreground/55 mb-1.5">{product.category?.name?.toUpperCase()}</p>
+            <h1 className="text-xl font-bold tracking-wide uppercase text-foreground/95">{product.name}</h1>
           </div>
 
           {avgRating !== null && (
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2.5">
               <div className="flex gap-0.5">
                 {[1, 2, 3, 4, 5].map((star) => (
-                  <div key={star} className={`w-2 h-2 ${star <= Math.round(avgRating) ? "bg-yellow-400/70" : "bg-white/10"}`} />
+                  <div key={star} className={`w-2.5 h-2.5 ${star <= Math.round(avgRating) ? "bg-yellow-400/80" : "bg-white/15"}`} />
                 ))}
               </div>
-              <span className="text-[9px] text-foreground/30">
-                {avgRating.toFixed(1)} [{product.reviews?.length}.REVIEWS]
+              <span className="text-xs text-foreground/55">
+                {avgRating.toFixed(1)} · {product.reviews?.length} reviews
               </span>
             </div>
           )}
 
           <div className="flex items-baseline gap-3">
-            <span className="text-2xl font-mono text-green-400/80">{formatPrice(product.price)}</span>
+            <span className="text-2xl font-mono font-semibold text-green-400">{formatPrice(product.price)}</span>
             {product.originalPrice && (
-              <span className="text-sm text-foreground/30 line-through">{formatPrice(product.originalPrice)}</span>
+              <span className="text-sm text-foreground/40 line-through">{formatPrice(product.originalPrice)}</span>
             )}
             {discount && (
-              <span className="text-[9px] tracking-widest text-green-400/60 border border-green-400/30 px-1.5 py-0.5">
-                SAVE.{discount}%
+              <span className="text-xs tracking-wide text-green-400/75 border border-green-400/35 px-2 py-0.5">
+                SAVE {discount}%
               </span>
             )}
           </div>
 
-          <p className="text-[10px] text-foreground/50 leading-relaxed">{product.description}</p>
+          <p className="text-xs text-foreground/65 leading-relaxed">{product.description}</p>
 
-          <div className="flex items-center gap-2 text-[9px] tracking-widest">
-            <div className={`w-1.5 h-1.5 rounded-full ${product.stock > 0 ? "bg-green-400/70" : "bg-red-400/70"}`} />
-            <span className={product.stock > 0 ? "text-green-400/70" : "text-red-400/70"}>
-              {product.stock > 0 ? `IN.STOCK [${product.stock}.UNITS]` : "OUT.OF.STOCK"}
+          <div className="flex items-center gap-2 text-xs">
+            <div className={`w-2 h-2 rounded-full ${product.stock > 0 ? "bg-green-400/80" : "bg-red-400/80"}`} />
+            <span className={product.stock > 0 ? "text-green-400/80" : "text-red-400/80"}>
+              {product.stock > 0 ? `In stock — ${product.stock} units` : "Out of stock"}
             </span>
           </div>
 
@@ -255,16 +255,16 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
           </button>
 
           {/* Trust badges */}
-          <div className="grid grid-cols-3 gap-2 pt-2 border-t border-white/5">
+          <div className="grid grid-cols-3 gap-2 pt-3 border-t border-white/10">
             {[
               { icon: Truck, label: "Free Shipping", sub: "Over TSh 100K" },
               { icon: RotateCcw, label: "30-Day Returns", sub: "Easy returns" },
               { icon: ShieldCheck, label: "Secure", sub: "Safe checkout" },
             ].map(({ icon: Icon, label, sub }) => (
-              <div key={label} className="flex flex-col items-center gap-1 text-center p-2 border border-white/5">
-                <Icon className="h-3.5 w-3.5 text-foreground/30" />
-                <p className="text-[8px] tracking-widest text-foreground/50">{label}</p>
-                <p className="text-[7px] text-foreground/20">{sub}</p>
+              <div key={label} className="flex flex-col items-center gap-1.5 text-center p-2.5 border border-white/10">
+                <Icon className="h-4 w-4 text-foreground/50" />
+                <p className="text-[10px] tracking-wide text-foreground/65">{label}</p>
+                <p className="text-[10px] text-foreground/40">{sub}</p>
               </div>
             ))}
           </div>
@@ -330,7 +330,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                   <div key={review.id} className="border border-white/10 p-4 space-y-2">
                     <div className="flex items-start justify-between">
                       <div className="space-y-1">
-                        <p className="text-[10px] tracking-wide text-foreground/70 uppercase">{review.user?.name ?? "ANONYMOUS"}</p>
+                        <p className="text-xs tracking-wide text-foreground/80 uppercase">{review.user?.name ?? "ANONYMOUS"}</p>
                         <div className="flex gap-0.5">
                           {[1, 2, 3, 4, 5].map((s) => (
                             <div key={s} className={`w-1.5 h-1.5 ${s <= review.rating ? "bg-yellow-400/70" : "bg-white/10"}`} />
@@ -342,7 +342,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                       </p>
                     </div>
                     {review.comment && (
-                      <p className="text-[10px] text-foreground/50 leading-relaxed">{review.comment}</p>
+                      <p className="text-xs text-foreground/65 leading-relaxed">{review.comment}</p>
                     )}
                   </div>
                 ))}
