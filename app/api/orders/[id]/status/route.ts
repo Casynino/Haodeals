@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma"
 import { adminAuth as auth } from "@/auth-admin"
 import { sendOrderStatusEmail, sendPromoCodeEmail } from "@/lib/email"
 import { generatePromoCode } from "@/lib/order-utils"
+import { addOrderStatusMessage } from "@/lib/messaging"
 
 const VALID_STATUSES = [
   "payment_confirmed",
@@ -72,6 +73,9 @@ export async function PATCH(
       data: { orderId: id, status, message: eventMessage },
     }),
   ])
+
+  // Add status message to conversation — non-blocking
+  addOrderStatusMessage(id, status, eventMessage).catch(() => {})
 
   // Customer status email — non-blocking
   sendOrderStatusEmail(order.user.email, order.user.name ?? "Customer", {

@@ -1,7 +1,7 @@
 "use client"
 
 import { useSession, signOut } from "next-auth/react"
-import { User, Mail, ShieldCheck, Package, LogOut } from "lucide-react"
+import { User, Mail, ShieldCheck, Package, LogOut, MessageSquare } from "lucide-react"
 import Link from "next/link"
 
 export default function ProfilePage() {
@@ -66,6 +66,12 @@ export default function ProfilePage() {
             className="flex items-center gap-2.5 w-full px-3.5 py-2.5 border border-white/18 text-xs text-foreground/65 hover:text-foreground hover:border-white/35 transition-colors"
           >
             <Package className="h-3.5 w-3.5" /> My Orders
+          </Link>
+          <Link
+            href="/messages"
+            className="flex items-center gap-2.5 w-full px-3.5 py-2.5 border border-white/18 text-xs text-foreground/65 hover:text-foreground hover:border-white/35 transition-colors"
+          >
+            <MessageSquare className="h-3.5 w-3.5" /> Messages / Inbox
           </Link>
           {user?.role === "admin" && (
             <Link

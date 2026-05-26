@@ -128,3 +128,28 @@ export interface CartStore {
   total: () => number
   count: () => number
 }
+
+export interface Message {
+  id: string
+  conversationId: string
+  senderId?: string | null
+  senderRole: "customer" | "admin" | "system"
+  body: string
+  createdAt: string
+  sender?: { name?: string | null; email: string } | null
+}
+
+export interface Conversation {
+  id: string
+  userId: string
+  orderId?: string | null
+  subject: string
+  status: string
+  customerUnread: number
+  adminUnread: number
+  lastMessageAt: string
+  createdAt: string
+  user: { name?: string | null; email: string }
+  order?: { id: string; trackingId?: string | null } | null
+  messages?: Message[]
+}
