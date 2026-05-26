@@ -18,7 +18,16 @@ export async function GET(
     where: { id },
     include: {
       user: { select: { name: true, email: true } },
-      order: { select: { id: true, trackingId: true } },
+      order: {
+        include: {
+          items: {
+            include: {
+              product: { select: { id: true, name: true, images: true } },
+            },
+          },
+          trackingEvents: { orderBy: { createdAt: "asc" } },
+        },
+      },
       messages: {
         include: {
           sender: { select: { name: true, email: true } },
@@ -46,6 +55,23 @@ export async function GET(
     lastMessageAt: conversation.lastMessageAt.toISOString(),
     createdAt: conversation.createdAt.toISOString(),
     updatedAt: conversation.updatedAt.toISOString(),
+    order: conversation.order
+      ? {
+          ...conversation.order,
+          createdAt: conversation.order.createdAt.toISOString(),
+          items: conversation.order.items.map((item) => ({
+            ...item,
+            product: {
+              ...item.product,
+              images: JSON.parse(item.product.images as unknown as string),
+            },
+          })),
+          trackingEvents: conversation.order.trackingEvents.map((e) => ({
+            ...e,
+            createdAt: e.createdAt.toISOString(),
+          })),
+        }
+      : null,
     messages: conversation.messages.map((m) => ({
       ...m,
       createdAt: m.createdAt.toISOString(),

@@ -139,6 +139,28 @@ export interface Message {
   sender?: { name?: string | null; email: string } | null
 }
 
+export interface ConversationOrderItem {
+  id: string
+  quantity: number
+  price: number
+  product: {
+    id: string
+    name: string
+    images: string[]
+  }
+}
+
+export interface ConversationOrder {
+  id: string
+  trackingId?: string | null
+  status: string
+  total: number
+  address: string
+  createdAt: string
+  items: ConversationOrderItem[]
+  trackingEvents: TrackingEvent[]
+}
+
 export interface Conversation {
   id: string
   userId: string
@@ -150,6 +172,6 @@ export interface Conversation {
   lastMessageAt: string
   createdAt: string
   user: { name?: string | null; email: string }
-  order?: { id: string; trackingId?: string | null } | null
+  order?: ConversationOrder | null
   messages?: Message[]
 }

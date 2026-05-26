@@ -2,8 +2,9 @@
 
 import { useEffect, useRef, useState, use } from "react"
 import Link from "next/link"
-import { ChevronLeft, Send, Package, User } from "lucide-react"
+import { ChevronLeft, Send, User } from "lucide-react"
 import type { Conversation, Message } from "@/types"
+import { OrderSummaryCard } from "@/components/OrderSummaryCard"
 
 export default function AdminConversationPage({
   params,
@@ -112,26 +113,13 @@ export default function AdminConversationPage({
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
             <h1 className="text-lg font-semibold tracking-[0.15em] text-foreground/90 truncate">{conversation.subject}</h1>
-            <div className="flex items-center gap-3 mt-1.5 flex-wrap">
-              <span className="inline-flex items-center gap-1.5 text-[10px] text-foreground/50 border border-white/10 px-2 py-0.5">
-                <User className="h-2.5 w-2.5" />
-                {conversation.user.name ?? conversation.user.email}
-                {conversation.user.name && (
-                  <span className="text-foreground/30">· {conversation.user.email}</span>
-                )}
-              </span>
-              {conversation.order && (
-                <Link
-                  href={`/admin/orders?id=${conversation.order.id}`}
-                  className="inline-flex items-center gap-1.5 text-[10px] text-foreground/45 hover:text-foreground/70 transition-colors border border-white/10 px-2 py-0.5 hover:border-white/25"
-                >
-                  <Package className="h-2.5 w-2.5" />
-                  {conversation.order.trackingId
-                    ? `#${conversation.order.trackingId}`
-                    : `#${conversation.order.id.slice(0, 8).toUpperCase()}`}
-                </Link>
+            <span className="inline-flex items-center gap-1.5 text-[10px] text-foreground/50 border border-white/10 px-2 py-0.5 mt-1.5">
+              <User className="h-2.5 w-2.5" />
+              {conversation.user.name ?? conversation.user.email}
+              {conversation.user.name && (
+                <span className="text-foreground/30">· {conversation.user.email}</span>
               )}
-            </div>
+            </span>
           </div>
           <span className={`text-[9px] tracking-wide border px-2 py-0.5 flex-shrink-0 mt-1 ${
             conversation.status === "open"
@@ -142,6 +130,9 @@ export default function AdminConversationPage({
           </span>
         </div>
       </div>
+
+      {/* Order details card */}
+      {conversation.order && <OrderSummaryCard order={conversation.order} />}
 
       {/* Messages — admin on right, customer on left */}
       <div className="flex-1 space-y-3 mb-5 overflow-y-auto">
