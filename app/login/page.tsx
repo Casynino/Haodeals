@@ -6,6 +6,7 @@ import { useSearchParams } from "next/navigation"
 import Link from "next/link"
 import { Eye, EyeOff, Loader2, UserCheck } from "lucide-react"
 import { toast } from "sonner"
+import { tryAdminSignIn } from "@/app/actions/admin-auth"
 
 function LoginForm() {
   const searchParams = useSearchParams()
@@ -26,14 +27,7 @@ function LoginForm() {
     // We MUST check !result.error — not result.ok — to know if auth succeeded.
     if (result && !result.error) {
       toast.success("Welcome back!", { className: "font-mono text-xs" })
-      // Silently attempt admin token issuance — no-op for non-admin users
-      try {
-        await fetch("/api/auth/admin/callback/credentials", {
-          method: "POST",
-          headers: { "Content-Type": "application/x-www-form-urlencoded", "X-Auth-Return-Redirect": "1" },
-          body: new URLSearchParams({ email: form.email, password: form.password }).toString(),
-        })
-      } catch { /* user is not admin — ignore */ }
+      await tryAdminSignIn(form.email, form.password)
       window.location.href = callbackUrl
     } else {
       toast.error("Incorrect email or password.", { className: "font-mono text-xs" })
