@@ -24,6 +24,8 @@ model User {
   reviews             Review[]
   cart                Cart?
   transactions        Transaction[]
+  conversations       Conversation[]
+  sentMessages        Message[]      @relation("MessageSender")
 }
 
 model Category {
@@ -97,6 +99,7 @@ model Order {
   user            User             @relation(fields: [userId], references: [id])
   items           OrderItem[]
   trackingEvents  TrackingEvent[]
+  conversation    Conversation?
   createdAt       DateTime         @default(now())
   updatedAt       DateTime         @updatedAt
 }
@@ -165,4 +168,31 @@ model PasswordResetToken {
   createdAt DateTime @default(now())
 
   @@index([email])
+}
+
+model Conversation {
+  id             String    @id @default(cuid())
+  userId         String
+  orderId        String?   @unique
+  subject        String
+  status         String    @default("open")
+  customerUnread Int       @default(0)
+  adminUnread    Int       @default(0)
+  lastMessageAt  DateTime  @default(now())
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  user           User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  order          Order?    @relation(fields: [orderId], references: [id])
+  messages       Message[]
+}
+
+model Message {
+  id             String       @id @default(cuid())
+  conversationId String
+  senderId       String?
+  senderRole     String
+  body           String
+  createdAt      DateTime     @default(now())
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  sender         User?        @relation("MessageSender", fields: [senderId], references: [id], onDelete: SetNull)
 }

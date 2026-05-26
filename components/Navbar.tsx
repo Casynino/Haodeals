@@ -13,7 +13,7 @@ import {
 import { ThemeToggle } from "@/components/ThemeToggle"
 import { CartDrawer } from "@/components/CartDrawer"
 import { useCart } from "@/hooks/useCart"
-import { Package, LogOut, User, ShieldCheck, Search, Wallet, Settings, Bell } from "lucide-react"
+import { Package, LogOut, User, ShieldCheck, Search, Wallet, Settings, Bell, MessageSquare } from "lucide-react"
 import { useState, useEffect, useRef } from "react"
 import { tryAdminSignOut } from "@/app/actions/admin-auth"
 
@@ -27,6 +27,7 @@ export function Navbar() {
   const [notifOpen, setNotifOpen] = useState(false)
   const [notifications, setNotifications] = useState<{ id: string; title: string; body: string; read: boolean; createdAt: string }[]>([])
   const [unreadCount, setUnreadCount] = useState(0)
+  const [msgUnreadCount, setMsgUnreadCount] = useState(0)
   const notifRef = useRef<HTMLDivElement>(null)
   const { count } = useCart()
 
@@ -38,6 +39,19 @@ export function Navbar() {
       if (d) { setNotifications(d.notifications); setUnreadCount(d.unreadCount) }
     })
   }, [isAdmin])
+
+  useEffect(() => {
+    if (!session?.user || isAdmin) return
+    fetch("/api/messages")
+      .then(r => r.ok ? r.json() : null)
+      .then((data: Array<{ customerUnread: number }> | null) => {
+        if (Array.isArray(data)) {
+          const total = data.reduce((sum, c) => sum + (c.customerUnread ?? 0), 0)
+          setMsgUnreadCount(total)
+        }
+      })
+      .catch(() => {})
+  }, [])
 
   useEffect(() => {
     function handleClick(e: MouseEvent) {
@@ -201,6 +215,20 @@ export function Navbar() {
                 >
                   <Package className="h-3.5 w-3.5" /> My Orders
                 </DropdownMenuItem>
+                {!isAdmin && (
+                  <DropdownMenuItem
+                    onClick={() => router.push("/messages")}
+                    className="px-4 py-2.5 text-xs tracking-wide text-foreground/65 hover:text-foreground hover:bg-foreground/5 flex items-center gap-2.5"
+                  >
+                    <MessageSquare className="h-3.5 w-3.5" />
+                    <span>Messages</span>
+                    {msgUnreadCount > 0 && (
+                      <span className="ml-auto w-4 h-4 flex items-center justify-center bg-green-400/80 text-black text-[9px] font-bold">
+                        {msgUnreadCount > 9 ? "9+" : msgUnreadCount}
+                      </span>
+                    )}
+                  </DropdownMenuItem>
+                )}
                 {isAdmin && (
                   <DropdownMenuItem
                     onClick={() => router.push("/admin")}

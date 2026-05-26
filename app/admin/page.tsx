@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import Link from "next/link"
-import { ShoppingBag, Users, Package, DollarSign, ArrowRight, TrendingUp, Plus, Megaphone, Loader2, CheckCircle2 } from "lucide-react"
+import { ShoppingBag, Users, Package, DollarSign, ArrowRight, TrendingUp, Plus, Megaphone, Loader2, CheckCircle2, MessageSquare } from "lucide-react"
 import { formatPrice } from "@/lib/utils"
 import { toast } from "sonner"
 
@@ -21,6 +21,10 @@ interface Stats {
   }>
 }
 
+interface ConversationSummary {
+  adminUnread: number
+}
+
 const statusConfig: Record<string, string> = {
   pending:   "text-yellow-400/70 border-yellow-400/30",
   confirmed: "text-blue-400/70 border-blue-400/30",
@@ -32,6 +36,7 @@ const statusConfig: Record<string, string> = {
 export default function AdminPage() {
   const [stats, setStats] = useState<Stats | null>(null)
   const [loading, setLoading] = useState(true)
+  const [msgUnread, setMsgUnread] = useState(0)
   const [announce, setAnnounce] = useState({ subject: "", message: "", link: "" })
   const [sending, setSending] = useState(false)
   const [sentResult, setSentResult] = useState<{ sent: number; total: number } | null>(null)
@@ -41,6 +46,16 @@ export default function AdminPage() {
       .then((r) => r.json())
       .then((data) => { setStats(data); setLoading(false) })
       .catch(() => setLoading(false))
+
+    fetch("/api/admin/messages")
+      .then((r) => r.ok ? r.json() : null)
+      .then((data: ConversationSummary[] | null) => {
+        if (Array.isArray(data)) {
+          const total = data.reduce((sum, c) => sum + (c.adminUnread ?? 0), 0)
+          setMsgUnread(total)
+        }
+      })
+      .catch(() => {})
   }, [])
 
   async function handleAnnounce(e: React.FormEvent) {
@@ -130,6 +145,26 @@ export default function AdminPage() {
             <div>
               <p className="text-xs tracking-widest text-foreground/70 group-hover:text-foreground transition-colors">MANAGE ORDERS</p>
               <p className="text-[10px] text-foreground/45 mt-0.5">Track and manage orders</p>
+            </div>
+          </div>
+          <ArrowRight className="h-3.5 w-3.5 text-foreground/20 group-hover:text-foreground/60 transition-colors" />
+        </Link>
+        <Link
+          href="/admin/messages"
+          className="flex items-center justify-between border border-white/10 hover:border-white/30 transition-colors p-4 group md:col-span-2"
+        >
+          <div className="flex items-center gap-3">
+            <MessageSquare className="h-4 w-4 text-foreground/30" />
+            <div>
+              <div className="flex items-center gap-2">
+                <p className="text-xs tracking-widest text-foreground/70 group-hover:text-foreground transition-colors">MANAGE MESSAGES</p>
+                {msgUnread > 0 && (
+                  <span className="px-1.5 py-0.5 bg-yellow-400/90 text-black text-[9px] font-bold tracking-widest">
+                    {msgUnread} UNREAD
+                  </span>
+                )}
+              </div>
+              <p className="text-[10px] text-foreground/45 mt-0.5">Customer support conversations</p>
             </div>
           </div>
           <ArrowRight className="h-3.5 w-3.5 text-foreground/20 group-hover:text-foreground/60 transition-colors" />

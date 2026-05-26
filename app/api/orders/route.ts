@@ -2,6 +2,7 @@ import { NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
 import { auth } from "@/auth"
 import { sendOrderNotificationToAdmin } from "@/lib/email"
+import { createOrderConversation } from "@/lib/messaging"
 
 function generateTrackingId(): string {
   const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
@@ -102,6 +103,9 @@ export async function POST(request: Request) {
   })
 
   await prisma.cart.deleteMany({ where: { userId } })
+
+  // Create messaging conversation for this order — non-blocking
+  createOrderConversation(order.id, userId, order.trackingId, order.total).catch(() => {})
 
   // Admin notification — non-blocking
   sendOrderNotificationToAdmin({
