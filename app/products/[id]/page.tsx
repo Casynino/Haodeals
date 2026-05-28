@@ -13,6 +13,7 @@ import { formatPrice } from "@/lib/utils"
 import { ProductTilt } from "@/components/ui/product-tilt"
 import { DealCountdown } from "@/components/DealCountdown"
 import { HaoPlusBanner } from "@/components/HaoPlusBanner"
+import { ShareButton } from "@/components/ShareButton"
 
 export default function ProductDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params)
@@ -172,7 +173,10 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
         {/* ── Product info ── */}
         <div className="space-y-4">
           <div>
-            <p className="text-[10px] tracking-widest text-foreground/55 mb-1.5">{product.category?.name?.toUpperCase()}</p>
+            <div className="flex items-center justify-between gap-4 mb-1.5">
+              <p className="text-[10px] tracking-widest text-foreground/55">{product.category?.name?.toUpperCase()}</p>
+              <ShareButton productName={product.name} productPath={`/products/${product.id}`} />
+            </div>
             <h1 className="text-xl font-bold tracking-wide uppercase text-foreground/95">{product.name}</h1>
           </div>
 
