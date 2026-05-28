@@ -26,10 +26,28 @@ export async function POST(request: Request) {
   const productIds = items.map((i: { productId: string }) => i.productId)
   const products = await prisma.product.findMany({ where: { id: { in: productIds } } })
 
+  // Validate stock availability
+  for (const item of items as { productId: string; quantity: number }[]) {
+    const p = products.find((x) => x.id === item.productId)
+    if (!p) return NextResponse.json({ error: "Product not found" }, { status: 400 })
+    if (p.stock < item.quantity) {
+      return NextResponse.json({
+        error: `"${p.name}" only has ${p.stock} unit${p.stock === 1 ? "" : "s"} left.`,
+        code: "out_of_stock",
+      }, { status: 400 })
+    }
+  }
+
+  // Use originalPrice if deal timer has expired
+  function getEffectivePrice(p: { price: number; originalPrice: number | null; dealEndsAt: Date | null }): number {
+    if (p.dealEndsAt && p.dealEndsAt <= new Date() && p.originalPrice) return p.originalPrice
+    return p.price
+  }
+
   let subtotal = items.reduce(
     (sum: number, item: { productId: string; quantity: number }) => {
       const product = products.find((p) => p.id === item.productId)
-      return sum + (product?.price ?? 0) * item.quantity
+      return sum + getEffectivePrice(product ?? { price: 0, originalPrice: null, dealEndsAt: null }) * item.quantity
     },
     0
   )
@@ -124,6 +142,31 @@ export async function POST(request: Request) {
     }
 
     await prisma.cart.deleteMany({ where: { userId } })
+
+    // Decrement stock for each purchased item (non-blocking)
+    Promise.all(
+      (items as { productId: string; quantity: number }[]).map((item) =>
+        prisma.product.update({
+          where: { id: item.productId },
+          data: { stock: { decrement: item.quantity } },
+          select: { id: true, name: true, stock: true },
+        })
+      )
+    ).then((updated) => {
+      // Notify admin for every product that just hit zero stock
+      updated
+        .filter((p) => p.stock <= 0)
+        .forEach((p) => {
+          prisma.notification.create({
+            data: {
+              type: "sold_out",
+              title: `Sold out — ${p.name}`,
+              body: `"${p.name}" has reached zero stock.`,
+              metadata: { productId: p.id },
+            },
+          }).catch(() => {})
+        })
+    }).catch((err) => console.error("[stock] decrement failed:", err))
 
     // Non-blocking notifications
     const orderItems = order.items.map((i) => ({

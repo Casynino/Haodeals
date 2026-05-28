@@ -16,7 +16,7 @@ import { formatPrice } from "@/lib/utils"
 import { HaoPlusBanner } from "@/components/HaoPlusBanner"
 
 type Stage = "form" | "confirmed"
-type DeliveryMethod = "free_weekend" | "fast"
+type DeliveryMethod = "free_weekend" | "express"
 
 interface DiscountCode { id: string; code: string; percent: number; expiresAt: string }
 interface SavedProfile { name?: string | null; phone?: string | null; address?: string | null }
@@ -144,7 +144,7 @@ export default function CheckoutPage() {
     }
 
     // Tag delivery method in address so admin can see it on the order
-    const deliveryLabel = deliveryMethod === "fast" ? " [FAST_DELIVERY]" : " [FREE_WEEKEND]"
+    const deliveryLabel = deliveryMethod === "express" ? " [EXPRESS_DELIVERY]" : " [FREE_WEEKEND]"
     const addressWithDelivery = fullAddress + deliveryLabel
 
     const res = await fetch("/api/checkout/payment", {
@@ -338,40 +338,40 @@ export default function CheckoutPage() {
                 </div>
               )}
 
-              {/* Option 2 — Fast Delivery */}
+              {/* Option 2 — Express Delivery */}
               <button
                 type="button"
-                onClick={() => setDeliveryMethod("fast")}
+                onClick={() => setDeliveryMethod("express")}
                 className={`w-full flex items-start gap-3 p-3 border transition-all text-left ${
-                  deliveryMethod === "fast"
+                  deliveryMethod === "express"
                     ? "border-foreground/35 bg-foreground/[0.04]"
                     : "border-white/12 hover:border-white/25"
                 }`}
               >
-                <div className={`w-4 h-4 border rounded-full mt-0.5 shrink-0 flex items-center justify-center ${deliveryMethod === "fast" ? "border-foreground/55" : "border-white/25"}`}>
-                  {deliveryMethod === "fast" && <div className="w-2 h-2 rounded-full bg-foreground/70" />}
+                <div className={`w-4 h-4 border rounded-full mt-0.5 shrink-0 flex items-center justify-center ${deliveryMethod === "express" ? "border-foreground/55" : "border-white/25"}`}>
+                  {deliveryMethod === "express" && <div className="w-2 h-2 rounded-full bg-foreground/70" />}
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
                     <Truck className="h-3.5 w-3.5 text-foreground/55" />
-                    <span className="text-xs font-medium text-foreground/80 tracking-wide">Fast Delivery</span>
-                    <span className="ml-auto text-[9px] text-foreground/40 font-mono">Cost arranged separately</span>
+                    <span className="text-xs font-medium text-foreground/80 tracking-wide">Express Delivery</span>
+                    <span className="ml-auto text-[9px] text-foreground/40 font-mono">Paid by customer</span>
                   </div>
                   <p className="text-[9px] text-foreground/45 mt-0.5 leading-relaxed">
-                    Bus / cargo / transport providers · Faster than weekend
+                    Boda Boda · Bus · Bolt / Courier · Air cargo · Boat
                   </p>
                 </div>
               </button>
 
-              {deliveryMethod === "fast" && (
+              {deliveryMethod === "express" && (
                 <div className="flex items-start gap-2 p-3 border border-white/12 bg-foreground/[0.02]">
                   <Info className="h-3.5 w-3.5 text-foreground/40 shrink-0 mt-0.5" />
-                  <div className="space-y-1">
-                    <p className="text-[9px] text-foreground/55 leading-relaxed font-medium">
-                      Shipping cost is not included in your order total.
+                  <div className="space-y-1.5">
+                    <p className="text-[9px] text-foreground/55 font-medium leading-relaxed">
+                      You will choose a delivery method based on your location.
                     </p>
-                    <p className="text-[9px] text-foreground/40 leading-relaxed">
-                      After your order is confirmed, our team will contact you to arrange the transport method and shipping payment separately — either on delivery or via M-Pesa.
+                    <p className="text-[9px] text-foreground/38 leading-relaxed">
+                      Shipping cost is handled directly between you and the delivery provider — Haodeals only assists in arranging the delivery. The final cost is agreed with the provider after your order is confirmed.
                     </p>
                   </div>
                 </div>
@@ -496,10 +496,10 @@ export default function CheckoutPage() {
                   <span className="flex items-center gap-1 text-foreground/40">
                     {deliveryMethod === "free_weekend"
                       ? <><Calendar className="h-2.5 w-2.5 text-green-400/60" /> Weekend Delivery</>
-                      : <><Truck className="h-2.5 w-2.5 text-foreground/40" /> Fast Delivery</>}
+                      : <><Truck className="h-2.5 w-2.5 text-foreground/40" /> Express Delivery</>}
                   </span>
                   <span className={deliveryMethod === "free_weekend" ? "text-green-400/70" : "text-foreground/40"}>
-                    {deliveryMethod === "free_weekend" ? "FREE" : "Arranged separately"}
+                    {deliveryMethod === "free_weekend" ? "FREE" : "Paid by customer"}
                   </span>
                 </div>
                 <div className="flex justify-between border-t border-foreground/10 pt-2">
@@ -534,7 +534,7 @@ export default function CheckoutPage() {
             <p className="text-green-400/80 font-mono text-sm font-bold">{formatPrice(finalTotal)}</p>
             {deliveryMethod === "free_weekend"
               ? <p className="text-[8px] text-green-400/55">Free weekend delivery</p>
-              : <p className="text-[8px] text-foreground/30">Fast delivery — cost arranged separately</p>
+              : <p className="text-[8px] text-foreground/30">Express delivery — paid by customer</p>
             }
             {appliedCode && (
               <p className="text-[8px] text-green-400/55">Saved {formatPrice(discountAmt)}</p>
