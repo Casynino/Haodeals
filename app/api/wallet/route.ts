@@ -97,6 +97,7 @@ export async function POST(req: Request) {
         status: "pending",
         phoneNumber: normalizedPhone,
         ntzsId: deposit.id,
+        description: `Mobile Money top-up via ${normalizedPhone}`,
       },
     })
     return NextResponse.json({ depositId: deposit.id, status: deposit.status })

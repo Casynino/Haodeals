@@ -39,6 +39,7 @@ export async function POST(req: Request) {
         status: withdrawal.status,
         phoneNumber: normalizedPhone,
         ntzsId: withdrawal.id,
+        description: `Mobile Money withdrawal to ${normalizedPhone}`,
       },
     })
 
