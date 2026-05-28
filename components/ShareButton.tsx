@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { Sparkles, Copy, Check, MessageCircle, Phone, Camera, Link2, X } from "lucide-react"
+import { Share2, Sparkles, Copy, Check, MessageCircle, Phone, Camera, Link2, X } from "lucide-react"
 import { toast } from "sonner"
 
 // ── Types ────────────────────────────────────────────────────────────────────
@@ -13,23 +13,12 @@ interface ShareButtonProps {
 
 type OptionId = "whatsapp" | "instagram" | "sms" | "copy"
 
-// ── Share message templates (rotated randomly) ────────────────────────────────
+// ── Share message (clean single template — URL passed separately) ─────────────
 
-const TEMPLATES = [
-  (n: string, u: string) =>
-    `🔥 Check this out!\n${n}\n\nAvailable now on Haodeals 👇\n${u}`,
-  (n: string, u: string) =>
-    `Hey 👀 you might like this!\n\n${n}\n\nGrab it here 👇\n${u}`,
-  (n: string, u: string) =>
-    `⚡ Don't miss this deal!\n\n${n}\n\nCheck it before it's gone 👇\n${u}`,
-  (n: string, u: string) =>
-    `✨ A product worth checking out\n\n${n}\n\nAvailable at Haodeals 👇\n${u}`,
-  (n: string, u: string) =>
-    `Check out this product 👇\n${n}\n${u}`,
-]
+const SHARE_TEXT = "A collection of limited deals — now in stock. Tap to explore, shop, and enjoy fast delivery."
 
-function randomText(name: string, url: string): string {
-  return TEMPLATES[Math.floor(Math.random() * TEMPLATES.length)](name, url)
+function shareTextWithUrl(url: string): string {
+  return `${SHARE_TEXT}\n\n${url}`
 }
 
 // ── Share option definitions ─────────────────────────────────────────────────
@@ -67,7 +56,8 @@ export function ShareButton({ productName, productPath }: ShareButtonProps) {
     const url = fullUrl || `${window.location.origin}${productPath}`
     if (navigator.share) {
       try {
-        await navigator.share({ title: productName, text: randomText(productName, url), url })
+        // URL passed separately so it doesn't appear twice in the message
+        await navigator.share({ title: productName, text: SHARE_TEXT, url })
         toast.success("Shared! 🎉 Points coming soon", {
           description: "Earn rewards when the system launches",
         })
@@ -81,7 +71,7 @@ export function ShareButton({ productName, productPath }: ShareButtonProps) {
 
   function handleWhatsApp() {
     window.open(
-      `https://wa.me/?text=${encodeURIComponent(randomText(productName, fullUrl))}`,
+      `https://wa.me/?text=${encodeURIComponent(shareTextWithUrl(fullUrl))}`,
       "_blank", "noopener"
     )
     setSuccess(true)
@@ -89,7 +79,7 @@ export function ShareButton({ productName, productPath }: ShareButtonProps) {
 
   function handleSMS() {
     window.open(
-      `sms:?body=${encodeURIComponent(randomText(productName, fullUrl))}`,
+      `sms:?body=${encodeURIComponent(shareTextWithUrl(fullUrl))}`,
       "_blank"
     )
     setSuccess(true)
@@ -116,28 +106,18 @@ export function ShareButton({ productName, productPath }: ShareButtonProps) {
 
   return (
     <>
-      {/* ── Trigger pill ── */}
-      <div className="flex flex-col items-end gap-0.5">
-        <button
-          type="button"
-          onClick={handleShareClick}
-          className="group relative flex items-center gap-1.5 px-3 py-1.5 rounded-full
-            bg-gradient-to-r from-violet-600/[0.14] to-indigo-600/[0.14]
-            border border-violet-500/[0.26]
-            hover:from-violet-600/[0.22] hover:to-indigo-600/[0.22]
-            hover:border-violet-500/[0.44]
-            hover:scale-[1.04] active:scale-[0.98]
-            transition-all duration-200"
-        >
-          <Sparkles className="h-3 w-3 text-violet-400/80 group-hover:rotate-12 transition-transform duration-200" />
-          <span className="text-[9px] tracking-widest font-bold text-violet-400/85">
-            SHARE &amp; EARN
-          </span>
-        </button>
-        <span className="text-[7px] tracking-wide text-foreground/25">
-          Earn points when you share
-        </span>
-      </div>
+      {/* ── Trigger icon ── */}
+      <button
+        type="button"
+        onClick={handleShareClick}
+        aria-label="Share product"
+        className="flex items-center justify-center w-8 h-8 rounded-lg
+          border border-white/[0.09] text-foreground/38
+          hover:text-foreground/70 hover:border-white/[0.18] hover:bg-white/[0.04]
+          active:scale-95 transition-all duration-150"
+      >
+        <Share2 className="h-4 w-4" />
+      </button>
 
       {/* ── Modal ── */}
       {open && (
