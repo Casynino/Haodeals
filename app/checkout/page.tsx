@@ -323,8 +323,8 @@ export default function CheckoutPage() {
                     <span className="text-xs font-medium text-foreground/85 tracking-wide">Free Weekend Delivery</span>
                     <span className="text-[10px] font-bold text-green-400/85 font-mono">FREE</span>
                   </div>
-                  <p className="text-[9px] text-foreground/45 mt-1">
-                    📦 <strong className="text-foreground/65">Sat &amp; Sun only</strong> · Dar es Salaam
+                  <p className="text-[9px] text-foreground/40 mt-1">
+                    📦 Saturday &amp; Sunday only (Dar es Salaam customers only)
                   </p>
                 </div>
               </button>
@@ -335,20 +335,22 @@ export default function CheckoutPage() {
                 onClick={() => setDeliveryMethod("express")}
                 className={`w-full flex items-start gap-3 p-3 border transition-all text-left ${
                   deliveryMethod === "express"
-                    ? "border-foreground/30 bg-foreground/[0.03]"
+                    ? "border-amber-400/25 bg-amber-400/[0.025]"
                     : "border-white/12 hover:border-white/25"
                 }`}
               >
-                <div className={`w-4 h-4 border rounded-full mt-0.5 shrink-0 flex items-center justify-center ${deliveryMethod === "express" ? "border-foreground/50" : "border-white/25"}`}>
-                  {deliveryMethod === "express" && <div className="w-2 h-2 rounded-full bg-foreground/70" />}
+                <div className={`w-4 h-4 border rounded-full mt-0.5 shrink-0 flex items-center justify-center ${deliveryMethod === "express" ? "border-amber-400/55" : "border-white/25"}`}>
+                  {deliveryMethod === "express" && <div className="w-2 h-2 rounded-full bg-amber-400/70" />}
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between gap-2">
-                    <span className="text-xs font-medium text-foreground/85 tracking-wide">Express Delivery</span>
-                    <span className="text-[9px] text-foreground/40 font-mono">Paid by customer</span>
+                    <span className="text-xs font-medium text-foreground/85">Express Delivery</span>
+                    <span className="text-[8px] font-bold tracking-widest text-amber-400/90 border border-amber-400/35 bg-amber-400/[0.08] rounded-full px-2 py-0.5">
+                      PAID BY CUSTOMER
+                    </span>
                   </div>
-                  <p className="text-[9px] text-foreground/45 mt-1">
-                    💸 You arrange shipping directly with provider
+                  <p className="text-[9px] text-foreground/40 mt-1">
+                    You arrange delivery directly with the provider. You cover the cost.
                   </p>
                 </div>
               </button>
@@ -370,7 +372,7 @@ export default function CheckoutPage() {
                         onClick={() => setTransportMethod((t) => (t === label ? null : label))}
                         className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[9px] font-mono tracking-wide border transition-all ${
                           transportMethod === label
-                            ? "border-foreground/50 bg-foreground/10 text-foreground/85"
+                            ? "border-amber-400/50 bg-amber-400/[0.1] text-amber-400/90"
                             : "border-white/15 text-foreground/45 hover:border-white/30 hover:text-foreground/65"
                         }`}
                       >
