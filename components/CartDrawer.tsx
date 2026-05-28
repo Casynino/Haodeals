@@ -36,7 +36,7 @@ export function CartDrawer() {
         <SheetHeader className="px-4 py-3 border-b border-white/10">
           <SheetTitle className="text-[10px] tracking-widest text-foreground/60 flex items-center gap-2 font-mono">
             <span className="text-foreground/30">//</span>
-            CART.CONTENTS
+            BAG.CONTENTS
             <span className="ml-auto text-foreground/40">[{itemCount}]</span>
           </SheetTitle>
         </SheetHeader>
@@ -47,8 +47,8 @@ export function CartDrawer() {
               <ShoppingCart className="h-8 w-8 opacity-30" />
             </div>
             <div className="text-center">
-              <p className="text-[10px] tracking-widest mb-1">CART.EMPTY</p>
-              <p className="text-[9px] text-foreground/20">NO ITEMS QUEUED</p>
+              <p className="text-[10px] tracking-widest mb-1">BAG.EMPTY</p>
+              <p className="text-[9px] text-foreground/20">NO ITEMS IN BAG</p>
             </div>
             <Link
               href="/products"
@@ -124,7 +124,7 @@ export function CartDrawer() {
                 onClick={() => { setOpen(false); router.push("/cart") }}
                 className="w-full text-center py-1.5 text-[9px] tracking-widest text-foreground/30 hover:text-foreground transition-colors"
               >
-                VIEW.FULL.CART
+                VIEW.FULL.BAG
               </button>
             </div>
           </>

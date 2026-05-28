@@ -291,7 +291,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
             </div>
           </div>
 
-          {/* CTA Buttons — Buy Now (primary) + Add to Cart */}
+          {/* CTA Buttons — Buy Now (primary) + Add to Bag */}
           <div className="grid grid-cols-2 gap-2">
             <button
               onClick={handleBuyNow}
@@ -307,7 +307,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
               className="flex items-center justify-center gap-2 py-3 border border-white/25 text-foreground/75 text-[10px] tracking-widest hover:bg-foreground/5 hover:border-white/45 transition-colors disabled:opacity-30"
             >
               <ShoppingCart className="h-3.5 w-3.5" />
-              ADD TO CART
+              ADD TO BAG
             </button>
           </div>
 

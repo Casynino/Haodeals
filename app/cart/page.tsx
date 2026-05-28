@@ -20,8 +20,8 @@ export default function CartPage() {
         <div className="border border-white/10 p-8">
           <ShoppingCart className="h-12 w-12 opacity-20" />
         </div>
-        <p className="text-[11px] tracking-widest text-foreground/40">Your cart is empty</p>
-        <p className="text-[9px] text-foreground/20">Add some items to get started</p>
+        <p className="text-[11px] tracking-widest text-foreground/40">Your bag is empty</p>
+        <p className="text-[9px] text-foreground/20">Add some items to your bag</p>
         <Link href="/products" className="px-6 py-2 text-[10px] tracking-widest border border-white/20 text-foreground/60 hover:text-foreground hover:border-white/40 transition-colors flex items-center gap-2">
           Browse Deals <ArrowRight className="h-3 w-3" />
         </Link>
@@ -34,14 +34,14 @@ export default function CartPage() {
       {/* Header */}
       <div className="flex items-center justify-between mb-6 border-b border-white/10 pb-4">
         <div className="flex items-center gap-3">
-          <h1 className="text-lg font-semibold tracking-[0.2em] text-foreground/90">Your Cart</h1>
+          <h1 className="text-lg font-semibold tracking-[0.2em] text-foreground/90">Your Bag</h1>
           <span className="text-xs text-foreground/55">{items.length} {items.length === 1 ? "item" : "items"}</span>
         </div>
         <button
-          onClick={() => { clearCart(); toast.success("Cart cleared") }}
+          onClick={() => { clearCart(); toast.success("Bag cleared") }}
           className="text-[9px] tracking-widest text-foreground/30 hover:text-red-400/70 transition-colors"
         >
-          Clear Cart
+          Clear Bag
         </button>
       </div>
 

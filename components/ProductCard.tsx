@@ -74,14 +74,14 @@ export function ProductCard({ product }: ProductCardProps) {
             </div>
           )}
 
-          {/* Add to cart — always visible on mobile, hover on desktop */}
+          {/* Add to bag — always visible on mobile, hover on desktop */}
           <button
             onClick={handleAddToCart}
             disabled={product.stock === 0}
             className="absolute bottom-0 left-0 right-0 py-2 bg-foreground text-background text-[10px] font-mono tracking-widest text-center sm:opacity-0 sm:group-hover:opacity-100 transition-opacity flex items-center justify-center gap-1.5 hover:bg-foreground/90 disabled:opacity-0 z-10"
           >
             <ShoppingCart className="h-3 w-3" />
-            ADD TO CART
+            ADD TO BAG
           </button>
         </ProductTilt>
 
