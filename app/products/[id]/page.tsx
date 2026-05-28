@@ -6,7 +6,7 @@ import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useSession } from "next-auth/react"
 import { useCart } from "@/hooks/useCart"
-import { ShoppingCart, Zap, Minus, Plus, ChevronLeft, Truck, RotateCcw, ShieldCheck, AlertTriangle } from "lucide-react"
+import { ShoppingCart, Zap, Minus, Plus, ChevronLeft, Truck, RotateCcw, ShieldCheck } from "lucide-react"
 import { toast } from "sonner"
 import type { Product, SelectedOption } from "@/types"
 import { formatPrice } from "@/lib/utils"
@@ -35,7 +35,12 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
       .then((data) => { setProduct(data); setLoading(false) })
   }, [id])
 
-  const discount = product?.originalPrice
+  // Deal expiry: if dealEndsAt is set and in the past, revert to original price
+  const dealActive = !product?.dealEndsAt || new Date(product.dealEndsAt) > new Date()
+  const displayPrice = product
+    ? dealActive || !product.originalPrice ? product.price : product.originalPrice
+    : 0
+  const discount = product?.originalPrice && dealActive
     ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
     : null
 
@@ -133,7 +138,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
               className="object-cover opacity-80"
               priority
             />
-            {discount && (
+            {dealActive && discount && (
               <div className="absolute top-0 left-0 bg-foreground text-background text-[9px] font-bold px-2 py-0.5 tracking-widest z-10">
                 -{discount}%
               </div>
@@ -184,13 +189,13 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
             </div>
           )}
 
-          {/* Deal countdown */}
-          <DealCountdown dealEndsAt={product.dealEndsAt} />
+          {/* Deal countdown — only while timer is active */}
+          {dealActive && <DealCountdown dealEndsAt={product.dealEndsAt} />}
 
           {/* Price */}
           <div className="flex items-baseline gap-3">
-            <span className="text-2xl font-mono font-semibold text-green-400">{formatPrice(product.price)}</span>
-            {product.originalPrice && (
+            <span className="text-2xl font-mono font-semibold text-green-400">{formatPrice(displayPrice)}</span>
+            {dealActive && product.originalPrice && (
               <span className="text-sm text-foreground/40 line-through">{formatPrice(product.originalPrice)}</span>
             )}
             {discount && (
@@ -200,33 +205,25 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
             )}
           </div>
 
-          {/* Stock indicator */}
-          <div className={`flex items-center gap-2 text-xs px-3 py-2 border ${
-            product.stock === 0
-              ? "border-red-400/25 bg-red-400/[0.04] text-red-400/70"
-              : isVeryLowStock
-              ? "border-red-400/25 bg-red-400/[0.04] text-red-400/80"
-              : isLowStock
-              ? "border-yellow-400/25 bg-yellow-400/[0.03] text-yellow-400/75"
-              : "border-green-400/20 bg-green-400/[0.03] text-green-400/70"
-          }`}>
-            {isVeryLowStock ? (
-              <AlertTriangle className="h-3 w-3 shrink-0" />
-            ) : (
-              <div className={`w-2 h-2 rounded-full shrink-0 ${
-                product.stock === 0 ? "bg-red-400/70"
-                : isLowStock ? "bg-yellow-400/70"
-                : "bg-green-400/70"
-              }`} />
-            )}
-            <span className="tracking-wide">
+          {/* Stock indicator — minimal */}
+          <div className="flex items-center gap-1.5">
+            <span className={`h-1.5 w-1.5 rounded-full shrink-0 ${
+              product.stock === 0 ? "bg-red-400/60"
+              : isVeryLowStock ? "bg-red-400/70 animate-pulse"
+              : isLowStock ? "bg-amber-400/65"
+              : "bg-green-400/60"
+            }`} />
+            <span className={`text-[9px] tracking-wide ${
+              product.stock === 0 ? "text-red-400/65"
+              : isVeryLowStock ? "text-red-400/70"
+              : isLowStock ? "text-amber-400/60"
+              : "text-green-400/55"
+            }`}>
               {product.stock === 0
-                ? "Out of stock — join waitlist"
-                : isVeryLowStock
-                ? `Only ${product.stock} left — order now!`
-                : isLowStock
-                ? `Only ${product.stock} items remaining`
-                : `In stock — ${product.stock} units available`}
+                ? "Out of stock"
+                : isVeryLowStock || isLowStock
+                ? `Only ${product.stock} left`
+                : "In stock"}
             </span>
           </div>
 
