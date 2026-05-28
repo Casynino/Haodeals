@@ -143,6 +143,7 @@ model Transaction {
   status      String   // "pending" | "completed" | "failed" | "requested"
   phoneNumber String?
   ntzsId      String?
+  description String?  // human-readable label, e.g. "Mobile Money top-up via +255..."
   user        User     @relation(fields: [userId], references: [id])
   createdAt   DateTime @default(now())
 }

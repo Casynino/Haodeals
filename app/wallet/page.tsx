@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import {
@@ -23,6 +23,7 @@ interface TxItem {
   amountTzs: number
   status: string
   phoneNumber: string | null
+  description: string | null
   createdAt: string
 }
 
@@ -30,37 +31,103 @@ type Action = "idle" | "deposit" | "withdraw"
 type DepositStage = "form" | "pending" | "done"
 
 const typeConfig = {
-  deposit:   { label: "DEPOSIT",   icon: ArrowDownToLine, color: "text-green-400/70",  sign: "+" },
-  withdrawal:{ label: "WITHDRAWAL",icon: ArrowUpFromLine,  color: "text-red-400/70",    sign: "-" },
-  purchase:  { label: "PURCHASE",  icon: ShoppingBag,      color: "text-blue-400/70",   sign: "-" },
+  deposit:    { label: "DEPOSIT",    icon: ArrowDownToLine, color: "text-green-400/70",  sign: "+" },
+  withdrawal: { label: "WITHDRAWAL", icon: ArrowUpFromLine,  color: "text-red-400/70",   sign: "-" },
+  purchase:   { label: "PURCHASE",   icon: ShoppingBag,      color: "text-blue-400/70",  sign: "-" },
 }
 
 const statusColor: Record<string, string> = {
-  completed: "text-green-400/60 border-green-400/20",
-  confirmed: "text-green-400/60 border-green-400/20",
-  pending:   "text-yellow-400/60 border-yellow-400/20",
-  burned:    "text-green-400/60 border-green-400/20",
-  requested: "text-purple-400/60 border-purple-400/20",
-  failed:    "text-red-400/60 border-red-400/20",
-  shipped:   "text-blue-400/60 border-blue-400/20",
+  completed:         "text-green-400/60 border-green-400/20",
+  confirmed:         "text-green-400/60 border-green-400/20",
+  payment_confirmed: "text-green-400/60 border-green-400/20",
+  pending:           "text-yellow-400/60 border-yellow-400/20",
+  burned:            "text-green-400/60 border-green-400/20",
+  requested:         "text-purple-400/60 border-purple-400/20",
+  failed:            "text-red-400/60 border-red-400/20",
+  shipped:           "text-blue-400/60 border-blue-400/20",
+  processing:        "text-blue-400/60 border-blue-400/20",
+}
+
+const statusLabel: Record<string, string> = {
+  completed:         "CONFIRMED",
+  confirmed:         "CONFIRMED",
+  payment_confirmed: "PAID",
+  pending:           "PENDING",
+  burned:            "PROCESSED",
+  requested:         "REQUESTED",
+  failed:            "FAILED",
+  shipped:           "SHIPPED",
+  processing:        "PROCESSING",
 }
 
 export default function WalletPage() {
   const { data: session, status } = useSession()
   const router = useRouter()
 
-  const [wallet, setWallet] = useState<WalletData | null>(null)
-  const [history, setHistory] = useState<TxItem[]>([])
+  const [wallet, setWallet]               = useState<WalletData | null>(null)
+  const [history, setHistory]             = useState<TxItem[]>([])
   const [loadingWallet, setLoadingWallet] = useState(true)
   const [loadingHistory, setLoadingHistory] = useState(true)
 
-  const [action, setAction] = useState<Action>("idle")
-  const [depositStage, setDepositStage] = useState<DepositStage>("form")
-  const [phone, setPhone] = useState("")
-  const [amount, setAmount] = useState("")
-  const [submitting, setSubmitting] = useState(false)
+  const [action, setAction]               = useState<Action>("idle")
+  const [depositStage, setDepositStage]   = useState<DepositStage>("form")
+  const [phone, setPhone]                 = useState("")
+  const [amount, setAmount]               = useState("")
+  const [submitting, setSubmitting]       = useState(false)
   const [withdrawResult, setWithdrawResult] = useState<{ status: string; message: string } | null>(null)
 
+  // ── Auto-poll: fires when any transaction is "pending" ──────────────────────
+  const pollRef = useRef<ReturnType<typeof setInterval> | null>(null)
+
+  function clearPoll() {
+    if (pollRef.current) { clearInterval(pollRef.current); pollRef.current = null }
+  }
+
+  function startPoll() {
+    clearPoll()
+    pollRef.current = setInterval(async () => {
+      const res = await fetch("/api/wallet/transactions")
+      if (!res.ok) return
+      const fresh: TxItem[] = await res.json()
+
+      setHistory((prev) => {
+        // Check if any previously-pending tx is now resolved
+        const prevPending = prev.filter((t) => t.status === "pending")
+        const resolved = prevPending.filter((p) => {
+          const now = fresh.find((f) => f.id === p.id)
+          return now && now.status !== "pending"
+        })
+        if (resolved.length > 0) {
+          // Refresh balance too
+          fetch("/api/wallet").then((r) => r.ok ? r.json() : null).then((d) => { if (d) setWallet(d) })
+          resolved.forEach((tx) => {
+            const updated = fresh.find((f) => f.id === tx.id)!
+            const label   = updated.status === "completed" || updated.status === "confirmed" ? "✓ Confirmed" : updated.status.toUpperCase()
+            toast.success(`Transaction ${label}`, {
+              description: tx.description ?? typeConfig[tx.type].label,
+              className: "font-mono text-xs",
+            })
+          })
+        }
+        return fresh
+      })
+
+      // Stop polling once nothing is pending
+      const stillPending = fresh.some((t) => t.status === "pending")
+      if (!stillPending) clearPoll()
+    }, 3000)
+  }
+
+  // Start / stop polling based on whether any pending tx exists
+  useEffect(() => {
+    const hasPending = history.some((t) => t.status === "pending")
+    if (hasPending) startPoll()
+    else clearPoll()
+    return clearPoll
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [history])
+
+  // ── Auth redirect ────────────────────────────────────────────────────────────
   useEffect(() => {
     if (status === "unauthenticated") router.push("/login?callbackUrl=/wallet")
   }, [status, router])
@@ -97,8 +164,7 @@ export default function WalletPage() {
     e.preventDefault()
     const amt = parseFloat(amount)
     if (!amt || amt < 500) {
-      toast.error("MINIMUM DEPOSIT IS TSh 500", { className: "font-mono text-xs" })
-      return
+      toast.error("MINIMUM DEPOSIT IS TSh 500", { className: "font-mono text-xs" }); return
     }
     setSubmitting(true)
     const res = await fetch("/api/wallet", {
@@ -108,6 +174,8 @@ export default function WalletPage() {
     })
     if (res.ok) {
       setDepositStage("pending")
+      // Refresh history so the new pending tx enters the polling loop
+      fetchHistory()
     } else {
       const d = await res.json()
       toast.error(d.error ?? "DEPOSIT FAILED", { className: "font-mono text-xs" })
@@ -119,8 +187,7 @@ export default function WalletPage() {
     e.preventDefault()
     const amt = parseFloat(amount)
     if (!amt || amt < 5000) {
-      toast.error("MINIMUM WITHDRAWAL IS TSh 5,000", { className: "font-mono text-xs" })
-      return
+      toast.error("MINIMUM WITHDRAWAL IS TSh 5,000", { className: "font-mono text-xs" }); return
     }
     setSubmitting(true)
     const res = await fetch("/api/wallet/withdraw", {
@@ -140,10 +207,7 @@ export default function WalletPage() {
   }
 
   function openAction(a: Action) {
-    setAction(a)
-    setAmount("")
-    setDepositStage("form")
-    setWithdrawResult(null)
+    setAction(a); setAmount(""); setDepositStage("form"); setWithdrawResult(null)
   }
 
   function copyAddress() {
@@ -157,11 +221,14 @@ export default function WalletPage() {
     return (
       <div className="container mx-auto px-4 py-24 flex items-center justify-center font-mono">
         <div className="flex items-center gap-2 text-foreground/30 text-[10px]">
-          <Loader2 className="h-3 w-3 animate-spin" />LOADING.WALLET...
+          <Loader2 className="h-3 w-3 animate-spin" /> LOADING.WALLET...
         </div>
       </div>
     )
   }
+
+  // Whether any tx is still pending (drives the live indicator in the header)
+  const hasPending = history.some((t) => t.status === "pending")
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-2xl font-mono space-y-4">
@@ -171,8 +238,17 @@ export default function WalletPage() {
         <div className="flex items-center gap-3">
           <span className="text-foreground/30 text-[10px]">//</span>
           <h1 className="text-[11px] tracking-[0.3em] text-foreground/70">WALLET.TERMINAL</h1>
+          {hasPending && (
+            <span className="flex items-center gap-1 text-[8px] text-yellow-400/60">
+              <span className="w-1 h-1 bg-yellow-400/60 rounded-full animate-pulse" />
+              SYNCING
+            </span>
+          )}
         </div>
-        <button onClick={() => { fetchWallet(); fetchHistory() }} className="flex items-center gap-1 text-[9px] text-foreground/30 hover:text-foreground transition-colors">
+        <button
+          onClick={() => { fetchWallet(); fetchHistory() }}
+          className="flex items-center gap-1 text-[9px] text-foreground/30 hover:text-foreground transition-colors"
+        >
           <RefreshCw className="h-2.5 w-2.5" /> REFRESH
         </button>
       </div>
@@ -224,16 +300,12 @@ export default function WalletPage() {
       {/* Action buttons */}
       {action === "idle" && (
         <div className="grid grid-cols-2 gap-3">
-          <button
-            onClick={() => openAction("deposit")}
-            className="flex items-center justify-center gap-2 py-3 border border-foreground/20 text-[10px] tracking-widest text-foreground/60 hover:text-foreground hover:border-foreground/40 hover:bg-foreground/5 transition-colors"
-          >
+          <button onClick={() => openAction("deposit")}
+            className="flex items-center justify-center gap-2 py-3 border border-foreground/20 text-[10px] tracking-widest text-foreground/60 hover:text-foreground hover:border-foreground/40 hover:bg-foreground/5 transition-colors">
             <ArrowDownToLine className="h-3.5 w-3.5" /> DEPOSIT
           </button>
-          <button
-            onClick={() => openAction("withdraw")}
-            className="flex items-center justify-center gap-2 py-3 border border-foreground/20 text-[10px] tracking-widest text-foreground/60 hover:text-foreground hover:border-foreground/40 hover:bg-foreground/5 transition-colors"
-          >
+          <button onClick={() => openAction("withdraw")}
+            className="flex items-center justify-center gap-2 py-3 border border-foreground/20 text-[10px] tracking-widest text-foreground/60 hover:text-foreground hover:border-foreground/40 hover:bg-foreground/5 transition-colors">
             <ArrowUpFromLine className="h-3.5 w-3.5" /> WITHDRAW
           </button>
         </div>
@@ -267,12 +339,23 @@ export default function WalletPage() {
 
       {action === "deposit" && depositStage === "pending" && (
         <div className="border border-foreground/15 p-6 text-center space-y-3">
-          <Loader2 className="h-6 w-6 animate-spin text-foreground/40 mx-auto" />
+          <div className="relative mx-auto w-8 h-8 flex items-center justify-center">
+            <span className="absolute inset-0 rounded-full border border-yellow-400/20 animate-ping" />
+            <Smartphone className="h-4 w-4 text-yellow-400/50" />
+          </div>
           <p className="text-[9px] tracking-widest text-foreground/50">AWAITING.PAYMENT</p>
           <p className="text-sm font-bold">CHECK.YOUR.PHONE</p>
-          <p className="text-[10px] text-foreground/40">APPROVE THE PROMPT ON <span className="text-foreground">{phone}</span></p>
-          <button onClick={() => { setDepositStage("done"); setAction("idle"); fetchWallet(); fetchHistory() }}
-            className="flex items-center justify-center gap-1.5 mx-auto text-[9px] text-foreground/40 hover:text-foreground transition-colors">
+          <p className="text-[10px] text-foreground/40">
+            APPROVE THE PROMPT ON <span className="text-foreground">{phone}</span>
+          </p>
+          <p className="text-[8px] text-yellow-400/50 flex items-center justify-center gap-1">
+            <span className="w-1 h-1 bg-yellow-400/50 rounded-full animate-pulse" />
+            Auto-updating when confirmed
+          </p>
+          <button
+            onClick={() => { setDepositStage("done"); setAction("idle"); fetchWallet(); fetchHistory() }}
+            className="flex items-center justify-center gap-1.5 mx-auto text-[9px] text-foreground/40 hover:text-foreground transition-colors"
+          >
             <CheckCircle2 className="h-3 w-3" /> I&apos;VE APPROVED — REFRESH
           </button>
         </div>
@@ -311,9 +394,7 @@ export default function WalletPage() {
             {withdrawResult.status === "burned" ? "WITHDRAWAL.PROCESSED" : "WITHDRAWAL.REQUESTED"}
           </p>
           <p className="text-[10px] text-foreground/40">{withdrawResult.message}</p>
-          <button onClick={() => setAction("idle")} className="text-[8px] text-foreground/30 hover:text-foreground mt-1 transition-colors">
-            CLOSE
-          </button>
+          <button onClick={() => setAction("idle")} className="text-[8px] text-foreground/30 hover:text-foreground mt-1 transition-colors">CLOSE</button>
         </div>
       )}
 
@@ -332,26 +413,38 @@ export default function WalletPage() {
         ) : (
           <div className="divide-y divide-foreground/5">
             {history.map((tx) => {
-              const cfg = typeConfig[tx.type]
+              const cfg  = typeConfig[tx.type]
               const Icon = cfg.icon
+              const isPending = tx.status === "pending"
+
               return (
-                <div key={tx.id} className="flex items-center gap-3 px-4 py-3">
-                  <div className="w-6 h-6 flex items-center justify-center flex-shrink-0">
-                    <Icon className={`h-3.5 w-3.5 ${cfg.color}`} />
+                <div key={tx.id} className={`flex items-center gap-3 px-4 py-3 transition-colors ${isPending ? "bg-yellow-400/[0.02]" : ""}`}>
+                  {/* Icon */}
+                  <div className="w-6 h-6 flex items-center justify-center flex-shrink-0 relative">
+                    {isPending && (
+                      <span className="absolute inset-0 rounded-full border border-yellow-400/20 animate-ping" />
+                    )}
+                    <Icon className={`h-3.5 w-3.5 ${isPending ? "text-yellow-400/60" : cfg.color}`} />
                   </div>
+
+                  {/* Description + meta */}
                   <div className="flex-1 min-w-0">
-                    <p className="text-[10px] text-foreground/60 tracking-widest">{cfg.label}</p>
-                    <p className="text-[8px] text-foreground/25">
+                    <p className="text-[10px] text-foreground/70 truncate">
+                      {tx.description ?? cfg.label}
+                    </p>
+                    <p className="text-[8px] text-foreground/25 mt-0.5">
                       {new Date(tx.createdAt).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" })}
                       {tx.phoneNumber && ` · ${tx.phoneNumber}`}
                     </p>
                   </div>
+
+                  {/* Amount + status */}
                   <div className="text-right flex-shrink-0">
                     <p className={`text-[11px] font-mono font-bold ${tx.type === "deposit" ? "text-green-400/80" : "text-foreground/60"}`}>
                       {cfg.sign}{formatPrice(tx.amountTzs)}
                     </p>
                     <span className={`text-[7px] border px-1 py-0.5 tracking-widest ${statusColor[tx.status] ?? "text-foreground/30 border-foreground/15"}`}>
-                      {tx.status.toUpperCase()}
+                      {statusLabel[tx.status] ?? tx.status.toUpperCase()}
                     </span>
                   </div>
                 </div>
