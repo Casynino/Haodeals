@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     template: "%s | HaoDeals",
   },
   description:
-    "HaoDeals — Tanzania's best deals on electronics, fashion, home goods, and more. Good deals delivered.",
+    "A collection of limited deals — now in stock. Tap to explore, shop, and enjoy fast delivery.",
   keywords: ["deals", "Tanzania", "electronics", "fashion", "shopping", "haodeals", "discounts"],
   openGraph: {
     type: "website",
@@ -32,12 +32,12 @@ export const metadata: Metadata = {
     url: "https://haodeals.vercel.app",
     siteName: "HaoDeals",
     title: "HaoDeals — Good Deals Delivered",
-    description: "Tanzania's best deals on electronics, fashion, home goods, and more.",
+    description: "A collection of limited deals — now in stock. Tap to explore, shop, and enjoy fast delivery.",
   },
   twitter: {
     card: "summary_large_image",
     title: "HaoDeals — Good Deals Delivered",
-    description: "Tanzania's best deals on electronics, fashion, home goods, and more.",
+    description: "A collection of limited deals — now in stock. Tap to explore, shop, and enjoy fast delivery.",
   },
   icons: {
     icon: [
