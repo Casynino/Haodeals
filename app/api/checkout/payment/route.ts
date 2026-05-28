@@ -16,7 +16,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Payment service not configured" }, { status: 503 })
   }
 
-  const { address, items, discountCodeId } = await request.json()
+  const { address, items, discountCodeId, deliveryFee = 0 } = await request.json()
   const userId = session.user.id as string
 
   if (!address || !items?.length) {
@@ -33,6 +33,8 @@ export async function POST(request: Request) {
     },
     0
   )
+  // Add validated delivery fee (cap at 10,000 TZS to prevent abuse)
+  subtotal += Math.min(Math.max(0, Number(deliveryFee) || 0), 10_000)
 
   // Apply discount code if provided
   let discountPercent = 0

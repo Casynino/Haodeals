@@ -19,6 +19,7 @@ export interface Product {
   images: string[]
   options?: ProductOption[] | null
   featured: boolean
+  dealEndsAt?: string | null
   categoryId: string
   category: Category
   reviews?: Review[]

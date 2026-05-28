@@ -3,16 +3,20 @@
 import { useEffect, useState, use } from "react"
 import Image from "next/image"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { useSession } from "next-auth/react"
 import { useCart } from "@/hooks/useCart"
-import { ShoppingCart, Minus, Plus, ChevronLeft, Truck, RotateCcw, ShieldCheck } from "lucide-react"
+import { ShoppingCart, Zap, Minus, Plus, ChevronLeft, Truck, RotateCcw, ShieldCheck, AlertTriangle } from "lucide-react"
 import { toast } from "sonner"
 import type { Product, SelectedOption } from "@/types"
 import { formatPrice } from "@/lib/utils"
 import { ProductTilt } from "@/components/ui/product-tilt"
+import { DealCountdown } from "@/components/DealCountdown"
+import { HaoPlusBanner } from "@/components/HaoPlusBanner"
 
 export default function ProductDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params)
+  const router = useRouter()
   const { data: session } = useSession()
   const { addItem } = useCart()
   const [product, setProduct] = useState<Product | null>(null)
@@ -43,6 +47,9 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
   const allOptionsSelected = !productOptions?.length ||
     productOptions.every((opt) => !!selectedOptions[opt.name])
 
+  const isLowStock = product && product.stock > 0 && product.stock <= 10
+  const isVeryLowStock = product && product.stock > 0 && product.stock <= 3
+
   function handleAddToCart() {
     if (!product) return
     const opts: SelectedOption[] = Object.entries(selectedOptions).map(([name, value]) => ({ name, value }))
@@ -53,6 +60,13 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
         : `QTY ${quantity} // ${formatPrice(product.price * quantity)}`,
       className: "font-mono text-xs",
     })
+  }
+
+  function handleBuyNow() {
+    if (!product || !allOptionsSelected) return
+    const opts: SelectedOption[] = Object.entries(selectedOptions).map(([name, value]) => ({ name, value }))
+    addItem(product, quantity, opts.length ? opts : undefined)
+    router.push("/checkout")
   }
 
   async function submitReview() {
@@ -109,7 +123,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
       </Link>
 
       <div className="grid md:grid-cols-2 gap-10 mb-12">
-        {/* Images */}
+        {/* ── Images ── */}
         <div className="space-y-3">
           <ProductTilt className="relative aspect-square overflow-hidden bg-foreground/5 border border-white/10" intensity={10}>
             <Image
@@ -122,6 +136,13 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
             {discount && (
               <div className="absolute top-0 left-0 bg-foreground text-background text-[9px] font-bold px-2 py-0.5 tracking-widest z-10">
                 -{discount}%
+              </div>
+            )}
+            {product.stock === 0 && (
+              <div className="absolute inset-0 bg-background/60 flex items-center justify-center z-10">
+                <span className="text-[11px] tracking-[0.3em] text-foreground/60 border border-white/20 px-4 py-2 bg-background/80">
+                  OUT OF STOCK
+                </span>
               </div>
             )}
             <div className="absolute inset-0 scanline-overlay pointer-events-none" />
@@ -143,8 +164,8 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
           )}
         </div>
 
-        {/* Info */}
-        <div className="space-y-5">
+        {/* ── Product info ── */}
+        <div className="space-y-4">
           <div>
             <p className="text-[10px] tracking-widest text-foreground/55 mb-1.5">{product.category?.name?.toUpperCase()}</p>
             <h1 className="text-xl font-bold tracking-wide uppercase text-foreground/95">{product.name}</h1>
@@ -163,6 +184,10 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
             </div>
           )}
 
+          {/* Deal countdown */}
+          <DealCountdown dealEndsAt={product.dealEndsAt} />
+
+          {/* Price */}
           <div className="flex items-baseline gap-3">
             <span className="text-2xl font-mono font-semibold text-green-400">{formatPrice(product.price)}</span>
             {product.originalPrice && (
@@ -177,10 +202,33 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
 
           <p className="text-xs text-foreground/65 leading-relaxed">{product.description}</p>
 
-          <div className="flex items-center gap-2 text-xs">
-            <div className={`w-2 h-2 rounded-full ${product.stock > 0 ? "bg-green-400/80" : "bg-red-400/80"}`} />
-            <span className={product.stock > 0 ? "text-green-400/80" : "text-red-400/80"}>
-              {product.stock > 0 ? `In stock — ${product.stock} units` : "Out of stock"}
+          {/* Stock indicator */}
+          <div className={`flex items-center gap-2 text-xs px-3 py-2 border ${
+            product.stock === 0
+              ? "border-red-400/25 bg-red-400/[0.04] text-red-400/70"
+              : isVeryLowStock
+              ? "border-red-400/25 bg-red-400/[0.04] text-red-400/80"
+              : isLowStock
+              ? "border-yellow-400/25 bg-yellow-400/[0.03] text-yellow-400/75"
+              : "border-green-400/20 bg-green-400/[0.03] text-green-400/70"
+          }`}>
+            {isVeryLowStock ? (
+              <AlertTriangle className="h-3 w-3 shrink-0" />
+            ) : (
+              <div className={`w-2 h-2 rounded-full shrink-0 ${
+                product.stock === 0 ? "bg-red-400/70"
+                : isLowStock ? "bg-yellow-400/70"
+                : "bg-green-400/70"
+              }`} />
+            )}
+            <span className="tracking-wide">
+              {product.stock === 0
+                ? "Out of stock — join waitlist"
+                : isVeryLowStock
+                ? `Only ${product.stock} left — order now!`
+                : isLowStock
+                ? `Only ${product.stock} items remaining`
+                : `In stock — ${product.stock} units available`}
             </span>
           </div>
 
@@ -217,7 +265,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
               ))}
               {!allOptionsSelected && (
                 <p className="text-[8px] text-foreground/30 tracking-widest">
-                  SELECT ALL OPTIONS TO ADD TO CART
+                  SELECT ALL OPTIONS TO CONTINUE
                 </p>
               )}
             </div>
@@ -244,22 +292,35 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
             </div>
           </div>
 
-          {/* Add to cart */}
-          <button
-            onClick={handleAddToCart}
-            disabled={product.stock === 0 || !allOptionsSelected}
-            className="w-full flex items-center justify-center gap-2 py-2.5 bg-foreground text-background text-[10px] tracking-widest font-bold hover:bg-foreground/90 transition-colors disabled:opacity-30"
-          >
-            <ShoppingCart className="h-3.5 w-3.5" />
-            {!allOptionsSelected ? "SELECT.OPTIONS" : "ADD.TO.CART"}
-          </button>
+          {/* CTA Buttons — Buy Now (primary) + Add to Cart */}
+          <div className="grid grid-cols-2 gap-2">
+            <button
+              onClick={handleBuyNow}
+              disabled={product.stock === 0 || !allOptionsSelected}
+              className="flex items-center justify-center gap-2 py-3 bg-[#ee0000] text-white text-[10px] tracking-widest font-bold hover:bg-red-700 transition-colors disabled:opacity-30"
+            >
+              <Zap className="h-3.5 w-3.5" />
+              BUY NOW
+            </button>
+            <button
+              onClick={handleAddToCart}
+              disabled={product.stock === 0 || !allOptionsSelected}
+              className="flex items-center justify-center gap-2 py-3 border border-white/25 text-foreground/75 text-[10px] tracking-widest hover:bg-foreground/5 hover:border-white/45 transition-colors disabled:opacity-30"
+            >
+              <ShoppingCart className="h-3.5 w-3.5" />
+              ADD TO CART
+            </button>
+          </div>
+
+          {/* HAO+ banner */}
+          <HaoPlusBanner variant="product" />
 
           {/* Trust badges */}
-          <div className="grid grid-cols-3 gap-2 pt-3 border-t border-white/10">
+          <div className="grid grid-cols-3 gap-2 pt-2 border-t border-white/10">
             {[
-              { icon: Truck, label: "Free Shipping", sub: "Over TSh 100K" },
-              { icon: RotateCcw, label: "30-Day Returns", sub: "Easy returns" },
-              { icon: ShieldCheck, label: "Secure", sub: "Safe checkout" },
+              { icon: Truck,      label: "Free Shipping",  sub: "Over TSh 100K" },
+              { icon: RotateCcw,  label: "30-Day Returns", sub: "Easy returns" },
+              { icon: ShieldCheck, label: "Secure",        sub: "Safe checkout" },
             ].map(({ icon: Icon, label, sub }) => (
               <div key={label} className="flex flex-col items-center gap-1.5 text-center p-2.5 border border-white/10">
                 <Icon className="h-4 w-4 text-foreground/50" />
@@ -271,7 +332,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
         </div>
       </div>
 
-      {/* Tabs */}
+      {/* ── Tabs ── */}
       <div className="border-t border-white/10">
         <div className="flex border-b border-white/10">
           {[
@@ -294,7 +355,6 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
 
         {activeTab === "reviews" && (
           <div className="py-6 space-y-6">
-            {/* Write review */}
             <div className="border border-white/10 p-5 space-y-3">
               <p className="text-[9px] tracking-widest text-foreground/40">// SUBMIT.REVIEW</p>
               <div className="flex gap-1">
@@ -321,7 +381,6 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
               </button>
             </div>
 
-            {/* Reviews list */}
             {product.reviews?.length === 0 ? (
               <p className="text-[10px] tracking-widest text-foreground/30 text-center py-8">NO.REVIEWS.YET</p>
             ) : (
@@ -337,9 +396,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                           ))}
                         </div>
                       </div>
-                      <p className="text-[8px] text-foreground/25">
-                        {new Date(review.createdAt).toLocaleDateString()}
-                      </p>
+                      <p className="text-[8px] text-foreground/25">{new Date(review.createdAt).toLocaleDateString()}</p>
                     </div>
                     {review.comment && (
                       <p className="text-xs text-foreground/65 leading-relaxed">{review.comment}</p>
@@ -359,9 +416,9 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
               <div className="border-t border-white/10 pt-4 grid grid-cols-2 gap-2">
                 {[
                   ["CATEGORY", product.category?.name?.toUpperCase() ?? "—"],
-                  ["STOCK", `${product.stock}.UNITS`],
+                  ["STOCK", `${product.stock} UNITS`],
                   ["SKU", product.id.slice(0, 8).toUpperCase()],
-                  ["STATUS", product.stock > 0 ? "IN.STOCK" : "OUT.OF.STOCK"],
+                  ["STATUS", product.stock > 0 ? "IN STOCK" : "OUT OF STOCK"],
                 ].map(([label, value]) => (
                   <div key={label} className="flex items-center justify-between py-1.5 border-b border-white/5 text-[9px]">
                     <span className="text-foreground/30 tracking-widest">{label}</span>
