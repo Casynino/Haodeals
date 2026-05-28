@@ -6,8 +6,8 @@ import { useSession } from "next-auth/react"
 import { useCart } from "@/hooks/useCart"
 import {
   ShieldCheck, Wallet, CheckCircle2,
-  Loader2, AlertCircle, Tag, X, MapPin, Phone,
-  Zap, Calendar, Info,
+  Loader2, AlertCircle, Tag, X, MapPin,
+  Zap, Calendar, Info, Truck,
 } from "lucide-react"
 import { toast } from "sonner"
 import Image from "next/image"
@@ -16,12 +16,10 @@ import { formatPrice } from "@/lib/utils"
 import { HaoPlusBanner } from "@/components/HaoPlusBanner"
 
 type Stage = "form" | "confirmed"
-type DeliveryMethod = "bolt" | "free_weekend"
+type DeliveryMethod = "free_weekend" | "fast"
 
 interface DiscountCode { id: string; code: string; percent: number; expiresAt: string }
 interface SavedProfile { name?: string | null; phone?: string | null; address?: string | null }
-
-const BOLT_FEE = 3500 // TSh
 
 export default function CheckoutPage() {
   const router = useRouter()
@@ -41,7 +39,7 @@ export default function CheckoutPage() {
   const [appliedCode, setAppliedCode] = useState<DiscountCode | null>(null)
 
   // Delivery
-  const [deliveryMethod, setDeliveryMethod] = useState<DeliveryMethod>("bolt")
+  const [deliveryMethod, setDeliveryMethod] = useState<DeliveryMethod>("free_weekend")
 
   // Address form
   const [form, setForm] = useState({ fullName: "", phone: "", street: "", city: "" })
@@ -95,10 +93,10 @@ export default function CheckoutPage() {
     }
   }, [session])
 
-  const cartSubtotal  = total()
-  const discountAmt   = appliedCode ? Math.round(cartSubtotal * appliedCode.percent / 100) : 0
-  const deliveryFee   = deliveryMethod === "bolt" ? BOLT_FEE : 0
-  const finalTotal    = cartSubtotal - discountAmt + deliveryFee
+  const cartSubtotal = total()
+  const discountAmt  = appliedCode ? Math.round(cartSubtotal * appliedCode.percent / 100) : 0
+  const finalTotal   = cartSubtotal - discountAmt
+  // Delivery is always free (Fast Delivery shipping cost is handled separately by admin)
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setForm({ ...form, [e.target.name]: e.target.value })
@@ -145,8 +143,8 @@ export default function CheckoutPage() {
       }).catch(() => {})
     }
 
-    // Include delivery method as metadata in address string
-    const deliveryLabel = deliveryMethod === "bolt" ? " [BOLT]" : " [FREE_WEEKEND]"
+    // Tag delivery method in address so admin can see it on the order
+    const deliveryLabel = deliveryMethod === "fast" ? " [FAST_DELIVERY]" : " [FREE_WEEKEND]"
     const addressWithDelivery = fullAddress + deliveryLabel
 
     const res = await fetch("/api/checkout/payment", {
@@ -156,7 +154,6 @@ export default function CheckoutPage() {
         address: addressWithDelivery,
         items: items.map((i) => ({ productId: i.productId ?? i.id, quantity: i.quantity })),
         discountCodeId: appliedCode?.id ?? null,
-        deliveryFee,
       }),
     })
 
@@ -306,30 +303,7 @@ export default function CheckoutPage() {
             <div className="border border-foreground/10 p-5 space-y-3">
               <p className="text-xs tracking-widest text-foreground/65 font-medium">DELIVERY METHOD</p>
 
-              {/* Bolt option */}
-              <button
-                type="button"
-                onClick={() => setDeliveryMethod("bolt")}
-                className={`w-full flex items-start gap-3 p-3 border transition-all text-left ${
-                  deliveryMethod === "bolt"
-                    ? "border-foreground/40 bg-foreground/[0.04]"
-                    : "border-white/12 hover:border-white/25"
-                }`}
-              >
-                <div className={`w-4 h-4 border rounded-full mt-0.5 shrink-0 flex items-center justify-center ${deliveryMethod === "bolt" ? "border-foreground/60" : "border-white/25"}`}>
-                  {deliveryMethod === "bolt" && <div className="w-2 h-2 rounded-full bg-foreground/70" />}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2">
-                    <Zap className="h-3.5 w-3.5 text-yellow-400/70" />
-                    <span className="text-xs font-medium text-foreground/80 tracking-wide">Bolt Delivery</span>
-                    <span className="ml-auto text-[10px] text-green-400/80 font-mono font-bold">{formatPrice(BOLT_FEE)}</span>
-                  </div>
-                  <p className="text-[9px] text-foreground/45 mt-0.5">Fast delivery · Delivered same or next day</p>
-                </div>
-              </button>
-
-              {/* Free weekend option */}
+              {/* Option 1 — Free Weekend Delivery */}
               <button
                 type="button"
                 onClick={() => setDeliveryMethod("free_weekend")}
@@ -348,30 +322,67 @@ export default function CheckoutPage() {
                     <span className="text-xs font-medium text-foreground/80 tracking-wide">Free Weekend Delivery</span>
                     <span className="ml-auto text-[10px] text-green-400/80 font-mono font-bold">FREE</span>
                   </div>
-                  <p className="text-[9px] text-foreground/45 mt-0.5">Delivered every Saturday or Sunday · Dar es Salaam only</p>
+                  <p className="text-[9px] text-foreground/45 mt-0.5 leading-relaxed">
+                    Delivered every Saturday or Sunday · Dar es Salaam only
+                  </p>
                 </div>
               </button>
 
-              {/* Info box */}
               {deliveryMethod === "free_weekend" && (
                 <div className="flex items-start gap-2 p-3 border border-green-400/20 bg-green-400/[0.03]">
                   <Info className="h-3.5 w-3.5 text-green-400/60 shrink-0 mt-0.5" />
                   <p className="text-[9px] text-foreground/50 leading-relaxed">
-                    Free weekend delivery is available for <strong className="text-foreground/70">Dar es Salaam</strong> customers only.
-                    Orders placed before Friday midnight will be delivered on Saturday or Sunday.
-                    Delivery may take longer compared to Bolt.
+                    Available for <strong className="text-foreground/70">Dar es Salaam</strong> customers only.
+                    Orders placed before Friday midnight will be delivered Saturday or Sunday.
                   </p>
                 </div>
               )}
 
-              {/* HAO+ delivery teaser */}
-              {deliveryMethod === "bolt" && (
-                <div className="flex items-center gap-2 px-3 py-2 border border-yellow-400/15 bg-yellow-400/[0.02]">
-                  <span className="text-[8px] font-bold text-yellow-400/70">HAO+</span>
-                  <span className="text-[9px] text-foreground/40">members get free Bolt delivery on every order</span>
-                  <span className="ml-auto text-[8px] text-yellow-400/50 border border-yellow-400/20 px-1.5 py-0.5">SOON</span>
+              {/* Option 2 — Fast Delivery */}
+              <button
+                type="button"
+                onClick={() => setDeliveryMethod("fast")}
+                className={`w-full flex items-start gap-3 p-3 border transition-all text-left ${
+                  deliveryMethod === "fast"
+                    ? "border-foreground/35 bg-foreground/[0.04]"
+                    : "border-white/12 hover:border-white/25"
+                }`}
+              >
+                <div className={`w-4 h-4 border rounded-full mt-0.5 shrink-0 flex items-center justify-center ${deliveryMethod === "fast" ? "border-foreground/55" : "border-white/25"}`}>
+                  {deliveryMethod === "fast" && <div className="w-2 h-2 rounded-full bg-foreground/70" />}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2">
+                    <Truck className="h-3.5 w-3.5 text-foreground/55" />
+                    <span className="text-xs font-medium text-foreground/80 tracking-wide">Fast Delivery</span>
+                    <span className="ml-auto text-[9px] text-foreground/40 font-mono">Cost arranged separately</span>
+                  </div>
+                  <p className="text-[9px] text-foreground/45 mt-0.5 leading-relaxed">
+                    Bus / cargo / transport providers · Faster than weekend
+                  </p>
+                </div>
+              </button>
+
+              {deliveryMethod === "fast" && (
+                <div className="flex items-start gap-2 p-3 border border-white/12 bg-foreground/[0.02]">
+                  <Info className="h-3.5 w-3.5 text-foreground/40 shrink-0 mt-0.5" />
+                  <div className="space-y-1">
+                    <p className="text-[9px] text-foreground/55 leading-relaxed font-medium">
+                      Shipping cost is not included in your order total.
+                    </p>
+                    <p className="text-[9px] text-foreground/40 leading-relaxed">
+                      After your order is confirmed, our team will contact you to arrange the transport method and shipping payment separately — either on delivery or via M-Pesa.
+                    </p>
+                  </div>
                 </div>
               )}
+
+              {/* HAO+ teaser */}
+              <div className="flex items-center gap-2 px-3 py-2 border border-yellow-400/15 bg-yellow-400/[0.02]">
+                <span className="text-[8px] font-bold text-yellow-400/70">HAO+</span>
+                <span className="text-[9px] text-foreground/40">members get priority fast delivery on every order</span>
+                <span className="ml-auto text-[8px] text-yellow-400/50 border border-yellow-400/20 px-1.5 py-0.5">SOON</span>
+              </div>
             </div>
 
             {/* Promo code */}
@@ -483,12 +494,12 @@ export default function CheckoutPage() {
                 )}
                 <div className="flex justify-between">
                   <span className="flex items-center gap-1 text-foreground/40">
-                    {deliveryMethod === "bolt"
-                      ? <><Zap className="h-2.5 w-2.5 text-yellow-400/60" /> Bolt Delivery</>
-                      : <><Calendar className="h-2.5 w-2.5 text-green-400/60" /> Free Delivery</>}
+                    {deliveryMethod === "free_weekend"
+                      ? <><Calendar className="h-2.5 w-2.5 text-green-400/60" /> Weekend Delivery</>
+                      : <><Truck className="h-2.5 w-2.5 text-foreground/40" /> Fast Delivery</>}
                   </span>
-                  <span className={deliveryFee === 0 ? "text-green-400/70" : "text-foreground/60"}>
-                    {deliveryFee === 0 ? "FREE" : formatPrice(deliveryFee)}
+                  <span className={deliveryMethod === "free_weekend" ? "text-green-400/70" : "text-foreground/40"}>
+                    {deliveryMethod === "free_weekend" ? "FREE" : "Arranged separately"}
                   </span>
                 </div>
                 <div className="flex justify-between border-t border-foreground/10 pt-2">
@@ -521,9 +532,10 @@ export default function CheckoutPage() {
           <div>
             <p className="text-[8px] tracking-widest text-foreground/30">TOTAL</p>
             <p className="text-green-400/80 font-mono text-sm font-bold">{formatPrice(finalTotal)}</p>
-            {deliveryMethod === "free_weekend" && (
-              <p className="text-[8px] text-green-400/55">Free delivery included</p>
-            )}
+            {deliveryMethod === "free_weekend"
+              ? <p className="text-[8px] text-green-400/55">Free weekend delivery</p>
+              : <p className="text-[8px] text-foreground/30">Fast delivery — cost arranged separately</p>
+            }
             {appliedCode && (
               <p className="text-[8px] text-green-400/55">Saved {formatPrice(discountAmt)}</p>
             )}

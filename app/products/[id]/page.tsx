@@ -200,8 +200,6 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
             )}
           </div>
 
-          <p className="text-xs text-foreground/65 leading-relaxed">{product.description}</p>
-
           {/* Stock indicator */}
           <div className={`flex items-center gap-2 text-xs px-3 py-2 border ${
             product.stock === 0
