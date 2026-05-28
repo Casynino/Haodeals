@@ -14,6 +14,7 @@ import { ProductTilt } from "@/components/ui/product-tilt"
 import { DealCountdown } from "@/components/DealCountdown"
 import { HaoPlusBanner } from "@/components/HaoPlusBanner"
 import { ShareButton } from "@/components/ShareButton"
+import { StockBadge } from "@/components/StockBadge"
 
 export default function ProductDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params)
@@ -209,27 +210,8 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
             )}
           </div>
 
-          {/* Stock indicator — minimal */}
-          <div className="flex items-center gap-1.5">
-            <span className={`h-1.5 w-1.5 rounded-full shrink-0 ${
-              product.stock === 0 ? "bg-red-400/60"
-              : isVeryLowStock ? "bg-red-400/70 animate-pulse"
-              : isLowStock ? "bg-amber-400/65"
-              : "bg-green-400/60"
-            }`} />
-            <span className={`text-[9px] tracking-wide ${
-              product.stock === 0 ? "text-red-400/65"
-              : isVeryLowStock ? "text-red-400/70"
-              : isLowStock ? "text-amber-400/60"
-              : "text-green-400/55"
-            }`}>
-              {product.stock === 0
-                ? "Out of stock"
-                : isVeryLowStock || isLowStock
-                ? `Only ${product.stock} left`
-                : "In stock"}
-            </span>
-          </div>
+          {/* Stock badge */}
+          <StockBadge stock={product.stock} />
 
           {/* Variant selectors */}
           {productOptions && productOptions.length > 0 && (
