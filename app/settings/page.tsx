@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react"
 import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import Image from "next/image"
-import { Loader2, Camera, Save, KeyRound, User, Phone, Eye, EyeOff } from "lucide-react"
+import { Loader2, Camera, Save, KeyRound, User, Phone, MapPin, Eye, EyeOff } from "lucide-react"
 import { toast } from "sonner"
 
 export default function SettingsPage() {
@@ -12,7 +12,7 @@ export default function SettingsPage() {
   const router = useRouter()
   const fileRef = useRef<HTMLInputElement>(null)
 
-  const [form, setForm]   = useState({ name: "", phone: "", image: "" })
+  const [form, setForm]   = useState({ name: "", phone: "", image: "", address: "" })
   const [pass, setPass]   = useState({ current: "", next: "", confirm: "" })
   const [showCurrent, setShowCurrent] = useState(false)
   const [showNext,    setShowNext]    = useState(false)
@@ -27,11 +27,19 @@ export default function SettingsPage() {
   useEffect(() => {
     if (session?.user) {
       const u = session.user as { name?: string; phone?: string | null; image?: string | null }
-      setForm({
+      setForm((prev) => ({
+        ...prev,
         name:  u.name  ?? "",
         phone: u.phone ?? "",
         image: u.image ?? "",
-      })
+      }))
+      // Load full profile to get address
+      fetch("/api/profile")
+        .then((r) => r.ok ? r.json() : null)
+        .then((data) => {
+          if (data?.address) setForm((prev) => ({ ...prev, address: data.address ?? "" }))
+        })
+        .catch(() => {})
     }
   }, [session])
 
@@ -58,7 +66,7 @@ export default function SettingsPage() {
     const res = await fetch("/api/profile", {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name: form.name, phone: form.phone || null, image: form.image || null }),
+      body: JSON.stringify({ name: form.name, phone: form.phone || null, image: form.image || null, address: form.address || null }),
     })
     if (res.ok) {
       await update({ name: form.name, phone: form.phone || null, image: form.image || null })
@@ -187,6 +195,20 @@ export default function SettingsPage() {
             className="w-full bg-transparent border border-foreground/15 px-3 py-2 text-[10px] text-foreground/80 placeholder:text-foreground/20 focus:outline-none focus:border-foreground/40 transition-colors"
           />
           <p className="text-[8px] text-foreground/20">USED FOR MOBILE MONEY PAYMENTS</p>
+        </div>
+
+        <div className="space-y-1.5">
+          <label className="text-[8px] tracking-widest text-foreground/30 flex items-center gap-1.5 mb-1">
+            <MapPin className="h-2.5 w-2.5" /> DELIVERY.ADDRESS
+          </label>
+          <input
+            type="text"
+            value={form.address}
+            onChange={(e) => setForm({ ...form, address: e.target.value })}
+            placeholder="123 Kariakoo Street, Dar es Salaam"
+            className="w-full bg-transparent border border-foreground/15 px-3 py-2 text-[10px] text-foreground/80 placeholder:text-foreground/20 focus:outline-none focus:border-foreground/40 transition-colors"
+          />
+          <p className="text-[8px] text-foreground/20">AUTO-FILLED AT CHECKOUT</p>
         </div>
 
         <button

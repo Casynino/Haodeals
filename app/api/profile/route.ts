@@ -5,12 +5,24 @@ import bcrypt from "bcryptjs"
 import { z } from "zod"
 
 const updateSchema = z.object({
-  name:        z.string().min(2).max(50).optional(),
-  phone:       z.string().min(9).max(20).optional().nullable(),
-  image:       z.string().url().optional().nullable(),
-  newPassword: z.string().min(6).optional(),
+  name:            z.string().min(2).max(50).optional(),
+  phone:           z.string().min(9).max(20).optional().nullable(),
+  image:           z.string().url().optional().nullable(),
+  address:         z.string().max(300).optional().nullable(),
+  newPassword:     z.string().min(6).optional(),
   currentPassword: z.string().optional(),
 })
+
+export async function GET() {
+  const session = await auth()
+  if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+  const userId = session.user.id as string
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: { id: true, name: true, email: true, phone: true, image: true, address: true },
+  })
+  return NextResponse.json(user)
+}
 
 export async function PATCH(req: Request) {
   const session = await auth()
@@ -20,13 +32,14 @@ export async function PATCH(req: Request) {
   const parsed = updateSchema.safeParse(body)
   if (!parsed.success) return NextResponse.json({ error: parsed.error.issues }, { status: 400 })
 
-  const { name, phone, image, newPassword, currentPassword } = parsed.data
+  const { name, phone, image, address, newPassword, currentPassword } = parsed.data
   const userId = session.user.id as string
 
   const updateData: Record<string, unknown> = {}
-  if (name  !== undefined) updateData.name  = name
-  if (phone !== undefined) updateData.phone = phone
-  if (image !== undefined) updateData.image = image
+  if (name    !== undefined) updateData.name    = name
+  if (phone   !== undefined) updateData.phone   = phone
+  if (image   !== undefined) updateData.image   = image
+  if (address !== undefined) updateData.address = address
 
   // Password change requires current password verification
   if (newPassword) {
@@ -43,7 +56,7 @@ export async function PATCH(req: Request) {
   const updated = await prisma.user.update({
     where: { id: userId },
     data: updateData,
-    select: { id: true, name: true, email: true, phone: true, image: true },
+    select: { id: true, name: true, email: true, phone: true, image: true, address: true },
   })
 
   return NextResponse.json(updated)

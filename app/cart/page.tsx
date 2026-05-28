@@ -6,6 +6,7 @@ import Link from "next/link"
 import { ShoppingCart, Minus, Plus, Trash2, ArrowRight, ShieldCheck, Truck } from "lucide-react"
 import { toast } from "sonner"
 import { formatPrice } from "@/lib/utils"
+import { HaoPlusBanner } from "@/components/HaoPlusBanner"
 
 export default function CartPage() {
   const { items, removeItem, updateQuantity, total, clearCart } = useCart()
@@ -127,6 +128,8 @@ export default function CartPage() {
                 Continue Shopping
               </Link>
             </div>
+
+            <HaoPlusBanner variant="cart" />
 
             <div className="flex items-center justify-center gap-4 text-[8px] text-foreground/25 pt-1">
               <div className="flex items-center gap-1">

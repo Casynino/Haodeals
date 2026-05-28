@@ -42,6 +42,7 @@ const EMPTY_FORM = {
   images: "",
   featured: false,
   categoryId: "",
+  dealEndsAt: "",
 }
 
 const PRESET_OPTIONS: ProductOption[] = [
@@ -124,6 +125,11 @@ export default function AdminProductsPage() {
     setOptions((product as Product & { options?: ProductOption[] }).options ?? [])
     setNewOptionName("")
     setNewOptionValues({})
+    const ext = product as Product & { dealEndsAt?: string | null }
+    // Convert ISO datetime to datetime-local format (YYYY-MM-DDTHH:MM)
+    const dealEndsAtLocal = ext.dealEndsAt
+      ? new Date(ext.dealEndsAt).toISOString().slice(0, 16)
+      : ""
     setForm({
       name: product.name,
       description: "",
@@ -133,6 +139,7 @@ export default function AdminProductsPage() {
       images: product.images.join(", "),
       featured: product.featured,
       categoryId: product.category.id,
+      dealEndsAt: dealEndsAtLocal,
     })
     setOpen(true)
   }
@@ -427,6 +434,28 @@ export default function AdminProductsPage() {
                   className="w-3 h-3 accent-foreground"
                 />
                 <label htmlFor="featured" className="text-[9px] tracking-widest text-foreground/40">FEATURED.PRODUCT</label>
+              </div>
+
+              {/* Deal countdown timer */}
+              <div>
+                <label className="text-[8px] tracking-widest text-foreground/30 block mb-1">
+                  DEAL.ENDS.AT <span className="text-foreground/20">(OPTIONAL — activates countdown timer)</span>
+                </label>
+                <input
+                  type="datetime-local"
+                  value={form.dealEndsAt}
+                  onChange={(e) => setForm({ ...form, dealEndsAt: e.target.value })}
+                  className="w-full bg-transparent border border-white/15 px-2.5 py-2 text-[10px] text-foreground/70 focus:outline-none focus:border-white/40 transition-colors"
+                />
+                {form.dealEndsAt && (
+                  <button
+                    type="button"
+                    onClick={() => setForm({ ...form, dealEndsAt: "" })}
+                    className="text-[8px] text-foreground/30 hover:text-red-400/70 transition-colors mt-1"
+                  >
+                    ✕ Clear timer
+                  </button>
+                )}
               </div>
 
               <div className="border-t border-white/10 pt-3 flex gap-2">

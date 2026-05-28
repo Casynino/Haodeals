@@ -16,6 +16,7 @@ model User {
   image               String?
   role                String   @default("customer")
   phone               String?
+  address             String?
   ntzsUserId          String?
   ntzsWalletAddress   String?
   createdAt           DateTime @default(now())
@@ -49,6 +50,7 @@ model Product {
   images        String
   options       Json?
   featured      Boolean     @default(false)
+  dealEndsAt    DateTime?
   categoryId    String
   category      Category    @relation(fields: [categoryId], references: [id])
   reviews       Review[]
