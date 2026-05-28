@@ -7,7 +7,7 @@ import { useCart } from "@/hooks/useCart"
 import {
   ShieldCheck, Wallet, CheckCircle2,
   Loader2, AlertCircle, Tag, X, MapPin,
-  Zap, Calendar, Info, Truck,
+  Zap, Calendar, Truck,
 } from "lucide-react"
 import { toast } from "sonner"
 import Image from "next/image"
@@ -40,6 +40,7 @@ export default function CheckoutPage() {
 
   // Delivery
   const [deliveryMethod, setDeliveryMethod] = useState<DeliveryMethod>("free_weekend")
+  const [transportMethod, setTransportMethod] = useState<string | null>(null)
 
   // Address form
   const [form, setForm] = useState({ fullName: "", phone: "", street: "", city: "" })
@@ -143,8 +144,9 @@ export default function CheckoutPage() {
       }).catch(() => {})
     }
 
-    // Tag delivery method in address so admin can see it on the order
-    const deliveryLabel = deliveryMethod === "express" ? " [EXPRESS_DELIVERY]" : " [FREE_WEEKEND]"
+    // Tag delivery method (+ chosen transport) in address so admin can see it
+    const transportTag = transportMethod ? `:${transportMethod.toUpperCase().replace(/\s+/g, "_")}` : ""
+    const deliveryLabel = deliveryMethod === "express" ? ` [EXPRESS${transportTag}]` : " [FREE_WEEKEND]"
     const addressWithDelivery = fullAddress + deliveryLabel
 
     const res = await fetch("/api/checkout/payment", {
@@ -317,26 +319,15 @@ export default function CheckoutPage() {
                   {deliveryMethod === "free_weekend" && <div className="w-2 h-2 rounded-full bg-green-400/70" />}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2">
-                    <Calendar className="h-3.5 w-3.5 text-green-400/65" />
-                    <span className="text-xs font-medium text-foreground/80 tracking-wide">Free Weekend Delivery</span>
-                    <span className="ml-auto text-[10px] text-green-400/80 font-mono font-bold">FREE</span>
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="text-xs font-medium text-foreground/85 tracking-wide">Free Weekend Delivery</span>
+                    <span className="text-[10px] font-bold text-green-400/85 font-mono">FREE</span>
                   </div>
-                  <p className="text-[9px] text-foreground/45 mt-0.5 leading-relaxed">
-                    Delivered every Saturday or Sunday · Dar es Salaam only
+                  <p className="text-[9px] text-foreground/45 mt-1">
+                    📦 <strong className="text-foreground/65">Sat &amp; Sun only</strong> · Dar es Salaam
                   </p>
                 </div>
               </button>
-
-              {deliveryMethod === "free_weekend" && (
-                <div className="flex items-start gap-2 p-3 border border-green-400/20 bg-green-400/[0.03]">
-                  <Info className="h-3.5 w-3.5 text-green-400/60 shrink-0 mt-0.5" />
-                  <p className="text-[9px] text-foreground/50 leading-relaxed">
-                    Available for <strong className="text-foreground/70">Dar es Salaam</strong> customers only.
-                    Orders placed before Friday midnight will be delivered Saturday or Sunday.
-                  </p>
-                </div>
-              )}
 
               {/* Option 2 — Express Delivery */}
               <button
@@ -344,36 +335,53 @@ export default function CheckoutPage() {
                 onClick={() => setDeliveryMethod("express")}
                 className={`w-full flex items-start gap-3 p-3 border transition-all text-left ${
                   deliveryMethod === "express"
-                    ? "border-foreground/35 bg-foreground/[0.04]"
+                    ? "border-foreground/30 bg-foreground/[0.03]"
                     : "border-white/12 hover:border-white/25"
                 }`}
               >
-                <div className={`w-4 h-4 border rounded-full mt-0.5 shrink-0 flex items-center justify-center ${deliveryMethod === "express" ? "border-foreground/55" : "border-white/25"}`}>
+                <div className={`w-4 h-4 border rounded-full mt-0.5 shrink-0 flex items-center justify-center ${deliveryMethod === "express" ? "border-foreground/50" : "border-white/25"}`}>
                   {deliveryMethod === "express" && <div className="w-2 h-2 rounded-full bg-foreground/70" />}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2">
-                    <Truck className="h-3.5 w-3.5 text-foreground/55" />
-                    <span className="text-xs font-medium text-foreground/80 tracking-wide">Express Delivery</span>
-                    <span className="ml-auto text-[9px] text-foreground/40 font-mono">Paid by customer</span>
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="text-xs font-medium text-foreground/85 tracking-wide">Express Delivery</span>
+                    <span className="text-[9px] text-foreground/40 font-mono">Paid by customer</span>
                   </div>
-                  <p className="text-[9px] text-foreground/45 mt-0.5 leading-relaxed">
-                    Boda Boda · Bus · Bolt / Courier · Air cargo · Boat
+                  <p className="text-[9px] text-foreground/45 mt-1">
+                    💸 You arrange shipping directly with provider
                   </p>
                 </div>
               </button>
 
+              {/* Transport chips — visible when Express is selected */}
               {deliveryMethod === "express" && (
-                <div className="flex items-start gap-2 p-3 border border-white/12 bg-foreground/[0.02]">
-                  <Info className="h-3.5 w-3.5 text-foreground/40 shrink-0 mt-0.5" />
-                  <div className="space-y-1.5">
-                    <p className="text-[9px] text-foreground/55 font-medium leading-relaxed">
-                      You will choose a delivery method based on your location.
-                    </p>
-                    <p className="text-[9px] text-foreground/38 leading-relaxed">
-                      Shipping cost is handled directly between you and the delivery provider — Haodeals only assists in arranging the delivery. The final cost is agreed with the provider after your order is confirmed.
-                    </p>
+                <div className="pl-7 space-y-2.5">
+                  <div className="flex flex-wrap gap-1.5">
+                    {[
+                      { emoji: "🚕", label: "Bolt" },
+                      { emoji: "🏍️", label: "Boda Boda" },
+                      { emoji: "🚌", label: "Bus" },
+                      { emoji: "✈️", label: "Air" },
+                      { emoji: "🚤", label: "Boat" },
+                    ].map(({ emoji, label }) => (
+                      <button
+                        key={label}
+                        type="button"
+                        onClick={() => setTransportMethod((t) => (t === label ? null : label))}
+                        className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[9px] font-mono tracking-wide border transition-all ${
+                          transportMethod === label
+                            ? "border-foreground/50 bg-foreground/10 text-foreground/85"
+                            : "border-white/15 text-foreground/45 hover:border-white/30 hover:text-foreground/65"
+                        }`}
+                      >
+                        <span className="text-[11px] leading-none">{emoji}</span>
+                        <span>{label}</span>
+                      </button>
+                    ))}
                   </div>
+                  <p className="text-[8px] text-foreground/28 tracking-wide">
+                    Delivery arranged based on your selected transport method.
+                  </p>
                 </div>
               )}
 
@@ -496,7 +504,7 @@ export default function CheckoutPage() {
                   <span className="flex items-center gap-1 text-foreground/40">
                     {deliveryMethod === "free_weekend"
                       ? <><Calendar className="h-2.5 w-2.5 text-green-400/60" /> Weekend Delivery</>
-                      : <><Truck className="h-2.5 w-2.5 text-foreground/40" /> Express Delivery</>}
+                      : <><Truck className="h-2.5 w-2.5 text-foreground/40" /> Express {transportMethod ? `· ${transportMethod}` : "Delivery"}</>}
                   </span>
                   <span className={deliveryMethod === "free_weekend" ? "text-green-400/70" : "text-foreground/40"}>
                     {deliveryMethod === "free_weekend" ? "FREE" : "Paid by customer"}
