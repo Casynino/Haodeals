@@ -47,15 +47,22 @@ export async function GET() {
   }
 
   const history = [
-    ...transactions.map((t) => ({
-      id:          t.id,
-      type:        t.type as "deposit" | "withdrawal",
-      amountTzs:   t.amountTzs,
-      status:      t.status,
-      phoneNumber: t.phoneNumber,
-      description: t.description ?? null,
-      createdAt:   t.createdAt,
-    })),
+    ...transactions.map((t) => {
+      // Generate description on-the-fly for old records that pre-date the field
+      const fallbackDesc =
+        t.type === "deposit"    ? `Mobile Money top-up via ${t.phoneNumber ?? "unknown"}` :
+        t.type === "withdrawal" ? `Mobile Money withdrawal to ${t.phoneNumber ?? "unknown"}` :
+        null
+      return {
+        id:          t.id,
+        type:        t.type as "deposit" | "withdrawal",
+        amountTzs:   t.amountTzs,
+        status:      t.status,
+        phoneNumber: t.phoneNumber,
+        description: t.description ?? fallbackDesc,
+        createdAt:   t.createdAt,
+      }
+    }),
     ...orders.map((o) => ({
       id:          o.id,
       type:        "purchase" as const,
