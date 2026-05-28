@@ -8,7 +8,6 @@ import type { Product } from "@/types"
 import { toast } from "sonner"
 import { formatPrice } from "@/lib/utils"
 import { ProductTilt } from "@/components/ui/product-tilt"
-import { StockBadge } from "@/components/StockBadge"
 
 interface ProductCardProps {
   product: Product
@@ -121,7 +120,6 @@ export function ProductCard({ product }: ProductCardProps) {
                 <span className="text-[10px] text-foreground/40 line-through">{formatPrice(product.originalPrice)}</span>
               )}
             </div>
-            <StockBadge stock={product.stock} compact />
           </div>
         </div>
       </div>
