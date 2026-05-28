@@ -7,7 +7,7 @@ import { useCart } from "@/hooks/useCart"
 import {
   ShieldCheck, Wallet, CheckCircle2,
   Loader2, AlertCircle, Tag, X, MapPin,
-  Zap, Calendar, Truck,
+  Zap, Calendar, Truck, Plus, Pencil, Trash2, ChevronLeft,
 } from "lucide-react"
 import { toast } from "sonner"
 import Image from "next/image"
@@ -19,7 +19,11 @@ type Stage = "form" | "confirmed"
 type DeliveryMethod = "free_weekend" | "express"
 
 interface DiscountCode { id: string; code: string; percent: number; expiresAt: string }
-interface SavedProfile { name?: string | null; phone?: string | null; address?: string | null }
+interface SavedAddress {
+  id: string; label: string | null; fullName: string
+  phone: string | null; street: string; city: string; isDefault: boolean
+}
+type AddressMode = "view" | "list" | "form"
 
 export default function CheckoutPage() {
   const router = useRouter()
@@ -42,47 +46,27 @@ export default function CheckoutPage() {
   const [deliveryMethod, setDeliveryMethod] = useState<DeliveryMethod>("free_weekend")
   const [transportMethod, setTransportMethod] = useState<string | null>(null)
 
-  // Address form
-  const [form, setForm] = useState({ fullName: "", phone: "", street: "", city: "" })
-  const [saveAddress, setSaveAddress] = useState(false)
-  const [hasSavedAddress, setHasSavedAddress] = useState(false)
-  const [useSaved, setUseSaved] = useState(true)
-  const [profileLoading, setProfileLoading] = useState(true)
+  // Addresses
+  const [addresses, setAddresses]             = useState<SavedAddress[]>([])
+  const [selectedAddressId, setSelectedAddressId] = useState<string | null>(null)
+  const [addressMode, setAddressMode]         = useState<AddressMode>("view")
+  const [editingAddress, setEditingAddress]   = useState<SavedAddress | null>(null)
+  const [addrForm, setAddrForm]               = useState({ fullName: "", phone: "", street: "", city: "", label: "" })
+  const [savingAddr, setSavingAddr]           = useState(false)
+  const [addressesLoading, setAddressesLoading] = useState(true)
 
-  // Pre-fill from session name
+  // Load saved addresses
   useEffect(() => {
-    if (session?.user) {
-      const u = session.user as { name?: string; email?: string }
-      setForm((f) => ({ ...f, fullName: u.name ?? "" }))
-    }
-  }, [session])
-
-  // Load saved profile address + phone
-  useEffect(() => {
-    if (!session?.user) { setProfileLoading(false); return }
-    fetch("/api/profile")
-      .then((r) => r.ok ? r.json() : null)
-      .then((data: SavedProfile | null) => {
-        if (data?.address || data?.phone) {
-          setHasSavedAddress(true)
-          if (data.address) {
-            // address stored as "street, city" format
-            const parts = data.address.split(",")
-            const street = parts.slice(0, -1).join(",").trim()
-            const city = parts[parts.length - 1]?.trim() ?? ""
-            setForm((f) => ({
-              ...f,
-              phone:  data.phone ?? f.phone,
-              street: street || data.address || "",
-              city:   city || "",
-            }))
-          } else if (data.phone) {
-            setForm((f) => ({ ...f, phone: data.phone ?? "" }))
-          }
-        }
+    if (!session?.user) { setAddressesLoading(false); return }
+    fetch("/api/addresses")
+      .then((r) => r.ok ? r.json() : [])
+      .then((data: SavedAddress[]) => {
+        setAddresses(data)
+        const def = data.find((a) => a.isDefault) ?? data[0]
+        if (def) setSelectedAddressId(def.id)
       })
       .catch(() => {})
-      .finally(() => setProfileLoading(false))
+      .finally(() => setAddressesLoading(false))
   }, [session])
 
   // Wallet balance
@@ -97,11 +81,82 @@ export default function CheckoutPage() {
   const cartSubtotal = total()
   const discountAmt  = appliedCode ? Math.round(cartSubtotal * appliedCode.percent / 100) : 0
   const finalTotal   = cartSubtotal - discountAmt
-  // Delivery is always free (Fast Delivery shipping cost is handled separately by admin)
+  const selectedAddress = addresses.find((a) => a.id === selectedAddressId) ?? null
 
-  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setForm({ ...form, [e.target.name]: e.target.value })
+  // ── Address helpers ──────────────────────────────────────────────────────
+
+  function openAddForm() {
+    const u = session?.user as { name?: string } | undefined
+    setAddrForm({ fullName: u?.name ?? "", phone: "", street: "", city: "", label: "" })
+    setEditingAddress(null)
+    setAddressMode("form")
   }
+
+  function openEditForm(addr: SavedAddress) {
+    setAddrForm({ fullName: addr.fullName, phone: addr.phone ?? "", street: addr.street, city: addr.city, label: addr.label ?? "" })
+    setEditingAddress(addr)
+    setAddressMode("form")
+  }
+
+  async function handleSaveAddress() {
+    const { fullName, phone, street, city, label } = addrForm
+    if (!fullName.trim() || !street.trim() || !city.trim()) {
+      toast.error("Name, street, and city are required")
+      return
+    }
+    setSavingAddr(true)
+    try {
+      const payload = {
+        fullName: fullName.trim(), phone: phone.trim() || null,
+        street: street.trim(), city: city.trim(), label: label.trim() || null,
+      }
+      if (editingAddress) {
+        const res = await fetch(`/api/addresses/${editingAddress.id}`, {
+          method: "PATCH", headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        })
+        if (res.ok) {
+          const updated: SavedAddress = await res.json()
+          setAddresses((prev) => prev.map((a) => a.id === updated.id ? updated : a))
+          setSelectedAddressId(updated.id)
+          setAddressMode("view"); setEditingAddress(null)
+          toast.success("Address updated")
+        }
+      } else {
+        const res = await fetch("/api/addresses", {
+          method: "POST", headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        })
+        if (res.ok) {
+          const newAddr: SavedAddress = await res.json()
+          setAddresses((prev) => [...prev, newAddr])
+          setSelectedAddressId(newAddr.id)
+          setAddressMode("view")
+          toast.success("Address saved")
+        }
+      }
+    } catch {
+      toast.error("Could not save address")
+    } finally {
+      setSavingAddr(false)
+    }
+  }
+
+  async function handleDeleteAddress(id: string) {
+    try {
+      await fetch(`/api/addresses/${id}`, { method: "DELETE" })
+      const remaining = addresses.filter((a) => a.id !== id)
+      setAddresses(remaining)
+      if (selectedAddressId === id) {
+        const next = remaining.find((a) => a.isDefault) ?? remaining[0]
+        setSelectedAddressId(next?.id ?? null)
+      }
+    } catch {
+      toast.error("Could not delete address")
+    }
+  }
+
+  // ────────────────────────────────────────────────────────────────────────
 
   async function applyPromo() {
     if (!promoInput.trim()) return
@@ -133,16 +188,12 @@ export default function CheckoutPage() {
     setLoading(true)
     setBalanceError(null)
 
-    const fullAddress = `${form.street.trim()}, ${form.city.trim()}`
-
-    // Save address to profile if requested
-    if (saveAddress && form.street && form.city) {
-      fetch("/api/profile", {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ address: fullAddress, phone: form.phone || null }),
-      }).catch(() => {})
+    if (!selectedAddress) {
+      toast.error("Please add a delivery address to continue")
+      setLoading(false)
+      return
     }
+    const fullAddress = `${selectedAddress.street}, ${selectedAddress.city}`
 
     // Tag delivery method (+ chosen transport) in address so admin can see it
     const transportTag = transportMethod ? `:${transportMethod.toUpperCase().replace(/\s+/g, "_")}` : ""
@@ -233,73 +284,192 @@ export default function CheckoutPage() {
           {/* ── Left column ── */}
           <div className="lg:col-span-2 space-y-4">
 
-            {/* Delivery address */}
-            <div className="border border-foreground/10 p-5 space-y-4">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <MapPin className="h-3.5 w-3.5 text-foreground/55" />
-                  <p className="text-xs tracking-widest text-foreground/65 font-medium">DELIVERY ADDRESS</p>
+            {/* ── Delivery address ── */}
+            {addressMode === "view" && (
+              addressesLoading ? (
+                <div className="border border-foreground/10 p-5 flex items-center gap-2 text-[9px] text-foreground/30">
+                  <Loader2 className="h-3 w-3 animate-spin" /> Loading addresses...
                 </div>
-                {hasSavedAddress && (
-                  <button
-                    type="button"
-                    onClick={() => setUseSaved((v) => !v)}
-                    className="text-[8px] tracking-widest text-foreground/40 hover:text-foreground/70 transition-colors border border-white/12 px-2 py-1"
-                  >
-                    {useSaved ? "EDIT ADDRESS" : "USE SAVED"}
-                  </button>
-                )}
-              </div>
+              ) : selectedAddress ? (
+                /* Selected address card */
+                <div className="border border-foreground/10 p-5 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <MapPin className="h-3.5 w-3.5 text-foreground/55" />
+                      <p className="text-xs tracking-widest text-foreground/65 font-medium">DELIVERY ADDRESS</p>
+                    </div>
+                    <button type="button" onClick={() => setAddressMode("list")}
+                      className="text-[9px] tracking-widest border border-white/15 px-2 py-1 text-foreground/40 hover:text-foreground hover:border-white/35 transition-colors">
+                      CHANGE
+                    </button>
+                  </div>
 
-              {profileLoading ? (
-                <div className="flex items-center gap-2 text-[9px] text-foreground/30">
-                  <Loader2 className="h-3 w-3 animate-spin" /> Loading saved address...
+                  <div className="border border-green-400/20 bg-green-400/[0.025] p-3">
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="space-y-0.5">
+                        <p className="text-xs font-medium text-foreground/85">{selectedAddress.fullName}</p>
+                        <p className="text-[10px] text-foreground/55">{selectedAddress.street}</p>
+                        <p className="text-[10px] text-foreground/55">{selectedAddress.city}</p>
+                        {selectedAddress.phone && (
+                          <p className="text-[9px] text-foreground/38 mt-0.5">{selectedAddress.phone}</p>
+                        )}
+                      </div>
+                      {selectedAddress.label && (
+                        <span className="text-[8px] tracking-widest border border-white/15 px-1.5 py-0.5 text-foreground/38 shrink-0">
+                          {selectedAddress.label.toUpperCase()}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
+                  <button type="button" onClick={openAddForm}
+                    className="flex items-center gap-1.5 text-[9px] text-foreground/30 hover:text-foreground/55 transition-colors">
+                    <Plus className="h-3 w-3" /> Add another address
+                  </button>
                 </div>
               ) : (
-                <div className="grid grid-cols-2 gap-3">
-                  {[
-                    { name: "fullName", label: "Full Name",      placeholder: "John Doe",           colSpan: "col-span-2" },
-                    { name: "phone",    label: "Phone Number",   placeholder: "+255 712 345 678",    colSpan: "col-span-2", type: "tel" },
-                    { name: "street",   label: "Street Address", placeholder: "123 Kariakoo Street", colSpan: "col-span-2" },
-                    { name: "city",     label: "City / Region",  placeholder: "Dar es Salaam",       colSpan: "col-span-2" },
-                  ].map((field) => (
-                    <div key={field.name} className={field.colSpan}>
-                      <label className="text-[10px] tracking-widest text-foreground/55 block mb-1.5">{field.label}</label>
+                /* No address — prompt to add */
+                <div className="border border-dashed border-foreground/15 p-5 space-y-4">
+                  <div className="flex items-center gap-2">
+                    <MapPin className="h-3.5 w-3.5 text-foreground/35" />
+                    <p className="text-xs tracking-widest text-foreground/50 font-medium">DELIVERY ADDRESS</p>
+                  </div>
+                  <p className="text-[10px] text-foreground/30">No delivery address saved yet.</p>
+                  <button type="button" onClick={openAddForm}
+                    className="w-full flex items-center justify-center gap-1.5 py-2.5 border border-dashed border-white/20 hover:border-white/35 text-[10px] tracking-widest text-foreground/50 hover:text-foreground/75 transition-colors">
+                    <Plus className="h-3 w-3" /> Add Delivery Address
+                  </button>
+                </div>
+              )
+            )}
+
+            {/* Address list */}
+            {addressMode === "list" && (
+              <div className="border border-foreground/10 p-5 space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <MapPin className="h-3.5 w-3.5 text-foreground/55" />
+                    <p className="text-xs tracking-widest text-foreground/65 font-medium">SAVED ADDRESSES</p>
+                  </div>
+                  <button type="button" onClick={() => setAddressMode("view")}
+                    className="text-[9px] text-foreground/35 hover:text-foreground transition-colors">
+                    <X className="h-3.5 w-3.5" />
+                  </button>
+                </div>
+
+                <div className="space-y-2">
+                  {addresses.map((addr) => (
+                    <div key={addr.id}
+                      className={`border p-3 transition-all ${selectedAddressId === addr.id ? "border-green-400/25 bg-green-400/[0.025]" : "border-white/10 hover:border-white/20"}`}>
+                      <div className="flex items-start gap-3">
+                        <button type="button"
+                          onClick={() => { setSelectedAddressId(addr.id); setAddressMode("view") }}
+                          className="mt-0.5 shrink-0">
+                          <div className={`w-4 h-4 border rounded-full flex items-center justify-center ${selectedAddressId === addr.id ? "border-green-400/60" : "border-white/25"}`}>
+                            {selectedAddressId === addr.id && <div className="w-2 h-2 rounded-full bg-green-400/70" />}
+                          </div>
+                        </button>
+                        <button type="button" onClick={() => { setSelectedAddressId(addr.id); setAddressMode("view") }}
+                          className="flex-1 min-w-0 text-left">
+                          <div className="flex items-start justify-between gap-2">
+                            <div className="space-y-0.5">
+                              <p className="text-xs font-medium text-foreground/80">{addr.fullName}</p>
+                              <p className="text-[9px] text-foreground/45">{addr.street}, {addr.city}</p>
+                              {addr.phone && <p className="text-[9px] text-foreground/30">{addr.phone}</p>}
+                            </div>
+                            {addr.label && (
+                              <span className="text-[8px] tracking-widest border border-white/12 px-1.5 py-0.5 text-foreground/32 shrink-0">
+                                {addr.label.toUpperCase()}
+                              </span>
+                            )}
+                          </div>
+                        </button>
+                        <div className="flex gap-0.5 shrink-0">
+                          <button type="button" onClick={() => openEditForm(addr)}
+                            className="p-1.5 text-foreground/28 hover:text-foreground/60 transition-colors">
+                            <Pencil className="h-3 w-3" />
+                          </button>
+                          <button type="button" onClick={() => handleDeleteAddress(addr.id)}
+                            className="p-1.5 text-foreground/28 hover:text-red-400/65 transition-colors">
+                            <Trash2 className="h-3 w-3" />
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <button type="button" onClick={openAddForm}
+                  className="w-full flex items-center justify-center gap-1.5 py-2.5 border border-dashed border-white/15 hover:border-white/28 text-[10px] text-foreground/38 hover:text-foreground/55 transition-colors">
+                  <Plus className="h-3 w-3" /> Add New Address
+                </button>
+              </div>
+            )}
+
+            {/* Add / Edit address form */}
+            {addressMode === "form" && (
+              <div className="border border-foreground/10 p-5 space-y-4">
+                <div className="flex items-center gap-2">
+                  <button type="button"
+                    onClick={() => { setAddressMode(addresses.length > 0 ? "list" : "view"); setEditingAddress(null) }}
+                    className="text-foreground/40 hover:text-foreground transition-colors">
+                    <ChevronLeft className="h-4 w-4" />
+                  </button>
+                  <p className="text-xs tracking-widest text-foreground/65 font-medium">
+                    {editingAddress ? "EDIT ADDRESS" : "NEW ADDRESS"}
+                  </p>
+                </div>
+
+                <div className="space-y-3">
+                  {([
+                    { key: "fullName", label: "Full Name",       placeholder: "John Doe",           type: "text" },
+                    { key: "phone",    label: "Phone Number",    placeholder: "+255 712 345 678",    type: "tel"  },
+                    { key: "street",   label: "Street / Area",   placeholder: "Mbezi Beach",         type: "text" },
+                    { key: "city",     label: "City / Region",   placeholder: "Dar es Salaam",       type: "text" },
+                  ] as const).map((field) => (
+                    <div key={field.key}>
+                      <label className="text-[10px] tracking-widest text-foreground/50 block mb-1.5">{field.label}</label>
                       <input
-                        type={field.type ?? "text"}
-                        name={field.name}
-                        value={form[field.name as keyof typeof form]}
-                        onChange={handleChange}
+                        type={field.type}
+                        value={addrForm[field.key]}
+                        onChange={(e) => setAddrForm((f) => ({ ...f, [field.key]: e.target.value }))}
                         placeholder={field.placeholder}
-                        required
-                        readOnly={useSaved && hasSavedAddress && field.name !== "fullName" && field.name !== "phone"}
-                        className={`w-full bg-transparent border px-3 py-2.5 text-xs text-foreground/85 placeholder:text-foreground/30 focus:outline-none transition-colors ${
-                          useSaved && hasSavedAddress && field.name !== "fullName"
-                            ? "border-foreground/10 text-foreground/50 bg-foreground/[0.02] cursor-default"
-                            : "border-foreground/18 focus:border-foreground/45"
-                        }`}
+                        className="w-full bg-transparent border border-foreground/15 px-3 py-2.5 text-xs text-foreground/85 placeholder:text-foreground/25 focus:outline-none focus:border-foreground/40 transition-colors"
                       />
                     </div>
                   ))}
 
-                  {/* Save checkbox */}
-                  {(!hasSavedAddress || !useSaved) && (
-                    <div className="col-span-2 flex items-center gap-2">
-                      <input
-                        type="checkbox"
-                        id="save-address"
-                        checked={saveAddress}
-                        onChange={(e) => setSaveAddress(e.target.checked)}
-                        className="w-3 h-3 accent-foreground"
-                      />
-                      <label htmlFor="save-address" className="text-[9px] tracking-widest text-foreground/45 cursor-pointer">
-                        Save this address for future orders
-                      </label>
+                  <div>
+                    <p className="text-[10px] tracking-widest text-foreground/50 mb-2">Label (optional)</p>
+                    <div className="flex gap-1.5">
+                      {["Home", "Work", "Other"].map((l) => (
+                        <button key={l} type="button"
+                          onClick={() => setAddrForm((f) => ({ ...f, label: f.label === l ? "" : l }))}
+                          className={`px-2.5 py-1 rounded-full text-[9px] border transition-all ${
+                            addrForm.label === l
+                              ? "border-foreground/45 bg-foreground/10 text-foreground/80"
+                              : "border-white/15 text-foreground/38 hover:border-white/28"
+                          }`}>
+                          {l}
+                        </button>
+                      ))}
                     </div>
-                  )}
+                  </div>
                 </div>
-              )}
-            </div>
+
+                <div className="flex gap-2 pt-1">
+                  <button type="button"
+                    onClick={() => { setAddressMode(addresses.length > 0 ? "list" : "view"); setEditingAddress(null) }}
+                    className="flex-1 py-2.5 text-[10px] tracking-widest border border-white/15 text-foreground/40 hover:text-foreground hover:border-white/30 transition-colors">
+                    Cancel
+                  </button>
+                  <button type="button" onClick={handleSaveAddress} disabled={savingAddr}
+                    className="flex-1 py-2.5 text-[10px] tracking-widest bg-foreground text-background hover:bg-foreground/90 transition-colors disabled:opacity-50 flex items-center justify-center gap-2">
+                    {savingAddr ? <><Loader2 className="h-3 w-3 animate-spin" /> Saving...</> : "Save Address"}
+                  </button>
+                </div>
+              </div>
+            )}
 
             {/* Delivery method */}
             <div className="border border-foreground/10 p-5 space-y-3">
@@ -520,7 +690,7 @@ export default function CheckoutPage() {
 
               <button
                 type="submit"
-                disabled={loading}
+                disabled={loading || !selectedAddressId}
                 className="w-full flex items-center justify-center gap-2 py-3 bg-[#ee0000] text-white text-[10px] tracking-widest font-bold hover:bg-red-700 transition-colors disabled:opacity-50"
               >
                 {loading
@@ -553,7 +723,7 @@ export default function CheckoutPage() {
           <button
             type="submit"
             form="checkout-form"
-            disabled={loading}
+            disabled={loading || !selectedAddressId}
             className="flex-1 flex items-center justify-center gap-2 py-2.5 bg-[#ee0000] text-white text-[10px] tracking-widest font-bold hover:bg-red-700 transition-colors disabled:opacity-50"
           >
             {loading
