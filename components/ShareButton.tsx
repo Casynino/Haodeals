@@ -7,19 +7,43 @@ import { toast } from "sonner"
 // ── Types ────────────────────────────────────────────────────────────────────
 
 interface ShareButtonProps {
-  productName: string
-  productPath: string   // e.g. "/products/abc123"
+  /** Set for product pages — enables product share mode */
+  productName?: string
+  /** e.g. "/products/abc123" — omit for homepage/website share */
+  productPath?: string
 }
 
 type OptionId = "whatsapp" | "instagram" | "sms" | "copy"
 
-// ── Share message (clean single template — URL passed separately) ─────────────
+// ── Share messages ───────────────────────────────────────────────────────────
 
-const SHARE_TEXT = "A collection of limited deals — now in stock. Tap to explore, shop, and enjoy fast delivery."
+// Product share: rotating hooks + product name + link
+const PRODUCT_HOOKS = [
+  "Hey 👀 you might like this!",
+  "Check this out 👀🔥",
+  "You don't want to miss this!",
+  "Limited stock — grab it fast!",
+  "Top deal just for you 🔥",
+]
 
-function shareTextWithUrl(url: string): string {
-  return `${SHARE_TEXT}\n\n${url}`
+function randomHook(): string {
+  return PRODUCT_HOOKS[Math.floor(Math.random() * PRODUCT_HOOKS.length)]
 }
+
+/** Full product share text (for WhatsApp / SMS deep links) */
+function productText(name: string, url: string): string {
+  return `${randomHook()}\n\n${name}\n\nGrab it here 👇\n${url}`
+}
+
+/** Product share body WITHOUT url (for navigator.share — url passed separately) */
+function productTextNoUrl(name: string): string {
+  return `${randomHook()}\n\n${name}`
+}
+
+// Website share: fixed message (homepage only, no product)
+const WEBSITE_TEXT =
+  "A collection of limited deals — now in stock. Tap to explore, shop, and enjoy fast delivery."
+const WEBSITE_URL = "https://haodealtz.com"
 
 // ── Share option definitions ─────────────────────────────────────────────────
 
@@ -36,13 +60,19 @@ const OPTIONS: {
 // ── Component ─────────────────────────────────────────────────────────────────
 
 export function ShareButton({ productName, productPath }: ShareButtonProps) {
+  const isProduct = Boolean(productName)
+
   const [open, setOpen]       = useState(false)
   const [success, setSuccess] = useState(false)
   const [copied, setCopied]   = useState(false)
   const [fullUrl, setFullUrl] = useState("")
 
   useEffect(() => {
-    setFullUrl(`${window.location.origin}${productPath}`)
+    setFullUrl(
+      productPath
+        ? `${window.location.origin}${productPath}`
+        : WEBSITE_URL
+    )
   }, [productPath])
 
   // Auto-close success screen after 1.6s
@@ -53,11 +83,16 @@ export function ShareButton({ productName, productPath }: ShareButtonProps) {
   }, [success])
 
   async function handleShareClick() {
-    const url = fullUrl || `${window.location.origin}${productPath}`
+    const url = fullUrl || (productPath ? `${window.location.origin}${productPath}` : WEBSITE_URL)
+
     if (navigator.share) {
       try {
-        // URL passed separately so it doesn't appear twice in the message
-        await navigator.share({ title: productName, text: SHARE_TEXT, url })
+        // Product share: hook + name in text, URL passed separately (no duplication)
+        // Website share: fixed text, URL passed separately
+        const shareText = isProduct
+          ? productTextNoUrl(productName!)
+          : WEBSITE_TEXT
+        await navigator.share({ title: productName ?? "HaoDeals", text: shareText, url })
         toast.success("Shared! 🎉 Points coming soon", {
           description: "Earn rewards when the system launches",
         })
@@ -70,16 +105,22 @@ export function ShareButton({ productName, productPath }: ShareButtonProps) {
   // ── Share actions ────────────────────────────────────────────────────────
 
   function handleWhatsApp() {
+    const text = isProduct
+      ? productText(productName!, fullUrl)   // hook + name + "Grab it here 👇" + url
+      : `${WEBSITE_TEXT}\n\n${fullUrl}`
     window.open(
-      `https://wa.me/?text=${encodeURIComponent(shareTextWithUrl(fullUrl))}`,
+      `https://wa.me/?text=${encodeURIComponent(text)}`,
       "_blank", "noopener"
     )
     setSuccess(true)
   }
 
   function handleSMS() {
+    const text = isProduct
+      ? productText(productName!, fullUrl)
+      : `${WEBSITE_TEXT}\n\n${fullUrl}`
     window.open(
-      `sms:?body=${encodeURIComponent(shareTextWithUrl(fullUrl))}`,
+      `sms:?body=${encodeURIComponent(text)}`,
       "_blank"
     )
     setSuccess(true)
@@ -148,7 +189,7 @@ export function ShareButton({ productName, productPath }: ShareButtonProps) {
                       <p className="text-[8px] tracking-[0.2em] text-violet-400/58">SHARE &amp; EARN</p>
                     </div>
                     <p className="text-xs font-semibold text-foreground/78 max-w-[220px] truncate">
-                      {productName}
+                      {productName ?? "HaoDeals"}
                     </p>
                     <p className="text-[8px] text-foreground/28 mt-0.5">
                       Earn rewards every time you share
