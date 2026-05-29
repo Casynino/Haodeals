@@ -5,7 +5,7 @@ import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import {
   Wallet, Copy, RefreshCw, Smartphone, Loader2, CheckCircle2,
-  ArrowDownToLine, ArrowUpFromLine, ShoppingBag, Clock,
+  ArrowDownToLine, ArrowUpFromLine, ShoppingBag, Clock, ArrowLeftRight,
 } from "lucide-react"
 import { toast } from "sonner"
 import { formatPrice } from "@/lib/utils"
@@ -19,7 +19,7 @@ interface WalletData {
 
 interface TxItem {
   id: string
-  type: "deposit" | "withdrawal" | "purchase"
+  type: "deposit" | "withdrawal" | "purchase" | "incoming"
   amountTzs: number
   status: string
   phoneNumber: string | null
@@ -34,30 +34,39 @@ const typeConfig = {
   deposit:    { label: "DEPOSIT",    icon: ArrowDownToLine, color: "text-green-400/70",  sign: "+" },
   withdrawal: { label: "WITHDRAWAL", icon: ArrowUpFromLine,  color: "text-red-400/70",   sign: "-" },
   purchase:   { label: "PURCHASE",   icon: ShoppingBag,      color: "text-blue-400/70",  sign: "-" },
+  incoming:   { label: "RECEIVED",   icon: ArrowLeftRight,   color: "text-green-400/70", sign: "+" },
 }
 
 const statusColor: Record<string, string> = {
   completed:         "text-green-400/60 border-green-400/20",
   confirmed:         "text-green-400/60 border-green-400/20",
   payment_confirmed: "text-green-400/60 border-green-400/20",
+  packaging:         "text-yellow-400/60 border-yellow-400/20",
+  in_transit:        "text-purple-400/60 border-purple-400/20",
+  delivered:         "text-green-400/60 border-green-400/20",
   pending:           "text-yellow-400/60 border-yellow-400/20",
   burned:            "text-green-400/60 border-green-400/20",
   requested:         "text-purple-400/60 border-purple-400/20",
   failed:            "text-red-400/60 border-red-400/20",
   shipped:           "text-blue-400/60 border-blue-400/20",
   processing:        "text-blue-400/60 border-blue-400/20",
+  refunded:          "text-orange-400/60 border-orange-400/20",
 }
 
 const statusLabel: Record<string, string> = {
   completed:         "CONFIRMED",
   confirmed:         "CONFIRMED",
-  payment_confirmed: "PAID",
+  payment_confirmed: "RECEIVED",
+  packaging:         "PACKAGING",
+  in_transit:        "IN TRANSIT",
+  delivered:         "DELIVERED",
   pending:           "PENDING",
   burned:            "PROCESSED",
   requested:         "REQUESTED",
   failed:            "FAILED",
   shipped:           "SHIPPED",
   processing:        "PROCESSING",
+  refunded:          "REFUNDED",
 }
 
 export default function WalletPage() {
@@ -440,7 +449,7 @@ export default function WalletPage() {
 
                   {/* Amount + status */}
                   <div className="text-right flex-shrink-0">
-                    <p className={`text-[11px] font-mono font-bold ${tx.type === "deposit" ? "text-green-400/80" : "text-foreground/60"}`}>
+                    <p className={`text-[11px] font-mono font-bold ${tx.type === "deposit" || tx.type === "incoming" ? "text-green-400/80" : "text-foreground/60"}`}>
                       {cfg.sign}{formatPrice(tx.amountTzs)}
                     </p>
                     <span className={`text-[7px] border px-1 py-0.5 tracking-widest ${statusColor[tx.status] ?? "text-foreground/30 border-foreground/15"}`}>
