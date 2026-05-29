@@ -1,8 +1,8 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState, useCallback } from "react"
 import Link from "next/link"
-import { ShoppingBag, Users, Package, DollarSign, ArrowRight, TrendingUp, Plus, Megaphone, Loader2, CheckCircle2, MessageSquare } from "lucide-react"
+import { ShoppingBag, Users, Package, DollarSign, ArrowRight, TrendingUp, Plus, Megaphone, Loader2, CheckCircle2, MessageSquare, Banknote, RefreshCw } from "lucide-react"
 import { formatPrice } from "@/lib/utils"
 import { toast } from "sonner"
 
@@ -19,6 +19,15 @@ interface Stats {
     user: { name?: string; email: string }
     items: unknown[]
   }>
+  recentPayments: Array<{
+    id: string
+    total: number
+    status: string
+    trackingId: string | null
+    createdAt: string
+    user: { name?: string; email: string }
+    items: Array<{ product: { name: string } }>
+  }>
 }
 
 interface ConversationSummary {
@@ -26,27 +35,41 @@ interface ConversationSummary {
 }
 
 const statusConfig: Record<string, string> = {
-  pending:   "text-yellow-400/70 border-yellow-400/30",
-  confirmed: "text-blue-400/70 border-blue-400/30",
-  shipped:   "text-purple-400/70 border-purple-400/30",
-  delivered: "text-green-400/70 border-green-400/30",
-  cancelled: "text-red-400/70 border-red-400/30",
+  pending:           "text-yellow-400/70 border-yellow-400/30",
+  confirmed:         "text-blue-400/70 border-blue-400/30",
+  payment_confirmed: "text-blue-400/70 border-blue-400/30",
+  shipped:           "text-purple-400/70 border-purple-400/30",
+  delivered:         "text-green-400/70 border-green-400/30",
+  processing:        "text-cyan-400/70 border-cyan-400/30",
+  cancelled:         "text-red-400/70 border-red-400/30",
 }
 
 export default function AdminPage() {
   const [stats, setStats] = useState<Stats | null>(null)
   const [loading, setLoading] = useState(true)
+  const [lastRefresh, setLastRefresh] = useState<Date | null>(null)
   const [msgUnread, setMsgUnread] = useState(0)
   const [announce, setAnnounce] = useState({ subject: "", message: "", link: "" })
   const [sending, setSending] = useState(false)
   const [sentResult, setSentResult] = useState<{ sent: number; total: number } | null>(null)
+  const pollRef = useRef<ReturnType<typeof setInterval> | null>(null)
+
+  const fetchStats = useCallback(async (silent = false) => {
+    if (!silent) setLoading(true)
+    try {
+      const data = await fetch("/api/admin/stats", { cache: "no-store" }).then((r) => r.json())
+      setStats(data)
+      setLastRefresh(new Date())
+    } catch { /* ignore */ } finally {
+      if (!silent) setLoading(false)
+    }
+  }, [])
 
   useEffect(() => {
-    fetch("/api/admin/stats")
-      .then((r) => r.json())
-      .then((data) => { setStats(data); setLoading(false) })
-      .catch(() => setLoading(false))
+    // Initial load
+    fetchStats()
 
+    // Unread messages
     fetch("/api/admin/messages")
       .then((r) => r.ok ? r.json() : null)
       .then((data: ConversationSummary[] | null) => {
@@ -56,7 +79,11 @@ export default function AdminPage() {
         }
       })
       .catch(() => {})
-  }, [])
+
+    // Auto-refresh every 30 s so admin always sees fresh payments
+    pollRef.current = setInterval(() => fetchStats(true), 30_000)
+    return () => { if (pollRef.current) clearInterval(pollRef.current) }
+  }, [fetchStats])
 
   async function handleAnnounce(e: React.FormEvent) {
     e.preventDefault()
@@ -95,15 +122,29 @@ export default function AdminPage() {
           <h1 className="text-lg font-semibold tracking-[0.2em] text-foreground/90">ADMIN DASHBOARD</h1>
           <div className="flex items-center gap-1.5 ml-2">
             <div className="w-1.5 h-1.5 bg-green-400/75 rounded-full animate-pulse" />
-            <span className="text-[10px] text-green-400/75">Active</span>
+            <span className="text-[10px] text-green-400/75">Live</span>
           </div>
+          {lastRefresh && (
+            <span className="text-[9px] text-foreground/25 hidden sm:inline">
+              · updated {lastRefresh.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" })}
+            </span>
+          )}
         </div>
-        <Link
-          href="/admin/products"
-          className="flex items-center gap-1.5 px-3 py-1.5 border border-white/20 text-[9px] tracking-widest text-foreground/50 hover:text-foreground hover:border-white/40 transition-colors"
-        >
-          <Plus className="h-3 w-3" /> ADD.PRODUCT
-        </Link>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => fetchStats()}
+            className="flex items-center gap-1.5 px-3 py-1.5 border border-white/15 text-[9px] tracking-widest text-foreground/40 hover:text-foreground/70 hover:border-white/30 transition-colors"
+            title="Refresh now"
+          >
+            <RefreshCw className="h-3 w-3" /> REFRESH
+          </button>
+          <Link
+            href="/admin/products"
+            className="flex items-center gap-1.5 px-3 py-1.5 border border-white/20 text-[9px] tracking-widest text-foreground/50 hover:text-foreground hover:border-white/40 transition-colors"
+          >
+            <Plus className="h-3 w-3" /> ADD.PRODUCT
+          </Link>
+        </div>
       </div>
 
       {/* Stats */}
@@ -209,6 +250,60 @@ export default function AdminPage() {
                 </div>
               </div>
             ))}
+          </div>
+        )}
+      </div>
+
+      {/* Treasury inflow — all confirmed payments from customers */}
+      <div className="mt-6 border border-white/10">
+        <div className="flex items-center justify-between px-4 py-3 border-b border-white/10">
+          <div className="flex items-center gap-2">
+            <Banknote className="h-3.5 w-3.5 text-green-400/50" />
+            <p className="text-[9px] tracking-widest text-foreground/40">// TREASURY.INFLOW</p>
+            <span className="text-[8px] text-green-400/40 ml-1">PAYMENTS RECEIVED</span>
+          </div>
+          <Link href="/admin/orders" className="flex items-center gap-1 text-[9px] tracking-widest text-foreground/30 hover:text-foreground transition-colors">
+            VIEW.ALL <ArrowRight className="h-2.5 w-2.5" />
+          </Link>
+        </div>
+
+        {loading ? (
+          <div className="p-4 space-y-2 animate-pulse">
+            {[1, 2, 3, 4].map((i) => <div key={i} className="h-10 bg-foreground/5 border border-white/5" />)}
+          </div>
+        ) : !stats?.recentPayments?.length ? (
+          <p className="text-[10px] tracking-widest text-foreground/25 text-center py-8">NO.PAYMENTS.YET</p>
+        ) : (
+          <div className="divide-y divide-white/5">
+            {stats.recentPayments.map((payment) => {
+              const productName = payment.items[0]?.product?.name ?? "Order"
+              const ref = payment.trackingId ?? payment.id.slice(-8).toUpperCase()
+              const dateStr = new Date(payment.createdAt).toLocaleDateString("en-GB", {
+                day: "2-digit", month: "short", year: "numeric",
+              })
+              const timeStr = new Date(payment.createdAt).toLocaleTimeString("en-GB", {
+                hour: "2-digit", minute: "2-digit",
+              })
+              return (
+                <div key={payment.id} className="flex items-center justify-between gap-3 px-4 py-3 hover:bg-foreground/3 transition-colors">
+                  <div className="min-w-0 flex-1">
+                    <p className="text-xs text-foreground/75 uppercase truncate">
+                      {payment.user.name ?? payment.user.email}
+                    </p>
+                    <p className="text-[10px] text-foreground/40 truncate mt-0.5">
+                      #{ref} · {productName}{payment.items.length > 1 ? ` +${payment.items.length - 1} more` : ""}
+                    </p>
+                    <p className="text-[9px] text-foreground/28 mt-0.5">{dateStr} {timeStr}</p>
+                  </div>
+                  <div className="flex items-center gap-2 flex-shrink-0">
+                    <span className={`text-[10px] tracking-wide border px-2 py-0.5 hidden sm:inline ${statusConfig[payment.status] ?? "text-foreground/55 border-white/20"}`}>
+                      {payment.status.replace(/_/g, " ").toUpperCase()}
+                    </span>
+                    <span className="text-green-400/80 text-xs font-mono font-semibold">+{formatPrice(payment.total)}</span>
+                  </div>
+                </div>
+              )
+            })}
           </div>
         )}
       </div>
