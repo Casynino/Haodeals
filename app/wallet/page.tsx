@@ -387,67 +387,79 @@ export default function WalletPage() {
             aspectRatio: "1.7 / 1",
             transform: cardTransform,
             transition: cardTransition,
-            /* Deep crimson-red base — rich, brand-aligned, unmistakably premium */
-            background: "linear-gradient(145deg, #3d0808 0%, #6e1111 20%, #8b1a1a 42%, #7a1010 62%, #4a0909 82%, #2d0505 100%)",
+            /* HSBC-style: crimson red top → violet middle → royal blue bottom-right */
+            background: [
+              "radial-gradient(ellipse at 28% 18%, #CC1A1A 0%, rgba(180,12,12,0.85) 30%, transparent 60%)",
+              "radial-gradient(ellipse at 80% 78%, #1040C8 0%, rgba(14,35,165,0.80) 32%, transparent 60%)",
+              "linear-gradient(148deg, #770C0C 0%, #9B1515 18%, #6E1288 48%, #1535AA 72%, #0C247C 100%)",
+            ].join(", "),
             boxShadow: hovered
-              ? "0 45px 90px -16px rgba(120,15,15,0.90), 0 0 40px -8px rgba(212,175,55,0.38), 0 0 0 1px rgba(212,175,55,0.28), inset 0 1px 0 rgba(255,255,255,0.10)"
-              : "0 28px 65px -14px rgba(100,10,10,0.82), 0 8px 24px -8px rgba(0,0,0,0.55), 0 0 0 1px rgba(212,175,55,0.15), inset 0 1px 0 rgba(255,255,255,0.07)",
+              ? "0 45px 90px -16px rgba(80,10,140,0.75), 0 0 50px -10px rgba(212,175,55,0.35), 0 0 0 1px rgba(212,175,55,0.28), inset 0 1px 0 rgba(255,255,255,0.12)"
+              : "0 28px 65px -14px rgba(60,8,110,0.70), 0 10px 28px -8px rgba(0,0,0,0.60), 0 0 0 1px rgba(212,175,55,0.16), inset 0 1px 0 rgba(255,255,255,0.08)",
           }}
           onMouseMove={handleCardMouseMove}
           onMouseEnter={handleCardEnter}
           onMouseLeave={handleCardLeave}
         >
-          {/* ── L1: Gold radial glow — top-right, warm luxury ── */}
+          {/* ── L1: HSBC X-BEAM — main diagonal (↗ lower-left → upper-right) ── */}
+          {/* This is the KEY effect — very bright central band */}
+          <div
+            className="absolute inset-0"
+            style={{
+              background: "linear-gradient(318deg, transparent 18%, rgba(255,255,255,0.04) 34%, rgba(255,255,255,0.38) 46%, rgba(255,255,255,0.58) 50%, rgba(255,255,255,0.38) 54%, rgba(255,255,255,0.04) 66%, transparent 80%)",
+            }}
+          />
+          {/* ── L2: HSBC X-BEAM — crossing diagonal (↘ upper-left → lower-right) ── */}
+          <div
+            className="absolute inset-0"
+            style={{
+              background: "linear-gradient(42deg, transparent 20%, rgba(255,255,255,0.03) 36%, rgba(255,255,255,0.28) 46%, rgba(255,255,255,0.42) 50%, rgba(255,255,255,0.28) 54%, rgba(255,255,255,0.03) 64%, transparent 78%)",
+            }}
+          />
+          {/* ── L3: Radial glow at beam intersection (centre-left) ── */}
+          <div
+            className="absolute inset-0"
+            style={{ background: "radial-gradient(ellipse at 42% 52%, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.06) 25%, transparent 50%)" }}
+          />
+          {/* ── L4: Gold aurora top-right — warmth + luxury ── */}
           <div
             className="absolute inset-0 animate-aurora-1"
-            style={{ background: "radial-gradient(ellipse at 85% 12%, rgba(212,175,55,0.38) 0%, rgba(212,175,55,0.14) 30%, transparent 58%)" }}
+            style={{ background: "radial-gradient(ellipse at 88% 10%, rgba(212,175,55,0.30) 0%, rgba(212,175,55,0.08) 35%, transparent 55%)" }}
           />
-          {/* ── L2: Crimson brightening — top-left — adds red depth ── */}
+          {/* ── L5: Red brightness top-left ── */}
           <div
             className="absolute inset-0 animate-aurora-2"
-            style={{ background: "radial-gradient(ellipse at 8% 18%, rgba(220,50,50,0.28) 0%, transparent 50%)" }}
+            style={{ background: "radial-gradient(ellipse at 5% 12%, rgba(255,60,60,0.22) 0%, transparent 48%)" }}
           />
-          {/* ── L3: HSBC-style diagonal light beam 1 (top-left → bottom-right) ── */}
-          <div
-            className="absolute inset-0"
-            style={{ background: "linear-gradient(132deg, transparent 22%, rgba(255,220,160,0.07) 40%, rgba(255,255,255,0.13) 50%, rgba(255,220,160,0.06) 60%, transparent 75%)" }}
-          />
-          {/* ── L4: HSBC-style diagonal light beam 2 (crossing, softer) ── */}
-          <div
-            className="absolute inset-0"
-            style={{ background: "linear-gradient(220deg, transparent 28%, rgba(255,255,255,0.05) 44%, rgba(212,175,55,0.07) 52%, transparent 66%)" }}
-          />
-          {/* ── L5: Kente diamond lattice texture ── */}
+          {/* ── L6: Kente diamond lattice — African identity ── */}
           <KenteTexture />
-          {/* ── L6: Top gloss edge ── */}
+          {/* ── L7: Top gloss edge — card surface feel ── */}
           <div
             className="absolute inset-0"
-            style={{ background: "linear-gradient(to bottom, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.02) 30%, transparent 50%)" }}
+            style={{ background: "linear-gradient(to bottom, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.02) 28%, transparent 48%)" }}
           />
-          {/* ── L7: Bottom vignette — depth for text readability ── */}
+          {/* ── L8: Bottom vignette — text readability ── */}
           <div
             className="absolute inset-0"
-            style={{ background: "linear-gradient(to top, rgba(0,0,0,0.48) 0%, transparent 50%)" }}
+            style={{ background: "linear-gradient(to top, rgba(0,0,0,0.52) 0%, transparent 52%)" }}
           />
-          {/* ── L8: Gold left rim ── */}
+          {/* ── L9: Gold left rim ── */}
           <div
             className="absolute top-0 left-0 bottom-0 w-px"
-            style={{ background: "linear-gradient(to bottom, rgba(212,175,55,0.50), rgba(212,175,55,0.18), transparent)" }}
+            style={{ background: "linear-gradient(to bottom, rgba(212,175,55,0.55), rgba(212,175,55,0.20), transparent)" }}
           />
-          {/* ── L9: Gold top rim ── */}
+          {/* ── L10: Gold top rim ── */}
           <div
             className="absolute top-0 left-0 right-0 h-px"
-            style={{ background: "linear-gradient(to right, rgba(212,175,55,0.40), rgba(255,255,255,0.18), rgba(212,175,55,0.12))" }}
+            style={{ background: "linear-gradient(to right, rgba(212,175,55,0.45), rgba(255,255,255,0.22), rgba(212,175,55,0.14))" }}
           />
-          {/* ── L10: Zanzibar geometric corner accent (bottom-left) ── */}
+          {/* ── L11: Zanzibar arc corner decoration — African identity ── */}
           <ZanzibarAccent />
-          {/* ── L11: Gold flowing accent lines (bottom-right) ── */}
-          <CardWaves />
-          {/* ── L12: Gold shimmer sweep on hover/load ── */}
+          {/* ── L12: Gold shimmer sweep ── */}
           <div
             key={sweeping ? "sweep" : "idle"}
             className={`absolute inset-0 ${sweeping ? "animate-card-sweep" : "opacity-0"}`}
-            style={{ background: "linear-gradient(110deg, transparent 20%, rgba(212,175,55,0.10) 42%, rgba(255,255,255,0.12) 50%, rgba(212,175,55,0.08) 58%, transparent 78%)" }}
+            style={{ background: "linear-gradient(112deg, transparent 18%, rgba(255,255,255,0.10) 44%, rgba(255,255,255,0.16) 50%, rgba(255,255,255,0.08) 56%, transparent 80%)" }}
           />
 
           {/* ── Card content ── */}
@@ -465,8 +477,8 @@ export default function WalletPage() {
                   className="font-black text-[1.2rem] leading-none tracking-wide"
                   style={{
                     fontFamily: "'Georgia', 'Times New Roman', serif",
-                    color: "#f5d878",
-                    textShadow: "0 0 16px rgba(212,175,55,0.65), 0 0 36px rgba(212,175,55,0.30), 0 1px 4px rgba(0,0,0,0.40)",
+                    color: "#fde9a0",
+                    textShadow: "0 0 20px rgba(212,175,55,0.70), 0 0 40px rgba(212,175,55,0.35), 0 2px 6px rgba(0,0,0,0.55)",
                   }}
                 >
                   nTZS
@@ -503,7 +515,7 @@ export default function WalletPage() {
                   className="font-black leading-none tracking-tight text-white"
                   style={{
                     fontSize: "clamp(1.6rem, 5.8vw, 2.2rem)",
-                    textShadow: "0 0 28px rgba(255,220,180,0.28), 0 2px 10px rgba(0,0,0,0.55)",
+                    textShadow: "0 0 30px rgba(255,255,255,0.30), 0 2px 12px rgba(0,0,0,0.65)",
                   }}
                 >
                   {balanceVisible
