@@ -35,17 +35,22 @@ export function WishlistHeart({ productId, productName }: Props) {
     }
 
     setBusy(true)
-    const nowLiked = await toggleLike(productId)
-    setBusy(false)
-
-    if (nowLiked) {
-      toast.success("Added to Wishlist ❤️", {
-        description: productName.slice(0, 42),
-        className: "font-mono text-xs",
-        action: { label: "View", onClick: () => router.push("/wishlist") },
-      })
-    } else {
-      toast("Removed from Wishlist", { className: "font-mono text-xs" })
+    try {
+      const nowLiked = await toggleLike(productId)
+      if (nowLiked) {
+        toast.success("Added to Wishlist ❤️", {
+          description: productName.slice(0, 42),
+          className: "font-mono text-xs",
+          action: { label: "View", onClick: () => router.push("/wishlist") },
+        })
+      } else {
+        toast("Removed from Wishlist", { className: "font-mono text-xs" })
+      }
+    } catch {
+      toast.error("Something went wrong", { className: "font-mono text-xs" })
+    } finally {
+      // Always stop the spinner — no matter what happened
+      setBusy(false)
     }
   }
 

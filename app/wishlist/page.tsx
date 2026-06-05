@@ -102,6 +102,7 @@ function WishlistProductCard({
 
   async function handleRemove(e: React.MouseEvent) {
     e.preventDefault()
+    e.stopPropagation()
     await fetch(`/api/wishlist/${wishlistId}/items/${item.product.id}`, { method: "DELETE" })
     toast("Removed from list", { className: "font-mono text-xs" })
     onRemove()
