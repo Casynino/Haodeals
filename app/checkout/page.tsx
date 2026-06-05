@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { useRouter } from "next/navigation"
 import { useSession } from "next-auth/react"
 import { useCart } from "@/hooks/useCart"
@@ -28,7 +28,19 @@ type AddressMode = "view" | "list" | "form"
 export default function CheckoutPage() {
   const router = useRouter()
   const { data: session } = useSession()
-  const { items, total, clearCart } = useCart()
+  const { items, total, clearCart, buyNowItem, clearBuyNow } = useCart()
+
+  // If arriving via "Buy Now", use just that item; otherwise use the full cart
+  const checkoutItems = buyNowItem ? [buyNowItem] : items
+  const isBuyNow = buyNowItem !== null
+
+  // Clear buyNow if the user navigates away without completing the order
+  const clearedRef = useRef(false)
+  useEffect(() => {
+    clearedRef.current = false
+    return () => { if (!clearedRef.current) clearBuyNow() }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const [stage, setStage]               = useState<Stage>("form")
   const [loading, setLoading]           = useState(false)
@@ -78,7 +90,7 @@ export default function CheckoutPage() {
     }
   }, [session])
 
-  const cartSubtotal = total()
+  const cartSubtotal = checkoutItems.reduce((sum, i) => sum + i.price * i.quantity, 0)
   const discountAmt  = appliedCode ? Math.round(cartSubtotal * appliedCode.percent / 100) : 0
   const finalTotal   = cartSubtotal - discountAmt
   const selectedAddress = addresses.find((a) => a.id === selectedAddressId) ?? null
@@ -205,14 +217,16 @@ export default function CheckoutPage() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         address: addressWithDelivery,
-        items: items.map((i) => ({ productId: i.productId ?? i.id, quantity: i.quantity })),
+        items: checkoutItems.map((i) => ({ productId: i.productId ?? i.id, quantity: i.quantity })),
         discountCodeId: appliedCode?.id ?? null,
       }),
     })
 
     const data = await res.json()
     if (res.ok) {
-      clearCart()
+      clearedRef.current = true   // don't auto-clear buyNow on unmount
+      if (isBuyNow) clearBuyNow()
+      else clearCart()
       setOrderId(data.orderId)
       setTrackingId(data.trackingId)
       setStage("confirmed")
@@ -260,7 +274,7 @@ export default function CheckoutPage() {
     )
   }
 
-  if (items.length === 0) {
+  if (checkoutItems.length === 0) {
     return (
       <div className="container mx-auto px-4 py-24 text-center font-mono">
         <p className="text-[11px] tracking-widest text-foreground/40 mb-4">Your cart is empty</p>
@@ -276,6 +290,11 @@ export default function CheckoutPage() {
       <div className="flex items-center gap-3 mb-6 border-b border-foreground/10 pb-4">
         <span className="text-foreground/45 text-xs">//</span>
         <h1 className="text-lg font-semibold tracking-[0.2em] text-foreground/90">CHECKOUT</h1>
+        {isBuyNow && (
+          <span className="ml-2 flex items-center gap-1.5 px-2 py-0.5 border border-[#ee0000]/40 bg-[#ee0000]/[0.07] text-[#ee0000]/80 text-[8px] tracking-widest font-bold">
+            <Zap className="h-2.5 w-2.5" /> EXPRESS CHECKOUT
+          </span>
+        )}
       </div>
 
       <form id="checkout-form" onSubmit={handleSubmit}>
@@ -645,7 +664,7 @@ export default function CheckoutPage() {
             <div className="border border-foreground/10 p-5 space-y-4 sticky top-24">
               <p className="text-xs tracking-widest text-foreground/65 font-semibold">ORDER SUMMARY</p>
               <div className="space-y-2 max-h-48 overflow-y-auto">
-                {items.map((item) => (
+                {checkoutItems.map((item) => (
                   <div key={item.id} className="flex gap-2">
                     <div className="relative w-12 h-12 overflow-hidden bg-foreground/5 border border-foreground/10 flex-shrink-0">
                       <Image src={item.image} alt={item.name} fill className="object-cover opacity-70" />
