@@ -10,6 +10,7 @@ import type { Product } from "@/types"
 import { toast } from "sonner"
 import { formatPrice } from "@/lib/utils"
 import { ProductTilt } from "@/components/ui/product-tilt"
+import { WishlistHeart } from "@/components/WishlistHeart"
 
 interface ProductCardProps {
   product: Product
@@ -90,6 +91,11 @@ export function ProductCard({ product }: ProductCardProps) {
               FEATURED
             </div>
           )}
+
+          {/* Wishlist heart — top-right (below featured badge if present) */}
+          <div className="absolute top-2 right-2 z-20">
+            <WishlistHeart productId={product.id} size="sm" />
+          </div>
         </ProductTilt>
 
         {/* ── Info ──────────────────────────────────────────────────────── */}
