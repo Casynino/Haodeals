@@ -5,11 +5,18 @@ import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { ShoppingCart, Zap, Loader2 } from "lucide-react"
 import { useState } from "react"
+import dynamic from "next/dynamic"
 import { useCart } from "@/hooks/useCart"
 import type { Product } from "@/types"
 import { toast } from "sonner"
 import { formatPrice } from "@/lib/utils"
 import { ProductTilt } from "@/components/ui/product-tilt"
+
+// ssr:false prevents hydration mismatch — WishlistHeart uses client-only hooks
+const WishlistHeart = dynamic(
+  () => import("@/components/WishlistHeart").then((m) => ({ default: m.WishlistHeart })),
+  { ssr: false, loading: () => null }
+)
 
 interface ProductCardProps {
   product: Product
@@ -90,6 +97,11 @@ export function ProductCard({ product }: ProductCardProps) {
               FEATURED
             </div>
           )}
+
+          {/* Wishlist heart — client-only, safe dynamic import */}
+          <div className="absolute top-2 right-2 z-20" onClick={(e) => e.preventDefault()}>
+            <WishlistHeart productId={product.id} productName={product.name} />
+          </div>
         </ProductTilt>
 
         {/* ── Info ──────────────────────────────────────────────────────── */}
