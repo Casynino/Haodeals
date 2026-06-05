@@ -487,11 +487,11 @@ export default function WalletPage() {
               </div>
             </div>
 
-            {/* Row 2: Balance */}
-            <div>
+            {/* Row 2: Balance — dark panel so it's always readable on bright beams */}
+            <div className="rounded-xl px-3 py-2.5" style={{ background: "rgba(0,0,0,0.38)", backdropFilter: "blur(8px)" }}>
               {/* Label + eye toggle */}
               <div className="flex items-center gap-2 mb-1.5">
-                <p className="text-[8px] tracking-[0.28em] font-mono uppercase" style={{ color: "rgba(251,191,36,0.55)" }}>
+                <p className="text-[8px] tracking-[0.28em] font-mono uppercase" style={{ color: "rgba(251,191,36,0.75)" }}>
                   Available Balance
                 </p>
                 <button
@@ -509,23 +509,28 @@ export default function WalletPage() {
               </div>
 
               {wallet?.balanceTzs === null ? (
-                <p className="text-white/25 text-2xl font-black">Unavailable</p>
+                <p className="text-white/50 text-2xl font-black">Unavailable</p>
               ) : wallet ? (
-                <p
-                  className="font-black leading-none tracking-tight text-white"
-                  style={{
-                    fontSize: "clamp(1.6rem, 5.8vw, 2.2rem)",
-                    textShadow: "0 0 30px rgba(255,255,255,0.30), 0 2px 12px rgba(0,0,0,0.65)",
-                  }}
-                >
-                  {balanceVisible
-                    ? formatPrice(wallet.balanceTzs ?? 0)
-                    : <span className="tracking-widest">TSh ••••••</span>}
-                </p>
+                /* Dark scrim behind the number so it reads on ANY card background */
+                <div className="relative inline-block">
+                  <div className="absolute -inset-x-3 -inset-y-1.5 rounded-xl"
+                    style={{ background: "rgba(0,0,0,0.45)", backdropFilter: "blur(6px)" }} />
+                  <p
+                    className="relative font-black leading-none tracking-tight text-white"
+                    style={{
+                      fontSize: "clamp(1.6rem, 5.8vw, 2.2rem)",
+                      textShadow: "0 2px 8px rgba(0,0,0,0.95), 0 0 16px rgba(0,0,0,0.80)",
+                    }}
+                  >
+                    {balanceVisible
+                      ? formatPrice(wallet.balanceTzs ?? 0)
+                      : <span className="tracking-widest">TSh ••••••</span>}
+                  </p>
+                </div>
               ) : (
                 <div className="h-9 w-44 bg-white/10 animate-pulse rounded-lg" />
               )}
-            </div>
+            </div>{/* end balance panel */}
 
             {/* Row 3: Cardholder + wallet number */}
             <div className="flex items-end justify-between gap-4">
