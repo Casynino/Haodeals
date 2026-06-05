@@ -92,6 +92,10 @@
 .animate-star-burst     { animation: star-burst 1.4s ease-out infinite; }
 .animate-confetti-fall  { animation: confetti-fall 1.6s ease-in infinite; }
 
+/* ─── Utility ───────────────────────────────────────────────── */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
 /* ─── Premium Wallet Card ────────────────────────────────────── */
 @keyframes card-sweep {
   0%   { transform: translateX(-120%) skewX(-18deg); opacity: 0; }
