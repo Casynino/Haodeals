@@ -128,13 +128,13 @@ function CardWaves() {
       preserveAspectRatio="xMaxYMax meet"
     >
       {[
-        { d: "M 220 128 C 160 100 100 120 20 105",         o: 0.18 },
-        { d: "M 220 108 C 165  80 110 100 30  88",         o: 0.13 },
-        { d: "M 220  88 C 168  60 118  80 40  68",         o: 0.09 },
-        { d: "M 220  68 C 170  42 128  62 55  50",         o: 0.06 },
-        { d: "M 220  48 C 175  28 138  45 72  34",         o: 0.04 },
-      ].map(({ d, o }, i) => (
-        <path key={i} d={d} stroke={`rgba(251,191,36,${o})`} strokeWidth={1.6 - i * 0.2} strokeLinecap="round" />
+        { d: "M 220 128 C 160 100 100 120 20 105",  o: 0.38, w: 1.8 },
+        { d: "M 220 108 C 165  80 110 100 30  88",  o: 0.26, w: 1.5 },
+        { d: "M 220  88 C 168  60 118  80 40  68",  o: 0.17, w: 1.2 },
+        { d: "M 220  68 C 170  42 128  62 55  50",  o: 0.10, w: 1.0 },
+        { d: "M 220  48 C 175  28 138  45 72  34",  o: 0.06, w: 0.8 },
+      ].map(({ d, o, w }, i) => (
+        <path key={i} d={d} stroke={`rgba(251,191,36,${o})`} strokeWidth={w} strokeLinecap="round" />
       ))}
     </svg>
   )
@@ -339,60 +339,66 @@ export default function WalletPage() {
             aspectRatio: "1.7 / 1",
             transform: cardTransform,
             transition: cardTransition,
-            background: "linear-gradient(155deg, #08090f 0%, #0d1020 35%, #090c15 65%, #07080e 100%)",
+            /* Deep royal purple base — clearly distinct from dark background */
+            background: "linear-gradient(140deg, #0e0630 0%, #1c0a52 25%, #230d60 50%, #1a0848 75%, #0d0428 100%)",
             boxShadow: hovered
-              ? "0 40px 80px -16px rgba(99,102,241,0.55), 0 20px 40px -12px rgba(0,0,0,0.9), 0 0 0 1px rgba(255,255,255,0.09), inset 0 1px 0 rgba(255,255,255,0.07)"
-              : "0 28px 60px -14px rgba(0,0,0,0.85), 0 8px 20px -8px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.06), inset 0 1px 0 rgba(255,255,255,0.04)",
+              ? "0 45px 90px -16px rgba(139,92,246,0.80), 0 0 40px -8px rgba(251,191,36,0.30), 0 0 0 1px rgba(251,191,36,0.22), inset 0 1px 0 rgba(255,255,255,0.10)"
+              : "0 30px 65px -14px rgba(109,40,217,0.75), 0 0 0 1px rgba(251,191,36,0.13), inset 0 1px 0 rgba(255,255,255,0.07)",
           }}
           onMouseMove={handleCardMouseMove}
           onMouseEnter={handleCardEnter}
           onMouseLeave={handleCardLeave}
         >
-          {/* ── Layer 1: Aurora blob — blue/cyan (animated) ── */}
+          {/* ── Layer 1: Gold aurora — top-right warm glow ── */}
           <div
             className="absolute inset-0 animate-aurora-1"
-            style={{ background: "radial-gradient(ellipse at 18% 42%, rgba(56,189,248,0.14) 0%, transparent 52%)" }}
+            style={{ background: "radial-gradient(ellipse at 80% 15%, rgba(251,191,36,0.26) 0%, rgba(245,158,11,0.10) 35%, transparent 60%)" }}
           />
-          {/* ── Layer 2: Aurora blob — violet (animated) ── */}
+          {/* ── Layer 2: Rose/magenta — left warmth ── */}
           <div
             className="absolute inset-0 animate-aurora-2"
-            style={{ background: "radial-gradient(ellipse at 82% 28%, rgba(139,92,246,0.18) 0%, transparent 52%)" }}
+            style={{ background: "radial-gradient(ellipse at 10% 55%, rgba(236,72,153,0.16) 0%, transparent 50%)" }}
           />
-          {/* ── Layer 3: Subtle teal hint bottom-left ── */}
+          {/* ── Layer 3: Cyan accent — bottom-right cool ── */}
           <div
             className="absolute inset-0"
-            style={{ background: "radial-gradient(ellipse at 8% 90%, rgba(20,184,166,0.07) 0%, transparent 45%)" }}
+            style={{ background: "radial-gradient(ellipse at 90% 85%, rgba(34,211,238,0.10) 0%, transparent 45%)" }}
           />
-          {/* ── Layer 4: Top gloss edge ── */}
+          {/* ── Layer 4: Top gloss — bright edge ── */}
           <div
             className="absolute inset-0"
-            style={{ background: "linear-gradient(to bottom, rgba(255,255,255,0.065) 0%, transparent 40%)" }}
+            style={{ background: "linear-gradient(to bottom, rgba(255,255,255,0.09) 0%, rgba(255,255,255,0.02) 35%, transparent 55%)" }}
           />
           {/* ── Layer 5: Bottom vignette ── */}
           <div
             className="absolute inset-0"
-            style={{ background: "linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 55%)" }}
+            style={{ background: "linear-gradient(to top, rgba(0,0,0,0.50) 0%, transparent 52%)" }}
           />
-          {/* ── Layer 6: Left edge vertical highlight ── */}
+          {/* ── Layer 6: Gold left-edge rim light ── */}
           <div
             className="absolute top-0 left-0 bottom-0 w-px"
-            style={{ background: "linear-gradient(to bottom, rgba(255,255,255,0.12), rgba(255,255,255,0.04), transparent)" }}
+            style={{ background: "linear-gradient(to bottom, rgba(251,191,36,0.40), rgba(251,191,36,0.12), transparent)" }}
           />
-          {/* ── Layer 7: Fine dot texture ── */}
+          {/* ── Layer 7: Gold top-edge rim light ── */}
           <div
-            className="absolute inset-0 opacity-[0.045]"
+            className="absolute top-0 left-0 right-0 h-px"
+            style={{ background: "linear-gradient(to right, rgba(251,191,36,0.35), rgba(255,255,255,0.15), rgba(251,191,36,0.10))" }}
+          />
+          {/* ── Layer 8: Fine dot texture ── */}
+          <div
+            className="absolute inset-0 opacity-[0.04]"
             style={{
-              backgroundImage: "radial-gradient(rgba(255,255,255,0.6) 1px, transparent 1px)",
-              backgroundSize: "24px 24px",
+              backgroundImage: "radial-gradient(rgba(255,255,255,0.7) 1px, transparent 1px)",
+              backgroundSize: "22px 22px",
             }}
           />
-          {/* ── Layer 8: Decorative gold waves ── */}
+          {/* ── Layer 9: Decorative gold waves — more visible ── */}
           <CardWaves />
-          {/* ── Layer 9: Shimmer sweep (triggered on mount + hover) ── */}
+          {/* ── Layer 10: Gold shimmer sweep ── */}
           <div
             key={sweeping ? "sweep" : "idle"}
             className={`absolute inset-0 ${sweeping ? "animate-card-sweep" : "opacity-0"}`}
-            style={{ background: "linear-gradient(105deg, transparent 25%, rgba(255,255,255,0.07) 50%, transparent 75%)" }}
+            style={{ background: "linear-gradient(105deg, transparent 22%, rgba(251,191,36,0.12) 45%, rgba(255,255,255,0.08) 50%, rgba(251,191,36,0.10) 55%, transparent 78%)" }}
           />
 
           {/* ── Card content ── */}
@@ -404,15 +410,19 @@ export default function WalletPage() {
                 <PremiumChip />
                 <NfcWaves />
               </div>
-              {/* nTZS wordmark */}
+              {/* nTZS wordmark — gold */}
               <div className="text-right">
                 <div
-                  className="font-black text-[1.15rem] leading-none tracking-wide text-white/90"
-                  style={{ fontFamily: "'Georgia', 'Times New Roman', serif", textShadow: "0 0 24px rgba(255,255,255,0.25)" }}
+                  className="font-black text-[1.2rem] leading-none tracking-wide"
+                  style={{
+                    fontFamily: "'Georgia', 'Times New Roman', serif",
+                    color: "#f9d878",
+                    textShadow: "0 0 18px rgba(251,191,36,0.55), 0 0 40px rgba(251,191,36,0.25)",
+                  }}
                 >
                   nTZS
                 </div>
-                <div className="text-[7px] tracking-[0.3em] text-white/25 mt-[3px] font-mono uppercase">Digital</div>
+                <div className="text-[7px] tracking-[0.32em] mt-[3px] font-mono uppercase" style={{ color: "rgba(251,191,36,0.45)" }}>Digital</div>
               </div>
             </div>
 
@@ -420,12 +430,15 @@ export default function WalletPage() {
             <div>
               {/* Label + eye toggle */}
               <div className="flex items-center gap-2 mb-1.5">
-                <p className="text-[8px] tracking-[0.28em] text-white/35 font-mono uppercase">
+                <p className="text-[8px] tracking-[0.28em] font-mono uppercase" style={{ color: "rgba(251,191,36,0.55)" }}>
                   Available Balance
                 </p>
                 <button
                   onClick={toggleBalance}
-                  className="text-white/25 hover:text-white/55 transition-colors"
+                  className="transition-colors"
+                  style={{ color: "rgba(251,191,36,0.35)" }}
+                  onMouseEnter={(e) => (e.currentTarget.style.color = "rgba(251,191,36,0.70)")}
+                  onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(251,191,36,0.35)")}
                   aria-label={balanceVisible ? "Hide balance" : "Show balance"}
                 >
                   {balanceVisible
@@ -438,29 +451,35 @@ export default function WalletPage() {
                 <p className="text-white/25 text-2xl font-black">Unavailable</p>
               ) : wallet ? (
                 <p
-                  className="text-white font-black leading-none tracking-tight"
-                  style={{ fontSize: "clamp(1.55rem, 5.5vw, 2.1rem)" }}
+                  className="font-black leading-none tracking-tight text-white"
+                  style={{
+                    fontSize: "clamp(1.6rem, 5.8vw, 2.2rem)",
+                    textShadow: "0 0 30px rgba(251,191,36,0.25), 0 2px 8px rgba(0,0,0,0.4)",
+                  }}
                 >
                   {balanceVisible
                     ? formatPrice(wallet.balanceTzs ?? 0)
                     : <span className="tracking-widest">TSh ••••••</span>}
                 </p>
               ) : (
-                <div className="h-9 w-44 bg-white/8 animate-pulse rounded-lg" />
+                <div className="h-9 w-44 bg-white/10 animate-pulse rounded-lg" />
               )}
             </div>
 
             {/* Row 3: Cardholder + wallet number */}
             <div className="flex items-end justify-between gap-4">
               <div className="min-w-0">
-                <p className="text-[7px] tracking-[0.28em] text-white/30 font-mono uppercase mb-[3px]">Cardholder</p>
-                <p className="text-white text-[13px] font-semibold tracking-wide truncate">{userName}</p>
+                <p className="text-[7px] tracking-[0.28em] font-mono uppercase mb-[3px]" style={{ color: "rgba(251,191,36,0.42)" }}>Cardholder</p>
+                <p className="text-white text-[13px] font-semibold tracking-wide truncate" style={{ textShadow: "0 1px 6px rgba(0,0,0,0.5)" }}>{userName}</p>
               </div>
               <div className="text-right flex-shrink-0">
-                <p className="text-[7px] tracking-[0.28em] text-white/30 font-mono uppercase mb-[3px]">Wallet No.</p>
+                <p className="text-[7px] tracking-[0.28em] font-mono uppercase mb-[3px]" style={{ color: "rgba(251,191,36,0.42)" }}>Wallet No.</p>
                 <button
                   onClick={copyAddress}
-                  className="flex items-center gap-1.5 text-white/45 text-[10px] font-mono hover:text-white/80 transition-colors"
+                  className="flex items-center gap-1.5 text-[10px] font-mono transition-colors"
+                  style={{ color: "rgba(255,255,255,0.50)" }}
+                  onMouseEnter={(e) => (e.currentTarget.style.color = "rgba(251,191,36,0.85)")}
+                  onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.50)")}
                 >
                   {cardNo}
                   <Copy className="h-2.5 w-2.5 opacity-50" />
