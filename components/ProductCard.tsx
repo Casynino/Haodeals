@@ -61,10 +61,21 @@ export function ProductCard({ product }: ProductCardProps) {
   }
 
   return (
-    <Link href={`/products/${product.id}`} className="group block">
-      <div className="border border-white/15 hover:border-white/40 transition-all duration-200 bg-card relative overflow-hidden">
+    /*
+     * KEY FIX: The card outer wrapper is a plain div (not Link).
+     * The heart button lives here — completely outside any <Link>.
+     * Clicking the heart can NEVER accidentally navigate the page.
+     * The Link wraps only the image + info so tapping those navigates.
+     */
+    <div className="group relative border border-white/15 hover:border-white/40 transition-all duration-200 bg-card overflow-hidden">
 
-        {/* ── Image ─────────────────────────────────────────────────────── */}
+      {/* ── Wishlist heart — OUTSIDE the Link, no propagation issue ── */}
+      <div className="absolute top-2 right-2 z-30">
+        <WishlistHeart productId={product.id} productName={product.name} />
+      </div>
+
+      {/* ── Image + Info wrapped in Link — tap anywhere here to open product ── */}
+      <Link href={`/products/${product.id}`} className="block">
         <ProductTilt className="relative aspect-square overflow-hidden bg-foreground/5">
           <Image
             src={images[0] ?? "/placeholder.jpg"}
@@ -97,71 +108,56 @@ export function ProductCard({ product }: ProductCardProps) {
               FEATURED
             </div>
           )}
-
-          {/* Wishlist heart — client-only, safe dynamic import */}
-          <div className="absolute top-2 right-2 z-20">
-            <WishlistHeart productId={product.id} productName={product.name} />
-          </div>
         </ProductTilt>
 
-        {/* ── Info ──────────────────────────────────────────────────────── */}
+        {/* Info */}
         <div className="p-3 space-y-2 border-t border-white/8">
           <p className="text-[10px] text-foreground/50 tracking-widest uppercase">
             {product.category?.name}
           </p>
-
           <h3 className="text-xs text-foreground/85 line-clamp-2 leading-relaxed group-hover:text-foreground transition-colors tracking-wide">
             {product.name}
           </h3>
-
           {avgRating !== null && (
             <div className="flex items-center gap-1.5">
               <div className="flex gap-0.5">
                 {[1, 2, 3, 4, 5].map((s) => (
-                  <div
-                    key={s}
-                    className={`w-2 h-2 ${s <= Math.round(avgRating) ? "bg-yellow-400/75" : "bg-white/15"}`}
-                  />
+                  <div key={s} className={`w-2 h-2 ${s <= Math.round(avgRating) ? "bg-yellow-400/75" : "bg-white/15"}`} />
                 ))}
               </div>
               <span className="text-[10px] text-foreground/45">({product.reviews?.length})</span>
             </div>
           )}
-
-          {/* Price */}
           <div className="flex items-baseline gap-2 pt-1 border-t border-white/8">
             <span className="text-sm font-mono font-semibold text-green-400">{formatPrice(product.price)}</span>
             {product.originalPrice && (
               <span className="text-[10px] text-foreground/40 line-through">{formatPrice(product.originalPrice)}</span>
             )}
           </div>
-
-          {/* ── Action buttons ─────────────────────────────────────────── */}
-          <div className="flex gap-1.5 pt-1">
-            {/* BUY NOW — primary */}
-            <button
-              onClick={handleBuyNow}
-              disabled={outOfStock || buyingNow}
-              className="flex-1 flex items-center justify-center gap-1.5 py-2 bg-[#ee0000] text-white text-[9px] font-mono font-bold tracking-widest hover:bg-red-700 active:scale-[0.97] transition-all disabled:opacity-40 disabled:cursor-not-allowed"
-            >
-              {buyingNow
-                ? <Loader2 className="h-3 w-3 animate-spin" />
-                : <><Zap className="h-3 w-3" /> BUY NOW</>}
-            </button>
-
-            {/* ADD TO BAG — secondary */}
-            <button
-              onClick={handleAddToCart}
-              disabled={outOfStock}
-              className="flex items-center justify-center gap-1 px-3 py-2 border border-white/20 text-foreground/55 text-[9px] font-mono tracking-widest hover:border-white/40 hover:text-foreground/80 active:scale-[0.97] transition-all disabled:opacity-40 disabled:cursor-not-allowed"
-              title="Add to Bag"
-            >
-              <ShoppingCart className="h-3 w-3 flex-shrink-0" />
-              <span className="hidden sm:inline">BAG</span>
-            </button>
-          </div>
         </div>
+      </Link>
+
+      {/* ── Action buttons — OUTSIDE Link so they never navigate the card ── */}
+      <div className="px-3 pb-3 flex gap-1.5 border-t border-white/5 pt-2">
+        <button
+          onClick={handleBuyNow}
+          disabled={outOfStock || buyingNow}
+          className="flex-1 flex items-center justify-center gap-1.5 py-2 bg-[#ee0000] text-white text-[9px] font-mono font-bold tracking-widest hover:bg-red-700 active:scale-[0.97] transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+        >
+          {buyingNow
+            ? <Loader2 className="h-3 w-3 animate-spin" />
+            : <><Zap className="h-3 w-3" /> BUY NOW</>}
+        </button>
+        <button
+          onClick={handleAddToCart}
+          disabled={outOfStock}
+          className="flex items-center justify-center gap-1 px-3 py-2 border border-white/20 text-foreground/55 text-[9px] font-mono tracking-widest hover:border-white/40 hover:text-foreground/80 active:scale-[0.97] transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+          title="Add to Bag"
+        >
+          <ShoppingCart className="h-3 w-3 flex-shrink-0" />
+          <span className="hidden sm:inline">BAG</span>
+        </button>
       </div>
-    </Link>
+    </div>
   )
 }
