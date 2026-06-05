@@ -128,6 +128,10 @@ export interface CartStore {
   clearCart: () => void
   total: () => number
   count: () => number
+  // Buy-now: single-item express checkout (not persisted)
+  buyNowItem: CartStoreItem | null
+  setBuyNow: (product: Product) => void
+  clearBuyNow: () => void
 }
 
 export interface Message {
