@@ -97,8 +97,11 @@ function WishlistProductCard({
 }: { item: WishlistItem; wishlistId: string; onRemove: () => void }) {
   const { addItem, setBuyNow } = useCart()
   const router = useRouter()
-  const img = item.product.images?.[0]
-  const outOfStock = item.product.stock === 0
+  const imgs = Array.isArray(item.product.images)
+    ? item.product.images
+    : (() => { try { return JSON.parse(item.product.images as unknown as string) } catch { return [] } })()
+  const img = imgs[0] ?? null
+  const outOfStock = (item.product.stock ?? 0) === 0
 
   async function handleRemove(e: React.MouseEvent) {
     e.preventDefault()
@@ -135,7 +138,7 @@ function WishlistProductCard({
         </div>
 
         <div className="p-3 space-y-1.5">
-          <p className="text-[9px] text-foreground/35 font-mono uppercase tracking-widest">{item.product.category.name}</p>
+          <p className="text-[9px] text-foreground/35 font-mono uppercase tracking-widest">{item.product.category?.name ?? ""}</p>
           <p className="text-xs text-foreground/80 line-clamp-2 leading-relaxed group-hover:text-foreground transition-colors">{item.product.name}</p>
           <div className="flex items-baseline gap-1.5">
             <span className="text-sm font-bold text-emerald-400 font-mono">{formatPrice(item.product.price)}</span>
