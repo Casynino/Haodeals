@@ -96,6 +96,20 @@
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
+/* ─── Wishlist recommendation carousel ──────────────────────── */
+@keyframes carousel-scroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); } /* -50%: we double the array for seamless loop */
+}
+.carousel-track {
+  animation: carousel-scroll 28s linear infinite;
+  will-change: transform;
+}
+.carousel-track:hover,
+.carousel-track.paused {
+  animation-play-state: paused;
+}
+
 /* ─── Premium Wallet Card ────────────────────────────────────── */
 @keyframes card-sweep {
   0%   { transform: translateX(-120%) skewX(-18deg); opacity: 0; }
