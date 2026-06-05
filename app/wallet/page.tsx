@@ -293,13 +293,29 @@ export default function WalletPage() {
 
   async function fetchWallet() {
     setLoadingWallet(true)
-    try { const r = await fetch("/api/wallet"); if (r.ok) setWallet(await r.json()) }
-    finally { setLoadingWallet(false) }
+    try {
+      const r = await fetch("/api/wallet")
+      if (r.ok) {
+        setWallet(await r.json())
+      } else {
+        // API failed — show wallet as unavailable instead of infinite skeleton
+        setWallet({ ntzsUserId: "", walletAddress: null, balanceTzs: null, balanceUsdc: null })
+      }
+    } catch {
+      setWallet({ ntzsUserId: "", walletAddress: null, balanceTzs: null, balanceUsdc: null })
+    } finally {
+      setLoadingWallet(false)
+    }
   }
   async function fetchHistory() {
     setLoadingHistory(true)
-    try { const r = await fetch("/api/wallet/transactions"); if (r.ok) setHistory(await r.json()) }
-    finally { setLoadingHistory(false) }
+    try {
+      const r = await fetch("/api/wallet/transactions")
+      if (r.ok) setHistory(await r.json())
+      // If not ok, history stays [] — shows empty state rather than spinning
+    } catch { /* ignore */ } finally {
+      setLoadingHistory(false)
+    }
   }
 
   async function handleDeposit(e: React.FormEvent) {
@@ -527,9 +543,7 @@ export default function WalletPage() {
                       : <span className="tracking-widest">TSh ••••••</span>}
                   </p>
                 </div>
-              ) : (
-                <div className="h-9 w-44 bg-white/10 animate-pulse rounded-lg" />
-              )}
+              ) : null}
             </div>{/* end balance panel */}
 
             {/* Row 3: Cardholder + wallet number */}
