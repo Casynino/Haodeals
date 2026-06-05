@@ -13,7 +13,7 @@ import {
 import { ThemeToggle } from "@/components/ThemeToggle"
 import { CartDrawer } from "@/components/CartDrawer"
 import { useCart } from "@/hooks/useCart"
-import { Package, LogOut, User, ShieldCheck, Search, Wallet, Settings, Bell, MessageSquare } from "lucide-react"
+import { Package, LogOut, User, ShieldCheck, Search, Wallet, Settings, Bell, MessageSquare, Heart } from "lucide-react"
 import { useState, useEffect, useRef } from "react"
 import { tryAdminSignOut } from "@/app/actions/admin-auth"
 
@@ -134,6 +134,15 @@ export function Navbar() {
               <Search className="h-4 w-4" />
             </button>
           </Link>
+
+          {/* Wishlist */}
+          {session && (
+            <Link href="/wishlist">
+              <button className="w-8 h-8 flex items-center justify-center text-foreground/55 hover:text-rose-400 hover:bg-rose-500/8 transition-colors border border-transparent hover:border-rose-500/20">
+                <Heart className="h-4 w-4" />
+              </button>
+            </Link>
+          )}
 
           <CartDrawer />
 
