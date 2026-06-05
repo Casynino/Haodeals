@@ -417,25 +417,24 @@ export default function WalletPage() {
           onMouseEnter={handleCardEnter}
           onMouseLeave={handleCardLeave}
         >
-          {/* ── L1: HSBC X-BEAM — main diagonal (↗ lower-left → upper-right) ── */}
-          {/* This is the KEY effect — very bright central band */}
+          {/* ── L1: Subtle diagonal light beam 1 (↗) — elegant, not blinding ── */}
           <div
             className="absolute inset-0"
             style={{
-              background: "linear-gradient(318deg, transparent 18%, rgba(255,255,255,0.04) 34%, rgba(255,255,255,0.38) 46%, rgba(255,255,255,0.58) 50%, rgba(255,255,255,0.38) 54%, rgba(255,255,255,0.04) 66%, transparent 80%)",
+              background: "linear-gradient(318deg, transparent 20%, rgba(255,255,255,0.02) 38%, rgba(255,255,255,0.14) 48%, rgba(255,255,255,0.20) 50%, rgba(255,255,255,0.14) 52%, rgba(255,255,255,0.02) 64%, transparent 80%)",
             }}
           />
-          {/* ── L2: HSBC X-BEAM — crossing diagonal (↘ upper-left → lower-right) ── */}
+          {/* ── L2: Subtle crossing beam (↘) ── */}
           <div
             className="absolute inset-0"
             style={{
-              background: "linear-gradient(42deg, transparent 20%, rgba(255,255,255,0.03) 36%, rgba(255,255,255,0.28) 46%, rgba(255,255,255,0.42) 50%, rgba(255,255,255,0.28) 54%, rgba(255,255,255,0.03) 64%, transparent 78%)",
+              background: "linear-gradient(42deg, transparent 22%, rgba(255,255,255,0.02) 40%, rgba(255,255,255,0.10) 48%, rgba(255,255,255,0.15) 50%, rgba(255,255,255,0.10) 52%, rgba(255,255,255,0.02) 62%, transparent 78%)",
             }}
           />
-          {/* ── L3: Radial glow at beam intersection (centre-left) ── */}
+          {/* ── L3: Soft centre glow (much softer than before) ── */}
           <div
             className="absolute inset-0"
-            style={{ background: "radial-gradient(ellipse at 42% 52%, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.06) 25%, transparent 50%)" }}
+            style={{ background: "radial-gradient(ellipse at 42% 52%, rgba(255,255,255,0.08) 0%, transparent 45%)" }}
           />
           {/* ── L4: Gold aurora top-right — warmth + luxury ── */}
           <div
@@ -454,10 +453,10 @@ export default function WalletPage() {
             className="absolute inset-0"
             style={{ background: "linear-gradient(to bottom, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.02) 28%, transparent 48%)" }}
           />
-          {/* ── L8: Bottom vignette — text readability ── */}
+          {/* ── L8: Bottom vignette — deeper for text readability ── */}
           <div
             className="absolute inset-0"
-            style={{ background: "linear-gradient(to top, rgba(0,0,0,0.52) 0%, transparent 52%)" }}
+            style={{ background: "linear-gradient(to top, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.20) 40%, transparent 60%)" }}
           />
           {/* ── L9: Gold left rim ── */}
           <div
@@ -503,48 +502,40 @@ export default function WalletPage() {
               </div>
             </div>
 
-            {/* Row 2: Balance — dark panel so it's always readable on bright beams */}
-            <div className="rounded-xl px-3 py-2.5" style={{ background: "rgba(0,0,0,0.38)", backdropFilter: "blur(8px)" }}>
-              {/* Label + eye toggle */}
+            {/* Row 2: Balance */}
+            <div>
               <div className="flex items-center gap-2 mb-1.5">
-                <p className="text-[8px] tracking-[0.28em] font-mono uppercase" style={{ color: "rgba(251,191,36,0.75)" }}>
+                <p className="text-[8px] tracking-[0.28em] font-mono uppercase"
+                  style={{ color: "rgba(251,191,36,0.65)", textShadow: "0 1px 4px rgba(0,0,0,0.5)" }}>
                   Available Balance
                 </p>
                 <button
                   onClick={toggleBalance}
                   className="transition-colors"
-                  style={{ color: "rgba(251,191,36,0.35)" }}
-                  onMouseEnter={(e) => (e.currentTarget.style.color = "rgba(251,191,36,0.70)")}
-                  onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(251,191,36,0.35)")}
+                  style={{ color: "rgba(251,191,36,0.45)" }}
+                  onMouseEnter={(e) => (e.currentTarget.style.color = "rgba(251,191,36,0.80)")}
+                  onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(251,191,36,0.45)")}
                   aria-label={balanceVisible ? "Hide balance" : "Show balance"}
                 >
-                  {balanceVisible
-                    ? <Eye className="h-3 w-3" />
-                    : <EyeOff className="h-3 w-3" />}
+                  {balanceVisible ? <Eye className="h-3 w-3" /> : <EyeOff className="h-3 w-3" />}
                 </button>
               </div>
 
               {wallet?.balanceTzs === null ? (
-                <p className="text-white/50 text-2xl font-black">Unavailable</p>
+                <p className="text-white/50 text-2xl font-black"
+                  style={{ textShadow: "0 2px 6px rgba(0,0,0,0.7)" }}>Unavailable</p>
               ) : wallet ? (
-                /* Dark scrim behind the number so it reads on ANY card background */
-                <div className="relative inline-block">
-                  <div className="absolute -inset-x-3 -inset-y-1.5 rounded-xl"
-                    style={{ background: "rgba(0,0,0,0.45)", backdropFilter: "blur(6px)" }} />
-                  <p
-                    className="relative font-black leading-none tracking-tight text-white"
-                    style={{
-                      fontSize: "clamp(1.6rem, 5.8vw, 2.2rem)",
-                      textShadow: "0 2px 8px rgba(0,0,0,0.95), 0 0 16px rgba(0,0,0,0.80)",
-                    }}
-                  >
-                    {balanceVisible
-                      ? formatPrice(wallet.balanceTzs ?? 0)
-                      : <span className="tracking-widest">TSh ••••••</span>}
-                  </p>
-                </div>
+                <p className="font-black leading-none tracking-tight text-white"
+                  style={{
+                    fontSize: "clamp(1.6rem, 5.8vw, 2.2rem)",
+                    textShadow: "0 2px 12px rgba(0,0,0,0.90), 0 1px 3px rgba(0,0,0,0.95)",
+                  }}>
+                  {balanceVisible
+                    ? formatPrice(wallet.balanceTzs ?? 0)
+                    : <span className="tracking-widest">TSh ••••••</span>}
+                </p>
               ) : null}
-            </div>{/* end balance panel */}
+            </div>
 
             {/* Row 3: Cardholder + wallet number */}
             <div className="flex items-end justify-between gap-4">
@@ -581,19 +572,34 @@ export default function WalletPage() {
         {action === "idle" && (
           <div className="grid grid-cols-3 gap-2.5">
             {[
-              { icon: <ArrowDownToLine className="h-[18px] w-[18px]" />, label: "Add Funds",  onClick: () => openAction("deposit"),  tc: "text-emerald-400", bg: "bg-emerald-500/10 border-emerald-500/12 hover:bg-emerald-500/18" },
-              { icon: <ArrowUpFromLine className="h-[18px] w-[18px]" />, label: "Withdraw",   onClick: () => openAction("withdraw"), tc: "text-blue-400",    bg: "bg-blue-500/10    border-blue-500/12    hover:bg-blue-500/18"    },
-              { icon: <ShoppingBag    className="h-[18px] w-[18px]" />, label: "My Orders",  href: "/orders",                       tc: "text-violet-400",  bg: "bg-violet-500/10  border-violet-500/12  hover:bg-violet-500/18"  },
+              {
+                icon: <ArrowDownToLine className="h-[18px] w-[18px]" />,
+                label: "Add Funds", onClick: () => openAction("deposit"),
+                iconColor: "text-emerald-500",
+                cls: "border border-emerald-500/20 bg-emerald-500/[0.07] hover:bg-emerald-500/[0.13] dark:bg-emerald-500/10 dark:border-emerald-500/15",
+              },
+              {
+                icon: <ArrowUpFromLine className="h-[18px] w-[18px]" />,
+                label: "Withdraw", onClick: () => openAction("withdraw"),
+                iconColor: "text-blue-500",
+                cls: "border border-blue-500/20 bg-blue-500/[0.07] hover:bg-blue-500/[0.13] dark:bg-blue-500/10 dark:border-blue-500/15",
+              },
+              {
+                icon: <ShoppingBag className="h-[18px] w-[18px]" />,
+                label: "My Orders", href: "/orders",
+                iconColor: "text-violet-500",
+                cls: "border border-violet-500/20 bg-violet-500/[0.07] hover:bg-violet-500/[0.13] dark:bg-violet-500/10 dark:border-violet-500/15",
+              },
             ].map((b) => {
               const tile = (
-                <div className={`flex flex-col items-center gap-2 py-4 rounded-2xl border transition-all active:scale-95 cursor-pointer ${b.bg}`}>
-                  <span className={b.tc}>{b.icon}</span>
-                  <span className="text-[10px] font-mono tracking-wide text-foreground/50">{b.label}</span>
+                <div className={`flex flex-col items-center gap-2 py-4 rounded-2xl transition-all active:scale-95 cursor-pointer ${b.cls}`}>
+                  <span className={b.iconColor}>{b.icon}</span>
+                  <span className="text-[10px] font-mono tracking-wide text-foreground/60">{b.label}</span>
                 </div>
               )
               return b.href
                 ? <Link key={b.label} href={b.href}>{tile}</Link>
-                : <button key={b.label} onClick={b.onClick} className="block">{tile}</button>
+                : <button key={b.label} onClick={b.onClick} className="block w-full">{tile}</button>
             })}
           </div>
         )}
