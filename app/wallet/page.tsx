@@ -118,23 +118,71 @@ function NfcWaves() {
   )
 }
 
-/* ── Decorative wave lines (bottom-right of card) ───────────────────────── */
+/* ── Kente diamond lattice texture ──────────────────────────────────────── */
+function KenteTexture() {
+  return (
+    <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ opacity: 0.055 }}>
+      <defs>
+        <pattern id="kente-d" x="0" y="0" width="26" height="26" patternUnits="userSpaceOnUse">
+          {/* Outer diamond */}
+          <polygon points="13,0 26,13 13,26 0,13"
+            fill="none" stroke="rgba(212,175,55,1)" strokeWidth="0.65" />
+          {/* Inner diamond */}
+          <polygon points="13,5.5 20.5,13 13,20.5 5.5,13"
+            fill="none" stroke="rgba(212,175,55,0.7)" strokeWidth="0.45" />
+          {/* Cross accent */}
+          <circle cx="13" cy="13" r="1.2" fill="rgba(212,175,55,0.55)" />
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#kente-d)" />
+    </svg>
+  )
+}
+
+/* ── Zanzibar-arch corner accent (bottom-left) ──────────────────────────── */
+/* Inspired by the carved geometric arches of Zanzibar wooden doors */
+function ZanzibarAccent() {
+  return (
+    <svg
+      viewBox="0 0 120 120"
+      fill="none"
+      className="absolute bottom-0 left-0 w-32 h-32 pointer-events-none"
+      preserveAspectRatio="xMinYMax meet"
+    >
+      {/* Concentric radiating arcs — Zanzibar arch geometry */}
+      <path d="M 0 120 Q 10 60  70 0"  stroke="rgba(212,175,55,0.22)" strokeWidth="1.3" />
+      <path d="M 0 120 Q 25 75  90 20" stroke="rgba(212,175,55,0.15)" strokeWidth="1.1" />
+      <path d="M 0 120 Q 40 90 110 40" stroke="rgba(212,175,55,0.09)" strokeWidth="0.9" />
+      <path d="M 0 120 Q 55 100 120 60" stroke="rgba(212,175,55,0.06)" strokeWidth="0.7" />
+      {/* Small diamond accents at arc nodes — Adinkra detail */}
+      <polygon points="30,74  35,79  30,84  25,79" fill="rgba(212,175,55,0.18)" />
+      <polygon points="14,96  18,100 14,104 10,100" fill="rgba(212,175,55,0.13)" />
+      <polygon points="50,55  54,59  50,63  46,59"  fill="rgba(212,175,55,0.11)" />
+      {/* Corner dot cluster */}
+      <circle cx="5"  cy="110" r="1.8" fill="rgba(212,175,55,0.20)" />
+      <circle cx="12" cy="104" r="1.2" fill="rgba(212,175,55,0.14)" />
+      <circle cx="19" cy="98"  r="0.9" fill="rgba(212,175,55,0.10)" />
+    </svg>
+  )
+}
+
+/* ── Flowing gold accent lines (bottom-right) ───────────────────────────── */
 function CardWaves() {
   return (
     <svg
       viewBox="0 0 220 140"
       fill="none"
-      className="absolute bottom-0 right-0 w-[62%] h-[72%] pointer-events-none"
+      className="absolute bottom-0 right-0 w-[58%] h-[68%] pointer-events-none"
       preserveAspectRatio="xMaxYMax meet"
     >
       {[
-        { d: "M 220 128 C 160 100 100 120 20 105",  o: 0.38, w: 1.8 },
-        { d: "M 220 108 C 165  80 110 100 30  88",  o: 0.26, w: 1.5 },
-        { d: "M 220  88 C 168  60 118  80 40  68",  o: 0.17, w: 1.2 },
-        { d: "M 220  68 C 170  42 128  62 55  50",  o: 0.10, w: 1.0 },
-        { d: "M 220  48 C 175  28 138  45 72  34",  o: 0.06, w: 0.8 },
+        { d: "M 220 128 C 160 105 110 118 30 108",  o: 0.32, w: 1.7 },
+        { d: "M 220 108 C 168  82 115  98 35  90",  o: 0.22, w: 1.4 },
+        { d: "M 220  88 C 172  62 122  78 42  70",  o: 0.14, w: 1.1 },
+        { d: "M 220  68 C 175  44 132  60 55  52",  o: 0.08, w: 0.9 },
+        { d: "M 220  50 C 178  30 140  44 70  36",  o: 0.05, w: 0.7 },
       ].map(({ d, o, w }, i) => (
-        <path key={i} d={d} stroke={`rgba(251,191,36,${o})`} strokeWidth={w} strokeLinecap="round" />
+        <path key={i} d={d} stroke={`rgba(212,175,55,${o})`} strokeWidth={w} strokeLinecap="round" />
       ))}
     </svg>
   )
@@ -339,66 +387,67 @@ export default function WalletPage() {
             aspectRatio: "1.7 / 1",
             transform: cardTransform,
             transition: cardTransition,
-            /* Deep royal purple base — clearly distinct from dark background */
-            background: "linear-gradient(140deg, #0e0630 0%, #1c0a52 25%, #230d60 50%, #1a0848 75%, #0d0428 100%)",
+            /* Deep crimson-red base — rich, brand-aligned, unmistakably premium */
+            background: "linear-gradient(145deg, #3d0808 0%, #6e1111 20%, #8b1a1a 42%, #7a1010 62%, #4a0909 82%, #2d0505 100%)",
             boxShadow: hovered
-              ? "0 45px 90px -16px rgba(139,92,246,0.80), 0 0 40px -8px rgba(251,191,36,0.30), 0 0 0 1px rgba(251,191,36,0.22), inset 0 1px 0 rgba(255,255,255,0.10)"
-              : "0 30px 65px -14px rgba(109,40,217,0.75), 0 0 0 1px rgba(251,191,36,0.13), inset 0 1px 0 rgba(255,255,255,0.07)",
+              ? "0 45px 90px -16px rgba(120,15,15,0.90), 0 0 40px -8px rgba(212,175,55,0.38), 0 0 0 1px rgba(212,175,55,0.28), inset 0 1px 0 rgba(255,255,255,0.10)"
+              : "0 28px 65px -14px rgba(100,10,10,0.82), 0 8px 24px -8px rgba(0,0,0,0.55), 0 0 0 1px rgba(212,175,55,0.15), inset 0 1px 0 rgba(255,255,255,0.07)",
           }}
           onMouseMove={handleCardMouseMove}
           onMouseEnter={handleCardEnter}
           onMouseLeave={handleCardLeave}
         >
-          {/* ── Layer 1: Gold aurora — top-right warm glow ── */}
+          {/* ── L1: Gold radial glow — top-right, warm luxury ── */}
           <div
             className="absolute inset-0 animate-aurora-1"
-            style={{ background: "radial-gradient(ellipse at 80% 15%, rgba(251,191,36,0.26) 0%, rgba(245,158,11,0.10) 35%, transparent 60%)" }}
+            style={{ background: "radial-gradient(ellipse at 85% 12%, rgba(212,175,55,0.38) 0%, rgba(212,175,55,0.14) 30%, transparent 58%)" }}
           />
-          {/* ── Layer 2: Rose/magenta — left warmth ── */}
+          {/* ── L2: Crimson brightening — top-left — adds red depth ── */}
           <div
             className="absolute inset-0 animate-aurora-2"
-            style={{ background: "radial-gradient(ellipse at 10% 55%, rgba(236,72,153,0.16) 0%, transparent 50%)" }}
+            style={{ background: "radial-gradient(ellipse at 8% 18%, rgba(220,50,50,0.28) 0%, transparent 50%)" }}
           />
-          {/* ── Layer 3: Cyan accent — bottom-right cool ── */}
+          {/* ── L3: HSBC-style diagonal light beam 1 (top-left → bottom-right) ── */}
           <div
             className="absolute inset-0"
-            style={{ background: "radial-gradient(ellipse at 90% 85%, rgba(34,211,238,0.10) 0%, transparent 45%)" }}
+            style={{ background: "linear-gradient(132deg, transparent 22%, rgba(255,220,160,0.07) 40%, rgba(255,255,255,0.13) 50%, rgba(255,220,160,0.06) 60%, transparent 75%)" }}
           />
-          {/* ── Layer 4: Top gloss — bright edge ── */}
+          {/* ── L4: HSBC-style diagonal light beam 2 (crossing, softer) ── */}
           <div
             className="absolute inset-0"
-            style={{ background: "linear-gradient(to bottom, rgba(255,255,255,0.09) 0%, rgba(255,255,255,0.02) 35%, transparent 55%)" }}
+            style={{ background: "linear-gradient(220deg, transparent 28%, rgba(255,255,255,0.05) 44%, rgba(212,175,55,0.07) 52%, transparent 66%)" }}
           />
-          {/* ── Layer 5: Bottom vignette ── */}
+          {/* ── L5: Kente diamond lattice texture ── */}
+          <KenteTexture />
+          {/* ── L6: Top gloss edge ── */}
           <div
             className="absolute inset-0"
-            style={{ background: "linear-gradient(to top, rgba(0,0,0,0.50) 0%, transparent 52%)" }}
+            style={{ background: "linear-gradient(to bottom, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.02) 30%, transparent 50%)" }}
           />
-          {/* ── Layer 6: Gold left-edge rim light ── */}
+          {/* ── L7: Bottom vignette — depth for text readability ── */}
+          <div
+            className="absolute inset-0"
+            style={{ background: "linear-gradient(to top, rgba(0,0,0,0.48) 0%, transparent 50%)" }}
+          />
+          {/* ── L8: Gold left rim ── */}
           <div
             className="absolute top-0 left-0 bottom-0 w-px"
-            style={{ background: "linear-gradient(to bottom, rgba(251,191,36,0.40), rgba(251,191,36,0.12), transparent)" }}
+            style={{ background: "linear-gradient(to bottom, rgba(212,175,55,0.50), rgba(212,175,55,0.18), transparent)" }}
           />
-          {/* ── Layer 7: Gold top-edge rim light ── */}
+          {/* ── L9: Gold top rim ── */}
           <div
             className="absolute top-0 left-0 right-0 h-px"
-            style={{ background: "linear-gradient(to right, rgba(251,191,36,0.35), rgba(255,255,255,0.15), rgba(251,191,36,0.10))" }}
+            style={{ background: "linear-gradient(to right, rgba(212,175,55,0.40), rgba(255,255,255,0.18), rgba(212,175,55,0.12))" }}
           />
-          {/* ── Layer 8: Fine dot texture ── */}
-          <div
-            className="absolute inset-0 opacity-[0.04]"
-            style={{
-              backgroundImage: "radial-gradient(rgba(255,255,255,0.7) 1px, transparent 1px)",
-              backgroundSize: "22px 22px",
-            }}
-          />
-          {/* ── Layer 9: Decorative gold waves — more visible ── */}
+          {/* ── L10: Zanzibar geometric corner accent (bottom-left) ── */}
+          <ZanzibarAccent />
+          {/* ── L11: Gold flowing accent lines (bottom-right) ── */}
           <CardWaves />
-          {/* ── Layer 10: Gold shimmer sweep ── */}
+          {/* ── L12: Gold shimmer sweep on hover/load ── */}
           <div
             key={sweeping ? "sweep" : "idle"}
             className={`absolute inset-0 ${sweeping ? "animate-card-sweep" : "opacity-0"}`}
-            style={{ background: "linear-gradient(105deg, transparent 22%, rgba(251,191,36,0.12) 45%, rgba(255,255,255,0.08) 50%, rgba(251,191,36,0.10) 55%, transparent 78%)" }}
+            style={{ background: "linear-gradient(110deg, transparent 20%, rgba(212,175,55,0.10) 42%, rgba(255,255,255,0.12) 50%, rgba(212,175,55,0.08) 58%, transparent 78%)" }}
           />
 
           {/* ── Card content ── */}
@@ -416,8 +465,8 @@ export default function WalletPage() {
                   className="font-black text-[1.2rem] leading-none tracking-wide"
                   style={{
                     fontFamily: "'Georgia', 'Times New Roman', serif",
-                    color: "#f9d878",
-                    textShadow: "0 0 18px rgba(251,191,36,0.55), 0 0 40px rgba(251,191,36,0.25)",
+                    color: "#f5d878",
+                    textShadow: "0 0 16px rgba(212,175,55,0.65), 0 0 36px rgba(212,175,55,0.30), 0 1px 4px rgba(0,0,0,0.40)",
                   }}
                 >
                   nTZS
@@ -454,7 +503,7 @@ export default function WalletPage() {
                   className="font-black leading-none tracking-tight text-white"
                   style={{
                     fontSize: "clamp(1.6rem, 5.8vw, 2.2rem)",
-                    textShadow: "0 0 30px rgba(251,191,36,0.25), 0 2px 8px rgba(0,0,0,0.4)",
+                    textShadow: "0 0 28px rgba(255,220,180,0.28), 0 2px 10px rgba(0,0,0,0.55)",
                   }}
                 >
                   {balanceVisible
