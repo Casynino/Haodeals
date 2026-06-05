@@ -99,7 +99,7 @@ export function ProductCard({ product }: ProductCardProps) {
           )}
 
           {/* Wishlist heart — client-only, safe dynamic import */}
-          <div className="absolute top-2 right-2 z-20" onClick={(e) => e.preventDefault()}>
+          <div className="absolute top-2 right-2 z-20">
             <WishlistHeart productId={product.id} productName={product.name} />
           </div>
         </ProductTilt>

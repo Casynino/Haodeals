@@ -109,16 +109,21 @@ function WishlistProductCard({
 
   return (
     <div className="group relative rounded-2xl border border-white/8 bg-white/[0.02] overflow-hidden hover:border-white/15 transition-all">
-      {/* Remove button */}
-      <button onClick={handleRemove}
-        className="absolute top-2 right-2 z-10 w-6 h-6 rounded-full bg-black/40 backdrop-blur-sm border border-white/15 flex items-center justify-center text-white/40 hover:text-rose-400 hover:border-rose-500/30 transition-all opacity-0 group-hover:opacity-100">
+
+      {/* Remove button — always visible on mobile, hover on desktop */}
+      <button
+        onClick={handleRemove}
+        className="absolute top-2 right-2 z-20 w-6 h-6 rounded-full bg-black/50 backdrop-blur-sm border border-white/15 flex items-center justify-center text-white/50 hover:text-rose-400 hover:border-rose-500/30 transition-all sm:opacity-0 sm:group-hover:opacity-100 opacity-100"
+      >
         <X className="h-3 w-3" />
       </button>
 
-      <Link href={`/products/${item.product.id}`}>
-        <div className="aspect-square overflow-hidden bg-white/5">
+      {/* Clickable product area — entire image + info navigates to product */}
+      <Link href={`/products/${item.product.id}`} className="block">
+        <div className="relative aspect-square overflow-hidden bg-white/5">
           {img
-            ? <Image src={img} alt={item.product.name} width={200} height={200} className="w-full h-full object-cover opacity-85 hover:opacity-100 transition-opacity" />
+            ? <Image src={img} alt={item.product.name} width={200} height={200}
+                className="w-full h-full object-cover opacity-85 group-hover:opacity-100 transition-opacity" />
             : <div className="w-full h-full flex items-center justify-center text-foreground/15"><Heart className="h-8 w-8" /></div>
           }
           {outOfStock && (
@@ -127,34 +132,35 @@ function WishlistProductCard({
             </div>
           )}
         </div>
+
+        <div className="p-3 space-y-1.5">
+          <p className="text-[9px] text-foreground/35 font-mono uppercase tracking-widest">{item.product.category.name}</p>
+          <p className="text-xs text-foreground/80 line-clamp-2 leading-relaxed group-hover:text-foreground transition-colors">{item.product.name}</p>
+          <div className="flex items-baseline gap-1.5">
+            <span className="text-sm font-bold text-emerald-400 font-mono">{formatPrice(item.product.price)}</span>
+            {item.product.originalPrice && (
+              <span className="text-[9px] text-foreground/30 line-through font-mono">{formatPrice(item.product.originalPrice)}</span>
+            )}
+          </div>
+        </div>
       </Link>
 
-      <div className="p-3 space-y-2">
-        <p className="text-[9px] text-foreground/35 font-mono uppercase tracking-widest">{item.product.category.name}</p>
-        <Link href={`/products/${item.product.id}`}>
-          <p className="text-xs text-foreground/80 line-clamp-2 leading-relaxed hover:text-foreground transition-colors">{item.product.name}</p>
-        </Link>
-        <div className="flex items-baseline gap-1.5">
-          <span className="text-sm font-bold text-emerald-400 font-mono">{formatPrice(item.product.price)}</span>
-          {item.product.originalPrice && (
-            <span className="text-[9px] text-foreground/30 line-through font-mono">{formatPrice(item.product.originalPrice)}</span>
-          )}
-        </div>
-        {/* Actions */}
-        <div className="flex gap-1.5 pt-0.5">
-          <button
-            disabled={outOfStock}
-            onClick={() => { setBuyNow(item.product as any); router.push("/checkout") }}
-            className="flex-1 flex items-center justify-center gap-1 py-1.5 bg-[#ee0000] hover:bg-red-700 text-white text-[9px] font-mono font-bold tracking-widest rounded-lg transition-all active:scale-95 disabled:opacity-40">
-            <Zap className="h-2.5 w-2.5" /> BUY NOW
-          </button>
-          <button
-            disabled={outOfStock}
-            onClick={() => { addItem(item.product as any); toast.success("Added to bag", { className: "font-mono text-xs" }) }}
-            className="px-2.5 py-1.5 border border-white/15 text-foreground/50 hover:text-foreground/80 hover:border-white/30 rounded-lg transition-all active:scale-95 disabled:opacity-40">
-            <ShoppingCart className="h-3.5 w-3.5" />
-          </button>
-        </div>
+      {/* Action buttons — outside the Link so they don't navigate */}
+      <div className="px-3 pb-3 flex gap-1.5">
+        <button
+          disabled={outOfStock}
+          onClick={(e) => { e.preventDefault(); setBuyNow(item.product as any); router.push("/checkout") }}
+          className="flex-1 flex items-center justify-center gap-1 py-1.5 bg-[#ee0000] hover:bg-red-700 text-white text-[9px] font-mono font-bold tracking-widest rounded-lg transition-all active:scale-95 disabled:opacity-40"
+        >
+          <Zap className="h-2.5 w-2.5" /> BUY NOW
+        </button>
+        <button
+          disabled={outOfStock}
+          onClick={(e) => { e.preventDefault(); addItem(item.product as any); toast.success("Added to bag", { className: "font-mono text-xs" }) }}
+          className="px-2.5 py-1.5 border border-white/15 text-foreground/50 hover:text-foreground/80 hover:border-white/30 rounded-lg transition-all active:scale-95 disabled:opacity-40"
+        >
+          <ShoppingCart className="h-3.5 w-3.5" />
+        </button>
       </div>
     </div>
   )
