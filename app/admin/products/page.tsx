@@ -18,11 +18,14 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 interface Product {
   id: string
   name: string
+  description?: string | null
   price: number
   originalPrice?: number | null
   stock: number
   images: string[]
   featured: boolean
+  options?: ProductOption[]
+  dealEndsAt?: string | null
   category: { name: string; id: string }
   _count: { orderItems: number; reviews: number }
 }
@@ -122,17 +125,16 @@ export default function AdminProductsPage() {
   function openEdit(product: Product) {
     setEditing(product)
     setUploadedUrls(product.images)
-    setOptions((product as Product & { options?: ProductOption[] }).options ?? [])
+    setOptions(product.options ?? [])
     setNewOptionName("")
     setNewOptionValues({})
-    const ext = product as Product & { dealEndsAt?: string | null }
     // Convert ISO datetime to datetime-local format (YYYY-MM-DDTHH:MM)
-    const dealEndsAtLocal = ext.dealEndsAt
-      ? new Date(ext.dealEndsAt).toISOString().slice(0, 16)
+    const dealEndsAtLocal = product.dealEndsAt
+      ? new Date(product.dealEndsAt).toISOString().slice(0, 16)
       : ""
     setForm({
       name: product.name,
-      description: "",
+      description: product.description ?? "",
       price: product.price.toString(),
       originalPrice: product.originalPrice?.toString() ?? "",
       stock: product.stock.toString(),
