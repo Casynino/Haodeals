@@ -15,7 +15,16 @@ export async function GET() {
     orderBy: [{ isDefault: "desc" }, { createdAt: "asc" }],
     include: {
       items: {
-        include: { product: { select: { id: true, price: true, name: true, images: true } } },
+        orderBy: { addedAt: "desc" },
+        include: {
+          product: {
+            select: {
+              id: true, name: true, price: true, originalPrice: true,
+              images: true, stock: true,
+              category: { select: { name: true } },
+            },
+          },
+        },
       },
     },
   })
