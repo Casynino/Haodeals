@@ -9,7 +9,7 @@ import { useCart } from "@/hooks/useCart"
 import { ShoppingCart, Zap, Minus, Plus, ChevronLeft, Truck, RotateCcw, ShieldCheck } from "lucide-react"
 import { toast } from "sonner"
 import type { Product, SelectedOption } from "@/types"
-import { formatPrice } from "@/lib/utils"
+import { formatPrice, getEffectivePrice, isDealActive } from "@/lib/utils"
 import { ProductTilt } from "@/components/ui/product-tilt"
 import { DealCountdown } from "@/components/DealCountdown"
 import { HaoPlusBanner } from "@/components/HaoPlusBanner"
@@ -37,12 +37,10 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
       .then((data) => { setProduct(data); setLoading(false) })
   }, [id])
 
-  // Deal expiry: if dealEndsAt is set and in the past, revert to original price
-  const dealActive = !product?.dealEndsAt || new Date(product.dealEndsAt) > new Date()
-  const displayPrice = product
-    ? dealActive || !product.originalPrice ? product.price : product.originalPrice
-    : 0
-  const discount = product?.originalPrice && dealActive
+  // Use shared utils — same logic as ProductCard and checkout
+  const dealActive   = product ? isDealActive(product) : false
+  const displayPrice = product ? getEffectivePrice(product) : 0
+  const discount     = product?.originalPrice && dealActive
     ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
     : null
 
