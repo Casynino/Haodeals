@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { MapPin, Phone, Mail, Shield, Truck, RotateCcw, CreditCard } from "lucide-react"
+import { MapPin, Phone, Mail } from "lucide-react"
 
 export function Footer() {
   return (
@@ -26,13 +26,6 @@ export function Footer() {
               <p className="text-[11px] text-foreground/42 max-w-xs leading-relaxed">
                 Tanzania&apos;s premium deals platform — up to 70% off, delivered fast.
               </p>
-              <div className="flex items-center gap-1.5">
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-40" />
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400/80" />
-                </span>
-                <span className="text-[9px] text-emerald-400/70 tracking-widest">Online &amp; delivering</span>
-              </div>
             </div>
 
             {/* Contact pills */}
@@ -54,25 +47,6 @@ export function Footer() {
                   : <div key={text} className={cls}>{content}</div>
               })}
             </div>
-          </div>
-        </div>
-      </div>
-
-      {/* ── Trust strip ─────────────────────────────────────────────────── */}
-      <div className="border-b border-white/6">
-        <div className="container mx-auto px-4 py-3">
-          <div className="flex flex-wrap items-center justify-center sm:justify-between gap-4 sm:gap-2">
-            {[
-              { icon: Shield,     label: "Secure Checkout",   color: "text-emerald-400/65" },
-              { icon: Truck,      label: "Nationwide Delivery",color: "text-blue-400/65"    },
-              { icon: RotateCcw,  label: "72-Hour Returns",   color: "text-violet-400/65"  },
-              { icon: CreditCard, label: "M-Pesa Accepted",   color: "text-amber-400/65"   },
-            ].map(({ icon: Icon, label, color }) => (
-              <div key={label} className="flex items-center gap-1.5">
-                <Icon className={`h-3 w-3 ${color}`} />
-                <span className="text-[9px] text-foreground/40 tracking-wide">{label}</span>
-              </div>
-            ))}
           </div>
         </div>
       </div>
