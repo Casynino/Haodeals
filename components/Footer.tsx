@@ -83,21 +83,22 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Support */}
+          {/* Quick Links */}
           <div>
-            <p className="text-[9px] text-foreground/45 tracking-widest mb-3 uppercase font-semibold">Support</p>
+            <p className="text-[9px] text-foreground/45 tracking-widest mb-3 uppercase font-semibold">Quick Links</p>
             <ul className="space-y-2">
               {[
-                { label: "Contact Us",       href: "/contact"  },
+                { label: "My Wallet",        href: "/wallet"   },
+                { label: "My Wishlist",      href: "/wishlist" },
                 { label: "Track Your Order", href: "/orders"   },
                 { label: "Returns Policy",   href: "/returns"  },
                 { label: "Shipping Policy",  href: "/shipping" },
-                { label: "My Wishlist",      href: "/wishlist" },
-                { label: "My Wallet",        href: "/wallet"   },
+                { label: "Contact Us",       href: "/contact"  },
               ].map(({ label, href }) => (
                 <li key={label}>
-                  <Link href={href} className="text-[11px] text-foreground/50 hover:text-foreground transition-colors flex items-center gap-1.5">
-                    <span className="text-foreground/20">&gt;</span> {label}
+                  <Link href={href} className="text-[11px] text-foreground/50 hover:text-foreground transition-colors flex items-center gap-1.5 group">
+                    <span className="text-foreground/20 group-hover:text-foreground/50 transition-colors">&gt;</span>
+                    {label}
                   </Link>
                 </li>
               ))}
