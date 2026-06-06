@@ -100,7 +100,7 @@ export default function ShippingPage() {
               </p>
               <div className="flex items-center gap-2 mt-4 pt-4 border-t border-blue-500/12">
                 <Truck className="h-3 w-3 text-blue-400/55 flex-shrink-0" />
-                <span className="text-[9px] text-foreground/35">Cost determined after order · ~10–30 hrs (Dar)</span>
+                <span className="text-[9px] text-foreground/35">Cost determined after order · ~10–30 mins (Dar)</span>
               </div>
             </div>
 
@@ -195,7 +195,7 @@ export default function ShippingPage() {
               {
                 step: "05", icon: Truck, color: "text-emerald-400", bg: "bg-emerald-500/12 border-emerald-500/18",
                 title: "Product is Dispatched",
-                desc: "Your order is handed over to the delivery provider. You receive a tracking update and the delivery is underway. Dar es Salaam orders typically arrive within 10–30 hours.",
+                desc: "Your order is handed over to the delivery provider. You receive a tracking update and the delivery is underway. Dar es Salaam orders typically arrive within 10–30 minutes.",
               },
               {
                 step: "06", icon: Zap, color: "text-yellow-400", bg: "bg-yellow-500/12 border-yellow-500/18",
@@ -237,7 +237,7 @@ export default function ShippingPage() {
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
             {[
               { icon: Globe2,       color: "text-foreground/45", title: "Tanzania Only",               desc: "HaoDeals does not offer international shipping. All deliveries are within Tanzania." },
-              { icon: Clock,        color: "text-blue-400",      title: "10–30 Hours (Dar es Salaam)", desc: "For express orders in Dar es Salaam, you can generally expect delivery within 10–30 hours of order confirmation." },
+              { icon: Clock,        color: "text-blue-400",      title: "10–30 Minutes (Dar es Salaam)", desc: "For express orders in Dar es Salaam, you can generally expect delivery within 10–30 minutes of dispatch confirmation." },
               { icon: Phone,        color: "text-emerald-400",   title: "We Contact You",              desc: "For paid deliveries, our team will reach out to confirm the delivery cost and arrangement before dispatching." },
               { icon: Truck,        color: "text-amber-400",     title: "Immediate Dispatch",          desc: "HaoDeals aims to dispatch orders right away. We do not intentionally hold confirmed orders in the warehouse." },
               { icon: AlertTriangle,color: "text-amber-400",     title: "Variable Timelines",          desc: "Delivery times may vary due to weather, transportation availability, public holidays, or other unforeseen circumstances." },
