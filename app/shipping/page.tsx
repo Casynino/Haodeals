@@ -2,9 +2,10 @@ import Link from "next/link"
 import {
   Truck, MapPin, Clock, Tag, Gift, Package, CheckCircle2,
   ArrowRight, AlertTriangle, CreditCard, Calendar, Zap,
+  Phone, Bike, Wind, Bus, Info, Globe2, Shield,
 } from "lucide-react"
 
-export const metadata = { title: "Shipping Policy — HaoDeals" }
+export const metadata = { title: "Shipping & Delivery Policy — HaoDeals" }
 
 export default function ShippingPage() {
   return (
@@ -13,180 +14,315 @@ export default function ShippingPage() {
       {/* ── Hero ──────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden border-b border-white/8">
         <div className="absolute inset-0 bg-gradient-to-br from-blue-900/15 via-background to-background pointer-events-none" />
-        <div className="absolute top-0 right-0 w-80 h-80 bg-blue-500/5 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute -top-20 right-0 w-[500px] h-[500px] bg-blue-500/5 rounded-full blur-3xl pointer-events-none" />
         <div className="container mx-auto px-4 py-16 relative">
           <div className="max-w-2xl">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-1.5 h-1.5 bg-blue-400/70 rounded-full" />
+            <div className="flex items-center gap-2 mb-5">
+              <div className="w-1.5 h-1.5 bg-blue-400/70 rounded-full animate-pulse" />
               <span className="text-[9px] tracking-[0.3em] text-blue-400/60 uppercase">Delivery Information</span>
             </div>
-            <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-foreground/90 mb-4">
-              Shipping &amp; Delivery Policy
+            <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-foreground/92 mb-4 leading-tight">
+              Shipping &amp; Delivery<br className="hidden sm:block" /> Policy
             </h1>
             <p className="text-sm text-foreground/50 leading-relaxed max-w-lg">
-              We deliver nationwide across Tanzania. Here&apos;s everything you need to know about our shipping options, fees, and free delivery opportunities.
+              HaoDeals operates within <strong className="text-foreground/70">Tanzania only</strong>. We currently offer
+              weekend free delivery in Dar es Salaam and customer-arranged express delivery throughout the country.
             </p>
-            <div className="flex items-center gap-3 mt-6 flex-wrap">
-              <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20">
-                <Truck className="h-3 w-3 text-blue-400" />
-                <span className="text-[9px] text-blue-400/80">Nationwide Delivery</span>
+
+            {/* Badge row */}
+            <div className="flex items-center gap-2.5 mt-6 flex-wrap">
+              <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/22">
+                <Calendar className="h-3 w-3 text-emerald-400" />
+                <span className="text-[9px] text-emerald-400/85">Free Weekend Delivery</span>
               </div>
-              <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20">
-                <Tag className="h-3 w-3 text-emerald-400" />
-                <span className="text-[9px] text-emerald-400/80">Free Delivery Available</span>
+              <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/22">
+                <Zap className="h-3 w-3 text-blue-400" />
+                <span className="text-[9px] text-blue-400/85">Express Nationwide</span>
+              </div>
+              <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/[0.05] border border-white/10">
+                <MapPin className="h-3 w-3 text-foreground/40" />
+                <span className="text-[9px] text-foreground/45">Tanzania Only</span>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ── Delivery options ─────────────────────────────────────────── */}
-      <section className="container mx-auto px-4 py-12">
-        <p className="text-[9px] tracking-[0.3em] text-foreground/28 uppercase mb-6">Delivery Options</p>
-        <div className="grid sm:grid-cols-3 gap-4 mb-14">
-          {[
-            {
-              icon: CreditCard, color: "text-blue-400", bg: "bg-blue-500/10 border-blue-500/20",
-              title: "Standard Delivery",
-              badge: "Customer Pays",
-              badgeCls: "bg-blue-500/15 text-blue-400",
-              desc: "Available for all orders. Shipping and delivery fees are the customer's responsibility and will be displayed clearly during checkout.",
-              detail: "Fees shown at checkout",
-            },
-            {
-              icon: Calendar, color: "text-emerald-400", bg: "bg-emerald-500/10 border-emerald-500/20",
-              title: "Weekend Free Delivery",
-              badge: "Free",
-              badgeCls: "bg-emerald-500/15 text-emerald-400",
-              desc: "Free delivery is available every Saturday and Sunday for customers in Dar es Salaam. Weekend delivery is automatically applied at checkout.",
-              detail: "Saturdays & Sundays only",
-            },
-            {
-              icon: Gift, color: "text-violet-400", bg: "bg-violet-500/10 border-violet-500/20",
-              title: "Promotional Free Delivery",
-              badge: "Free (Limited)",
-              badgeCls: "bg-violet-500/15 text-violet-400",
-              desc: "Free delivery is also offered during special campaigns, promotions, or for qualifying large purchases. Watch for announcements on the website.",
-              detail: "Announced during campaigns",
-            },
-          ].map(({ icon: Icon, color, bg, title, badge, badgeCls, desc, detail }) => (
-            <div key={title} className={`rounded-2xl border p-5 space-y-3 ${bg}`}>
-              <div className="flex items-start justify-between">
-                <div className={`w-9 h-9 rounded-xl border ${bg} flex items-center justify-center`}>
-                  <Icon className={`h-4 w-4 ${color}`} />
+      <div className="container mx-auto px-4 py-12 space-y-14">
+
+        {/* ── Delivery options ─────────────────────────────────────────── */}
+        <section>
+          <div className="mb-7">
+            <p className="text-[9px] tracking-[0.3em] text-foreground/28 uppercase mb-1.5">Delivery Options</p>
+            <h2 className="text-xl font-bold text-foreground/82">How We Deliver</h2>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-4">
+
+            {/* Option 1 — Free Weekend */}
+            <div className="rounded-2xl border border-emerald-500/22 bg-emerald-500/[0.04] p-6 flex flex-col">
+              <div className="flex items-start justify-between mb-5">
+                <div className="w-12 h-12 rounded-2xl bg-emerald-500/15 border border-emerald-500/20 flex items-center justify-center">
+                  <Calendar className="h-5 w-5 text-emerald-400" />
                 </div>
-                <span className={`text-[8px] font-bold px-2 py-0.5 rounded-full ${badgeCls}`}>{badge}</span>
+                <span className="text-[9px] font-black px-2.5 py-1 rounded-full bg-emerald-500/18 text-emerald-400 border border-emerald-500/22 tracking-widest">
+                  FREE
+                </span>
               </div>
-              <h3 className="text-[11px] font-bold text-foreground/80">{title}</h3>
-              <p className="text-[10px] text-foreground/45 leading-relaxed">{desc}</p>
-              <div className="flex items-center gap-1.5 text-[8px] text-foreground/30 border-t border-white/6 pt-2.5">
-                <Clock className="h-2.5 w-2.5" />
-                {detail}
+              <h3 className="text-sm font-bold text-foreground/85 mb-2">Weekend Free Delivery</h3>
+              <p className="text-[10px] text-foreground/48 leading-relaxed flex-1">
+                Available on selected weekends for customers in <strong className="text-foreground/65">Dar es Salaam</strong>.
+                Eligible orders are delivered at no delivery cost to the customer. Availability may vary based on location
+                and order volume.
+              </p>
+              <div className="flex items-center gap-2 mt-4 pt-4 border-t border-emerald-500/12">
+                <MapPin className="h-3 w-3 text-emerald-400/55 flex-shrink-0" />
+                <span className="text-[9px] text-foreground/35">Dar es Salaam only · Weekends</span>
               </div>
             </div>
-          ))}
-        </div>
 
-        {/* ── Delivery process timeline ── */}
-        <div className="max-w-3xl mx-auto mb-14">
-          <div className="text-center mb-8">
-            <p className="text-[9px] tracking-[0.3em] text-foreground/28 uppercase mb-2">Order Journey</p>
-            <h2 className="text-xl font-bold text-foreground/80">How Delivery Works</h2>
+            {/* Option 2 — Express (Customer Pays) */}
+            <div className="rounded-2xl border border-blue-500/22 bg-blue-500/[0.04] p-6 flex flex-col">
+              <div className="flex items-start justify-between mb-5">
+                <div className="w-12 h-12 rounded-2xl bg-blue-500/15 border border-blue-500/20 flex items-center justify-center">
+                  <Zap className="h-5 w-5 text-blue-400" />
+                </div>
+                <span className="text-[9px] font-black px-2.5 py-1 rounded-full bg-blue-500/15 text-blue-400 border border-blue-500/22 tracking-widest">
+                  PAID
+                </span>
+              </div>
+              <h3 className="text-sm font-bold text-foreground/85 mb-2">Express Delivery</h3>
+              <p className="text-[10px] text-foreground/48 leading-relaxed flex-1">
+                Available <strong className="text-foreground/65">throughout Tanzania</strong>. After your order is
+                confirmed, HaoDeals coordinates with third-party delivery partners — Bolt, boda boda, bus services, or
+                air cargo — based on your location. You will be contacted about the delivery cost and arrangements before
+                the product is dispatched.
+              </p>
+              <div className="flex items-center gap-2 mt-4 pt-4 border-t border-blue-500/12">
+                <Truck className="h-3 w-3 text-blue-400/55 flex-shrink-0" />
+                <span className="text-[9px] text-foreground/35">Cost determined after order · ~10–30 hrs (Dar)</span>
+              </div>
+            </div>
+
+            {/* Option 3 — Promotional */}
+            <div className="rounded-2xl border border-violet-500/22 bg-violet-500/[0.04] p-6 flex flex-col">
+              <div className="flex items-start justify-between mb-5">
+                <div className="w-12 h-12 rounded-2xl bg-violet-500/15 border border-violet-500/20 flex items-center justify-center">
+                  <Gift className="h-5 w-5 text-violet-400" />
+                </div>
+                <span className="text-[9px] font-black px-2.5 py-1 rounded-full bg-violet-500/15 text-violet-400 border border-violet-500/22 tracking-widest">
+                  FREE
+                </span>
+              </div>
+              <h3 className="text-sm font-bold text-foreground/85 mb-2">Promotional Free Delivery</h3>
+              <p className="text-[10px] text-foreground/48 leading-relaxed flex-1">
+                Occasionally offered during <strong className="text-foreground/65">special campaigns, promotions, or
+                selected events</strong>. Eligibility and conditions vary by promotion. Watch for announcements on the
+                website or through our notifications.
+              </p>
+              <div className="flex items-center gap-2 mt-4 pt-4 border-t border-violet-500/12">
+                <Tag className="h-3 w-3 text-violet-400/55 flex-shrink-0" />
+                <span className="text-[9px] text-foreground/35">Announced during campaigns</span>
+              </div>
+            </div>
+
           </div>
+        </section>
 
-          <div className="grid sm:grid-cols-5 gap-3">
+        {/* ── Express delivery partners ─────────────────────────────────── */}
+        <section className="rounded-2xl border border-white/8 bg-white/[0.02] p-6 sm:p-8">
+          <div className="flex items-center gap-2.5 mb-6">
+            <Truck className="h-4 w-4 text-blue-400/60" />
+            <p className="text-[9px] tracking-[0.3em] text-foreground/30 uppercase">Express Delivery Partners</p>
+          </div>
+          <p className="text-[11px] text-foreground/50 mb-6 leading-relaxed max-w-2xl">
+            For express orders, HaoDeals works with a range of third-party delivery providers. The right provider is
+            selected based on your location, product size, urgency, and availability.
+          </p>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             {[
-              { icon: CreditCard, label: "Payment",    desc: "Pay from your wallet",         color: "text-violet-400", bg: "bg-violet-500/12" },
-              { icon: CheckCircle2, label: "Confirmed", desc: "Order confirmed instantly",    color: "text-blue-400",   bg: "bg-blue-500/12"   },
-              { icon: Package,    label: "Packaging",  desc: "We pack your order",           color: "text-amber-400",  bg: "bg-amber-500/12"  },
-              { icon: Truck,      label: "In Transit", desc: "Out for delivery",             color: "text-blue-400",   bg: "bg-blue-500/12"   },
-              { icon: Zap,        label: "Delivered",  desc: "Arrived at your door",         color: "text-emerald-400",bg: "bg-emerald-500/12"},
-            ].map(({ icon: Icon, label, desc, color, bg }, i, arr) => (
-              <div key={label} className="flex sm:flex-col items-center sm:text-center gap-3 sm:gap-2">
-                <div className={`w-10 h-10 rounded-full ${bg} border border-white/8 flex items-center justify-center flex-shrink-0`}>
+              { icon: Zap,      label: "Bolt / Ride-hailing", desc: "Fast in-city delivery",   color: "text-yellow-400", bg: "bg-yellow-500/8  border-yellow-500/15"  },
+              { icon: Bike,     label: "Boda Boda",            desc: "Motorcycle courier",      color: "text-emerald-400",bg: "bg-emerald-500/8 border-emerald-500/15" },
+              { icon: Bus,      label: "Bus Services",         desc: "Upcountry destinations",  color: "text-blue-400",   bg: "bg-blue-500/8    border-blue-500/15"    },
+              { icon: Wind,     label: "Air Cargo",            desc: "Remote or urgent orders", color: "text-violet-400", bg: "bg-violet-500/8  border-violet-500/15"  },
+            ].map(({ icon: Icon, label, desc, color, bg }) => (
+              <div key={label} className={`rounded-xl border p-4 text-center space-y-2 ${bg}`}>
+                <div className={`w-9 h-9 rounded-full flex items-center justify-center mx-auto border ${bg}`}>
                   <Icon className={`h-4 w-4 ${color}`} />
                 </div>
+                <p className="text-[10px] font-semibold text-foreground/72">{label}</p>
+                <p className="text-[8px] text-foreground/35">{desc}</p>
+              </div>
+            ))}
+          </div>
+          <p className="text-[9px] text-foreground/30 mt-5 leading-relaxed">
+            * Delivery cost is determined by the provider based on distance, product weight/size, and current
+            availability. HaoDeals will contact you with the delivery quote before dispatching your order.
+          </p>
+        </section>
+
+        {/* ── How delivery works timeline ──────────────────────────────── */}
+        <section>
+          <div className="text-center mb-10">
+            <p className="text-[9px] tracking-[0.3em] text-foreground/28 uppercase mb-2">Step by Step</p>
+            <h2 className="text-xl font-bold text-foreground/82">How Delivery Works</h2>
+            <p className="text-[11px] text-foreground/38 mt-2">From your tap to your door</p>
+          </div>
+
+          <div className="max-w-3xl mx-auto space-y-0">
+            {[
+              {
+                step: "01", icon: CreditCard, color: "text-violet-400", bg: "bg-violet-500/12 border-violet-500/18",
+                title: "Customer Places Order",
+                desc: "Select your product, add to bag or use Buy Now, complete checkout, and pay from your HaoDeals wallet. Your order is instantly recorded.",
+              },
+              {
+                step: "02", icon: CheckCircle2, color: "text-blue-400", bg: "bg-blue-500/12 border-blue-500/18",
+                title: "HaoDeals Confirms Order",
+                desc: "Our team reviews your order and moves it to the packaging stage. You receive an in-app notification confirming your order has been accepted.",
+              },
+              {
+                step: "03", icon: Package, color: "text-amber-400", bg: "bg-amber-500/12 border-amber-500/18",
+                title: "Order is Packaged",
+                desc: "We prepare and securely package your product immediately. HaoDeals does not intentionally hold confirmed orders — dispatch begins right away.",
+              },
+              {
+                step: "04", icon: Phone, color: "text-foreground/65", bg: "bg-white/8 border-white/12",
+                title: "Delivery Partner Assigned & Cost Communicated",
+                desc: "For express orders, our team selects the most suitable delivery provider and contacts you to confirm the delivery cost and expected timeframe. You will not be surprised by any charges — all delivery costs are communicated before dispatch.",
+                highlight: true,
+              },
+              {
+                step: "05", icon: Truck, color: "text-emerald-400", bg: "bg-emerald-500/12 border-emerald-500/18",
+                title: "Product is Dispatched",
+                desc: "Your order is handed over to the delivery provider. You receive a tracking update and the delivery is underway. Dar es Salaam orders typically arrive within 10–30 hours.",
+              },
+              {
+                step: "06", icon: Zap, color: "text-yellow-400", bg: "bg-yellow-500/12 border-yellow-500/18",
+                title: "Customer Receives Order",
+                desc: "Your product arrives at your door. The order status is updated to Delivered. You can then leave a review or initiate a return within 72 hours if needed.",
+              },
+            ].map(({ step, icon: Icon, color, bg, title, desc, highlight }, i, arr) => (
+              <div key={step} className="relative flex gap-5">
+                {/* Connector line */}
                 {i < arr.length - 1 && (
-                  <div className="hidden sm:block w-full h-[2px] bg-white/6 absolute" />
+                  <div className="absolute left-[19px] top-[44px] bottom-0 w-[2px] bg-white/6 z-0" />
                 )}
-                <div className="sm:mt-1">
-                  <p className="text-[9px] font-bold text-foreground/70">{label}</p>
-                  <p className="text-[8px] text-foreground/35 mt-0.5">{desc}</p>
+                {/* Circle */}
+                <div className={`relative z-10 w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 mt-1 border ${bg}`}>
+                  <Icon className={`h-4 w-4 ${color}`} />
+                </div>
+                {/* Content */}
+                <div className={`flex-1 pb-8 ${highlight ? "rounded-2xl border border-amber-500/15 bg-amber-500/[0.03] p-4 -ml-2 mb-4" : ""}`}>
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="text-[7px] font-mono text-foreground/20 tracking-widest">{step}</span>
+                    <h3 className="text-[11px] font-bold text-foreground/80">{title}</h3>
+                    {highlight && (
+                      <span className="text-[7px] px-1.5 py-0.5 rounded bg-amber-500/15 text-amber-400 border border-amber-500/20 tracking-widest">IMPORTANT</span>
+                    )}
+                  </div>
+                  <p className="text-[10px] text-foreground/45 leading-relaxed">{desc}</p>
                 </div>
               </div>
             ))}
           </div>
+        </section>
 
-          {/* connector line (desktop only) */}
-          <div className="hidden sm:block -mt-[46px] mb-8 mx-5">
-            <div className="h-[2px] bg-white/6 rounded-full" />
+        {/* ── Key facts grid ───────────────────────────────────────────── */}
+        <section>
+          <div className="mb-6">
+            <p className="text-[9px] tracking-[0.3em] text-foreground/28 uppercase mb-1.5">Key Facts</p>
+            <h2 className="text-xl font-bold text-foreground/82">Important Delivery Information</h2>
           </div>
-        </div>
-
-        {/* ── Key facts ── */}
-        <div className="max-w-3xl mx-auto mb-12">
-          <p className="text-[9px] tracking-[0.3em] text-foreground/28 uppercase mb-5">Key Facts</p>
-          <div className="grid sm:grid-cols-2 gap-3">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
             {[
-              { icon: MapPin,    color: "text-amber-400",  text: "We deliver to all regions across Tanzania, not just Dar es Salaam." },
-              { icon: Clock,     color: "text-blue-400",   text: "Standard delivery typically takes 1–3 business days within Dar es Salaam." },
-              { icon: CreditCard,color: "text-violet-400", text: "All shipping fees are shown clearly at checkout before you pay — no surprises." },
-              { icon: Calendar,  color: "text-emerald-400",text: "Weekend free delivery applies automatically every Saturday and Sunday." },
-              { icon: Truck,     color: "text-blue-400",   text: "Upcountry orders may take 3–7 business days depending on your region." },
-              { icon: Tag,       color: "text-emerald-400",text: "Large or bulk orders may qualify for free delivery. Details shown at checkout." },
-            ].map(({ icon: Icon, color, text }) => (
-              <div key={text} className="flex items-start gap-3 p-3.5 rounded-xl border border-white/7 bg-white/[0.02]">
-                <Icon className={`h-3.5 w-3.5 ${color} flex-shrink-0 mt-0.5`} />
-                <p className="text-[10px] text-foreground/52 leading-relaxed">{text}</p>
+              { icon: Globe2,       color: "text-foreground/45", title: "Tanzania Only",               desc: "HaoDeals does not offer international shipping. All deliveries are within Tanzania." },
+              { icon: Clock,        color: "text-blue-400",      title: "10–30 Hours (Dar es Salaam)", desc: "For express orders in Dar es Salaam, you can generally expect delivery within 10–30 hours of order confirmation." },
+              { icon: Phone,        color: "text-emerald-400",   title: "We Contact You",              desc: "For paid deliveries, our team will reach out to confirm the delivery cost and arrangement before dispatching." },
+              { icon: Truck,        color: "text-amber-400",     title: "Immediate Dispatch",          desc: "HaoDeals aims to dispatch orders right away. We do not intentionally hold confirmed orders in the warehouse." },
+              { icon: AlertTriangle,color: "text-amber-400",     title: "Variable Timelines",          desc: "Delivery times may vary due to weather, transportation availability, public holidays, or other unforeseen circumstances." },
+              { icon: Shield,       color: "text-violet-400",    title: "No Hidden Charges",           desc: "Any delivery costs are communicated to you before the product is dispatched. You will never be surprised." },
+            ].map(({ icon: Icon, color, title, desc }) => (
+              <div key={title} className="flex items-start gap-3 p-4 rounded-xl border border-white/7 bg-white/[0.02] hover:border-white/12 transition-all">
+                <div className="w-8 h-8 rounded-lg bg-white/[0.04] border border-white/8 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <Icon className={`h-3.5 w-3.5 ${color}`} />
+                </div>
+                <div>
+                  <p className="text-[10px] font-bold text-foreground/72 mb-1">{title}</p>
+                  <p className="text-[9px] text-foreground/40 leading-relaxed">{desc}</p>
+                </div>
               </div>
             ))}
           </div>
-        </div>
+        </section>
 
-        {/* ── Important notices ── */}
-        <div className="max-w-3xl mx-auto space-y-3 mb-12">
-          <div className="flex items-center gap-2 mb-4">
-            <AlertTriangle className="h-3.5 w-3.5 text-amber-400/60" />
+        {/* ── Notice banners ───────────────────────────────────────────── */}
+        <section className="space-y-3">
+          <div className="flex items-center gap-2 mb-5">
+            <Info className="h-3.5 w-3.5 text-foreground/28" />
             <p className="text-[9px] tracking-[0.3em] text-foreground/28 uppercase">Important Notices</p>
           </div>
           {[
-            { type: "warning", text: "HaoDeals generally does not offer free standard delivery. Shipping costs must be paid by the customer unless a promotional free delivery is active." },
-            { type: "info",    text: "Weekend free delivery is available only in Dar es Salaam. Customers in other regions pay standard shipping rates on weekends." },
-            { type: "warning", text: "Delivery times are estimates and may vary due to location, weather, or high-demand periods. We do not guarantee specific delivery times." },
-            { type: "info",    text: "For express or same-day delivery within Dar es Salaam, select Express Delivery at checkout and arrange transport with your preferred provider." },
-          ].map(({ type, text }, i) => {
+            {
+              type: "warning",
+              title: "Delivery costs are not displayed on the platform",
+              text: "For express delivery, costs are not pre-set or shown at checkout. After you place your order, the HaoDeals team will contact you with the delivery cost based on your location, product size, and available providers.",
+            },
+            {
+              type: "info",
+              title: "Free weekend delivery availability may vary",
+              text: "Weekend free delivery is offered on selected weekends and is limited to Dar es Salaam customers. It is not guaranteed every weekend and depends on order volume and logistics availability.",
+            },
+            {
+              type: "info",
+              title: "HaoDeals dispatches orders quickly",
+              text: "We aim to dispatch all confirmed orders immediately. However, delivery timelines depend on the selected provider, your region, and external factors beyond our control.",
+            },
+          ].map(({ type, title, text }, i) => {
             const styles = {
-              warning: "border-amber-500/20 bg-amber-500/[0.04] text-amber-400",
-              info:    "border-blue-500/20 bg-blue-500/[0.04] text-blue-400",
+              warning: { wrap: "border-amber-500/20 bg-amber-500/[0.04]", icon: "text-amber-400", Icon: AlertTriangle },
+              info:    { wrap: "border-blue-500/20 bg-blue-500/[0.04]",   icon: "text-blue-400",   Icon: Info         },
             }
-            const icons = { warning: AlertTriangle, info: CheckCircle2 }
-            const Icon = icons[type as keyof typeof icons]
+            const s = styles[type as keyof typeof styles]
             return (
-              <div key={i} className={`flex items-start gap-3 p-4 rounded-xl border ${styles[type as keyof typeof styles]}`}>
-                <Icon className="h-3.5 w-3.5 flex-shrink-0 mt-0.5" />
-                <p className="text-[10px] leading-relaxed text-foreground/62">{text}</p>
+              <div key={i} className={`flex items-start gap-3.5 p-4 rounded-xl border ${s.wrap}`}>
+                <s.Icon className={`h-4 w-4 ${s.icon} flex-shrink-0 mt-0.5`} />
+                <div>
+                  <p className="text-[10px] font-bold text-foreground/72 mb-1">{title}</p>
+                  <p className="text-[10px] text-foreground/48 leading-relaxed">{text}</p>
+                </div>
               </div>
             )
           })}
-        </div>
+        </section>
 
-        {/* ── CTA ── */}
-        <div className="max-w-3xl mx-auto rounded-2xl border border-blue-500/20 bg-blue-500/[0.04] p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div>
-            <p className="text-sm font-semibold text-foreground/78">Questions about your delivery?</p>
-            <p className="text-[10px] text-foreground/40 mt-0.5">Track your order in real-time or contact our support team.</p>
+        {/* ── CTA ────────────────────────────────────────────────────── */}
+        <section className="rounded-2xl border border-blue-500/20 bg-blue-500/[0.04] p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-6">
+          <div className="flex items-start gap-4">
+            <div className="w-11 h-11 rounded-2xl bg-blue-500/15 border border-blue-500/20 flex items-center justify-center flex-shrink-0">
+              <Truck className="h-5 w-5 text-blue-400" />
+            </div>
+            <div>
+              <p className="text-sm font-bold text-foreground/82">Questions about your delivery?</p>
+              <p className="text-[10px] text-foreground/42 mt-1 leading-relaxed">
+                Track your order in the Orders section or contact our team for delivery enquiries.
+              </p>
+            </div>
           </div>
-          <div className="flex gap-2 flex-shrink-0">
-            <Link href="/orders" className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-white/15 text-foreground/55 text-[10px] font-mono hover:text-foreground hover:border-white/30 transition-all">
-              Track Order
+          <div className="flex gap-2 flex-shrink-0 flex-wrap justify-center">
+            <Link href="/orders"
+              className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-white/15 text-foreground/55 text-[10px] font-mono hover:text-foreground hover:border-white/28 transition-all">
+              Track My Order
             </Link>
-            <Link href="/contact" className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-[10px] font-semibold tracking-widest transition-all active:scale-95">
-              Contact Us <ArrowRight className="h-3 w-3" />
+            <Link href="/contact"
+              className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-[10px] font-semibold tracking-wide transition-all active:scale-95">
+              Contact Support <ArrowRight className="h-3.5 w-3.5" />
             </Link>
           </div>
-        </div>
-      </section>
+        </section>
 
+        <div className="h-4" />
+      </div>
     </div>
   )
 }
