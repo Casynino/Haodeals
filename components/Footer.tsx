@@ -32,8 +32,8 @@ export function Footer() {
                 <span className="text-foreground/55">DEALS</span>
                 <span className="text-foreground/30">]</span>
               </div>
-              <p className="text-[11px] text-foreground/40 max-w-[200px] leading-relaxed">
-                Tanzania&apos;s premium deals platform.
+              <p className="text-[11px] text-foreground/40 max-w-[220px] leading-relaxed">
+                Simple, fast, secure shopping with flexible payments and reliable delivery. A smooth modern experience from start to finish.
               </p>
             </div>
 
