@@ -63,8 +63,8 @@ export function WishlistHeart({ productId, productName }: Props) {
         w-7 h-7 rounded-full flex items-center justify-center
         transition-all duration-150 active:scale-90
         ${liked
-          ? "bg-rose-500/25 border border-rose-500/50 text-rose-400"
-          : "bg-black/35 backdrop-blur-sm border border-white/20 text-white/60 hover:text-rose-400 hover:bg-rose-500/15 hover:border-rose-500/35"
+          ? "bg-rose-500/20 border border-rose-500/45 text-rose-500 dark:text-rose-400"
+          : "bg-background/70 backdrop-blur-sm border border-foreground/15 text-foreground/50 hover:text-rose-500 dark:hover:text-rose-400 hover:bg-rose-500/10 hover:border-rose-500/30"
         }
         ${busy ? "opacity-50 cursor-not-allowed" : ""}
       `}
