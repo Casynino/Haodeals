@@ -45,7 +45,7 @@ export function Footer() {
               >
                 <InstagramIcon className="h-3.5 w-3.5 text-foreground/35 group-hover:text-pink-400 transition-colors" />
                 <span className="text-[10px] text-foreground/45 group-hover:text-foreground/70 transition-colors">
-                  Follow us on Instagram
+                  We are social — follow us
                 </span>
                 <ArrowUpRight className="h-3 w-3 text-foreground/20 group-hover:text-pink-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
               </a>
@@ -56,7 +56,7 @@ export function Footer() {
               <p className="text-[8px] tracking-[0.3em] text-foreground/28 uppercase mb-4">Get in Touch</p>
               <div className="space-y-2">
                 {[
-                  { Icon: MapPin, label: "Location",  value: "Mbezi Goigi, Dar es Salaam", href: undefined,                           accent: "text-amber-500/60"  },
+                  { Icon: MapPin, label: "Warehouse", value: "Mbezi Goigi, Dar es Salaam", href: undefined,                           accent: "text-amber-500/60"  },
                   { Icon: Phone,  label: "Phone",     value: "0788 734 003",               href: "tel:+255788734003",                  accent: "text-emerald-500/60"},
                   { Icon: Mail,   label: "Email",     value: "haodealtz@gmail.com",         href: "mailto:haodealtz@gmail.com",         accent: "text-blue-500/60"  },
                 ].map(({ Icon, label, value, href, accent }) => {
