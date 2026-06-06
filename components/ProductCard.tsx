@@ -4,12 +4,12 @@ import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { ShoppingCart, Zap, Loader2 } from "lucide-react"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import dynamic from "next/dynamic"
 import { useCart } from "@/hooks/useCart"
 import type { Product } from "@/types"
 import { toast } from "sonner"
-import { formatPrice } from "@/lib/utils"
+import { formatPrice, getEffectivePrice, isDealActive } from "@/lib/utils"
 import { ProductTilt } from "@/components/ui/product-tilt"
 
 // ssr:false prevents hydration mismatch — WishlistHeart uses client-only hooks
@@ -27,11 +27,26 @@ export function ProductCard({ product }: ProductCardProps) {
   const { addItem, setBuyNow } = useCart()
   const [buyingNow, setBuyingNow] = useState(false)
 
+  // ── Force re-render when the deal timer expires ──────────────────────────
+  // This ensures the card automatically stops showing the sale price the
+  // moment the countdown hits zero — no stale UI.
+  const [, forceUpdate] = useState(0)
+  useEffect(() => {
+    if (!product.dealEndsAt) return
+    const msLeft = new Date(product.dealEndsAt).getTime() - Date.now()
+    if (msLeft <= 0) return                          // already expired
+    const t = setTimeout(() => forceUpdate((n) => n + 1), msLeft + 100)
+    return () => clearTimeout(t)
+  }, [product.dealEndsAt])
+
   const images = Array.isArray(product.images)
     ? product.images
     : (JSON.parse(product.images as unknown as string) as string[])
 
-  const discount = product.originalPrice
+  // ── Single source of truth for pricing ──────────────────────────────────
+  const dealOn         = isDealActive(product)
+  const effectivePrice = getEffectivePrice(product)   // what the customer actually pays
+  const discount       = dealOn && product.originalPrice
     ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
     : null
 
@@ -45,9 +60,10 @@ export function ProductCard({ product }: ProductCardProps) {
   function handleAddToCart(e: React.MouseEvent) {
     e.preventDefault()
     e.stopPropagation()
-    addItem(product)
+    // Override price with effective price so cart shows the correct amount
+    addItem({ ...product, price: effectivePrice })
     toast.success(`Added: ${product.name.slice(0, 28)}`, {
-      description: formatPrice(product.price),
+      description: formatPrice(effectivePrice),
       className: "font-mono text-xs",
     })
   }
@@ -56,25 +72,20 @@ export function ProductCard({ product }: ProductCardProps) {
     e.preventDefault()
     e.stopPropagation()
     setBuyingNow(true)
-    setBuyNow(product)
+    // Override price so the buy-now cart item reflects the correct effective price
+    setBuyNow({ ...product, price: effectivePrice })
     router.push("/checkout")
   }
 
   return (
-    /*
-     * KEY FIX: The card outer wrapper is a plain div (not Link).
-     * The heart button lives here — completely outside any <Link>.
-     * Clicking the heart can NEVER accidentally navigate the page.
-     * The Link wraps only the image + info so tapping those navigates.
-     */
     <div className="group relative border border-white/15 hover:border-white/40 transition-all duration-200 bg-card overflow-hidden">
 
-      {/* ── Wishlist heart — OUTSIDE the Link, no propagation issue ── */}
+      {/* ── Wishlist heart — outside Link so it can never trigger navigation ── */}
       <div className="absolute top-2 right-2 z-30">
         <WishlistHeart productId={product.id} productName={product.name} />
       </div>
 
-      {/* ── Image + Info wrapped in Link — tap anywhere here to open product ── */}
+      {/* ── Image + Info → navigates to product detail ── */}
       <Link href={`/products/${product.id}`} className="block">
         <ProductTilt className="relative aspect-square overflow-hidden bg-foreground/5">
           <Image
@@ -83,17 +94,15 @@ export function ProductCard({ product }: ProductCardProps) {
             fill
             className="object-cover opacity-85 group-hover:opacity-100 transition-opacity duration-500"
           />
-          {/* Scanline */}
           <div className="absolute inset-0 scanline-overlay pointer-events-none opacity-50" />
 
-          {/* Discount tag */}
+          {/* Discount badge — only shown when deal is still active */}
           {discount && (
             <div className="absolute top-0 left-0 bg-foreground text-background text-[10px] font-mono font-bold px-2 py-0.5 tracking-widest z-10">
               -{discount}%
             </div>
           )}
 
-          {/* Out of stock */}
           {outOfStock && (
             <div className="absolute inset-0 bg-background/70 flex items-center justify-center z-10">
               <span className="text-[10px] font-mono tracking-widest text-foreground/70 border border-white/30 px-2 py-1">
@@ -102,7 +111,6 @@ export function ProductCard({ product }: ProductCardProps) {
             </div>
           )}
 
-          {/* Featured */}
           {product.featured && (
             <div className="absolute top-0 right-0 bg-yellow-400/15 border-l border-b border-yellow-400/40 text-yellow-400/80 text-[10px] font-mono px-2 py-0.5 tracking-widest z-10">
               FEATURED
@@ -110,7 +118,6 @@ export function ProductCard({ product }: ProductCardProps) {
           )}
         </ProductTilt>
 
-        {/* Info */}
         <div className="p-3 space-y-2 border-t border-white/8">
           <p className="text-[10px] text-foreground/50 tracking-widest uppercase">
             {product.category?.name}
@@ -128,16 +135,22 @@ export function ProductCard({ product }: ProductCardProps) {
               <span className="text-[10px] text-foreground/45">({product.reviews?.length})</span>
             </div>
           )}
+
+          {/* Price — always shows effective price; crossed-out only while deal is live */}
           <div className="flex items-baseline gap-2 pt-1 border-t border-white/8">
-            <span className="text-sm font-mono font-semibold text-green-400">{formatPrice(product.price)}</span>
-            {product.originalPrice && (
-              <span className="text-[10px] text-foreground/40 line-through">{formatPrice(product.originalPrice)}</span>
+            <span className="text-sm font-mono font-semibold text-green-400">
+              {formatPrice(effectivePrice)}
+            </span>
+            {dealOn && product.originalPrice && (
+              <span className="text-[10px] text-foreground/40 line-through">
+                {formatPrice(product.originalPrice)}
+              </span>
             )}
           </div>
         </div>
       </Link>
 
-      {/* ── Action buttons — OUTSIDE Link so they never navigate the card ── */}
+      {/* ── Action buttons — outside Link ── */}
       <div className="px-3 pb-3 flex gap-1.5 border-t border-white/5 pt-2">
         <button
           onClick={handleBuyNow}
