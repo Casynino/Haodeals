@@ -1,7 +1,6 @@
 import Link from "next/link"
-import { MapPin, Phone, Mail } from "lucide-react"
+import { MapPin, Phone, Mail, ArrowUpRight } from "lucide-react"
 
-/* ── Instagram SVG icon ──────────────────────────────────────────────────── */
 function InstagramIcon({ className }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="currentColor">
@@ -14,67 +13,78 @@ export function Footer() {
   return (
     <footer className="relative bg-background mt-auto font-mono overflow-hidden">
 
-      {/* ── Top glow border ─────────────────────────────────────────────── */}
+      {/* Top glow */}
       <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-emerald-500/40 to-transparent" />
-      <div className="absolute top-0 left-1/4 right-1/4 h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent blur-sm" />
 
-      {/* ── Brand + Contact section ──────────────────────────────────────── */}
-      <div className="relative border-b border-white/6">
-        <div className="absolute inset-0 bg-gradient-to-b from-white/[0.02] to-transparent pointer-events-none" />
-        <div className="container mx-auto px-4 py-10">
-          <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-8">
+      {/* ── Upper section: Brand + Contact + Social ─────────────────────── */}
+      <div className="relative border-b border-foreground/[0.06]">
+        <div className="container mx-auto px-4 pt-12 pb-10">
+          <div className="grid md:grid-cols-2 gap-10 lg:gap-16">
 
-            {/* Brand */}
-            <div className="space-y-2 flex-shrink-0">
-              <div className="flex items-center gap-1.5 text-base font-black tracking-[0.22em]">
-                <span className="text-foreground/30">[</span>
-                <span className="text-foreground">HAO</span>
-                <span className="text-foreground/55">DEALS</span>
-                <span className="text-foreground/30">]</span>
+            {/* LEFT — Brand + tagline + Instagram */}
+            <div className="space-y-5">
+              {/* Brand mark */}
+              <div>
+                <div className="flex items-center gap-1 text-lg font-black tracking-[0.22em] mb-2">
+                  <span className="text-foreground/30">[</span>
+                  <span className="text-foreground">HAO</span>
+                  <span className="text-foreground/55">DEALS</span>
+                  <span className="text-foreground/30">]</span>
+                </div>
+                <p className="text-[11px] text-foreground/40 max-w-xs leading-relaxed">
+                  Simple, fast, secure shopping with flexible payments and reliable delivery across Tanzania.
+                </p>
               </div>
-              <p className="text-[11px] text-foreground/40 max-w-[220px] leading-relaxed">
-                Simple, fast, secure shopping with flexible payments and reliable delivery. A smooth modern experience from start to finish.
-              </p>
-            </div>
 
-            {/* Contact info + Instagram */}
-            <div className="flex flex-col gap-2.5">
-              {/* Contact rows */}
-              {[
-                { Icon: MapPin, text: "Mbezi Goigi, Dar es Salaam", href: undefined },
-                { Icon: Phone,  text: "0788 734 003",               href: "tel:+255788734003" },
-                { Icon: Mail,   text: "haodealtz@gmail.com",         href: "mailto:haodealtz@gmail.com" },
-              ].map(({ Icon, text, href }) => {
-                const cls = "flex items-center gap-2.5 text-[11px] text-foreground/45 hover:text-foreground/70 transition-colors"
-                const inner = <><Icon className="h-3.5 w-3.5 text-foreground/25 flex-shrink-0" /><span>{text}</span></>
-                return href
-                  ? <a key={text} href={href} className={cls}>{inner}</a>
-                  : <div key={text} className={cls}>{inner}</div>
-              })}
-
-              {/* Instagram */}
+              {/* Instagram CTA */}
               <a
                 href="https://www.instagram.com/haodeals"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2.5 text-[11px] text-foreground/45 hover:text-foreground/70 transition-colors mt-1"
+                className="group inline-flex items-center gap-2.5 px-4 py-2 rounded-full border border-foreground/[0.1] hover:border-pink-500/40 bg-foreground/[0.025] hover:bg-pink-500/[0.06] transition-all duration-200"
               >
-                <InstagramIcon className="h-3.5 w-3.5 text-foreground/25 flex-shrink-0" />
-                <span>We are social — follow us</span>
+                <InstagramIcon className="h-3.5 w-3.5 text-foreground/35 group-hover:text-pink-400 transition-colors" />
+                <span className="text-[10px] text-foreground/45 group-hover:text-foreground/70 transition-colors">
+                  Follow us on Instagram
+                </span>
+                <ArrowUpRight className="h-3 w-3 text-foreground/20 group-hover:text-pink-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
               </a>
+            </div>
+
+            {/* RIGHT — Contact cards */}
+            <div>
+              <p className="text-[8px] tracking-[0.3em] text-foreground/28 uppercase mb-4">Get in Touch</p>
+              <div className="space-y-2">
+                {[
+                  { Icon: MapPin, label: "Location",  value: "Mbezi Goigi, Dar es Salaam", href: undefined,                           accent: "text-amber-500/60"  },
+                  { Icon: Phone,  label: "Phone",     value: "0788 734 003",               href: "tel:+255788734003",                  accent: "text-emerald-500/60"},
+                  { Icon: Mail,   label: "Email",     value: "haodealtz@gmail.com",         href: "mailto:haodealtz@gmail.com",         accent: "text-blue-500/60"  },
+                ].map(({ Icon, label, value, href, accent }) => {
+                  const inner = (
+                    <div className="flex items-center gap-3 py-2.5 px-3 rounded-xl border border-foreground/[0.07] bg-foreground/[0.02] hover:border-foreground/15 hover:bg-foreground/[0.04] transition-all group/card">
+                      <Icon className={`h-3.5 w-3.5 flex-shrink-0 ${accent}`} />
+                      <div className="min-w-0">
+                        <p className="text-[7px] text-foreground/25 tracking-[0.2em] uppercase mb-0.5">{label}</p>
+                        <p className="text-[11px] text-foreground/60 group-hover/card:text-foreground/80 transition-colors truncate">{value}</p>
+                      </div>
+                    </div>
+                  )
+                  return href
+                    ? <a key={label} href={href}>{inner}</a>
+                    : <div key={label}>{inner}</div>
+                })}
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* ── Navigation columns ──────────────────────────────────────────── */}
-      <div className="border-b border-white/6">
+      {/* ── Navigation ──────────────────────────────────────────────────── */}
+      <div className="border-b border-foreground/[0.06]">
         <div className="container mx-auto px-4 py-8">
           <div className="grid grid-cols-2 gap-8 max-w-lg">
-
-            {/* Shop */}
             <div>
-              <p className="text-[8px] tracking-[0.3em] text-foreground/28 uppercase mb-4">Shop</p>
+              <p className="text-[8px] tracking-[0.3em] text-foreground/25 uppercase mb-4">Shop</p>
               <ul className="space-y-2.5">
                 {[
                   { label: "All Deals",   href: "/products" },
@@ -85,19 +95,16 @@ export function Footer() {
                   { label: "Sports",      href: "/products?category=sports" },
                 ].map(({ label, href }) => (
                   <li key={label}>
-                    <Link href={href}
-                      className="group flex items-center gap-2 text-[11px] text-foreground/42 hover:text-foreground transition-all duration-150">
-                      <span className="w-3 h-[1px] bg-foreground/12 group-hover:w-4 group-hover:bg-foreground/38 transition-all duration-200" />
+                    <Link href={href} className="group flex items-center gap-2 text-[11px] text-foreground/40 hover:text-foreground transition-all duration-150">
+                      <span className="w-3 h-[1px] bg-foreground/10 group-hover:w-4 group-hover:bg-foreground/35 transition-all duration-200" />
                       {label}
                     </Link>
                   </li>
                 ))}
               </ul>
             </div>
-
-            {/* Quick Links */}
             <div>
-              <p className="text-[8px] tracking-[0.3em] text-foreground/28 uppercase mb-4">Quick Links</p>
+              <p className="text-[8px] tracking-[0.3em] text-foreground/25 uppercase mb-4">Quick Links</p>
               <ul className="space-y-2.5">
                 {[
                   { label: "My Wallet",        href: "/wallet"   },
@@ -108,16 +115,14 @@ export function Footer() {
                   { label: "Contact Us",       href: "/contact"  },
                 ].map(({ label, href }) => (
                   <li key={label}>
-                    <Link href={href}
-                      className="group flex items-center gap-2 text-[11px] text-foreground/42 hover:text-foreground transition-all duration-150">
-                      <span className="w-3 h-[1px] bg-foreground/12 group-hover:w-4 group-hover:bg-foreground/38 transition-all duration-200" />
+                    <Link href={href} className="group flex items-center gap-2 text-[11px] text-foreground/40 hover:text-foreground transition-all duration-150">
+                      <span className="w-3 h-[1px] bg-foreground/10 group-hover:w-4 group-hover:bg-foreground/35 transition-all duration-200" />
                       {label}
                     </Link>
                   </li>
                 ))}
               </ul>
             </div>
-
           </div>
         </div>
       </div>
@@ -125,10 +130,8 @@ export function Footer() {
       {/* ── Bottom bar ──────────────────────────────────────────────────── */}
       <div className="container mx-auto px-4 py-4">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p className="text-[9px] text-foreground/25 tracking-wide">
-            © 2026 HaoDeals Tanzania — All rights reserved
-          </p>
-          <div className="flex items-center gap-2 text-[9px] text-foreground/28">
+          <p className="text-[9px] text-foreground/22 tracking-wide">© 2026 HaoDeals Tanzania — All rights reserved</p>
+          <div className="flex items-center gap-2 text-[9px] text-foreground/25">
             <Link href="#"         className="hover:text-foreground/55 transition-colors">Privacy</Link>
             <span className="text-foreground/10">·</span>
             <Link href="/returns"  className="hover:text-foreground/55 transition-colors">Returns</Link>
