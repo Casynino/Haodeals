@@ -37,71 +37,30 @@ export function Footer() {
               </p>
             </div>
 
-            {/* Contact cards + Instagram */}
-            <div className="flex flex-col gap-4 lg:items-end">
+            {/* Contact info + Instagram */}
+            <div className="flex flex-col gap-2.5">
+              {/* Contact rows */}
+              {[
+                { Icon: MapPin, text: "Mbezi Goigi, Dar es Salaam", href: undefined },
+                { Icon: Phone,  text: "0788 734 003",               href: "tel:+255788734003" },
+                { Icon: Mail,   text: "haodealtz@gmail.com",         href: "mailto:haodealtz@gmail.com" },
+              ].map(({ Icon, text, href }) => {
+                const cls = "flex items-center gap-2.5 text-[11px] text-foreground/45 hover:text-foreground/70 transition-colors"
+                const inner = <><Icon className="h-3.5 w-3.5 text-foreground/25 flex-shrink-0" /><span>{text}</span></>
+                return href
+                  ? <a key={text} href={href} className={cls}>{inner}</a>
+                  : <div key={text} className={cls}>{inner}</div>
+              })}
 
-              {/* Contact grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
-                {[
-                  {
-                    icon: MapPin, label: "Location",
-                    text: "Mbezi Goigi, Dar es Salaam",
-                    href: undefined,
-                    iconCls: "text-amber-400/70",
-                    cardCls: "border-white/8 bg-white/[0.025]",
-                  },
-                  {
-                    icon: Phone, label: "Phone",
-                    text: "0788 734 003",
-                    href: "tel:+255788734003",
-                    iconCls: "text-emerald-400/70",
-                    cardCls: "border-white/8 bg-white/[0.025] hover:border-emerald-500/25",
-                  },
-                  {
-                    icon: Mail, label: "Email",
-                    text: "haodealtz@gmail.com",
-                    href: "mailto:haodealtz@gmail.com",
-                    iconCls: "text-blue-400/70",
-                    cardCls: "border-white/8 bg-white/[0.025] hover:border-blue-500/25",
-                  },
-                ].map(({ icon: Icon, label, text, href, iconCls, cardCls }) => {
-                  const inner = (
-                    <div className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl border transition-all duration-200 ${cardCls}`}>
-                      <div className="w-7 h-7 rounded-lg bg-white/[0.04] border border-white/6 flex items-center justify-center flex-shrink-0">
-                        <Icon className={`h-3 w-3 ${iconCls}`} />
-                      </div>
-                      <div className="min-w-0">
-                        <p className="text-[7px] text-foreground/25 tracking-[0.2em] uppercase mb-0.5">{label}</p>
-                        <p className="text-[10px] text-foreground/60 truncate">{text}</p>
-                      </div>
-                    </div>
-                  )
-                  return href
-                    ? <a key={label} href={href} target={href.startsWith("http") ? "_blank" : undefined} rel="noopener noreferrer">{inner}</a>
-                    : <div key={label}>{inner}</div>
-                })}
-              </div>
-
-              {/* Instagram button */}
+              {/* Instagram */}
               <a
                 href="https://www.instagram.com/haodeals"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex items-center gap-2.5 px-4 py-2.5 rounded-xl border border-white/10
-                  bg-gradient-to-r from-[#833ab4]/15 via-[#fd1d1d]/12 to-[#fcb045]/10
-                  hover:from-[#833ab4]/28 hover:via-[#fd1d1d]/22 hover:to-[#fcb045]/18
-                  hover:border-[#fd1d1d]/30 transition-all duration-200 active:scale-[0.98] self-start lg:self-end"
+                className="flex items-center gap-2.5 text-[11px] text-foreground/45 hover:text-foreground/70 transition-colors mt-1"
               >
-                <InstagramIcon className="h-3.5 w-3.5 text-foreground/55 group-hover:text-white/80 transition-colors flex-shrink-0" />
-                <div>
-                  <p className="text-[9px] font-semibold text-foreground/65 group-hover:text-foreground/85 transition-colors leading-none">
-                    Follow us on Instagram
-                  </p>
-                  <p className="text-[7px] text-foreground/28 mt-0.5">@haodeals</p>
-                </div>
-                <svg className="h-2.5 w-2.5 text-foreground/20 group-hover:text-foreground/45 ml-1 transition-all group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-                </svg>
+                <InstagramIcon className="h-3.5 w-3.5 text-foreground/25 flex-shrink-0" />
+                <span>instagram.com/haodeals</span>
               </a>
             </div>
           </div>
