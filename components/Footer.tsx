@@ -60,7 +60,7 @@ export function Footer() {
                 className="flex items-center gap-2.5 text-[11px] text-foreground/45 hover:text-foreground/70 transition-colors mt-1"
               >
                 <InstagramIcon className="h-3.5 w-3.5 text-foreground/25 flex-shrink-0" />
-                <span>instagram.com/haodeals</span>
+                <span>We are social — follow us</span>
               </a>
             </div>
           </div>
