@@ -16,7 +16,7 @@ export function Footer() {
               { icon: CreditCard,label: "M-Pesa Accepted",       sub: "Fast mobile payments",color: "text-amber-400/70"   },
             ].map(({ icon: Icon, label, sub, color }) => (
               <div key={label} className="flex items-center gap-2.5">
-                <div className={`w-7 h-7 rounded-lg border border-white/8 flex items-center justify-center flex-shrink-0 bg-white/[0.03]`}>
+                <div className="w-7 h-7 rounded-lg border border-white/8 flex items-center justify-center flex-shrink-0 bg-white/[0.03]">
                   <Icon className={`h-3.5 w-3.5 ${color}`} />
                 </div>
                 <div className="min-w-0">
@@ -31,7 +31,7 @@ export function Footer() {
 
       {/* ── Main footer ─────────────────────────────────────────────────── */}
       <div className="border-b border-white/8">
-        <div className="container mx-auto px-4 py-8 grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div className="container mx-auto px-4 py-8 grid grid-cols-2 md:grid-cols-3 gap-6">
 
           {/* Brand */}
           <div className="col-span-2 md:col-span-1 space-y-3">
@@ -48,7 +48,6 @@ export function Footer() {
               <div className="w-1.5 h-1.5 bg-green-400/70 rounded-full animate-pulse" />
               <span>Online &amp; delivering</span>
             </div>
-            {/* Contact quick-info */}
             <div className="space-y-1.5 pt-1">
               {[
                 { icon: MapPin, text: "Mbezi Goigi, Dar es Salaam" },
@@ -89,12 +88,12 @@ export function Footer() {
             <p className="text-[9px] text-foreground/45 tracking-widest mb-3 uppercase font-semibold">Support</p>
             <ul className="space-y-2">
               {[
-                { label: "Contact Us",      href: "/contact" },
-                { label: "Track Your Order", href: "/orders" },
-                { label: "Returns Policy",  href: "/returns" },
-                { label: "Shipping Policy", href: "/shipping" },
-                { label: "My Wishlist",     href: "/wishlist" },
-                { label: "My Wallet",       href: "/wallet" },
+                { label: "Contact Us",       href: "/contact"  },
+                { label: "Track Your Order", href: "/orders"   },
+                { label: "Returns Policy",   href: "/returns"  },
+                { label: "Shipping Policy",  href: "/shipping" },
+                { label: "My Wishlist",      href: "/wishlist" },
+                { label: "My Wallet",        href: "/wallet"   },
               ].map(({ label, href }) => (
                 <li key={label}>
                   <Link href={href} className="text-[11px] text-foreground/50 hover:text-foreground transition-colors flex items-center gap-1.5">
@@ -105,32 +104,13 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Why HaoDeals */}
-          <div>
-            <p className="text-[9px] text-foreground/45 tracking-widest mb-3 uppercase font-semibold">Why HaoDeals</p>
-            <div className="space-y-2.5">
-              {[
-                { emoji: "🏷️", text: "Up to 70% off retail prices" },
-                { emoji: "⚡", text: "Buy Now — pay directly from wallet" },
-                { emoji: "🚚", text: "Weekend free delivery (Dar es Salaam)" },
-                { emoji: "🔄", text: "72-hour return window" },
-                { emoji: "🔐", text: "Secured by nTZS blockchain" },
-                { emoji: "📱", text: "M-Pesa top-up in seconds" },
-              ].map(({ emoji, text }) => (
-                <div key={text} className="flex items-start gap-2">
-                  <span className="text-sm leading-none mt-0.5 flex-shrink-0">{emoji}</span>
-                  <span className="text-[10px] text-foreground/45 leading-snug">{text}</span>
-                </div>
-              ))}
-            </div>
-          </div>
         </div>
       </div>
 
       {/* ── Bottom bar ─────────────────────────────────────────────────── */}
       <div className="container mx-auto px-4 py-3.5 flex flex-col sm:flex-row items-center justify-between gap-2">
         <div className="flex items-center gap-3 text-[9px] text-foreground/38">
-          <span>© 2025 HaoDeals Tanzania</span>
+          <span>© 2026 HaoDeals Tanzania</span>
           <span className="text-foreground/15">|</span>
           <span>All rights reserved</span>
         </div>
