@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState, useCallback } from "react"
 import Link from "next/link"
-import { ShoppingBag, Users, Package, DollarSign, ArrowRight, TrendingUp, Plus, Megaphone, Loader2, CheckCircle2, MessageSquare, Banknote, RefreshCw } from "lucide-react"
+import { ShoppingBag, Users, Package, DollarSign, ArrowRight, TrendingUp, Plus, Megaphone, Loader2, CheckCircle2, MessageSquare, Banknote, RefreshCw, BarChart2 } from "lucide-react"
 import { formatPrice } from "@/lib/utils"
 import { toast } from "sonner"
 
@@ -189,6 +189,19 @@ export default function AdminPage() {
             </div>
           </div>
           <ArrowRight className="h-3.5 w-3.5 text-foreground/20 group-hover:text-foreground/60 transition-colors" />
+        </Link>
+        <Link
+          href="/admin/analytics"
+          className="flex items-center justify-between border border-violet-500/20 bg-violet-500/[0.03] hover:border-violet-500/40 hover:bg-violet-500/[0.06] transition-colors p-4 group md:col-span-2"
+        >
+          <div className="flex items-center gap-3">
+            <BarChart2 className="h-4 w-4 text-violet-400/60 group-hover:text-violet-400 transition-colors" />
+            <div>
+              <p className="text-xs tracking-widest text-foreground/70 group-hover:text-foreground transition-colors">ANALYTICS DASHBOARD</p>
+              <p className="text-[10px] text-foreground/45 mt-0.5">Revenue, customers, products & business intelligence</p>
+            </div>
+          </div>
+          <ArrowRight className="h-3.5 w-3.5 text-foreground/20 group-hover:text-violet-400/60 transition-colors" />
         </Link>
         <Link
           href="/admin/messages"
