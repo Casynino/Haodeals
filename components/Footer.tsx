@@ -36,29 +36,16 @@ export function Footer() {
                 </p>
               </div>
 
-              {/* Instagram CTA */}
-              <a
-                href="https://www.instagram.com/haodeals"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group inline-flex items-center gap-2.5 px-4 py-2 rounded-full border border-foreground/[0.1] hover:border-pink-500/40 bg-foreground/[0.025] hover:bg-pink-500/[0.06] transition-all duration-200"
-              >
-                <InstagramIcon className="h-3.5 w-3.5 text-foreground/35 group-hover:text-pink-400 transition-colors" />
-                <span className="text-[10px] text-foreground/45 group-hover:text-foreground/70 transition-colors">
-                  We are social — follow us
-                </span>
-                <ArrowUpRight className="h-3 w-3 text-foreground/20 group-hover:text-pink-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
-              </a>
             </div>
 
-            {/* RIGHT — Contact cards */}
+            {/* RIGHT — Contact cards + Social */}
             <div>
               <p className="text-[8px] tracking-[0.3em] text-foreground/28 uppercase mb-4">Get in Touch</p>
               <div className="space-y-2">
                 {[
-                  { Icon: MapPin, label: "Warehouse", value: "Mbezi Goigi, Dar es Salaam", href: undefined,                           accent: "text-amber-500/60"  },
-                  { Icon: Phone,  label: "Phone",     value: "0788 734 003",               href: "tel:+255788734003",                  accent: "text-emerald-500/60"},
-                  { Icon: Mail,   label: "Email",     value: "haodealtz@gmail.com",         href: "mailto:haodealtz@gmail.com",         accent: "text-blue-500/60"  },
+                  { Icon: MapPin, label: "Warehouse", value: "Mbezi Goigi, Dar es Salaam", href: undefined,                   accent: "text-amber-500/60"  },
+                  { Icon: Phone,  label: "Phone",     value: "0788 734 003",               href: "tel:+255788734003",          accent: "text-emerald-500/60"},
+                  { Icon: Mail,   label: "Email",     value: "haodealtz@gmail.com",         href: "mailto:haodealtz@gmail.com", accent: "text-blue-500/60"  },
                 ].map(({ Icon, label, value, href, accent }) => {
                   const inner = (
                     <div className="flex items-center gap-3 py-2.5 px-3 rounded-xl border border-foreground/[0.07] bg-foreground/[0.02] hover:border-foreground/15 hover:bg-foreground/[0.04] transition-all group/card">
@@ -73,6 +60,23 @@ export function Footer() {
                     ? <a key={label} href={href}>{inner}</a>
                     : <div key={label}>{inner}</div>
                 })}
+
+                {/* Social — sits right below email */}
+                <a
+                  href="https://www.instagram.com/haodeals"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group flex items-center gap-3 py-2.5 px-3 rounded-xl border border-foreground/[0.07] bg-foreground/[0.02] hover:border-pink-500/30 hover:bg-pink-500/[0.04] transition-all"
+                >
+                  <InstagramIcon className="h-3.5 w-3.5 flex-shrink-0 text-pink-500/55 group-hover:text-pink-400 transition-colors" />
+                  <div className="min-w-0">
+                    <p className="text-[7px] text-foreground/25 tracking-[0.2em] uppercase mb-0.5">Social</p>
+                    <p className="text-[11px] text-foreground/60 group-hover:text-foreground/80 transition-colors flex items-center gap-1">
+                      We are social — follow us
+                      <ArrowUpRight className="h-2.5 w-2.5 opacity-40 group-hover:opacity-70 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
+                    </p>
+                  </div>
+                </a>
               </div>
             </div>
           </div>
