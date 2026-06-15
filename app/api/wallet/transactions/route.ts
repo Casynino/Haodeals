@@ -26,8 +26,8 @@ export async function GET() {
     // Show own deposits/withdrawals + ALL incoming customer order payments
     const [transactions, incomingOrders] = await Promise.all([
       prisma.transaction.findMany({
-        // adjustment = internal ledger reconciliation, not shown as a line item
-        where: { userId, type: { not: "adjustment" } },
+        // hide internal ledger entries: adjustments + sweep-reconciled deposits
+        where: { userId, type: { not: "adjustment" }, status: { not: "reconciled" } },
         orderBy: { createdAt: "desc" },
         take: 50,
       }),

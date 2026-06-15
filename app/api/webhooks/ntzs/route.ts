@@ -27,7 +27,8 @@ export async function POST(req: NextRequest) {
     data: { id: string; metadata?: { orderId?: string }; userId?: string }
   }
 
-  if (event.event === "deposit.completed") {
+  // nTZS emits "deposit.minted" on success; accept the legacy name too
+  if (event.event === "deposit.minted" || event.event === "deposit.completed") {
     const depositId = event.data.id
     await Promise.all([
       // Confirm checkout orders linked to this deposit

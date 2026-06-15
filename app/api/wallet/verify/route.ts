@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server"
 import { auth } from "@/auth"
 import { prisma } from "@/lib/prisma"
-import { ntzs } from "@/lib/ntzs"
+import { ntzs, isDepositMinted, isDepositFailed } from "@/lib/ntzs"
 
 export const dynamic = "force-dynamic"
 export const revalidate = 0
@@ -34,13 +34,15 @@ export async function POST() {
     pending.map(async (tx) => {
       try {
         const dep = await ntzs.getDeposit(tx.ntzsId!)
-        if (dep.status === "completed") {
+        // nTZS marks a successful deposit as "minted" (not "completed")
+        if (isDepositMinted(dep.status)) {
           await prisma.transaction.update({ where: { id: tx.id }, data: { status: "completed" } })
           completed++
-        } else if (dep.status === "failed") {
+        } else if (isDepositFailed(dep.status)) {
           await prisma.transaction.update({ where: { id: tx.id }, data: { status: "failed" } })
           failed++
         }
+        // else still "submitted" — leave pending, retry next poll
       } catch {
         // nTZS unreachable or deposit not found — leave as pending, retry next poll
       }
