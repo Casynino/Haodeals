@@ -66,6 +66,12 @@ export const ntzs = {
     })
   },
 
+  // Look up the live status of a deposit — used to reconcile pending top-ups
+  // without depending on the webhook firing.
+  getDeposit(id: string): Promise<NtzsDeposit> {
+    return request(`/api/v1/deposits/${id}`)
+  },
+
   createWithdrawal(data: {
     userId: string
     amountTzs: number

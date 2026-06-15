@@ -255,6 +255,8 @@ export default function WalletPage() {
   function startPoll() {
     clearPoll()
     pollRef.current = setInterval(async () => {
+      // Reconcile pending deposits against nTZS in case the webhook never fired
+      await fetch("/api/wallet/verify", { method: "POST" }).catch(() => {})
       const res = await fetch("/api/wallet/transactions")
       if (!res.ok) return
       const fresh: TxItem[] = await res.json()
