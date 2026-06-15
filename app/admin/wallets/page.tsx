@@ -75,6 +75,40 @@ export default function AdminWallets() {
   const [sweeping,    setSweeping]    = useState(false)
   const [sweepResult, setSweepResult] = useState<SweepResponse | null>(null)
 
+  // Consolidate-into-treasury flow
+  const [consolidateOpen, setConsolidateOpen] = useState(false)
+  const [sourceId,        setSourceId]        = useState("")
+  const [checking,        setChecking]        = useState(false)
+  const [consolidating,   setConsolidating]   = useState(false)
+  const [preview,         setPreview]         = useState<{ from: { balanceTzs: number }, treasury: { balanceTzs: number }, isSameAsTreasury: boolean } | null>(null)
+
+  async function checkBalances() {
+    setPreview(null)
+    if (!sourceId.trim()) { toast.error("Enter the source wallet ID"); return }
+    setChecking(true)
+    try {
+      const r = await fetch(`/api/admin/wallets/consolidate?from=${encodeURIComponent(sourceId.trim())}`)
+      const d = await r.json()
+      if (!r.ok) { toast.error(d.error ?? "Could not read wallet"); return }
+      setPreview(d)
+    } catch { toast.error("Could not read wallet") } finally { setChecking(false) }
+  }
+
+  async function runConsolidate() {
+    setConsolidating(true)
+    try {
+      const r = await fetch("/api/admin/wallets/consolidate", {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ fromUserId: sourceId.trim() }),
+      })
+      const d = await r.json()
+      if (!r.ok) { toast.error(d.error ?? "Transfer failed"); return }
+      toast.success(`Moved ${formatPrice(d.transferred)} into treasury`)
+      setConsolidateOpen(false); setSourceId(""); setPreview(null)
+      load()
+    } catch { toast.error("Transfer failed") } finally { setConsolidating(false) }
+  }
+
   function load() {
     setLoading(true)
     fetch("/api/admin/wallets")
@@ -198,6 +232,24 @@ export default function AdminWallets() {
           <div className="flex items-center gap-1.5 mt-3 text-[9px] text-amber-400/70 font-mono">
             <Clock className="h-3 w-3" />
             {formatPrice(totals.pending)} in pending deposits (not yet counted in balances)
+          </div>
+        )}
+
+        {/* Move external wallet funds into the treasury */}
+        {data?.treasuryConfigured && (
+          <div className="mt-4 pt-4 border-t border-white/8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <div>
+              <p className="text-[10px] text-foreground/65 font-mono">Consolidate another wallet</p>
+              <p className="text-[8px] text-foreground/30 mt-1">
+                Move nTZS from a different wallet (e.g. an old one) into the active treasury.
+              </p>
+            </div>
+            <button
+              onClick={() => { setPreview(null); setSourceId(""); setConsolidateOpen(true) }}
+              className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-blue-500/15 border border-blue-500/30 text-blue-300 text-[10px] font-mono tracking-widest hover:bg-blue-500/25 transition-all active:scale-[0.98] flex-shrink-0"
+            >
+              <ArrowRightLeft className="h-3.5 w-3.5" /> MOVE FUNDS IN
+            </button>
           </div>
         )}
 
@@ -363,6 +415,87 @@ export default function AdminWallets() {
                 {sweeping ? <><Loader2 className="h-3.5 w-3.5 animate-spin" /> SWEEPING…</> : <>CONFIRM SWEEP</>}
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── Consolidate-into-treasury modal ───────────────────────────── */}
+      {consolidateOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-black/65 backdrop-blur-sm" onClick={() => !consolidating && setConsolidateOpen(false)} />
+          <div className="relative w-full max-w-md rounded-2xl border border-white/12 bg-background p-6 shadow-2xl">
+            <div className="flex items-center gap-2.5 mb-3">
+              <div className="w-9 h-9 rounded-xl bg-blue-500/15 flex items-center justify-center">
+                <ArrowRightLeft className="h-4 w-4 text-blue-400" />
+              </div>
+              <h2 className="text-sm font-semibold text-foreground/85">Move funds into treasury</h2>
+            </div>
+
+            <p className="text-[11px] text-foreground/50 leading-relaxed mb-3">
+              Enter the nTZS user ID of the wallet to move funds from. Check the live balances, then transfer
+              its full balance into the active treasury. This moves real funds and is not reversible.
+            </p>
+
+            <label className="text-[9px] font-mono tracking-widest text-foreground/35 block mb-1.5">SOURCE WALLET ID</label>
+            <div className="flex gap-2 mb-3">
+              <input
+                value={sourceId}
+                onChange={(e) => { setSourceId(e.target.value); setPreview(null) }}
+                placeholder="nTZS user id of the old wallet"
+                className="flex-1 bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-[11px] text-foreground/80 placeholder:text-foreground/20 focus:outline-none focus:border-blue-500/35 transition-colors font-mono"
+              />
+              <button
+                onClick={checkBalances}
+                disabled={checking || !sourceId.trim()}
+                className="px-3 py-2 rounded-xl border border-white/12 text-foreground/60 text-[10px] font-mono tracking-widest hover:bg-white/[0.04] transition-all disabled:opacity-40 flex items-center gap-1.5"
+              >
+                {checking ? <Loader2 className="h-3 w-3 animate-spin" /> : "CHECK"}
+              </button>
+            </div>
+
+            {preview && (
+              <div className="space-y-2 mb-4">
+                {preview.isSameAsTreasury ? (
+                  <div className="flex items-start gap-1.5 text-amber-400/80 bg-amber-500/[0.06] border border-amber-500/15 rounded-lg p-2.5 text-[10px]">
+                    <AlertTriangle className="h-3.5 w-3.5 flex-shrink-0 mt-px" />
+                    This wallet IS the treasury — nothing to move.
+                  </div>
+                ) : (
+                  <>
+                    <div className="flex items-center justify-between rounded-xl border border-white/8 bg-white/[0.015] px-3 py-2.5">
+                      <span className="text-[9px] text-foreground/40 font-mono tracking-widest">SOURCE HOLDS</span>
+                      <span className="text-[12px] font-black font-mono text-blue-400">{formatPrice(preview.from.balanceTzs)}</span>
+                    </div>
+                    <div className="flex items-center justify-between rounded-xl border border-white/8 bg-white/[0.015] px-3 py-2.5">
+                      <span className="text-[9px] text-foreground/40 font-mono tracking-widest">TREASURY NOW</span>
+                      <span className="text-[12px] font-black font-mono text-emerald-400">{formatPrice(preview.treasury.balanceTzs)}</span>
+                    </div>
+                    <div className="flex items-center justify-between rounded-xl border border-emerald-500/20 bg-emerald-500/[0.04] px-3 py-2.5">
+                      <span className="text-[9px] text-emerald-400/70 font-mono tracking-widest">TREASURY AFTER</span>
+                      <span className="text-[12px] font-black font-mono text-emerald-400">{formatPrice(preview.treasury.balanceTzs + preview.from.balanceTzs)}</span>
+                    </div>
+                  </>
+                )}
+              </div>
+            )}
+
+            <div className="flex gap-2 mt-2">
+              <button
+                onClick={() => setConsolidateOpen(false)}
+                disabled={consolidating}
+                className="flex-1 py-2.5 rounded-xl border border-white/12 text-foreground/55 text-[11px] font-mono tracking-widest hover:bg-white/[0.04] transition-all disabled:opacity-40"
+              >
+                CANCEL
+              </button>
+              <button
+                onClick={runConsolidate}
+                disabled={consolidating || !preview || preview.isSameAsTreasury || preview.from.balanceTzs <= 0}
+                className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl bg-blue-500/20 border border-blue-500/35 text-blue-200 text-[11px] font-mono tracking-widest hover:bg-blue-500/30 transition-all active:scale-[0.98] disabled:opacity-40"
+              >
+                {consolidating ? <><Loader2 className="h-3.5 w-3.5 animate-spin" /> MOVING…</> : <>TRANSFER TO TREASURY</>}
+              </button>
+            </div>
+            {!preview && <p className="text-[8px] text-foreground/25 mt-2 text-center">Check balances first to enable the transfer.</p>}
           </div>
         </div>
       )}
