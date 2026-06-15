@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import {
   Wallet, Search, X, ArrowDownToLine, ArrowUpFromLine,
   ShoppingBag, Landmark, AlertTriangle, CheckCircle2, Clock,
-  ArrowRightLeft, Loader2,
+  ArrowRightLeft, Loader2, Copy,
 } from "lucide-react"
 import { toast } from "sonner"
 import { formatPrice } from "@/lib/utils"
@@ -42,6 +42,7 @@ interface ApiResponse {
   totals: Totals
   treasuryBalance: number | null
   treasuryConfigured: boolean
+  treasuryId: string | null
 }
 
 interface SweepResult {
@@ -181,9 +182,22 @@ export default function AdminWallets() {
 
       {/* Treasury reconciliation */}
       <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-4">
-        <div className="flex items-center gap-2 mb-3">
-          <Landmark className="h-3.5 w-3.5 text-amber-400/70" />
-          <p className="text-[10px] tracking-[0.2em] text-foreground/55 font-mono">TREASURY RECONCILIATION</p>
+        <div className="flex items-center justify-between gap-2 mb-3 flex-wrap">
+          <div className="flex items-center gap-2">
+            <Landmark className="h-3.5 w-3.5 text-amber-400/70" />
+            <p className="text-[10px] tracking-[0.2em] text-foreground/55 font-mono">TREASURY RECONCILIATION</p>
+          </div>
+          {data?.treasuryId && (
+            <button
+              onClick={() => { navigator.clipboard.writeText(data.treasuryId!); toast.success("Treasury ID copied") }}
+              className="flex items-center gap-1.5 text-[9px] font-mono text-foreground/40 hover:text-foreground/70 transition-colors group"
+              title="Copy treasury wallet ID"
+            >
+              <span className="text-foreground/25">TREASURY ID:</span>
+              <span className="text-foreground/55 group-hover:text-foreground/80">{data.treasuryId}</span>
+              <Copy className="h-3 w-3 opacity-50" />
+            </button>
+          )}
         </div>
         {!data?.treasuryConfigured ? (
           <div className="flex items-center gap-2 text-[10px] text-amber-400/80">
