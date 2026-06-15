@@ -34,11 +34,23 @@ export interface NtzsUser {
   email: string
 }
 
+// nTZS deposit lifecycle: "submitted" → "minted" (success) | "failed"/"expired"/"cancelled"
+export type NtzsDepositStatus = "submitted" | "minted" | "failed" | "expired" | "cancelled" | (string & {})
+
 export interface NtzsDeposit {
   id: string
-  status: "pending" | "completed" | "failed"
+  status: NtzsDepositStatus
   amountTzs: number
-  userId: string
+  userId?: string
+}
+
+// A minted deposit is the only success state; these are terminal failures.
+export const DEPOSIT_FAILED_STATES = ["failed", "expired", "cancelled", "rejected"]
+export function isDepositMinted(status: string): boolean {
+  return status === "minted"
+}
+export function isDepositFailed(status: string): boolean {
+  return DEPOSIT_FAILED_STATES.includes(status)
 }
 
 export const ntzs = {
