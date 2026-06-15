@@ -2,28 +2,7 @@ import { NextResponse } from "next/server"
 import { auth } from "@/auth"
 import { prisma } from "@/lib/prisma"
 import { ntzs, normalizePhone } from "@/lib/ntzs"
-
-async function computeBalance(userId: string): Promise<number> {
-  const [depositSum, withdrawalSum, orderSum] = await Promise.all([
-    prisma.transaction.aggregate({
-      where: { userId, type: "deposit", status: "completed" },
-      _sum: { amountTzs: true },
-    }),
-    prisma.transaction.aggregate({
-      where: { userId, type: "withdrawal", status: { notIn: ["failed"] } },
-      _sum: { amountTzs: true },
-    }),
-    prisma.order.aggregate({
-      where: { userId, status: { notIn: ["pending_payment", "cancelled"] } },
-      _sum: { total: true },
-    }),
-  ])
-
-  const deposits    = depositSum._sum.amountTzs    ?? 0
-  const withdrawals = withdrawalSum._sum.amountTzs  ?? 0
-  const purchases   = orderSum._sum.total           ?? 0
-  return Math.max(0, deposits - withdrawals - purchases)
-}
+import { computeBalance } from "@/lib/wallet"
 
 export async function GET() {
   const session = await auth()
