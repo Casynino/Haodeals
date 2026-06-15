@@ -15,10 +15,8 @@ import { formatPrice } from "@/lib/utils"
 /* ── Types ───────────────────────────────────────────────────────────────── */
 
 interface WalletData {
-  ntzsUserId: string
-  walletAddress: string | null
-  balanceTzs: number | null
-  balanceUsdc: number | null
+  displayId:  string
+  balanceTzs: number
 }
 
 interface TxItem {
@@ -298,11 +296,10 @@ export default function WalletPage() {
       if (r.ok) {
         setWallet(await r.json())
       } else {
-        // API failed — show wallet as unavailable instead of infinite skeleton
-        setWallet({ ntzsUserId: "", walletAddress: null, balanceTzs: null, balanceUsdc: null })
+        setWallet({ displayId: "??????", balanceTzs: 0 })
       }
     } catch {
-      setWallet({ ntzsUserId: "", walletAddress: null, balanceTzs: null, balanceUsdc: null })
+      setWallet({ displayId: "??????", balanceTzs: 0 })
     } finally {
       setLoadingWallet(false)
     }
@@ -343,8 +340,8 @@ export default function WalletPage() {
 
   function openAction(a: Action) { setAction(a); setAmount(""); setDepositStage("form"); setWithdrawResult(null) }
 
-  function copyAddress() {
-    if (wallet?.walletAddress) { navigator.clipboard.writeText(wallet.walletAddress); toast.success("Wallet address copied") }
+  function copyId() {
+    if (wallet?.displayId) { navigator.clipboard.writeText(wallet.displayId); toast.success("Wallet ID copied") }
   }
 
   /* ── Derived ─────────────────────────────────────────────────────────── */
@@ -352,9 +349,8 @@ export default function WalletPage() {
   const userName   = user?.name ?? user?.email?.split("@")[0] ?? "Member"
   const firstName  = userName.split(" ")[0]
   const hasPending = history.some((t) => t.status === "pending")
-  const addr       = wallet?.walletAddress ?? ""
-  const last4      = addr ? addr.slice(-4).toUpperCase() : "···"
-  const cardNo     = `**** **** **** ${last4}`
+  const last6      = wallet?.displayId ?? "······"
+  const cardNo     = `**** **** ${last6.slice(0, 3)} ${last6.slice(3)}`
 
   /* ── Tilt transform string ───────────────────────────────────────────── */
   const cardTransform = `perspective(1200px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg) scale(${hovered ? 1.025 : 1})`
@@ -521,20 +517,17 @@ export default function WalletPage() {
                 </button>
               </div>
 
-              {wallet?.balanceTzs === null ? (
-                <p className="text-white/50 text-2xl font-black"
-                  style={{ textShadow: "0 2px 6px rgba(0,0,0,0.7)" }}>Unavailable</p>
-              ) : wallet ? (
+              {wallet && (
                 <p className="font-black leading-none tracking-tight text-white"
                   style={{
                     fontSize: "clamp(1.6rem, 5.8vw, 2.2rem)",
                     textShadow: "0 2px 12px rgba(0,0,0,0.90), 0 1px 3px rgba(0,0,0,0.95)",
                   }}>
                   {balanceVisible
-                    ? formatPrice(wallet.balanceTzs ?? 0)
+                    ? formatPrice(wallet.balanceTzs)
                     : <span className="tracking-widest">TSh ••••••</span>}
                 </p>
-              ) : null}
+              )}
             </div>
 
             {/* Row 3: Cardholder + wallet number */}
@@ -546,7 +539,7 @@ export default function WalletPage() {
               <div className="text-right flex-shrink-0">
                 <p className="text-[7px] tracking-[0.28em] font-mono uppercase mb-[3px]" style={{ color: "rgba(251,191,36,0.42)" }}>Wallet No.</p>
                 <button
-                  onClick={copyAddress}
+                  onClick={copyId}
                   className="flex items-center gap-1.5 text-[10px] font-mono transition-colors"
                   style={{ color: "rgba(255,255,255,0.50)" }}
                   onMouseEnter={(e) => (e.currentTarget.style.color = "rgba(251,191,36,0.85)")}

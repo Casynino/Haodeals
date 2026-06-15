@@ -3,6 +3,29 @@ import { auth } from "@/auth"
 import { prisma } from "@/lib/prisma"
 import { ntzs, normalizePhone } from "@/lib/ntzs"
 
+async function computeBalance(userId: string): Promise<number> {
+  const [depositSum, withdrawalSum, orderSum] = await Promise.all([
+    prisma.transaction.aggregate({
+      where: { userId, type: "deposit", status: "completed" },
+      _sum: { amountTzs: true },
+    }),
+    prisma.transaction.aggregate({
+      where: { userId, type: "withdrawal", status: { notIn: ["failed"] } },
+      _sum: { amountTzs: true },
+    }),
+    prisma.order.aggregate({
+      where: { userId, status: { notIn: ["pending_payment", "cancelled"] } },
+      _sum: { total: true },
+    }),
+  ])
+
+  const deposits    = depositSum._sum.amountTzs   ?? 0
+  const withdrawals = withdrawalSum._sum.amountTzs ?? 0
+  const purchases   = orderSum._sum.total          ?? 0
+  return Math.max(0, deposits - withdrawals - purchases)
+}
+
+// Withdrawal: redeems tokens from HaoDeals treasury and sends mobile money to user.
 export async function POST(req: Request) {
   const session = await auth()
   if (!session?.user) {
@@ -14,26 +37,32 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Minimum withdrawal is TSh 5,000" }, { status: 400 })
   }
 
-  const user = await prisma.user.findUnique({
-    where: { id: session.user.id as string },
-    select: { ntzsUserId: true },
-  })
+  const userId = session.user.id as string
 
-  if (!user?.ntzsUserId) {
-    return NextResponse.json({ error: "Wallet not provisioned" }, { status: 400 })
+  const treasuryUserId = process.env.NTZS_TREASURY_USER_ID
+  if (!treasuryUserId) {
+    return NextResponse.json({ error: "Payment service not configured" }, { status: 503 })
+  }
+
+  const balance = await computeBalance(userId)
+  if (balance < amount) {
+    return NextResponse.json({
+      error: `Insufficient balance. You have TSh ${balance.toLocaleString()}, need TSh ${amount.toLocaleString()}.`,
+      code: "insufficient_balance",
+    }, { status: 402 })
   }
 
   const normalizedPhone = normalizePhone(phoneNumber)
   try {
     const withdrawal = await ntzs.createWithdrawal({
-      userId: user.ntzsUserId,
+      userId: treasuryUserId,
       amountTzs: Math.round(amount),
       phoneNumber: normalizedPhone,
     })
 
     await prisma.transaction.create({
       data: {
-        userId: session.user.id as string,
+        userId,
         type: "withdrawal",
         amountTzs: Math.round(amount),
         status: withdrawal.status,
