@@ -16,7 +16,7 @@ export async function GET() {
 
   const [users, txGroups, ordersByUser] = await Promise.all([
     prisma.user.findMany({
-      select: { id: true, name: true, email: true, phone: true, role: true, createdAt: true },
+      select: { id: true, name: true, email: true, phone: true, role: true, createdAt: true, ntzsUserId: true },
       orderBy: { createdAt: "desc" },
     }),
     // All deposit/withdrawal sums per user, grouped by status
@@ -37,6 +37,7 @@ export async function GET() {
   type Agg = {
     deposited: number      // completed deposits
     pendingDeposits: number
+    adjustments: number    // signed reconciliation adjustments
     withdrawn: number      // non-failed withdrawals
     spent: number          // paid orders total
     orderCount: number
@@ -44,7 +45,7 @@ export async function GET() {
   }
   const map = new Map<string, Agg>()
   const ensure = (id: string): Agg => {
-    if (!map.has(id)) map.set(id, { deposited: 0, pendingDeposits: 0, withdrawn: 0, spent: 0, orderCount: 0, txCount: 0 })
+    if (!map.has(id)) map.set(id, { deposited: 0, pendingDeposits: 0, adjustments: 0, withdrawn: 0, spent: 0, orderCount: 0, txCount: 0 })
     return map.get(id)!
   }
 
@@ -57,6 +58,8 @@ export async function GET() {
       else if (g.status === "pending") a.pendingDeposits += amt
     } else if (g.type === "withdrawal" && g.status !== "failed") {
       a.withdrawn += amt
+    } else if (g.type === "adjustment") {
+      a.adjustments += amt
     }
   }
   for (const o of ordersByUser) {
@@ -66,8 +69,8 @@ export async function GET() {
   }
 
   const wallets = users.map((u) => {
-    const a = map.get(u.id) ?? { deposited: 0, pendingDeposits: 0, withdrawn: 0, spent: 0, orderCount: 0, txCount: 0 }
-    const balance = Math.max(0, a.deposited - a.withdrawn - a.spent)
+    const a = map.get(u.id) ?? { deposited: 0, pendingDeposits: 0, adjustments: 0, withdrawn: 0, spent: 0, orderCount: 0, txCount: 0 }
+    const balance = Math.max(0, a.deposited + a.adjustments - a.withdrawn - a.spent)
     return {
       id: u.id,
       name: u.name,
@@ -75,9 +78,12 @@ export async function GET() {
       phone: u.phone,
       role: u.role,
       createdAt: u.createdAt,
+      swept: !u.ntzsUserId,        // old wallet already reconciled / never had one
+      hasLegacyWallet: !!u.ntzsUserId,
       balance,
       deposited: a.deposited,
       pendingDeposits: a.pendingDeposits,
+      adjustments: a.adjustments,
       withdrawn: a.withdrawn,
       spent: a.spent,
       orderCount: a.orderCount,
@@ -93,9 +99,10 @@ export async function GET() {
       t.withdrawn   += w.withdrawn
       t.spent       += w.spent
       t.pending     += w.pendingDeposits
+      if (w.hasLegacyWallet) t.legacyWallets += 1
       return t
     },
-    { outstanding: 0, deposited: 0, withdrawn: 0, spent: 0, pending: 0 }
+    { outstanding: 0, deposited: 0, withdrawn: 0, spent: 0, pending: 0, legacyWallets: 0 }
   )
 
   // Try to read the live treasury balance to compare against outstanding liability

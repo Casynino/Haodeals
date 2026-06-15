@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma"
 import { auth } from "@/auth"
 import { sendOrderNotificationToAdmin, sendOrderStatusEmail } from "@/lib/email"
 import { uniqueTrackingId } from "@/lib/order-utils"
+import { computeBalance } from "@/lib/wallet"
 
 export async function POST(request: Request) {
   const session = await auth()
@@ -75,25 +76,8 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "User not found" }, { status: 404 })
   }
 
-  // Check DB balance: completed deposits − non-failed withdrawals − prior orders
-  const [depositSum, withdrawalSum, orderSum] = await Promise.all([
-    prisma.transaction.aggregate({
-      where: { userId, type: "deposit", status: "completed" },
-      _sum: { amountTzs: true },
-    }),
-    prisma.transaction.aggregate({
-      where: { userId, type: "withdrawal", status: { notIn: ["failed"] } },
-      _sum: { amountTzs: true },
-    }),
-    prisma.order.aggregate({
-      where: { userId, status: { notIn: ["pending_payment", "cancelled"] } },
-      _sum: { total: true },
-    }),
-  ])
-  const availableBalance = Math.max(
-    0,
-    (depositSum._sum.amountTzs ?? 0) - (withdrawalSum._sum.amountTzs ?? 0) - (orderSum._sum.total ?? 0)
-  )
+  // Check ledger balance (deposits + adjustments − withdrawals − prior orders)
+  const availableBalance = await computeBalance(userId)
   if (availableBalance < total) {
     return NextResponse.json({
       error: `Insufficient balance. You have TSh ${availableBalance.toLocaleString()}, need TSh ${total.toLocaleString()}.`,

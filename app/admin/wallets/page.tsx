@@ -4,7 +4,9 @@ import { useEffect, useState } from "react"
 import {
   Wallet, Search, X, ArrowDownToLine, ArrowUpFromLine,
   ShoppingBag, Landmark, AlertTriangle, CheckCircle2, Clock,
+  ArrowRightLeft, Loader2,
 } from "lucide-react"
+import { toast } from "sonner"
 import { formatPrice } from "@/lib/utils"
 
 interface WalletRow {
@@ -14,9 +16,12 @@ interface WalletRow {
   phone: string | null
   role: string
   createdAt: string
+  swept: boolean
+  hasLegacyWallet: boolean
   balance: number
   deposited: number
   pendingDeposits: number
+  adjustments: number
   withdrawn: number
   spent: number
   orderCount: number
@@ -29,6 +34,7 @@ interface Totals {
   withdrawn: number
   spent: number
   pending: number
+  legacyWallets: number
 }
 
 interface ApiResponse {
@@ -38,20 +44,64 @@ interface ApiResponse {
   treasuryConfigured: boolean
 }
 
+interface SweepResult {
+  email: string
+  realBalance: number
+  ledgerBefore: number
+  adjustment: number
+  transferred: number
+  status: "swept" | "no_funds" | "error"
+  error?: string
+}
+interface SweepResponse {
+  processed: number
+  swept: number
+  noFunds: number
+  errors: number
+  totalSwept: number
+  results: SweepResult[]
+}
+
+const EMPTY_TOTALS: Totals = { outstanding: 0, deposited: 0, withdrawn: 0, spent: 0, pending: 0, legacyWallets: 0 }
+
 export default function AdminWallets() {
   const [data,    setData]    = useState<ApiResponse | null>(null)
   const [loading, setLoading] = useState(true)
   const [search,  setSearch]  = useState("")
 
-  useEffect(() => {
+  // Sweep flow
+  const [confirmOpen, setConfirmOpen] = useState(false)
+  const [sweeping,    setSweeping]    = useState(false)
+  const [sweepResult, setSweepResult] = useState<SweepResponse | null>(null)
+
+  function load() {
+    setLoading(true)
     fetch("/api/admin/wallets")
       .then((r) => r.json())
-      .then((d) => { setData(d?.wallets ? d : { wallets: [], totals: { outstanding: 0, deposited: 0, withdrawn: 0, spent: 0, pending: 0 }, treasuryBalance: null, treasuryConfigured: false }); setLoading(false) })
+      .then((d) => { setData(d?.wallets ? d : { wallets: [], totals: EMPTY_TOTALS, treasuryBalance: null, treasuryConfigured: false }); setLoading(false) })
       .catch(() => setLoading(false))
-  }, [])
+  }
+  useEffect(() => { load() }, [])
+
+  async function runSweep() {
+    setSweeping(true)
+    try {
+      const r = await fetch("/api/admin/wallets/sweep", { method: "POST" })
+      const d: SweepResponse = await r.json()
+      if (!r.ok) { toast.error((d as unknown as { error?: string }).error ?? "Sweep failed"); return }
+      setSweepResult(d)
+      setConfirmOpen(false)
+      toast.success(`Swept ${d.swept} wallet${d.swept === 1 ? "" : "s"} — ${formatPrice(d.totalSwept)} into treasury`)
+      load()
+    } catch {
+      toast.error("Sweep failed")
+    } finally {
+      setSweeping(false)
+    }
+  }
 
   const wallets = data?.wallets ?? []
-  const totals  = data?.totals ?? { outstanding: 0, deposited: 0, withdrawn: 0, spent: 0, pending: 0 }
+  const totals  = data?.totals ?? EMPTY_TOTALS
 
   const filtered = wallets.filter((w) => {
     const q = search.toLowerCase()
@@ -146,6 +196,45 @@ export default function AdminWallets() {
             {formatPrice(totals.pending)} in pending deposits (not yet counted in balances)
           </div>
         )}
+
+        {/* Sweep CTA — only when legacy per-user wallets still exist */}
+        {data?.treasuryConfigured && totals.legacyWallets > 0 && (
+          <div className="mt-4 pt-4 border-t border-white/8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <div>
+              <p className="text-[10px] text-foreground/65 font-mono flex items-center gap-1.5">
+                <AlertTriangle className="h-3 w-3 text-amber-400" />
+                {totals.legacyWallets} user{totals.legacyWallets === 1 ? "" : "s"} still hold funds in individual nTZS wallets
+              </p>
+              <p className="text-[8px] text-foreground/30 mt-1">
+                Sweep moves each user&apos;s real wallet balance into the treasury and pins their ledger to match.
+              </p>
+            </div>
+            <button
+              onClick={() => { setSweepResult(null); setConfirmOpen(true) }}
+              className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-amber-500/15 border border-amber-500/30 text-amber-300 text-[10px] font-mono tracking-widest hover:bg-amber-500/25 transition-all active:scale-[0.98] flex-shrink-0"
+            >
+              <ArrowRightLeft className="h-3.5 w-3.5" /> SWEEP TO TREASURY
+            </button>
+          </div>
+        )}
+
+        {/* Last sweep summary */}
+        {sweepResult && (
+          <div className="mt-4 pt-4 border-t border-white/8">
+            <p className="text-[9px] text-foreground/45 font-mono mb-2">
+              Last sweep: <span className="text-emerald-400">{sweepResult.swept} swept</span> · {sweepResult.noFunds} empty
+              {sweepResult.errors > 0 && <span className="text-rose-400"> · {sweepResult.errors} errors</span>}
+              {" · "}{formatPrice(sweepResult.totalSwept)} moved
+            </p>
+            {sweepResult.errors > 0 && (
+              <div className="space-y-1">
+                {sweepResult.results.filter((r) => r.status === "error").map((r) => (
+                  <p key={r.email} className="text-[8px] text-rose-400/70 font-mono">⚠ {r.email}: {r.error}</p>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
       </div>
 
       {/* Search */}
@@ -222,10 +311,56 @@ export default function AdminWallets() {
       </div>
 
       <p className="text-[8px] text-foreground/22 font-mono leading-relaxed">
-        Balance = confirmed deposits − withdrawals − order spend. Funds are held in the shared HaoDeals
-        treasury; individual balances are tracked here in the database.
+        Balance = confirmed deposits + adjustments − withdrawals − order spend. Funds are held in the shared
+        HaoDeals treasury; individual balances are tracked here in the database.
       </p>
       <div className="h-4" />
+
+      {/* ── Sweep confirmation modal ─────────────────────────────────── */}
+      {confirmOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-black/65 backdrop-blur-sm" onClick={() => !sweeping && setConfirmOpen(false)} />
+          <div className="relative w-full max-w-md rounded-2xl border border-white/12 bg-background p-6 shadow-2xl">
+            <div className="flex items-center gap-2.5 mb-3">
+              <div className="w-9 h-9 rounded-xl bg-amber-500/15 flex items-center justify-center">
+                <ArrowRightLeft className="h-4 w-4 text-amber-400" />
+              </div>
+              <h2 className="text-sm font-semibold text-foreground/85">Sweep legacy wallets to treasury</h2>
+            </div>
+            <div className="space-y-2.5 text-[11px] text-foreground/55 leading-relaxed">
+              <p>
+                This reads the <span className="text-foreground/80">real nTZS balance</span> of each of the{" "}
+                <span className="text-amber-400 font-mono">{totals.legacyWallets}</span> legacy wallet(s),
+                transfers it into the HaoDeals treasury, and pins each user&apos;s ledger balance to that real amount.
+              </p>
+              <p className="text-foreground/40">
+                After this, treasury holdings will back 100% of user balances (1:1). Each user is detached from their
+                old wallet and switched to the treasury model — this can only run once per user.
+              </p>
+              <div className="flex items-start gap-1.5 text-amber-400/80 bg-amber-500/[0.06] border border-amber-500/15 rounded-lg p-2.5">
+                <AlertTriangle className="h-3.5 w-3.5 flex-shrink-0 mt-px" />
+                <span>This moves real funds and is not reversible. Make sure your treasury account is correct.</span>
+              </div>
+            </div>
+            <div className="flex gap-2 mt-5">
+              <button
+                onClick={() => setConfirmOpen(false)}
+                disabled={sweeping}
+                className="flex-1 py-2.5 rounded-xl border border-white/12 text-foreground/55 text-[11px] font-mono tracking-widest hover:bg-white/[0.04] transition-all disabled:opacity-40"
+              >
+                CANCEL
+              </button>
+              <button
+                onClick={runSweep}
+                disabled={sweeping}
+                className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl bg-amber-500/20 border border-amber-500/35 text-amber-200 text-[11px] font-mono tracking-widest hover:bg-amber-500/30 transition-all active:scale-[0.98] disabled:opacity-50"
+              >
+                {sweeping ? <><Loader2 className="h-3.5 w-3.5 animate-spin" /> SWEEPING…</> : <>CONFIRM SWEEP</>}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
