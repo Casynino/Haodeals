@@ -50,13 +50,14 @@ interface SweepResult {
   ledgerBefore: number
   adjustment: number
   transferred: number
-  status: "swept" | "no_funds" | "error"
+  status: "swept" | "no_funds" | "is_treasury" | "error"
   error?: string
 }
 interface SweepResponse {
   processed: number
   swept: number
   noFunds: number
+  treasury: number
   errors: number
   totalSwept: number
   results: SweepResult[]
@@ -128,10 +129,10 @@ export default function AdminWallets() {
       {/* KPI row */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
         {[
-          { label: "Outstanding Balance", val: totals.outstanding, icon: Wallet,         color: "text-violet-400",  bg: "bg-violet-500/10",  hint: "Total owed to users" },
-          { label: "Total Deposited",     val: totals.deposited,    icon: ArrowDownToLine, color: "text-emerald-400", bg: "bg-emerald-500/10", hint: "Confirmed top-ups" },
-          { label: "Total Withdrawn",     val: totals.withdrawn,    icon: ArrowUpFromLine, color: "text-rose-400",    bg: "bg-rose-500/10",    hint: "Paid out" },
-          { label: "Total Spent",         val: totals.spent,        icon: ShoppingBag,     color: "text-blue-400",    bg: "bg-blue-500/10",    hint: "On orders" },
+          { label: "Outstanding Balance", val: totals.outstanding, icon: Wallet,         color: "text-violet-400",  bg: "bg-violet-500/10",  hint: "Spendable, owed to users" },
+          { label: "Lifetime Deposits",   val: totals.deposited,    icon: ArrowDownToLine, color: "text-emerald-400", bg: "bg-emerald-500/10", hint: "All-time gross top-ups" },
+          { label: "Total Withdrawn",     val: totals.withdrawn,    icon: ArrowUpFromLine, color: "text-rose-400",    bg: "bg-rose-500/10",    hint: "Paid out to users" },
+          { label: "Order Revenue",       val: totals.spent,        icon: ShoppingBag,     color: "text-blue-400",    bg: "bg-blue-500/10",    hint: "Spent on orders" },
         ].map(({ label, val, icon: Icon, color, bg, hint }) => (
           <div key={label} className="rounded-2xl border border-white/8 bg-white/[0.02] p-4">
             <div className={`w-8 h-8 rounded-xl ${bg} flex items-center justify-center mb-2`}>
@@ -171,21 +172,24 @@ export default function AdminWallets() {
             </div>
             <div className={`rounded-xl border p-3 ${
               gap === null ? "border-white/8 bg-white/[0.015]"
-              : Math.abs(gap) < 1 ? "border-emerald-500/20 bg-emerald-500/[0.04]"
-              : "border-amber-500/20 bg-amber-500/[0.04]"
+              : gap >= 1 ? "border-amber-500/20 bg-amber-500/[0.04]"
+              : "border-emerald-500/20 bg-emerald-500/[0.04]"
             }`}>
-              <p className="text-[8px] text-foreground/30 font-mono tracking-widest">GAP</p>
+              <p className="text-[8px] text-foreground/30 font-mono tracking-widest">COVERAGE</p>
               {gap === null ? (
                 <p className="text-sm font-black font-mono text-foreground/40 mt-1">—</p>
-              ) : Math.abs(gap) < 1 ? (
-                <p className="text-sm font-black font-mono text-emerald-400 mt-1 flex items-center gap-1.5">
-                  <CheckCircle2 className="h-3.5 w-3.5" /> Balanced
-                </p>
-              ) : (
+              ) : gap >= 1 ? (
                 <p className="text-sm font-black font-mono text-amber-400 mt-1">{formatPrice(gap)} short</p>
+              ) : (
+                <p className="text-sm font-black font-mono text-emerald-400 mt-1 flex items-center gap-1.5">
+                  <CheckCircle2 className="h-3.5 w-3.5" /> Fully backed
+                </p>
               )}
               <p className="text-[8px] text-foreground/22 mt-0.5">
-                {gap !== null && gap >= 1 ? "Pre-migration funds not in treasury" : "Liability vs treasury"}
+                {gap === null ? "Liability vs treasury"
+                  : gap >= 1 ? "Funds not yet in treasury"
+                  : gap <= -1 ? `${formatPrice(Math.abs(gap))} surplus (order revenue)`
+                  : "Exactly balanced"}
               </p>
             </div>
           </div>
@@ -223,6 +227,7 @@ export default function AdminWallets() {
           <div className="mt-4 pt-4 border-t border-white/8">
             <p className="text-[9px] text-foreground/45 font-mono mb-2">
               Last sweep: <span className="text-emerald-400">{sweepResult.swept} swept</span> · {sweepResult.noFunds} empty
+              {sweepResult.treasury > 0 && <span> · {sweepResult.treasury} treasury</span>}
               {sweepResult.errors > 0 && <span className="text-rose-400"> · {sweepResult.errors} errors</span>}
               {" · "}{formatPrice(sweepResult.totalSwept)} moved
             </p>

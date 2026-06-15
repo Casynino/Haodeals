@@ -26,7 +26,8 @@ export async function GET() {
     // Show own deposits/withdrawals + ALL incoming customer order payments
     const [transactions, incomingOrders] = await Promise.all([
       prisma.transaction.findMany({
-        where: { userId },
+        // adjustment = internal ledger reconciliation, not shown as a line item
+        where: { userId, type: { not: "adjustment" } },
         orderBy: { createdAt: "desc" },
         take: 50,
       }),
@@ -98,7 +99,8 @@ export async function GET() {
   // ── Regular user view ──────────────────────────────────────────────────────
   const [transactions, orders] = await Promise.all([
     prisma.transaction.findMany({
-      where: { userId },
+      // adjustment = internal ledger reconciliation, not shown as a line item
+      where: { userId, type: { not: "adjustment" } },
       orderBy: { createdAt: "desc" },
       take: 50,
     }),

@@ -21,7 +21,7 @@ interface WalletData {
 
 interface TxItem {
   id: string
-  type: "deposit" | "withdrawal" | "purchase" | "incoming"
+  type: "deposit" | "withdrawal" | "purchase" | "incoming" | "adjustment"
   amountTzs: number
   status: string
   phoneNumber: string | null
@@ -34,12 +34,17 @@ type DepositStage = "form" | "pending" | "done"
 
 /* ── Config maps ─────────────────────────────────────────────────────────── */
 
-const typeConfig = {
+const typeConfig: Record<string, { label: string; icon: typeof ArrowDownToLine; bg: string; color: string; sign: string }> = {
   deposit:    { label: "Deposit",  icon: ArrowDownToLine, bg: "bg-emerald-500/15", color: "text-emerald-400", sign: "+" },
   withdrawal: { label: "Withdraw", icon: ArrowUpFromLine,  bg: "bg-rose-500/15",   color: "text-rose-400",    sign: "−" },
   purchase:   { label: "Purchase", icon: ShoppingBag,      bg: "bg-blue-500/15",   color: "text-blue-400",    sign: "−" },
   incoming:   { label: "Received", icon: ArrowLeftRight,   bg: "bg-emerald-500/15", color: "text-emerald-400", sign: "+" },
+  adjustment: { label: "Adjustment", icon: ArrowLeftRight, bg: "bg-violet-500/15", color: "text-violet-400",  sign: "" },
 }
+
+// Fallback so an unknown transaction type can never crash the list
+const fallbackConfig = { label: "Transaction", icon: Clock, bg: "bg-foreground/10", color: "text-foreground/50", sign: "" }
+const cfgFor = (type: string) => typeConfig[type] ?? fallbackConfig
 
 const statusStyle: Record<string, { pill: string; label: string }> = {
   completed:         { pill: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20", label: "Confirmed"  },
@@ -262,7 +267,7 @@ export default function WalletPage() {
           resolved.forEach((tx) => {
             const updated = fresh.find((f) => f.id === tx.id)!
             const lbl = updated.status === "completed" || updated.status === "confirmed" ? "✓ Confirmed" : updated.status
-            toast.success(`Transaction ${lbl}`, { description: tx.description ?? typeConfig[tx.type].label, className: "font-mono text-xs" })
+            toast.success(`Transaction ${lbl}`, { description: tx.description ?? cfgFor(tx.type).label, className: "font-mono text-xs" })
           })
         }
         return fresh
@@ -713,11 +718,13 @@ export default function WalletPage() {
           ) : (
             <div className="rounded-2xl border border-white/7 bg-white/[0.012] divide-y divide-white/[0.045] overflow-hidden">
               {history.map((tx) => {
-                const cfg      = typeConfig[tx.type]
+                const cfg      = cfgFor(tx.type)
                 const Icon     = cfg.icon
                 const isPending = tx.status === "pending"
                 const ss       = statusStyle[tx.status] ?? { pill: "bg-white/5 text-foreground/30 border-white/10", label: tx.status }
-                const isCredit = tx.type === "deposit" || tx.type === "incoming"
+                const isAdjust = tx.type === "adjustment"
+                const sign     = isAdjust ? (tx.amountTzs >= 0 ? "+" : "−") : cfg.sign
+                const isCredit = tx.type === "deposit" || tx.type === "incoming" || (isAdjust && tx.amountTzs >= 0)
 
                 return (
                   <div key={tx.id}
@@ -741,7 +748,7 @@ export default function WalletPage() {
                     {/* Amount + status */}
                     <div className="text-right flex-shrink-0 space-y-[5px]">
                       <p className={`text-[13px] font-bold font-mono ${isCredit ? "text-emerald-400" : "text-foreground/60"}`}>
-                        {cfg.sign}{formatPrice(tx.amountTzs)}
+                        {sign}{formatPrice(Math.abs(tx.amountTzs))}
                       </p>
                       <span className={`inline-flex text-[8px] border px-1.5 py-0.5 rounded-full font-mono tracking-wide ${ss.pill}`}>
                         {ss.label}

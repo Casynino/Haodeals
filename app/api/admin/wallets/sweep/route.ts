@@ -42,7 +42,7 @@ export async function POST() {
     ledgerBefore: number
     adjustment: number
     transferred: number
-    status: "swept" | "no_funds" | "error"
+    status: "swept" | "no_funds" | "is_treasury" | "error"
     error?: string
   }
   const results: Result[] = []
@@ -50,6 +50,18 @@ export async function POST() {
 
   for (const u of legacyUsers) {
     try {
+      // Account whose wallet IS the treasury: funds already there. Just detach
+      // and leave the DB-derived ledger as-is (do not pin to treasury balance).
+      if (u.ntzsUserId === treasuryUserId) {
+        await prisma.user.update({
+          where: { id: u.id },
+          data: { ntzsUserId: null, ntzsWalletAddress: null },
+        })
+        const ledgerBefore = await computeBalance(u.id)
+        results.push({ email: u.email, realBalance: ledgerBefore, ledgerBefore, adjustment: 0, transferred: 0, status: "is_treasury" })
+        continue
+      }
+
       // 1. Real balance held in the user's individual nTZS wallet
       const ntzsUser = await ntzs.getUser(u.ntzsUserId!)
       const realBalance = Math.floor(ntzsUser.balanceTzs ?? 0)
@@ -109,14 +121,16 @@ export async function POST() {
     }
   }
 
-  const swept   = results.filter((r) => r.status === "swept").length
-  const noFunds = results.filter((r) => r.status === "no_funds").length
-  const errors  = results.filter((r) => r.status === "error").length
+  const swept    = results.filter((r) => r.status === "swept").length
+  const noFunds  = results.filter((r) => r.status === "no_funds").length
+  const treasury = results.filter((r) => r.status === "is_treasury").length
+  const errors   = results.filter((r) => r.status === "error").length
 
   return NextResponse.json({
     processed: legacyUsers.length,
     swept,
     noFunds,
+    treasury,
     errors,
     totalSwept,
     results,
