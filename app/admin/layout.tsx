@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation"
 import {
   LayoutDashboard, ShoppingBag, Package, Users, BarChart2,
   Boxes, MessageSquare, ChevronLeft, ChevronRight, Menu, X,
-  Settings, Bell,
+  Settings, Bell, Wallet,
 } from "lucide-react"
 import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
@@ -16,6 +16,7 @@ const NAV = [
   { href: "/admin/orders",    label: "Orders",      icon: ShoppingBag                  },
   { href: "/admin/products",  label: "Products",    icon: Package                      },
   { href: "/admin/customers", label: "Customers",   icon: Users                        },
+  { href: "/admin/wallets",   label: "Wallets",     icon: Wallet                       },
   { href: "/admin/analytics", label: "Analytics",   icon: BarChart2                    },
   { href: "/admin/inventory", label: "Inventory",   icon: Boxes                        },
   { href: "/admin/messages",  label: "Messages",    icon: MessageSquare                },
