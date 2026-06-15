@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
 import { auth } from "@/auth"
-import { ntzs } from "@/lib/ntzs"
 import { sendOrderNotificationToAdmin, sendOrderStatusEmail } from "@/lib/email"
 import { uniqueTrackingId } from "@/lib/order-utils"
 
@@ -9,11 +8,6 @@ export async function POST(request: Request) {
   const session = await auth()
   if (!session?.user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
-  }
-
-  const treasuryUserId = process.env.NTZS_TREASURY_USER_ID
-  if (!treasuryUserId) {
-    return NextResponse.json({ error: "Payment service not configured" }, { status: 503 })
   }
 
   const { address, items, discountCodeId } = await request.json()
@@ -75,24 +69,38 @@ export async function POST(request: Request) {
 
   const user = await prisma.user.findUnique({
     where: { id: userId },
-    select: { id: true, name: true, email: true, phone: true, ntzsUserId: true },
+    select: { id: true, name: true, email: true, phone: true },
   })
-  if (!user?.ntzsUserId) {
-    return NextResponse.json({ error: "Wallet not provisioned. Please top up your wallet first." }, { status: 400 })
+  if (!user) {
+    return NextResponse.json({ error: "User not found" }, { status: 404 })
   }
 
-  try {
-    const ntzsUser = await ntzs.getUser(user.ntzsUserId)
-    if ((ntzsUser.balanceTzs ?? 0) < total) {
-      return NextResponse.json({
-        error: `Insufficient balance. You have ${ntzsUser.balanceTzs?.toLocaleString()} TZS, need ${total.toLocaleString()} TZS.`,
-        code: "insufficient_balance",
-        balance: ntzsUser.balanceTzs,
-        required: total,
-      }, { status: 402 })
-    }
-  } catch {
-    return NextResponse.json({ error: "Could not verify wallet balance. Try again." }, { status: 503 })
+  // Check DB balance: completed deposits − non-failed withdrawals − prior orders
+  const [depositSum, withdrawalSum, orderSum] = await Promise.all([
+    prisma.transaction.aggregate({
+      where: { userId, type: "deposit", status: "completed" },
+      _sum: { amountTzs: true },
+    }),
+    prisma.transaction.aggregate({
+      where: { userId, type: "withdrawal", status: { notIn: ["failed"] } },
+      _sum: { amountTzs: true },
+    }),
+    prisma.order.aggregate({
+      where: { userId, status: { notIn: ["pending_payment", "cancelled"] } },
+      _sum: { total: true },
+    }),
+  ])
+  const availableBalance = Math.max(
+    0,
+    (depositSum._sum.amountTzs ?? 0) - (withdrawalSum._sum.amountTzs ?? 0) - (orderSum._sum.total ?? 0)
+  )
+  if (availableBalance < total) {
+    return NextResponse.json({
+      error: `Insufficient balance. You have TSh ${availableBalance.toLocaleString()}, need TSh ${total.toLocaleString()}.`,
+      code: "insufficient_balance",
+      balance: availableBalance,
+      required: total,
+    }, { status: 402 })
   }
 
   // Generate unique tracking ID
@@ -122,19 +130,9 @@ export async function POST(request: Request) {
     include: { items: { include: { product: true } } },
   })
 
-  // Transfer funds: user wallet → treasury
   try {
-    const transfer = await ntzs.transfer({
-      fromUserId: user.ntzsUserId,
-      toUserId: treasuryUserId,
-      amountTzs: total,
-      metadata: { orderId: order.id },
-    })
-
-    await prisma.order.update({
-      where: { id: order.id },
-      data: { ntzsDepositId: transfer.id },
-    })
+    // Funds already sit in HaoDeals treasury (collected on deposit).
+    // The order itself serves as the debit against the user's DB balance.
 
     // Mark discount code as used
     if (validCode) {
@@ -205,13 +203,12 @@ export async function POST(request: Request) {
     return NextResponse.json({
       orderId: order.id,
       trackingId,
-      transferId: transfer.id,
       status: "payment_confirmed",
       discountApplied: discountPercent > 0 ? discountPercent : null,
     })
   } catch (err) {
     await prisma.order.delete({ where: { id: order.id } })
-    console.error("[nTZS] transfer failed:", err)
-    return NextResponse.json({ error: "Transfer failed. Please try again." }, { status: 502 })
+    console.error("[checkout] order creation failed:", err)
+    return NextResponse.json({ error: "Order failed. Please try again." }, { status: 502 })
   }
 }

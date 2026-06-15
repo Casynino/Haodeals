@@ -2,7 +2,6 @@ import { NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
 import bcrypt from "bcryptjs"
 import { z } from "zod"
-import { ntzs, normalizePhone } from "@/lib/ntzs"
 import { sendWelcomeEmail } from "@/lib/email"
 
 const registerSchema = z.object({
@@ -43,21 +42,6 @@ export async function POST(request: Request) {
         metadata: { userId: user.id, email },
       },
     }).catch(() => {})
-
-    // Provision nTZS wallet in the background — don't block registration if it fails
-    ntzs.createUser({
-      email,
-      name: name ?? undefined,
-      externalId: user.id,
-      phone: phone ? normalizePhone(phone) : undefined,
-    })
-      .then((ntzsUser) =>
-        prisma.user.update({
-          where: { id: user.id },
-          data: { ntzsUserId: ntzsUser.id, ntzsWalletAddress: ntzsUser.walletAddress },
-        })
-      )
-      .catch((err) => console.error("[nTZS] wallet provisioning failed:", err))
 
     return NextResponse.json(user, { status: 201 })
   } catch (error) {
