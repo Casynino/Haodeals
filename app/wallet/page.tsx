@@ -503,14 +503,14 @@ export default function WalletPage() {
                 >
                   nTZS
                 </div>
-                <div className="text-[7px] tracking-[0.32em] mt-[3px] font-mono uppercase" style={{ color: "rgba(251,191,36,0.45)" }}>Digital</div>
+                <div className="text-[10px] tracking-[0.32em] mt-[3px] font-mono uppercase" style={{ color: "rgba(251,191,36,0.45)" }}>Digital</div>
               </div>
             </div>
 
             {/* Row 2: Balance */}
             <div>
               <div className="flex items-center gap-2 mb-1.5">
-                <p className="text-[8px] tracking-[0.28em] font-mono uppercase"
+                <p className="text-[10px] tracking-[0.28em] font-mono uppercase"
                   style={{ color: "rgba(251,191,36,0.65)", textShadow: "0 1px 4px rgba(0,0,0,0.5)" }}>
                   Available Balance
                 </p>
@@ -542,14 +542,14 @@ export default function WalletPage() {
             {/* Row 3: Cardholder + wallet number */}
             <div className="flex items-end justify-between gap-4">
               <div className="min-w-0">
-                <p className="text-[7px] tracking-[0.28em] font-mono uppercase mb-[3px]" style={{ color: "rgba(251,191,36,0.42)" }}>Cardholder</p>
+                <p className="text-[10px] tracking-[0.28em] font-mono uppercase mb-[3px]" style={{ color: "rgba(251,191,36,0.42)" }}>Cardholder</p>
                 <p className="text-white text-[13px] font-semibold tracking-wide truncate" style={{ textShadow: "0 1px 6px rgba(0,0,0,0.5)" }}>{userName}</p>
               </div>
               <div className="text-right flex-shrink-0">
-                <p className="text-[7px] tracking-[0.28em] font-mono uppercase mb-[3px]" style={{ color: "rgba(251,191,36,0.42)" }}>Wallet No.</p>
+                <p className="text-[10px] tracking-[0.28em] font-mono uppercase mb-[3px]" style={{ color: "rgba(251,191,36,0.42)" }}>Wallet No.</p>
                 <button
                   onClick={copyId}
-                  className="flex items-center gap-1.5 text-[10px] font-mono transition-colors"
+                  className="flex items-center gap-1.5 text-[12px] font-mono transition-colors"
                   style={{ color: "rgba(255,255,255,0.50)" }}
                   onMouseEnter={(e) => (e.currentTarget.style.color = "rgba(251,191,36,0.85)")}
                   onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.50)")}
@@ -565,7 +565,7 @@ export default function WalletPage() {
           {hasPending && (
             <div className="absolute top-3.5 left-4 flex items-center gap-1.5 bg-black/40 backdrop-blur-md rounded-full px-2.5 py-1 border border-amber-400/20">
               <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
-              <span className="text-[7px] font-mono text-amber-300/70 tracking-widest uppercase">Syncing</span>
+              <span className="text-[10px] font-mono text-amber-300/70 tracking-widest uppercase">Syncing</span>
             </div>
           )}
         </div>
@@ -582,18 +582,18 @@ export default function WalletPage() {
                   <Landmark className="h-4 w-4 text-emerald-400" />
                 </div>
                 <div>
-                  <p className="text-[10px] tracking-[0.2em] text-emerald-400/80 font-mono uppercase">Treasury Pool</p>
-                  <p className="text-[9px] text-foreground/35 mt-0.5">Funds accepting payments across HaoDeals</p>
+                  <p className="text-[12px] tracking-[0.2em] text-emerald-400/80 font-mono uppercase">Treasury Pool</p>
+                  <p className="text-[11px] text-foreground/35 mt-0.5">Funds accepting payments across HaoDeals</p>
                 </div>
               </div>
               <div className="text-right">
                 <p className="text-sm font-black font-mono text-emerald-400">
                   {wallet.treasuryBalanceTzs === null ? "—" : formatPrice(wallet.treasuryBalanceTzs ?? 0)}
                 </p>
-                <p className="text-[8px] text-foreground/30 font-mono mt-0.5">Manage in admin →</p>
+                <p className="text-[10px] text-foreground/30 font-mono mt-0.5">Manage in admin →</p>
               </div>
             </div>
-            <p className="text-[8px] text-foreground/25 mt-3 leading-relaxed">
+            <p className="text-[10px] text-foreground/25 mt-3 leading-relaxed">
               This is the shared business treasury, separate from your personal balance above. It holds every
               user&apos;s funds and your order revenue.
             </p>
@@ -626,7 +626,7 @@ export default function WalletPage() {
               const tile = (
                 <div className={`flex flex-col items-center gap-2 py-4 rounded-2xl transition-all active:scale-95 cursor-pointer ${b.cls}`}>
                   <span className={b.iconColor}>{b.icon}</span>
-                  <span className="text-[10px] font-mono tracking-wide text-foreground/60">{b.label}</span>
+                  <span className="text-[12px] font-mono tracking-wide text-foreground/60">{b.label}</span>
                 </div>
               )
               return b.href
@@ -652,15 +652,15 @@ export default function WalletPage() {
             </div>
             <form onSubmit={handleDeposit} className="space-y-3">
               <div>
-                <label className="text-[9px] font-mono tracking-widest text-foreground/35 block mb-1.5">PHONE NUMBER</label>
+                <label className="text-[11px] font-mono tracking-widest text-foreground/35 block mb-1.5">PHONE NUMBER</label>
                 <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="+255 712 345 678" required
                   className="w-full bg-white/5 border border-white/8 rounded-xl px-3.5 py-2.5 text-sm text-foreground/80 placeholder:text-foreground/18 focus:outline-none focus:border-violet-500/35 focus:bg-white/[0.04] transition-all" />
               </div>
               <div>
-                <label className="text-[9px] font-mono tracking-widest text-foreground/35 block mb-1.5">AMOUNT (TZS)</label>
+                <label className="text-[11px] font-mono tracking-widest text-foreground/35 block mb-1.5">AMOUNT (TZS)</label>
                 <input type="number" value={amount} onChange={(e) => setAmount(e.target.value)} placeholder="10,000" min={500} required
                   className="w-full bg-white/5 border border-white/8 rounded-xl px-3.5 py-2.5 text-sm text-foreground/80 placeholder:text-foreground/18 focus:outline-none focus:border-violet-500/35 focus:bg-white/[0.04] transition-all" />
-                <p className="text-[9px] font-mono text-foreground/22 mt-1">Minimum TSh 500</p>
+                <p className="text-[11px] font-mono text-foreground/22 mt-1">Minimum TSh 500</p>
               </div>
               <button type="submit" disabled={submitting}
                 className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-semibold transition-all active:scale-[0.98] disabled:opacity-45">
@@ -680,7 +680,7 @@ export default function WalletPage() {
             </div>
             <p className="font-semibold text-foreground/75">Check your phone</p>
             <p className="text-sm text-foreground/40">Approve the M-Pesa prompt on <span className="text-foreground/65">{phone}</span></p>
-            <div className="flex items-center justify-center gap-1.5 text-[9px] font-mono text-amber-400/50">
+            <div className="flex items-center justify-center gap-1.5 text-[11px] font-mono text-amber-400/50">
               <span className="w-1.5 h-1.5 rounded-full bg-amber-400/50 animate-pulse" />
               Auto-updating when confirmed
             </div>
@@ -707,15 +707,15 @@ export default function WalletPage() {
             </div>
             <form onSubmit={handleWithdraw} className="space-y-3">
               <div>
-                <label className="text-[9px] font-mono tracking-widest text-foreground/35 block mb-1.5">PHONE NUMBER</label>
+                <label className="text-[11px] font-mono tracking-widest text-foreground/35 block mb-1.5">PHONE NUMBER</label>
                 <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="+255 712 345 678" required
                   className="w-full bg-white/5 border border-white/8 rounded-xl px-3.5 py-2.5 text-sm text-foreground/80 placeholder:text-foreground/18 focus:outline-none focus:border-violet-500/35 focus:bg-white/[0.04] transition-all" />
               </div>
               <div>
-                <label className="text-[9px] font-mono tracking-widest text-foreground/35 block mb-1.5">AMOUNT (TZS)</label>
+                <label className="text-[11px] font-mono tracking-widest text-foreground/35 block mb-1.5">AMOUNT (TZS)</label>
                 <input type="number" value={amount} onChange={(e) => setAmount(e.target.value)} placeholder="5,000" min={5000} required
                   className="w-full bg-white/5 border border-white/8 rounded-xl px-3.5 py-2.5 text-sm text-foreground/80 placeholder:text-foreground/18 focus:outline-none focus:border-violet-500/35 focus:bg-white/[0.04] transition-all" />
-                <p className="text-[9px] font-mono text-foreground/22 mt-1">Minimum TSh 5,000</p>
+                <p className="text-[11px] font-mono text-foreground/22 mt-1">Minimum TSh 5,000</p>
               </div>
               <button type="submit" disabled={submitting}
                 className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold transition-all active:scale-[0.98] disabled:opacity-45">
@@ -774,7 +774,7 @@ export default function WalletPage() {
                       <p className="text-[13px] text-foreground/72 truncate font-medium leading-tight">
                         {tx.description ?? cfg.label}
                       </p>
-                      <p className="text-[10px] text-foreground/28 mt-0.5 font-mono">
+                      <p className="text-[12px] text-foreground/28 mt-0.5 font-mono">
                         {new Date(tx.createdAt).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" })}
                         {tx.phoneNumber && ` · ${tx.phoneNumber}`}
                       </p>
@@ -784,7 +784,7 @@ export default function WalletPage() {
                       <p className={`text-[13px] font-bold font-mono ${isCredit ? "text-emerald-400" : "text-foreground/60"}`}>
                         {sign}{formatPrice(Math.abs(tx.amountTzs))}
                       </p>
-                      <span className={`inline-flex text-[8px] border px-1.5 py-0.5 rounded-full font-mono tracking-wide ${ss.pill}`}>
+                      <span className={`inline-flex text-[10px] border px-1.5 py-0.5 rounded-full font-mono tracking-wide ${ss.pill}`}>
                         {ss.label}
                       </span>
                     </div>

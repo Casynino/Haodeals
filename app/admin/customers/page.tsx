@@ -42,7 +42,7 @@ export default function AdminCustomers() {
           <Users className="h-4 w-4 text-violet-400/60" />
           <h1 className="text-base font-semibold tracking-[0.2em] text-foreground/85">CUSTOMERS</h1>
         </div>
-        <span className="text-[9px] font-mono text-foreground/30">{customers.length} registered</span>
+        <span className="text-[11px] font-mono text-foreground/30">{customers.length} registered</span>
       </div>
 
       {/* KPI row */}
@@ -57,7 +57,7 @@ export default function AdminCustomers() {
               <Icon className={`h-4 w-4 ${color}`} />
             </div>
             <p className="text-xl font-black text-foreground/85">{val}</p>
-            <p className="text-[8px] text-foreground/28 font-mono tracking-widest mt-0.5">{label.toUpperCase()}</p>
+            <p className="text-[10px] text-foreground/28 font-mono tracking-widest mt-0.5">{label.toUpperCase()}</p>
           </div>
         ))}
       </div>
@@ -66,13 +66,13 @@ export default function AdminCustomers() {
       <div className="relative max-w-sm">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3 w-3 text-foreground/22" />
         <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search customers…"
-          className="w-full pl-8 pr-8 py-2 bg-white/4 border border-white/10 rounded-xl text-[10px] text-foreground/65 placeholder:text-foreground/20 focus:outline-none focus:border-white/25 transition-colors" />
+          className="w-full pl-8 pr-8 py-2 bg-white/4 border border-white/10 rounded-xl text-[12px] text-foreground/65 placeholder:text-foreground/20 focus:outline-none focus:border-white/25 transition-colors" />
         {search && <button onClick={() => setSearch("")} className="absolute right-3 top-1/2 -translate-y-1/2 text-foreground/28 hover:text-foreground"><X className="h-3 w-3" /></button>}
       </div>
 
       {/* Customer table */}
       <div className="rounded-2xl border border-white/8 bg-white/[0.02] overflow-hidden">
-        <div className="grid grid-cols-12 gap-3 px-4 py-2.5 border-b border-white/8 text-[7px] tracking-widest text-foreground/22 uppercase">
+        <div className="grid grid-cols-12 gap-3 px-4 py-2.5 border-b border-white/8 text-[10px] tracking-widest text-foreground/22 uppercase">
           <span className="col-span-4">Customer</span>
           <span className="col-span-2 text-right">Orders</span>
           <span className="col-span-3 text-right">Total Spent</span>
@@ -84,33 +84,33 @@ export default function AdminCustomers() {
         ) : filtered.length === 0 ? (
           <div className="text-center py-16">
             <Users className="h-8 w-8 mx-auto mb-2 text-foreground/10" />
-            <p className="text-[9px] text-foreground/25 font-mono">{search ? "No customers match your search" : "No customers yet"}</p>
+            <p className="text-[11px] text-foreground/25 font-mono">{search ? "No customers match your search" : "No customers yet"}</p>
           </div>
         ) : (
           <div className="divide-y divide-white/[0.045]">
             {filtered.map((c, i) => (
               <div key={c.id} className="grid grid-cols-12 gap-3 items-center px-4 py-3 hover:bg-white/[0.02] transition-colors">
                 <div className="col-span-4 flex items-center gap-3 min-w-0">
-                  <div className="w-7 h-7 rounded-full bg-violet-500/15 flex items-center justify-center flex-shrink-0 text-[9px] font-bold text-violet-400">
+                  <div className="w-7 h-7 rounded-full bg-violet-500/15 flex items-center justify-center flex-shrink-0 text-[11px] font-bold text-violet-400">
                     {i < 3 ? ["🥇","🥈","🥉"][i] : (c.name?.[0]?.toUpperCase() ?? "?")}
                   </div>
                   <div className="min-w-0">
-                    <p className="text-[10px] font-semibold text-foreground/70 truncate">{c.name || "—"}</p>
-                    <p className="text-[8px] text-foreground/28 font-mono truncate">{c.email}</p>
+                    <p className="text-[12px] font-semibold text-foreground/70 truncate">{c.name || "—"}</p>
+                    <p className="text-[10px] text-foreground/28 font-mono truncate">{c.email}</p>
                   </div>
                 </div>
                 <div className="col-span-2 text-right">
-                  <span className={`text-[10px] font-mono ${c.orderCount > 0 ? "text-foreground/60" : "text-foreground/22"}`}>
+                  <span className={`text-[12px] font-mono ${c.orderCount > 0 ? "text-foreground/60" : "text-foreground/22"}`}>
                     {c.orderCount}
                   </span>
                 </div>
                 <div className="col-span-3 text-right">
-                  <span className={`text-[10px] font-mono font-bold ${c.totalSpent > 0 ? "text-emerald-400" : "text-foreground/22"}`}>
+                  <span className={`text-[12px] font-mono font-bold ${c.totalSpent > 0 ? "text-emerald-400" : "text-foreground/22"}`}>
                     {formatPrice(c.totalSpent)}
                   </span>
                 </div>
                 <div className="col-span-3 text-right">
-                  <span className="text-[9px] text-foreground/28 font-mono">
+                  <span className="text-[11px] text-foreground/28 font-mono">
                     {new Date(c.createdAt).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "2-digit" })}
                   </span>
                 </div>
@@ -124,7 +124,7 @@ export default function AdminCustomers() {
       {totalRevenue > 0 && (
         <div className="flex items-center gap-3 p-4 rounded-2xl border border-emerald-500/15 bg-emerald-500/[0.03]">
           <TrendingUp className="h-4 w-4 text-emerald-400 flex-shrink-0" />
-          <p className="text-[10px] text-foreground/55">
+          <p className="text-[12px] text-foreground/55">
             Top {Math.min(active, 5)} customers generated <span className="text-emerald-400 font-mono font-bold">
               {formatPrice(customers.slice(0, 5).reduce((s, c) => s + c.totalSpent, 0))}
             </span> in revenue

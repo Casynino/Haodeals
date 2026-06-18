@@ -52,7 +52,7 @@ function PaymentScene() {
       </div>
       <div className="text-center">
         <p className="text-[13px] font-bold text-blue-400/90 tracking-wider">PAYMENT RECEIVED</p>
-        <p className="text-[10px] text-foreground/40 mt-1 leading-relaxed max-w-[220px] mx-auto">
+        <p className="text-[12px] text-foreground/40 mt-1 leading-relaxed max-w-[220px] mx-auto">
           Great news! We have received your payment and your order is confirmed.
         </p>
       </div>
@@ -98,11 +98,11 @@ function PackagingScene() {
       <div className="text-center">
         <p className="text-[13px] font-bold text-yellow-400/90 tracking-wider">PACKAGING</p>
         <div className="flex items-center justify-center gap-0.5 mt-1">
-          <span className="text-[10px] text-foreground/40">Your order is being packed</span>
+          <span className="text-[12px] text-foreground/40">Your order is being packed</span>
           {[0, 1, 2].map((i) => (
             <motion.span
               key={i}
-              className="text-yellow-400/60 text-[11px] font-bold"
+              className="text-yellow-400/60 text-[13px] font-bold"
               animate={{ opacity: [0, 1, 0] }}
               transition={{ duration: 1.2, repeat: Infinity, delay: i * 0.4 }}
             >
@@ -181,7 +181,7 @@ function TransitScene() {
 
       <div className="text-center">
         <p className="text-[13px] font-bold text-purple-400/90 tracking-wider">IN TRANSIT</p>
-        <p className="text-[10px] text-foreground/40 mt-1">Your package is on its way to you!</p>
+        <p className="text-[12px] text-foreground/40 mt-1">Your package is on its way to you!</p>
       </div>
     </motion.div>
   )
@@ -239,7 +239,7 @@ function DeliveredScene() {
 
       <div className="text-center">
         <p className="text-[13px] font-bold text-green-400/90 tracking-wider">DELIVERED!</p>
-        <p className="text-[10px] text-foreground/40 mt-1">
+        <p className="text-[12px] text-foreground/40 mt-1">
           Your order has been delivered. Thank you for shopping with us!
         </p>
       </div>
@@ -331,7 +331,7 @@ function Timeline({ currentStage, isException }: { currentStage: number; isExcep
             </div>
             {/* Label */}
             <p
-              className="text-[8px] tracking-wide text-center leading-tight"
+              className="text-[10px] tracking-wide text-center leading-tight"
               style={{
                 color: isCurrent ? "#ee0000" : isCompleted ? "rgba(255,255,255,0.5)" : "rgba(255,255,255,0.18)",
                 maxWidth: "56px",
@@ -352,7 +352,7 @@ function EventLog({ events }: { events: TrackingEvent[] }) {
 
   return (
     <div className="border-t border-white/8 px-5 py-4">
-      <p className="text-[8px] tracking-[0.3em] text-foreground/25 mb-3">UPDATES</p>
+      <p className="text-[10px] tracking-[0.3em] text-foreground/25 mb-3">UPDATES</p>
       <div className="space-y-3">
         {[...events].reverse().map((event) => {
           const d = new Date(event.createdAt)
@@ -363,8 +363,8 @@ function EventLog({ events }: { events: TrackingEvent[] }) {
           })
           return (
             <div key={event.id} className="flex gap-3">
-              <span className="text-[8px] text-foreground/20 flex-shrink-0 w-28 leading-snug pt-px">{time}</span>
-              <p className="text-[10px] text-foreground/55 leading-relaxed">{event.message}</p>
+              <span className="text-[10px] text-foreground/20 flex-shrink-0 w-28 leading-snug pt-px">{time}</span>
+              <p className="text-[12px] text-foreground/55 leading-relaxed">{event.message}</p>
             </div>
           )
         })}
@@ -421,7 +421,7 @@ export default function OrderTracker({
       >
         <div className="flex items-start justify-between">
           <div>
-            <p className="text-[8px] tracking-[0.3em] text-foreground/25 mb-0.5">TRACKING NUMBER</p>
+            <p className="text-[10px] tracking-[0.3em] text-foreground/25 mb-0.5">TRACKING NUMBER</p>
             <p
               className="text-lg font-black tracking-widest"
               style={{
@@ -433,7 +433,7 @@ export default function OrderTracker({
             </p>
           </div>
           <div className="text-right mt-1">
-            <p className="text-[9px] text-foreground/30 tracking-wider">
+            <p className="text-[11px] text-foreground/30 tracking-wider">
               {isExcept
                 ? <span style={{ color: EXCEPTIONS[status]?.color }}>
                     {EXCEPTIONS[status]?.label}
@@ -444,7 +444,7 @@ export default function OrderTracker({
               }
             </p>
             {!isExcept && displayStage >= 0 && (
-              <p className="text-[8px] text-foreground/20 mt-0.5">{STAGES[displayStage]?.sublabel}</p>
+              <p className="text-[10px] text-foreground/20 mt-0.5">{STAGES[displayStage]?.sublabel}</p>
             )}
           </div>
         </div>

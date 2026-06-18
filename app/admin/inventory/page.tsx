@@ -72,10 +72,10 @@ export default function AdminInventory() {
           <h1 className="text-base font-semibold tracking-[0.2em] text-foreground/85">INVENTORY</h1>
         </div>
         <div className="flex items-center gap-2">
-          <button onClick={load} className="flex items-center gap-1.5 text-[9px] text-foreground/28 hover:text-foreground/55 transition-colors">
+          <button onClick={load} className="flex items-center gap-1.5 text-[11px] text-foreground/28 hover:text-foreground/55 transition-colors">
             <RefreshCw className="h-3 w-3" /> Refresh
           </button>
-          <Link href="/admin/products" className="flex items-center gap-1.5 px-3 py-1.5 border border-white/12 text-[9px] tracking-widest text-foreground/40 hover:text-foreground/70 transition-colors">
+          <Link href="/admin/products" className="flex items-center gap-1.5 px-3 py-1.5 border border-white/12 text-[11px] tracking-widest text-foreground/40 hover:text-foreground/70 transition-colors">
             + Add Product
           </Link>
         </div>
@@ -94,7 +94,7 @@ export default function AdminInventory() {
               <Icon className="h-3.5 w-3.5" />
             </div>
             <p className="text-xl font-black text-foreground/82">{val}</p>
-            <p className="text-[8px] font-mono tracking-widest text-foreground/28 mt-0.5">{label.toUpperCase()}</p>
+            <p className="text-[10px] font-mono tracking-widest text-foreground/28 mt-0.5">{label.toUpperCase()}</p>
           </div>
         ))}
       </div>
@@ -104,7 +104,7 @@ export default function AdminInventory() {
         <div className="flex gap-1 flex-wrap">
           {FILTER_TABS.map(({ id, label, color }) => (
             <button key={id} onClick={() => setFilter(id)}
-              className={`px-3 py-1.5 rounded-full text-[8px] tracking-widest border transition-all font-mono
+              className={`px-3 py-1.5 rounded-full text-[10px] tracking-widest border transition-all font-mono
                 ${filter === id ? "border-white/25 bg-white/6 text-foreground/75" : `border-white/8 ${color || "text-foreground/30"} hover:border-white/18`}`}>
               {label.toUpperCase()}
             </button>
@@ -113,14 +113,14 @@ export default function AdminInventory() {
         <div className="relative max-w-xs flex-1">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3 w-3 text-foreground/22" />
           <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search products…"
-            className="w-full pl-8 pr-8 py-2 bg-white/4 border border-white/10 rounded-xl text-[10px] text-foreground/65 placeholder:text-foreground/20 focus:outline-none focus:border-white/25 transition-colors" />
+            className="w-full pl-8 pr-8 py-2 bg-white/4 border border-white/10 rounded-xl text-[12px] text-foreground/65 placeholder:text-foreground/20 focus:outline-none focus:border-white/25 transition-colors" />
           {search && <button onClick={() => setSearch("")} className="absolute right-3 top-1/2 -translate-y-1/2 text-foreground/28 hover:text-foreground"><X className="h-3 w-3" /></button>}
         </div>
       </div>
 
       {/* Products list */}
       <div className="rounded-2xl border border-white/8 bg-white/[0.02] overflow-hidden">
-        <div className="grid grid-cols-12 gap-3 px-4 py-2.5 border-b border-white/8 text-[7px] tracking-widest text-foreground/22 uppercase">
+        <div className="grid grid-cols-12 gap-3 px-4 py-2.5 border-b border-white/8 text-[10px] tracking-widest text-foreground/22 uppercase">
           <span className="col-span-5">Product</span>
           <span className="col-span-2 text-right">Price</span>
           <span className="col-span-2 text-right">Sold</span>
@@ -132,7 +132,7 @@ export default function AdminInventory() {
         ) : filtered.length === 0 ? (
           <div className="text-center py-12">
             <Boxes className="h-8 w-8 mx-auto mb-2 text-foreground/10" />
-            <p className="text-[9px] text-foreground/25 font-mono">No products found</p>
+            <p className="text-[11px] text-foreground/25 font-mono">No products found</p>
           </div>
         ) : (
           <div className="divide-y divide-white/[0.04]">
@@ -146,21 +146,21 @@ export default function AdminInventory() {
                       {imgs[0] && <Image src={imgs[0]} alt="" width={36} height={36} className="w-full h-full object-cover opacity-70" />}
                     </div>
                     <div className="min-w-0">
-                      <Link href={`/products/${p.id}`} className="text-[10px] font-medium text-foreground/68 hover:text-foreground transition-colors truncate block">{p.name}</Link>
-                      <p className="text-[8px] text-foreground/25 font-mono truncate">{p.category.name}</p>
+                      <Link href={`/products/${p.id}`} className="text-[12px] font-medium text-foreground/68 hover:text-foreground transition-colors truncate block">{p.name}</Link>
+                      <p className="text-[10px] text-foreground/25 font-mono truncate">{p.category.name}</p>
                     </div>
                   </div>
                   <div className="col-span-2 text-right">
-                    <span className="text-[10px] text-emerald-400/70 font-mono">{formatPrice(p.price)}</span>
+                    <span className="text-[12px] text-emerald-400/70 font-mono">{formatPrice(p.price)}</span>
                   </div>
                   <div className="col-span-2 text-right">
-                    <span className="text-[10px] text-foreground/38 font-mono">{p._count.orderItems}</span>
+                    <span className="text-[12px] text-foreground/38 font-mono">{p._count.orderItems}</span>
                   </div>
                   <div className="col-span-3 flex items-center justify-end gap-2">
-                    <span className={`text-[8px] font-mono font-bold px-2 py-0.5 rounded-full border ${STOCK_BADGE[lvl]}`}>
+                    <span className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded-full border ${STOCK_BADGE[lvl]}`}>
                       {p.stock === 0 ? "OUT" : `${p.stock} left`}
                     </span>
-                    <Link href="/admin/products" className="text-[8px] text-foreground/22 hover:text-foreground/55 transition-colors hidden sm:inline">Edit</Link>
+                    <Link href="/admin/products" className="text-[10px] text-foreground/22 hover:text-foreground/55 transition-colors hidden sm:inline">Edit</Link>
                   </div>
                 </div>
               )

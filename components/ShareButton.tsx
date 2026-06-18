@@ -176,7 +176,7 @@ export function ShareButton({ productName, productPath }: ShareButtonProps) {
                 <span className="text-5xl leading-none animate-bounce">🎉</span>
                 <div className="space-y-1">
                   <p className="text-sm font-bold text-foreground/85">Shared successfully!</p>
-                  <p className="text-[10px] text-foreground/38">Points coming soon 🎁</p>
+                  <p className="text-[12px] text-foreground/38">Points coming soon 🎁</p>
                 </div>
               </div>
             ) : (
@@ -186,12 +186,12 @@ export function ShareButton({ productName, productPath }: ShareButtonProps) {
                   <div>
                     <div className="flex items-center gap-1.5 mb-0.5">
                       <Sparkles className="h-3 w-3 text-violet-400/65" />
-                      <p className="text-[8px] tracking-[0.2em] text-violet-400/58">SHARE &amp; EARN</p>
+                      <p className="text-[10px] tracking-[0.2em] text-violet-400/58">SHARE &amp; EARN</p>
                     </div>
                     <p className="text-xs font-semibold text-foreground/78 max-w-[220px] truncate">
                       {productName ?? "HaoDeals"}
                     </p>
-                    <p className="text-[8px] text-foreground/28 mt-0.5">
+                    <p className="text-[10px] text-foreground/28 mt-0.5">
                       Earn rewards every time you share
                     </p>
                   </div>
@@ -207,7 +207,7 @@ export function ShareButton({ productName, productPath }: ShareButtonProps) {
                 {/* ── URL strip ── */}
                 <div className="mx-5 mb-3 flex items-center gap-2 border border-white/[0.07] bg-foreground/[0.018] px-3 py-2">
                   <Link2 className="h-3 w-3 text-foreground/22 shrink-0" />
-                  <p className="text-[9px] text-foreground/28 truncate flex-1">{fullUrl}</p>
+                  <p className="text-[11px] text-foreground/28 truncate flex-1">{fullUrl}</p>
                 </div>
 
                 {/* ── Share options ── */}
@@ -231,7 +231,7 @@ export function ShareButton({ productName, productPath }: ShareButtonProps) {
                           <p className="text-xs font-medium text-foreground/75">
                             {done ? "Copied!" : label}
                           </p>
-                          <p className="text-[8px] text-foreground/30 mt-0.5">{sub}</p>
+                          <p className="text-[10px] text-foreground/30 mt-0.5">{sub}</p>
                         </div>
                       </button>
                     )
@@ -241,7 +241,7 @@ export function ShareButton({ productName, productPath }: ShareButtonProps) {
                 {/* ── Points teaser ── */}
                 <div className="m-5 flex items-center gap-2 border border-violet-500/[0.13] bg-violet-500/[0.04] px-3 py-2">
                   <Sparkles className="h-3 w-3 text-violet-400/50 shrink-0" />
-                  <p className="text-[8px] text-violet-400/48 tracking-wide leading-relaxed">
+                  <p className="text-[10px] text-violet-400/48 tracking-wide leading-relaxed">
                     Points system launching soon — your shares will be rewarded 🎁
                   </p>
                 </div>

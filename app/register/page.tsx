@@ -67,7 +67,7 @@ export default function RegisterPage() {
           {PERKS.map((perk) => (
             <div key={perk} className="flex items-start gap-1.5">
               <CheckCircle className="h-3 w-3 text-green-400/70 mt-0.5 shrink-0" />
-              <span className="text-[11px] text-foreground/40 leading-tight">{perk}</span>
+              <span className="text-[13px] text-foreground/40 leading-tight">{perk}</span>
             </div>
           ))}
         </div>

@@ -158,7 +158,7 @@ export default function AdminWallets() {
           <Wallet className="h-4 w-4 text-violet-400/60" />
           <h1 className="text-base font-semibold tracking-[0.2em] text-foreground/85">WALLETS</h1>
         </div>
-        <span className="text-[9px] font-mono text-foreground/30">{withBalance} with balance</span>
+        <span className="text-[11px] font-mono text-foreground/30">{withBalance} with balance</span>
       </div>
 
       {/* KPI row */}
@@ -174,8 +174,8 @@ export default function AdminWallets() {
               <Icon className={`h-4 w-4 ${color}`} />
             </div>
             <p className="text-base font-black text-foreground/85 font-mono">{formatPrice(val)}</p>
-            <p className="text-[8px] text-foreground/28 font-mono tracking-widest mt-0.5">{label.toUpperCase()}</p>
-            <p className="text-[8px] text-foreground/20 mt-0.5">{hint}</p>
+            <p className="text-[10px] text-foreground/28 font-mono tracking-widest mt-0.5">{label.toUpperCase()}</p>
+            <p className="text-[10px] text-foreground/20 mt-0.5">{hint}</p>
           </div>
         ))}
       </div>
@@ -185,12 +185,12 @@ export default function AdminWallets() {
         <div className="flex items-center justify-between gap-2 mb-3 flex-wrap">
           <div className="flex items-center gap-2">
             <Landmark className="h-3.5 w-3.5 text-amber-400/70" />
-            <p className="text-[10px] tracking-[0.2em] text-foreground/55 font-mono">TREASURY RECONCILIATION</p>
+            <p className="text-[12px] tracking-[0.2em] text-foreground/55 font-mono">TREASURY RECONCILIATION</p>
           </div>
           {data?.treasuryId && (
             <button
               onClick={() => { navigator.clipboard.writeText(data.treasuryId!); toast.success("Treasury ID copied") }}
-              className="flex items-center gap-1.5 text-[9px] font-mono text-foreground/40 hover:text-foreground/70 transition-colors group"
+              className="flex items-center gap-1.5 text-[11px] font-mono text-foreground/40 hover:text-foreground/70 transition-colors group"
               title="Copy treasury wallet ID"
             >
               <span className="text-foreground/25">TREASURY ID:</span>
@@ -200,30 +200,30 @@ export default function AdminWallets() {
           )}
         </div>
         {!data?.treasuryConfigured ? (
-          <div className="flex items-center gap-2 text-[10px] text-amber-400/80">
+          <div className="flex items-center gap-2 text-[12px] text-amber-400/80">
             <AlertTriangle className="h-3.5 w-3.5" />
             NTZS_TREASURY_USER_ID is not configured — deposits and withdrawals will fail.
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <div className="rounded-xl border border-white/8 bg-white/[0.015] p-3">
-              <p className="text-[8px] text-foreground/30 font-mono tracking-widest">USER LIABILITY</p>
+              <p className="text-[10px] text-foreground/30 font-mono tracking-widest">USER LIABILITY</p>
               <p className="text-sm font-black font-mono text-violet-400 mt-1">{formatPrice(totals.outstanding)}</p>
-              <p className="text-[8px] text-foreground/22 mt-0.5">Sum of all user balances</p>
+              <p className="text-[10px] text-foreground/22 mt-0.5">Sum of all user balances</p>
             </div>
             <div className="rounded-xl border border-white/8 bg-white/[0.015] p-3">
-              <p className="text-[8px] text-foreground/30 font-mono tracking-widest">TREASURY HOLDS</p>
+              <p className="text-[10px] text-foreground/30 font-mono tracking-widest">TREASURY HOLDS</p>
               <p className="text-sm font-black font-mono text-emerald-400 mt-1">
                 {treasury !== null ? formatPrice(treasury) : "Unavailable"}
               </p>
-              <p className="text-[8px] text-foreground/22 mt-0.5">Live nTZS treasury balance</p>
+              <p className="text-[10px] text-foreground/22 mt-0.5">Live nTZS treasury balance</p>
             </div>
             <div className={`rounded-xl border p-3 ${
               gap === null ? "border-white/8 bg-white/[0.015]"
               : gap >= 1 ? "border-amber-500/20 bg-amber-500/[0.04]"
               : "border-emerald-500/20 bg-emerald-500/[0.04]"
             }`}>
-              <p className="text-[8px] text-foreground/30 font-mono tracking-widest">COVERAGE</p>
+              <p className="text-[10px] text-foreground/30 font-mono tracking-widest">COVERAGE</p>
               {gap === null ? (
                 <p className="text-sm font-black font-mono text-foreground/40 mt-1">—</p>
               ) : gap >= 1 ? (
@@ -233,7 +233,7 @@ export default function AdminWallets() {
                   <CheckCircle2 className="h-3.5 w-3.5" /> Fully backed
                 </p>
               )}
-              <p className="text-[8px] text-foreground/22 mt-0.5">
+              <p className="text-[10px] text-foreground/22 mt-0.5">
                 {gap === null ? "Liability vs treasury"
                   : gap >= 1 ? "Funds not yet in treasury"
                   : gap <= -1 ? `${formatPrice(Math.abs(gap))} surplus (order revenue)`
@@ -243,7 +243,7 @@ export default function AdminWallets() {
           </div>
         )}
         {totals.pending > 0 && (
-          <div className="flex items-center gap-1.5 mt-3 text-[9px] text-amber-400/70 font-mono">
+          <div className="flex items-center gap-1.5 mt-3 text-[11px] text-amber-400/70 font-mono">
             <Clock className="h-3 w-3" />
             {formatPrice(totals.pending)} in pending deposits (not yet counted in balances)
           </div>
@@ -253,14 +253,14 @@ export default function AdminWallets() {
         {data?.treasuryConfigured && (
           <div className="mt-4 pt-4 border-t border-white/8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
             <div>
-              <p className="text-[10px] text-foreground/65 font-mono">Consolidate another wallet</p>
-              <p className="text-[8px] text-foreground/30 mt-1">
+              <p className="text-[12px] text-foreground/65 font-mono">Consolidate another wallet</p>
+              <p className="text-[10px] text-foreground/30 mt-1">
                 Move nTZS from a different wallet (e.g. an old one) into the active treasury.
               </p>
             </div>
             <button
               onClick={() => { setPreview(null); setSourceId(""); setConsolidateOpen(true) }}
-              className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-blue-500/15 border border-blue-500/30 text-blue-300 text-[10px] font-mono tracking-widest hover:bg-blue-500/25 transition-all active:scale-[0.98] flex-shrink-0"
+              className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-blue-500/15 border border-blue-500/30 text-blue-300 text-[12px] font-mono tracking-widest hover:bg-blue-500/25 transition-all active:scale-[0.98] flex-shrink-0"
             >
               <ArrowRightLeft className="h-3.5 w-3.5" /> MOVE FUNDS IN
             </button>
@@ -271,17 +271,17 @@ export default function AdminWallets() {
         {data?.treasuryConfigured && totals.legacyWallets > 0 && (
           <div className="mt-4 pt-4 border-t border-white/8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
             <div>
-              <p className="text-[10px] text-foreground/65 font-mono flex items-center gap-1.5">
+              <p className="text-[12px] text-foreground/65 font-mono flex items-center gap-1.5">
                 <AlertTriangle className="h-3 w-3 text-amber-400" />
                 {totals.legacyWallets} user{totals.legacyWallets === 1 ? "" : "s"} still hold funds in individual nTZS wallets
               </p>
-              <p className="text-[8px] text-foreground/30 mt-1">
+              <p className="text-[10px] text-foreground/30 mt-1">
                 Sweep moves each user&apos;s real wallet balance into the treasury and pins their ledger to match.
               </p>
             </div>
             <button
               onClick={() => { setSweepResult(null); setConfirmOpen(true) }}
-              className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-amber-500/15 border border-amber-500/30 text-amber-300 text-[10px] font-mono tracking-widest hover:bg-amber-500/25 transition-all active:scale-[0.98] flex-shrink-0"
+              className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-amber-500/15 border border-amber-500/30 text-amber-300 text-[12px] font-mono tracking-widest hover:bg-amber-500/25 transition-all active:scale-[0.98] flex-shrink-0"
             >
               <ArrowRightLeft className="h-3.5 w-3.5" /> SWEEP TO TREASURY
             </button>
@@ -291,7 +291,7 @@ export default function AdminWallets() {
         {/* Last sweep summary */}
         {sweepResult && (
           <div className="mt-4 pt-4 border-t border-white/8">
-            <p className="text-[9px] text-foreground/45 font-mono mb-2">
+            <p className="text-[11px] text-foreground/45 font-mono mb-2">
               Last sweep: <span className="text-emerald-400">{sweepResult.swept} swept</span> · {sweepResult.noFunds} empty
               {sweepResult.treasury > 0 && <span> · {sweepResult.treasury} treasury</span>}
               {sweepResult.errors > 0 && <span className="text-rose-400"> · {sweepResult.errors} errors</span>}
@@ -300,7 +300,7 @@ export default function AdminWallets() {
             {sweepResult.errors > 0 && (
               <div className="space-y-1">
                 {sweepResult.results.filter((r) => r.status === "error").map((r) => (
-                  <p key={r.email} className="text-[8px] text-rose-400/70 font-mono">⚠ {r.email}: {r.error}</p>
+                  <p key={r.email} className="text-[10px] text-rose-400/70 font-mono">⚠ {r.email}: {r.error}</p>
                 ))}
               </div>
             )}
@@ -312,13 +312,13 @@ export default function AdminWallets() {
       <div className="relative max-w-sm">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3 w-3 text-foreground/22" />
         <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search users…"
-          className="w-full pl-8 pr-8 py-2 bg-white/4 border border-white/10 rounded-xl text-[10px] text-foreground/65 placeholder:text-foreground/20 focus:outline-none focus:border-white/25 transition-colors" />
+          className="w-full pl-8 pr-8 py-2 bg-white/4 border border-white/10 rounded-xl text-[12px] text-foreground/65 placeholder:text-foreground/20 focus:outline-none focus:border-white/25 transition-colors" />
         {search && <button onClick={() => setSearch("")} className="absolute right-3 top-1/2 -translate-y-1/2 text-foreground/28 hover:text-foreground"><X className="h-3 w-3" /></button>}
       </div>
 
       {/* Wallet table */}
       <div className="rounded-2xl border border-white/8 bg-white/[0.02] overflow-hidden">
-        <div className="grid grid-cols-12 gap-2 px-4 py-2.5 border-b border-white/8 text-[7px] tracking-widest text-foreground/22 uppercase">
+        <div className="grid grid-cols-12 gap-2 px-4 py-2.5 border-b border-white/8 text-[10px] tracking-widest text-foreground/22 uppercase">
           <span className="col-span-4">User</span>
           <span className="col-span-2 text-right">Deposited</span>
           <span className="col-span-2 text-right">Withdrawn</span>
@@ -331,47 +331,47 @@ export default function AdminWallets() {
         ) : filtered.length === 0 ? (
           <div className="text-center py-16">
             <Wallet className="h-8 w-8 mx-auto mb-2 text-foreground/10" />
-            <p className="text-[9px] text-foreground/25 font-mono">{search ? "No users match your search" : "No users yet"}</p>
+            <p className="text-[11px] text-foreground/25 font-mono">{search ? "No users match your search" : "No users yet"}</p>
           </div>
         ) : (
           <div className="divide-y divide-white/[0.045]">
             {filtered.map((w) => (
               <div key={w.id} className="grid grid-cols-12 gap-2 items-center px-4 py-3 hover:bg-white/[0.02] transition-colors">
                 <div className="col-span-4 flex items-center gap-3 min-w-0">
-                  <div className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 text-[9px] font-bold ${
+                  <div className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 text-[11px] font-bold ${
                     w.role === "admin" ? "bg-amber-500/15 text-amber-400" : "bg-violet-500/15 text-violet-400"
                   }`}>
                     {w.name?.[0]?.toUpperCase() ?? "?"}
                   </div>
                   <div className="min-w-0">
-                    <p className="text-[10px] font-semibold text-foreground/70 truncate flex items-center gap-1.5">
+                    <p className="text-[12px] font-semibold text-foreground/70 truncate flex items-center gap-1.5">
                       {w.name || "—"}
-                      {w.role === "admin" && <span className="text-[7px] px-1 py-px rounded bg-amber-500/15 text-amber-400/80 tracking-widest">ADMIN</span>}
+                      {w.role === "admin" && <span className="text-[10px] px-1 py-px rounded bg-amber-500/15 text-amber-400/80 tracking-widest">ADMIN</span>}
                     </p>
-                    <p className="text-[8px] text-foreground/28 font-mono truncate">{w.email}</p>
+                    <p className="text-[10px] text-foreground/28 font-mono truncate">{w.email}</p>
                   </div>
                 </div>
                 <div className="col-span-2 text-right">
-                  <span className={`text-[10px] font-mono ${w.deposited > 0 ? "text-emerald-400/80" : "text-foreground/22"}`}>
+                  <span className={`text-[12px] font-mono ${w.deposited > 0 ? "text-emerald-400/80" : "text-foreground/22"}`}>
                     {w.deposited > 0 ? formatPrice(w.deposited) : "—"}
                   </span>
                   {w.pendingDeposits > 0 && (
-                    <p className="text-[7px] text-amber-400/60 font-mono">+{formatPrice(w.pendingDeposits)} pending</p>
+                    <p className="text-[10px] text-amber-400/60 font-mono">+{formatPrice(w.pendingDeposits)} pending</p>
                   )}
                 </div>
                 <div className="col-span-2 text-right">
-                  <span className={`text-[10px] font-mono ${w.withdrawn > 0 ? "text-rose-400/80" : "text-foreground/22"}`}>
+                  <span className={`text-[12px] font-mono ${w.withdrawn > 0 ? "text-rose-400/80" : "text-foreground/22"}`}>
                     {w.withdrawn > 0 ? formatPrice(w.withdrawn) : "—"}
                   </span>
                 </div>
                 <div className="col-span-2 text-right">
-                  <span className={`text-[10px] font-mono ${w.spent > 0 ? "text-blue-400/80" : "text-foreground/22"}`}>
+                  <span className={`text-[12px] font-mono ${w.spent > 0 ? "text-blue-400/80" : "text-foreground/22"}`}>
                     {w.spent > 0 ? formatPrice(w.spent) : "—"}
                   </span>
-                  {w.orderCount > 0 && <p className="text-[7px] text-foreground/22 font-mono">{w.orderCount} order{w.orderCount === 1 ? "" : "s"}</p>}
+                  {w.orderCount > 0 && <p className="text-[10px] text-foreground/22 font-mono">{w.orderCount} order{w.orderCount === 1 ? "" : "s"}</p>}
                 </div>
                 <div className="col-span-2 text-right">
-                  <span className={`text-[11px] font-mono font-bold ${w.balance > 0 ? "text-foreground/85" : "text-foreground/22"}`}>
+                  <span className={`text-[13px] font-mono font-bold ${w.balance > 0 ? "text-foreground/85" : "text-foreground/22"}`}>
                     {formatPrice(w.balance)}
                   </span>
                 </div>
@@ -381,7 +381,7 @@ export default function AdminWallets() {
         )}
       </div>
 
-      <p className="text-[8px] text-foreground/22 font-mono leading-relaxed">
+      <p className="text-[10px] text-foreground/22 font-mono leading-relaxed">
         Balance = confirmed deposits + adjustments − withdrawals − order spend. Funds are held in the shared
         HaoDeals treasury; individual balances are tracked here in the database.
       </p>
@@ -398,7 +398,7 @@ export default function AdminWallets() {
               </div>
               <h2 className="text-sm font-semibold text-foreground/85">Sweep legacy wallets to treasury</h2>
             </div>
-            <div className="space-y-2.5 text-[11px] text-foreground/55 leading-relaxed">
+            <div className="space-y-2.5 text-[13px] text-foreground/55 leading-relaxed">
               <p>
                 This reads the <span className="text-foreground/80">real nTZS balance</span> of each of the{" "}
                 <span className="text-amber-400 font-mono">{totals.legacyWallets}</span> legacy wallet(s),
@@ -417,14 +417,14 @@ export default function AdminWallets() {
               <button
                 onClick={() => setConfirmOpen(false)}
                 disabled={sweeping}
-                className="flex-1 py-2.5 rounded-xl border border-white/12 text-foreground/55 text-[11px] font-mono tracking-widest hover:bg-white/[0.04] transition-all disabled:opacity-40"
+                className="flex-1 py-2.5 rounded-xl border border-white/12 text-foreground/55 text-[13px] font-mono tracking-widest hover:bg-white/[0.04] transition-all disabled:opacity-40"
               >
                 CANCEL
               </button>
               <button
                 onClick={runSweep}
                 disabled={sweeping}
-                className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl bg-amber-500/20 border border-amber-500/35 text-amber-200 text-[11px] font-mono tracking-widest hover:bg-amber-500/30 transition-all active:scale-[0.98] disabled:opacity-50"
+                className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl bg-amber-500/20 border border-amber-500/35 text-amber-200 text-[13px] font-mono tracking-widest hover:bg-amber-500/30 transition-all active:scale-[0.98] disabled:opacity-50"
               >
                 {sweeping ? <><Loader2 className="h-3.5 w-3.5 animate-spin" /> SWEEPING…</> : <>CONFIRM SWEEP</>}
               </button>
@@ -445,23 +445,23 @@ export default function AdminWallets() {
               <h2 className="text-sm font-semibold text-foreground/85">Move funds into treasury</h2>
             </div>
 
-            <p className="text-[11px] text-foreground/50 leading-relaxed mb-3">
+            <p className="text-[13px] text-foreground/50 leading-relaxed mb-3">
               Enter the nTZS user ID of the wallet to move funds from. Check the live balances, then transfer
               its full balance into the active treasury. This moves real funds and is not reversible.
             </p>
 
-            <label className="text-[9px] font-mono tracking-widest text-foreground/35 block mb-1.5">SOURCE WALLET ID</label>
+            <label className="text-[11px] font-mono tracking-widest text-foreground/35 block mb-1.5">SOURCE WALLET ID</label>
             <div className="flex gap-2 mb-3">
               <input
                 value={sourceId}
                 onChange={(e) => { setSourceId(e.target.value); setPreview(null) }}
                 placeholder="nTZS user id of the old wallet"
-                className="flex-1 bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-[11px] text-foreground/80 placeholder:text-foreground/20 focus:outline-none focus:border-blue-500/35 transition-colors font-mono"
+                className="flex-1 bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-[13px] text-foreground/80 placeholder:text-foreground/20 focus:outline-none focus:border-blue-500/35 transition-colors font-mono"
               />
               <button
                 onClick={checkBalances}
                 disabled={checking || !sourceId.trim()}
-                className="px-3 py-2 rounded-xl border border-white/12 text-foreground/60 text-[10px] font-mono tracking-widest hover:bg-white/[0.04] transition-all disabled:opacity-40 flex items-center gap-1.5"
+                className="px-3 py-2 rounded-xl border border-white/12 text-foreground/60 text-[12px] font-mono tracking-widest hover:bg-white/[0.04] transition-all disabled:opacity-40 flex items-center gap-1.5"
               >
                 {checking ? <Loader2 className="h-3 w-3 animate-spin" /> : "CHECK"}
               </button>
@@ -470,22 +470,22 @@ export default function AdminWallets() {
             {preview && (
               <div className="space-y-2 mb-4">
                 {preview.isSameAsTreasury ? (
-                  <div className="flex items-start gap-1.5 text-amber-400/80 bg-amber-500/[0.06] border border-amber-500/15 rounded-lg p-2.5 text-[10px]">
+                  <div className="flex items-start gap-1.5 text-amber-400/80 bg-amber-500/[0.06] border border-amber-500/15 rounded-lg p-2.5 text-[12px]">
                     <AlertTriangle className="h-3.5 w-3.5 flex-shrink-0 mt-px" />
                     This wallet IS the treasury — nothing to move.
                   </div>
                 ) : (
                   <>
                     <div className="flex items-center justify-between rounded-xl border border-white/8 bg-white/[0.015] px-3 py-2.5">
-                      <span className="text-[9px] text-foreground/40 font-mono tracking-widest">SOURCE HOLDS</span>
+                      <span className="text-[11px] text-foreground/40 font-mono tracking-widest">SOURCE HOLDS</span>
                       <span className="text-[12px] font-black font-mono text-blue-400">{formatPrice(preview.from.balanceTzs)}</span>
                     </div>
                     <div className="flex items-center justify-between rounded-xl border border-white/8 bg-white/[0.015] px-3 py-2.5">
-                      <span className="text-[9px] text-foreground/40 font-mono tracking-widest">TREASURY NOW</span>
+                      <span className="text-[11px] text-foreground/40 font-mono tracking-widest">TREASURY NOW</span>
                       <span className="text-[12px] font-black font-mono text-emerald-400">{formatPrice(preview.treasury.balanceTzs)}</span>
                     </div>
                     <div className="flex items-center justify-between rounded-xl border border-emerald-500/20 bg-emerald-500/[0.04] px-3 py-2.5">
-                      <span className="text-[9px] text-emerald-400/70 font-mono tracking-widest">TREASURY AFTER</span>
+                      <span className="text-[11px] text-emerald-400/70 font-mono tracking-widest">TREASURY AFTER</span>
                       <span className="text-[12px] font-black font-mono text-emerald-400">{formatPrice(preview.treasury.balanceTzs + preview.from.balanceTzs)}</span>
                     </div>
                   </>
@@ -497,19 +497,19 @@ export default function AdminWallets() {
               <button
                 onClick={() => setConsolidateOpen(false)}
                 disabled={consolidating}
-                className="flex-1 py-2.5 rounded-xl border border-white/12 text-foreground/55 text-[11px] font-mono tracking-widest hover:bg-white/[0.04] transition-all disabled:opacity-40"
+                className="flex-1 py-2.5 rounded-xl border border-white/12 text-foreground/55 text-[13px] font-mono tracking-widest hover:bg-white/[0.04] transition-all disabled:opacity-40"
               >
                 CANCEL
               </button>
               <button
                 onClick={runConsolidate}
                 disabled={consolidating || !preview || preview.isSameAsTreasury || preview.from.balanceTzs <= 0}
-                className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl bg-blue-500/20 border border-blue-500/35 text-blue-200 text-[11px] font-mono tracking-widest hover:bg-blue-500/30 transition-all active:scale-[0.98] disabled:opacity-40"
+                className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl bg-blue-500/20 border border-blue-500/35 text-blue-200 text-[13px] font-mono tracking-widest hover:bg-blue-500/30 transition-all active:scale-[0.98] disabled:opacity-40"
               >
                 {consolidating ? <><Loader2 className="h-3.5 w-3.5 animate-spin" /> MOVING…</> : <>TRANSFER TO TREASURY</>}
               </button>
             </div>
-            {!preview && <p className="text-[8px] text-foreground/25 mt-2 text-center">Check balances first to enable the transfer.</p>}
+            {!preview && <p className="text-[10px] text-foreground/25 mt-2 text-center">Check balances first to enable the transfer.</p>}
           </div>
         </div>
       )}

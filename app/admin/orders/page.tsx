@@ -113,17 +113,17 @@ function QuickAction({
       {currentStatus === "payment_confirmed" && (
         <div className="space-y-2">
           <div className="border border-yellow-400/20 bg-yellow-400/[0.03] px-3 py-2.5">
-            <p className="text-[9px] font-bold text-yellow-400/70 tracking-wider mb-0.5">
+            <p className="text-[11px] font-bold text-yellow-400/70 tracking-wider mb-0.5">
               📋 New order — awaiting your review
             </p>
-            <p className="text-[8px] text-foreground/40 leading-relaxed">
+            <p className="text-[10px] text-foreground/40 leading-relaxed">
               Payment confirmed. Review the order below, then approve it for packing or issue a refund.
             </p>
           </div>
           <button
             onClick={() => advance("packaging")}
             disabled={saving}
-            className="w-full flex items-center justify-center gap-2 py-3 bg-yellow-400/10 border border-yellow-400/35 text-yellow-400/85 text-[10px] tracking-widest font-bold hover:bg-yellow-400/16 transition-colors disabled:opacity-40"
+            className="w-full flex items-center justify-center gap-2 py-3 bg-yellow-400/10 border border-yellow-400/35 text-yellow-400/85 text-[12px] tracking-widest font-bold hover:bg-yellow-400/16 transition-colors disabled:opacity-40"
           >
             {saving ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Package className="h-3.5 w-3.5" />}
             ✓ Approve &amp; Start Packaging
@@ -135,17 +135,17 @@ function QuickAction({
       {currentStatus === "packaging" && (
         <div className="space-y-2">
           <div className="border border-purple-400/20 bg-purple-400/[0.03] px-3 py-2.5">
-            <p className="text-[9px] font-bold text-purple-400/70 tracking-wider mb-0.5">
+            <p className="text-[11px] font-bold text-purple-400/70 tracking-wider mb-0.5">
               📦 Order is being packed
             </p>
-            <p className="text-[8px] text-foreground/40 leading-relaxed">
+            <p className="text-[10px] text-foreground/40 leading-relaxed">
               When packaging is complete and handed to the delivery driver, mark it as ready for delivery.
             </p>
           </div>
           <button
             onClick={() => advance("in_transit")}
             disabled={saving}
-            className="w-full flex items-center justify-center gap-2 py-3 bg-purple-400/10 border border-purple-400/35 text-purple-400/85 text-[10px] tracking-widest font-bold hover:bg-purple-400/16 transition-colors disabled:opacity-40"
+            className="w-full flex items-center justify-center gap-2 py-3 bg-purple-400/10 border border-purple-400/35 text-purple-400/85 text-[12px] tracking-widest font-bold hover:bg-purple-400/16 transition-colors disabled:opacity-40"
           >
             {saving ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Truck className="h-3.5 w-3.5" />}
             🚚 Mark as Ready for Delivery
@@ -157,17 +157,17 @@ function QuickAction({
       {currentStatus === "in_transit" && (
         <div className="space-y-2">
           <div className="border border-green-400/20 bg-green-400/[0.03] px-3 py-2.5">
-            <p className="text-[9px] font-bold text-green-400/70 tracking-wider mb-0.5">
+            <p className="text-[11px] font-bold text-green-400/70 tracking-wider mb-0.5">
               🚚 Out for delivery
             </p>
-            <p className="text-[8px] text-foreground/40 leading-relaxed">
+            <p className="text-[10px] text-foreground/40 leading-relaxed">
               Once the customer has received the package, confirm delivery below.
             </p>
           </div>
           <button
             onClick={() => advance("delivered")}
             disabled={saving}
-            className="w-full flex items-center justify-center gap-2 py-3 bg-green-400/10 border border-green-400/35 text-green-400/85 text-[10px] tracking-widest font-bold hover:bg-green-400/16 transition-colors disabled:opacity-40"
+            className="w-full flex items-center justify-center gap-2 py-3 bg-green-400/10 border border-green-400/35 text-green-400/85 text-[12px] tracking-widest font-bold hover:bg-green-400/16 transition-colors disabled:opacity-40"
           >
             {saving ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <CheckCircle2 className="h-3.5 w-3.5" />}
             ✓ Mark as Delivered
@@ -178,7 +178,7 @@ function QuickAction({
       {/* ── Delivered confirmation ── */}
       {currentStatus === "delivered" && (
         <div className="border border-green-400/15 bg-green-400/[0.03] px-3 py-2.5">
-          <p className="text-[9px] text-green-400/60 tracking-wider">
+          <p className="text-[11px] text-green-400/60 tracking-wider">
             ✓ Order delivered — promo code sent to customer
           </p>
         </div>
@@ -189,21 +189,21 @@ function QuickAction({
         <div>
           {showCancel ? (
             <div className="border border-red-400/20 bg-red-400/[0.04] p-3 space-y-2">
-              <p className="text-[8px] tracking-widest text-red-400/55 mb-1">
+              <p className="text-[10px] tracking-widest text-red-400/55 mb-1">
                 This will notify the customer. Proceed?
               </p>
               <div className="flex gap-2">
                 <button
                   onClick={() => advance("cancelled")}
                   disabled={saving}
-                  className="flex-1 py-1.5 border border-red-400/30 text-red-400/70 text-[9px] tracking-wider hover:bg-red-400/10 transition-colors disabled:opacity-40"
+                  className="flex-1 py-1.5 border border-red-400/30 text-red-400/70 text-[11px] tracking-wider hover:bg-red-400/10 transition-colors disabled:opacity-40"
                 >
                   Cancel Order
                 </button>
                 <button
                   onClick={() => advance("refund_processing")}
                   disabled={saving}
-                  className="flex-1 py-1.5 border border-orange-400/30 text-orange-400/70 text-[9px] tracking-wider hover:bg-orange-400/10 transition-colors disabled:opacity-40"
+                  className="flex-1 py-1.5 border border-orange-400/30 text-orange-400/70 text-[11px] tracking-wider hover:bg-orange-400/10 transition-colors disabled:opacity-40"
                 >
                   Issue Refund
                 </button>
@@ -218,7 +218,7 @@ function QuickAction({
           ) : (
             <button
               onClick={() => setShowCancel(true)}
-              className="flex items-center gap-1.5 text-[8px] text-foreground/22 hover:text-red-400/55 transition-colors"
+              className="flex items-center gap-1.5 text-[10px] text-foreground/22 hover:text-red-400/55 transition-colors"
             >
               <XCircle className="h-3 w-3" /> Cancel order / issue refund
             </button>
@@ -230,7 +230,7 @@ function QuickAction({
         <button
           onClick={() => advance("refunded")}
           disabled={saving}
-          className="w-full flex items-center justify-center gap-2 py-2 border border-green-400/25 text-green-400/65 text-[9px] tracking-widest hover:bg-green-400/8 transition-colors disabled:opacity-40"
+          className="w-full flex items-center justify-center gap-2 py-2 border border-green-400/25 text-green-400/65 text-[11px] tracking-widest hover:bg-green-400/8 transition-colors disabled:opacity-40"
         >
           {saving ? <Loader2 className="h-3 w-3 animate-spin" /> : <CheckCircle2 className="h-3 w-3" />}
           Confirm Refund Complete
@@ -294,12 +294,12 @@ export default function AdminOrdersPage() {
       {/* Header */}
       <div className="flex items-center justify-between mb-5 border-b border-white/10 pb-4">
         <div className="flex items-center gap-3">
-          <span className="text-foreground/25 text-[10px]">//</span>
-          <h1 className="text-[11px] tracking-[0.3em] text-foreground/65">ORDER MONITOR</h1>
+          <span className="text-foreground/25 text-[12px]">//</span>
+          <h1 className="text-[13px] tracking-[0.3em] text-foreground/65">ORDER MONITOR</h1>
         </div>
         <button
           onClick={loadOrders}
-          className="flex items-center gap-1.5 text-[9px] text-foreground/30 hover:text-foreground/60 transition-colors"
+          className="flex items-center gap-1.5 text-[11px] text-foreground/30 hover:text-foreground/60 transition-colors"
         >
           <RefreshCw className="h-3 w-3" /> Refresh
         </button>
@@ -325,7 +325,7 @@ export default function AdminOrdersPage() {
               <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-current rounded-full animate-ping opacity-70" style={{ color: s.color.replace("/80", "") }} />
             )}
             <p className={`text-xl font-black ${s.color}`}>{s.value}</p>
-            <p className="text-[8px] tracking-widest text-foreground/28 mt-0.5">{s.label.toUpperCase()}</p>
+            <p className="text-[10px] tracking-widest text-foreground/28 mt-0.5">{s.label.toUpperCase()}</p>
           </button>
         ))}
       </div>
@@ -337,7 +337,7 @@ export default function AdminOrdersPage() {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Search orders, customers, tracking..."
-          className="w-full pl-8 pr-8 py-2 bg-transparent border border-white/15 text-[10px] text-foreground/65 placeholder:text-foreground/20 focus:outline-none focus:border-white/35 transition-colors"
+          className="w-full pl-8 pr-8 py-2 bg-transparent border border-white/15 text-[12px] text-foreground/65 placeholder:text-foreground/20 focus:outline-none focus:border-white/35 transition-colors"
         />
         {search && (
           <button onClick={() => setSearch("")} className="absolute right-3 top-1/2 -translate-y-1/2 text-foreground/28 hover:text-foreground">
@@ -359,7 +359,7 @@ export default function AdminOrdersPage() {
           <button
             key={v}
             onClick={() => setFilter(v)}
-            className={`px-3 py-1.5 text-[8px] tracking-wider border transition-colors ${
+            className={`px-3 py-1.5 text-[10px] tracking-wider border transition-colors ${
               filter === v
                 ? "border-white/35 text-foreground/75 bg-white/5"
                 : "border-white/10 text-foreground/28 hover:border-white/22"
@@ -378,7 +378,7 @@ export default function AdminOrdersPage() {
       ) : filtered.length === 0 ? (
         <div className="text-center py-24 border border-white/10">
           <Package className="h-8 w-8 mx-auto mb-3 opacity-15" />
-          <p className="text-[10px] tracking-widest text-foreground/25">No orders found</p>
+          <p className="text-[12px] tracking-widest text-foreground/25">No orders found</p>
         </div>
       ) : (
         <div className="space-y-2">
@@ -395,10 +395,10 @@ export default function AdminOrdersPage() {
                 >
                   <div className="flex items-start justify-between gap-3">
                     <div className="min-w-0 flex-1">
-                      <p className="text-[10px] text-foreground/65 uppercase tracking-wide truncate">
+                      <p className="text-[12px] text-foreground/65 uppercase tracking-wide truncate">
                         {order.user.name ?? order.user.email}
                       </p>
-                      <p className="text-[8px] text-foreground/22 mt-0.5">
+                      <p className="text-[10px] text-foreground/22 mt-0.5">
                         #{order.id.slice(0, 8).toUpperCase()}
                         {order.trackingId && <span className="ml-1.5 text-foreground/15">· {order.trackingId}</span>}
                         {" · "}{new Date(order.createdAt).toLocaleDateString("en-US", {
@@ -411,12 +411,12 @@ export default function AdminOrdersPage() {
                     </div>
                     <div className="flex items-center gap-2 flex-shrink-0 mt-0.5">
                       {order.status === "payment_confirmed" && (
-                        <span className="text-[8px] text-blue-400/70 border border-blue-400/25 px-1.5 py-0.5 animate-pulse">
+                        <span className="text-[10px] text-blue-400/70 border border-blue-400/25 px-1.5 py-0.5 animate-pulse">
                           NEW ORDER
                         </span>
                       )}
                       {order.status === "packaging" && (
-                        <span className="text-[8px] text-yellow-400/70 border border-yellow-400/25 px-1.5 py-0.5">
+                        <span className="text-[10px] text-yellow-400/70 border border-yellow-400/25 px-1.5 py-0.5">
                           READY TO SHIP
                         </span>
                       )}
@@ -425,7 +425,7 @@ export default function AdminOrdersPage() {
                       )}
                       <div className="flex items-center gap-1">
                         <span className={`w-1.5 h-1.5 flex-shrink-0 ${b.dot}`} />
-                        <span className={`text-[8px] tracking-widest border px-1.5 py-0.5 ${b.color}`}>
+                        <span className={`text-[10px] tracking-widest border px-1.5 py-0.5 ${b.color}`}>
                           {statusLabel(order.status)}
                         </span>
                       </div>
@@ -441,18 +441,18 @@ export default function AdminOrdersPage() {
                     {/* Customer + address */}
                     <div className="grid sm:grid-cols-2 gap-4">
                       <div>
-                        <p className="text-[8px] tracking-widest text-foreground/25 mb-1.5">CUSTOMER</p>
-                        <p className="text-[10px] text-foreground/65">{order.user.name ?? "—"}</p>
-                        <p className="text-[9px] text-foreground/38">{order.user.email}</p>
+                        <p className="text-[10px] tracking-widest text-foreground/25 mb-1.5">CUSTOMER</p>
+                        <p className="text-[12px] text-foreground/65">{order.user.name ?? "—"}</p>
+                        <p className="text-[11px] text-foreground/38">{order.user.email}</p>
                         {order.user.phone && (
-                          <p className="flex items-center gap-1 text-[9px] text-foreground/45 mt-0.5">
+                          <p className="flex items-center gap-1 text-[11px] text-foreground/45 mt-0.5">
                             <Phone className="h-2.5 w-2.5" /> {order.user.phone}
                           </p>
                         )}
                       </div>
                       <div>
-                        <p className="text-[8px] tracking-widest text-foreground/25 mb-1.5">DELIVERY ADDRESS</p>
-                        <p className="flex items-start gap-1 text-[9px] text-foreground/45 leading-relaxed">
+                        <p className="text-[10px] tracking-widest text-foreground/25 mb-1.5">DELIVERY ADDRESS</p>
+                        <p className="flex items-start gap-1 text-[11px] text-foreground/45 leading-relaxed">
                           <MapPin className="h-2.5 w-2.5 mt-0.5 shrink-0" /> {order.address}
                         </p>
                       </div>
@@ -460,10 +460,10 @@ export default function AdminOrdersPage() {
 
                     {/* Items */}
                     <div>
-                      <p className="text-[8px] tracking-widest text-foreground/25 mb-2">ITEMS</p>
+                      <p className="text-[10px] tracking-widest text-foreground/25 mb-2">ITEMS</p>
                       <div className="space-y-1">
                         {order.items.map((item) => (
-                          <div key={item.id} className="flex items-center justify-between text-[9px] border border-white/5 px-3 py-1.5">
+                          <div key={item.id} className="flex items-center justify-between text-[11px] border border-white/5 px-3 py-1.5">
                             <span className="text-foreground/55 truncate max-w-[200px]">{item.product.name}</span>
                             <div className="flex items-center gap-3 text-foreground/35 flex-shrink-0">
                               <span>×{item.quantity}</span>
@@ -477,10 +477,10 @@ export default function AdminOrdersPage() {
                     {/* Tracking events */}
                     {order.trackingEvents.length > 0 && (
                       <div>
-                        <p className="text-[8px] tracking-widest text-foreground/25 mb-2">TRACKING HISTORY</p>
+                        <p className="text-[10px] tracking-widest text-foreground/25 mb-2">TRACKING HISTORY</p>
                         <div className="space-y-1.5">
                           {[...order.trackingEvents].reverse().map((ev) => (
-                            <div key={ev.id} className="flex gap-3 text-[9px]">
+                            <div key={ev.id} className="flex gap-3 text-[11px]">
                               <span className="text-foreground/18 flex-shrink-0 w-28 leading-tight">
                                 {new Date(ev.createdAt).toLocaleDateString("en-US", {
                                   month: "short", day: "numeric",

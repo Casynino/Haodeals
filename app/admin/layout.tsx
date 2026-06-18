@@ -49,8 +49,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           ${collapsed ? "justify-center" : "justify-between"}`}>
           {!collapsed && (
             <div>
-              <p className="text-[11px] font-black tracking-[0.25em] text-foreground/85">[ HAO DEALS ]</p>
-              <p className="text-[8px] text-violet-400/55 tracking-[0.3em] mt-0.5">ADMIN CONSOLE</p>
+              <p className="text-[13px] font-black tracking-[0.25em] text-foreground/85">[ HAO DEALS ]</p>
+              <p className="text-[10px] text-violet-400/55 tracking-[0.3em] mt-0.5">ADMIN CONSOLE</p>
             </div>
           )}
           <button
@@ -75,7 +75,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             const active = exact ? pathname === href : pathname.startsWith(href)
             return (
               <Link key={href} href={href}
-                className={`group flex items-center gap-3 px-3 py-2.5 rounded-xl text-[10px] tracking-widest transition-all font-mono
+                className={`group flex items-center gap-3 px-3 py-2.5 rounded-xl text-[12px] tracking-widest transition-all font-mono
                   ${active
                     ? "bg-violet-500/15 text-violet-400 border border-violet-500/20 shadow-sm"
                     : "text-foreground/35 hover:text-foreground/68 hover:bg-white/[0.04] border border-transparent"
@@ -94,16 +94,16 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         <div className={`border-t border-white/8 px-3 py-3 ${collapsed ? "flex justify-center" : ""}`}>
           {collapsed ? (
             <div className="w-7 h-7 rounded-full bg-violet-500/20 flex items-center justify-center">
-              <span className="text-[9px] font-bold text-violet-400">{user?.name?.[0]?.toUpperCase() ?? "A"}</span>
+              <span className="text-[11px] font-bold text-violet-400">{user?.name?.[0]?.toUpperCase() ?? "A"}</span>
             </div>
           ) : (
             <div className="flex items-center gap-2.5">
               <div className="w-7 h-7 rounded-full bg-violet-500/20 flex items-center justify-center flex-shrink-0">
-                <span className="text-[9px] font-bold text-violet-400">{user?.name?.[0]?.toUpperCase() ?? "A"}</span>
+                <span className="text-[11px] font-bold text-violet-400">{user?.name?.[0]?.toUpperCase() ?? "A"}</span>
               </div>
               <div className="min-w-0 flex-1">
-                <p className="text-[9px] font-semibold text-foreground/65 truncate">{user?.name ?? "Admin"}</p>
-                <p className="text-[7px] text-violet-400/50 tracking-widest">ADMINISTRATOR</p>
+                <p className="text-[11px] font-semibold text-foreground/65 truncate">{user?.name ?? "Admin"}</p>
+                <p className="text-[10px] text-violet-400/50 tracking-widest">ADMINISTRATOR</p>
               </div>
             </div>
           )}
@@ -140,7 +140,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             className="p-1.5 border border-white/12 rounded-lg text-foreground/40 hover:text-foreground/70 transition-colors">
             <Menu className="h-4 w-4" />
           </button>
-          <span className="text-[10px] tracking-[0.25em] text-foreground/55 font-mono">ADMIN PANEL</span>
+          <span className="text-[12px] tracking-[0.25em] text-foreground/55 font-mono">ADMIN PANEL</span>
         </div>
 
         {children}

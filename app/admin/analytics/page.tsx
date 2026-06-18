@@ -53,7 +53,7 @@ function LineChart({ data, color = "#34d399" }: { data: { date: string; amount: 
   return (
     <div className="relative">
       {/* Y-axis labels */}
-      <div className="absolute left-0 top-0 h-full flex flex-col justify-between text-[8px] font-mono text-foreground/25 pr-1 pointer-events-none">
+      <div className="absolute left-0 top-0 h-full flex flex-col justify-between text-[10px] font-mono text-foreground/25 pr-1 pointer-events-none">
         {ticks.reverse().map((t, i) => <span key={i}>{t > 0 ? formatPrice(t).replace("TSh ", "") : "0"}</span>)}
       </div>
       <div className="pl-8">
@@ -80,7 +80,7 @@ function LineChart({ data, color = "#34d399" }: { data: { date: string; amount: 
           )}
         </svg>
         {/* X-axis labels */}
-        <div className="flex justify-between text-[7px] font-mono text-foreground/22 mt-1">
+        <div className="flex justify-between text-[10px] font-mono text-foreground/22 mt-1">
           {[data[0], data[Math.floor(data.length / 4)], data[Math.floor(data.length / 2)], data[Math.floor(data.length * 3 / 4)], data[data.length - 1]]
             .filter(Boolean).map((d, i) => <span key={i}>{d.date.slice(5)}</span>)}
         </div>
@@ -123,12 +123,12 @@ function KpiCard({ label, value, sub, growth, icon: Icon, color, spark }: {
         {spark && <Spark data={spark} color={growth && growth >= 0 ? "#34d399" : "#fb7185"} />}
       </div>
       <div>
-        <p className="text-[10px] font-mono text-foreground/38 tracking-widest uppercase">{label}</p>
+        <p className="text-[12px] font-mono text-foreground/38 tracking-widest uppercase">{label}</p>
         <p className="text-2xl font-black text-foreground/90 tracking-tight mt-0.5">{value}</p>
-        {sub && <p className="text-[10px] text-foreground/35 font-mono mt-0.5">{sub}</p>}
+        {sub && <p className="text-[12px] text-foreground/35 font-mono mt-0.5">{sub}</p>}
       </div>
       {growth !== undefined && (
-        <div className={`flex items-center gap-1 text-[10px] font-mono font-semibold ${up ? "text-emerald-400" : "text-rose-400"}`}>
+        <div className={`flex items-center gap-1 text-[12px] font-mono font-semibold ${up ? "text-emerald-400" : "text-rose-400"}`}>
           {up ? <TrendingUp className="h-3 w-3" /> : <TrendingDown className="h-3 w-3" />}
           {up ? "+" : ""}{growth}% vs last month
         </div>
@@ -190,18 +190,18 @@ export default function AdminAnalytics() {
                 <h1 className="text-lg font-semibold tracking-[0.15em] text-foreground/90">ANALYTICS</h1>
                 <div className="flex items-center gap-1.5">
                   <div className="w-1.5 h-1.5 bg-emerald-400/80 rounded-full animate-pulse" />
-                  <span className="text-[9px] text-emerald-400/70">Live</span>
+                  <span className="text-[11px] text-emerald-400/70">Live</span>
                 </div>
               </div>
               {lastRefresh && (
-                <p className="text-[8px] text-foreground/22 mt-0.5">
+                <p className="text-[10px] text-foreground/22 mt-0.5">
                   Updated {lastRefresh.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" })}
                 </p>
               )}
             </div>
           </div>
           <button onClick={fetchData} disabled={loading}
-            className="flex items-center gap-1.5 px-3 py-1.5 border border-white/12 text-[9px] tracking-widest text-foreground/40 hover:text-foreground/70 hover:border-white/22 transition-all active:scale-95 disabled:opacity-40">
+            className="flex items-center gap-1.5 px-3 py-1.5 border border-white/12 text-[11px] tracking-widest text-foreground/40 hover:text-foreground/70 hover:border-white/22 transition-all active:scale-95 disabled:opacity-40">
             <RefreshCw className={`h-3 w-3 ${loading ? "animate-spin" : ""}`} /> REFRESH
           </button>
         </div>
@@ -210,7 +210,7 @@ export default function AdminAnalytics() {
         <div className="flex gap-1 border-b border-white/8 pb-0">
           {TABS.map(({ id, label, icon: Icon }) => (
             <button key={id} onClick={() => setTab(id)}
-              className={`flex items-center gap-2 px-4 py-2.5 text-[10px] tracking-widest border-b-2 transition-all
+              className={`flex items-center gap-2 px-4 py-2.5 text-[12px] tracking-widest border-b-2 transition-all
                 ${tab === id ? "border-violet-500 text-violet-400" : "border-transparent text-foreground/38 hover:text-foreground/60"}`}>
               <Icon className="h-3.5 w-3.5" /> {label.toUpperCase()}
             </button>
@@ -245,11 +245,11 @@ export default function AdminAnalytics() {
               <div className="lg:col-span-2 rounded-2xl border border-white/8 bg-white/[0.02] p-5">
                 <div className="flex items-center justify-between mb-4">
                   <div>
-                    <p className="text-[9px] tracking-widest text-foreground/35 uppercase">Revenue Trend</p>
+                    <p className="text-[11px] tracking-widest text-foreground/35 uppercase">Revenue Trend</p>
                     <p className="text-sm font-semibold text-foreground/75 mt-0.5">Last 30 days</p>
                   </div>
                   <div className="text-right">
-                    <p className="text-[9px] text-foreground/30 font-mono">This month</p>
+                    <p className="text-[11px] text-foreground/30 font-mono">This month</p>
                     <p className="text-base font-bold text-emerald-400 font-mono">{formatPrice(data?.revenue.thisMonth ?? 0)}</p>
                   </div>
                 </div>
@@ -261,7 +261,7 @@ export default function AdminAnalytics() {
 
               {/* Category donut */}
               <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-5">
-                <p className="text-[9px] tracking-widest text-foreground/35 uppercase mb-4">By Category</p>
+                <p className="text-[11px] tracking-widest text-foreground/35 uppercase mb-4">By Category</p>
                 {loading ? (
                   <div className="flex items-center justify-center h-28"><div className="w-28 h-28 bg-white/4 animate-pulse rounded-full" /></div>
                 ) : (
@@ -271,8 +271,8 @@ export default function AdminAnalytics() {
                       {(data?.categories ?? []).slice(0, 5).map((c, i) => (
                         <div key={c.name} className="flex items-center gap-2">
                           <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: CAT_COLORS[i % CAT_COLORS.length] }} />
-                          <span className="text-[9px] text-foreground/55 truncate flex-1">{c.name}</span>
-                          <span className="text-[9px] font-mono text-foreground/45 flex-shrink-0">{c.pct}%</span>
+                          <span className="text-[11px] text-foreground/55 truncate flex-1">{c.name}</span>
+                          <span className="text-[11px] font-mono text-foreground/45 flex-shrink-0">{c.pct}%</span>
                         </div>
                       ))}
                     </div>
@@ -287,12 +287,12 @@ export default function AdminAnalytics() {
               <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-5">
                 <div className="flex items-center gap-2 mb-4">
                   <Star className="h-3.5 w-3.5 text-amber-400" />
-                  <p className="text-[9px] tracking-widest text-foreground/35 uppercase">Top Selling Products</p>
+                  <p className="text-[11px] tracking-widest text-foreground/35 uppercase">Top Selling Products</p>
                 </div>
                 <div className="space-y-3">
                   {(data?.products.topSelling ?? []).slice(0, 5).map((p, i) => (
                     <div key={p.id} className="space-y-1">
-                      <div className="flex items-center justify-between text-[10px]">
+                      <div className="flex items-center justify-between text-[12px]">
                         <div className="flex items-center gap-2 min-w-0">
                           <span className="text-foreground/28 font-mono w-4 flex-shrink-0">{i + 1}</span>
                           <span className="text-foreground/70 truncate">{p.name}</span>
@@ -309,7 +309,7 @@ export default function AdminAnalytics() {
                     </div>
                   ))}
                   {!(data?.products.topSelling?.length) && !loading && (
-                    <p className="text-[9px] text-foreground/25 text-center py-4">No sales data yet</p>
+                    <p className="text-[11px] text-foreground/25 text-center py-4">No sales data yet</p>
                   )}
                 </div>
               </div>
@@ -318,7 +318,7 @@ export default function AdminAnalytics() {
               <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-5">
                 <div className="flex items-center gap-2 mb-4">
                   <ShoppingBag className="h-3.5 w-3.5 text-blue-400" />
-                  <p className="text-[9px] tracking-widest text-foreground/35 uppercase">Order Status</p>
+                  <p className="text-[11px] tracking-widest text-foreground/35 uppercase">Order Status</p>
                 </div>
                 <div className="space-y-2.5">
                   {(data?.orders.byStatus ?? []).map((s) => {
@@ -331,7 +331,7 @@ export default function AdminAnalytics() {
                     }[s.status] ?? "bg-foreground/30"
                     return (
                       <div key={s.status} className="space-y-0.5">
-                        <div className="flex justify-between text-[9px]">
+                        <div className="flex justify-between text-[11px]">
                           <span className="text-foreground/50 uppercase tracking-wide">{s.status.replace(/_/g, " ")}</span>
                           <span className="font-mono text-foreground/45">{s.count} · {pct}%</span>
                         </div>
@@ -349,7 +349,7 @@ export default function AdminAnalytics() {
             <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-5">
               <div className="flex items-center gap-2 mb-4">
                 <Zap className="h-3.5 w-3.5 text-yellow-400" />
-                <p className="text-[9px] tracking-widest text-foreground/35 uppercase">Recommended Actions & Insights</p>
+                <p className="text-[11px] tracking-widest text-foreground/35 uppercase">Recommended Actions & Insights</p>
               </div>
               {loading ? (
                 <div className="space-y-2">{[1,2,3].map((i) => <div key={i} className="h-10 bg-white/4 animate-pulse rounded-xl" />)}</div>
@@ -362,13 +362,13 @@ export default function AdminAnalytics() {
                       <div key={i} className={`flex items-start gap-3 p-3 rounded-xl border ${cfg.cls}`}>
                         <Icon className="h-4 w-4 flex-shrink-0 mt-0.5" />
                         <div className="min-w-0">
-                          <p className="text-[10px] text-foreground/75 leading-snug">{ins.text}</p>
-                          <p className="text-[9px] opacity-60 mt-0.5 font-mono">→ {ins.action}</p>
+                          <p className="text-[12px] text-foreground/75 leading-snug">{ins.text}</p>
+                          <p className="text-[11px] opacity-60 mt-0.5 font-mono">→ {ins.action}</p>
                         </div>
                       </div>
                     )
                   })}
-                  {!data?.insights.length && <p className="text-[9px] text-foreground/25 col-span-2 text-center py-4">No insights available yet</p>}
+                  {!data?.insights.length && <p className="text-[11px] text-foreground/25 col-span-2 text-center py-4">No insights available yet</p>}
                 </div>
               )}
             </div>
@@ -383,35 +383,35 @@ export default function AdminAnalytics() {
               <div className="rounded-2xl border border-rose-500/20 bg-rose-500/[0.03] p-5">
                 <div className="flex items-center gap-2 mb-4">
                   <AlertCircle className="h-3.5 w-3.5 text-rose-400" />
-                  <p className="text-[9px] tracking-widest text-rose-400/60 uppercase">Out of Stock</p>
-                  <span className="ml-auto px-2 py-0.5 rounded-full bg-rose-500/15 text-rose-400 text-[9px] font-mono font-bold">{data?.products.outOfStock ?? 0}</span>
+                  <p className="text-[11px] tracking-widest text-rose-400/60 uppercase">Out of Stock</p>
+                  <span className="ml-auto px-2 py-0.5 rounded-full bg-rose-500/15 text-rose-400 text-[11px] font-mono font-bold">{data?.products.outOfStock ?? 0}</span>
                 </div>
                 {(data?.products.outOfStock ?? 0) === 0
-                  ? <p className="text-[9px] text-foreground/25 text-center py-4">✓ All products have stock</p>
-                  : <p className="text-[9px] text-rose-400/60">{data?.products.outOfStock} products need urgent restocking</p>
+                  ? <p className="text-[11px] text-foreground/25 text-center py-4">✓ All products have stock</p>
+                  : <p className="text-[11px] text-rose-400/60">{data?.products.outOfStock} products need urgent restocking</p>
                 }
               </div>
 
               <div className="rounded-2xl border border-amber-500/20 bg-amber-500/[0.03] p-5">
                 <div className="flex items-center gap-2 mb-4">
                   <AlertTriangle className="h-3.5 w-3.5 text-amber-400" />
-                  <p className="text-[9px] tracking-widest text-amber-400/60 uppercase">Low Stock (≤10)</p>
-                  <span className="ml-auto px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-400 text-[9px] font-mono font-bold">{data?.products.lowStock?.length ?? 0}</span>
+                  <p className="text-[11px] tracking-widest text-amber-400/60 uppercase">Low Stock (≤10)</p>
+                  <span className="ml-auto px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-400 text-[11px] font-mono font-bold">{data?.products.lowStock?.length ?? 0}</span>
                 </div>
                 <div className="space-y-2 max-h-48 overflow-y-auto">
                   {(data?.products.lowStock ?? []).map((p) => (
                     <div key={p.id} className="flex items-center justify-between">
                       <div className="min-w-0">
-                        <p className="text-[10px] text-foreground/65 truncate">{p.name}</p>
-                        <p className="text-[8px] text-foreground/28 font-mono">{p.category}</p>
+                        <p className="text-[12px] text-foreground/65 truncate">{p.name}</p>
+                        <p className="text-[10px] text-foreground/28 font-mono">{p.category}</p>
                       </div>
-                      <span className={`text-[9px] font-mono font-bold px-2 py-0.5 rounded-full flex-shrink-0 ml-2
+                      <span className={`text-[11px] font-mono font-bold px-2 py-0.5 rounded-full flex-shrink-0 ml-2
                         ${p.stock <= 3 ? "bg-rose-500/15 text-rose-400" : "bg-amber-500/15 text-amber-400"}`}>
                         {p.stock} left
                       </span>
                     </div>
                   ))}
-                  {!data?.products.lowStock?.length && <p className="text-[9px] text-foreground/25 text-center py-2">All products well stocked ✓</p>}
+                  {!data?.products.lowStock?.length && <p className="text-[11px] text-foreground/25 text-center py-2">All products well stocked ✓</p>}
                 </div>
               </div>
             </div>
@@ -420,7 +420,7 @@ export default function AdminAnalytics() {
             <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-5">
               <div className="flex items-center gap-2 mb-5">
                 <TrendingUp className="h-3.5 w-3.5 text-emerald-400" />
-                <p className="text-[9px] tracking-widest text-foreground/35 uppercase">Top Selling Products</p>
+                <p className="text-[11px] tracking-widest text-foreground/35 uppercase">Top Selling Products</p>
               </div>
               <div className="space-y-4">
                 {(data?.products.topSelling ?? []).map((p, i) => (
@@ -429,12 +429,12 @@ export default function AdminAnalytics() {
                     <div className="flex-1 min-w-0 space-y-1">
                       <div className="flex justify-between items-center">
                         <div className="min-w-0">
-                          <p className="text-[11px] font-semibold text-foreground/75 truncate">{p.name}</p>
-                          <p className="text-[8px] text-foreground/28 font-mono">{p.category}</p>
+                          <p className="text-[13px] font-semibold text-foreground/75 truncate">{p.name}</p>
+                          <p className="text-[10px] text-foreground/28 font-mono">{p.category}</p>
                         </div>
                         <div className="text-right flex-shrink-0 ml-3">
-                          <p className="text-[10px] font-bold text-emerald-400 font-mono">{formatPrice(p.revenue)}</p>
-                          <p className="text-[8px] text-foreground/30 font-mono">{p.sold} units</p>
+                          <p className="text-[12px] font-bold text-emerald-400 font-mono">{formatPrice(p.revenue)}</p>
+                          <p className="text-[10px] text-foreground/30 font-mono">{p.sold} units</p>
                         </div>
                       </div>
                       <div className="h-1.5 bg-white/5 rounded-full overflow-hidden">
@@ -445,7 +445,7 @@ export default function AdminAnalytics() {
                   </div>
                 ))}
                 {!data?.products.topSelling?.length && !loading && (
-                  <p className="text-[9px] text-foreground/25 text-center py-8">No product sales data yet</p>
+                  <p className="text-[11px] text-foreground/25 text-center py-8">No product sales data yet</p>
                 )}
               </div>
             </div>
@@ -454,12 +454,12 @@ export default function AdminAnalytics() {
             <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-5">
               <div className="flex items-center gap-2 mb-5">
                 <PieChart className="h-3.5 w-3.5 text-violet-400" />
-                <p className="text-[9px] tracking-widest text-foreground/35 uppercase">Category Performance</p>
+                <p className="text-[11px] tracking-widest text-foreground/35 uppercase">Category Performance</p>
               </div>
               <div className="space-y-3">
                 {(data?.categories ?? []).map((c, i) => (
                   <div key={c.name} className="space-y-1">
-                    <div className="flex justify-between text-[10px]">
+                    <div className="flex justify-between text-[12px]">
                       <div className="flex items-center gap-2">
                         <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: CAT_COLORS[i % CAT_COLORS.length] }} />
                         <span className="text-foreground/65">{c.name}</span>
@@ -485,23 +485,23 @@ export default function AdminAnalytics() {
             {/* Customer KPIs */}
             <div className="grid grid-cols-2 lg:grid-cols-3 gap-3">
               <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-4 text-center">
-                <p className="text-[9px] tracking-widest text-foreground/30 uppercase mb-1">Total</p>
+                <p className="text-[11px] tracking-widest text-foreground/30 uppercase mb-1">Total</p>
                 <p className="text-2xl font-black text-foreground/85">{data?.customers.total ?? "—"}</p>
-                <p className="text-[9px] text-foreground/30 font-mono mt-0.5">registered customers</p>
+                <p className="text-[11px] text-foreground/30 font-mono mt-0.5">registered customers</p>
               </div>
               <div className="rounded-2xl border border-emerald-500/15 bg-emerald-500/[0.03] p-4 text-center">
-                <p className="text-[9px] tracking-widest text-emerald-400/55 uppercase mb-1">New This Month</p>
+                <p className="text-[11px] tracking-widest text-emerald-400/55 uppercase mb-1">New This Month</p>
                 <p className="text-2xl font-black text-emerald-400">+{data?.customers.thisMonth ?? 0}</p>
-                <p className="text-[9px] text-foreground/30 font-mono mt-0.5">new sign-ups</p>
+                <p className="text-[11px] text-foreground/30 font-mono mt-0.5">new sign-ups</p>
               </div>
               <div className="rounded-2xl border border-violet-500/15 bg-violet-500/[0.03] p-4 text-center col-span-2 lg:col-span-1">
-                <p className="text-[9px] tracking-widest text-violet-400/55 uppercase mb-1">Avg Spend / Customer</p>
+                <p className="text-[11px] tracking-widest text-violet-400/55 uppercase mb-1">Avg Spend / Customer</p>
                 <p className="text-2xl font-black text-violet-400">
                   {data?.customers.topSpenders.length
                     ? formatPrice(data.customers.topSpenders.reduce((s, c) => s + c.totalSpent, 0) / data.customers.topSpenders.length)
                     : "—"}
                 </p>
-                <p className="text-[9px] text-foreground/30 font-mono mt-0.5">based on top spenders</p>
+                <p className="text-[11px] text-foreground/30 font-mono mt-0.5">based on top spenders</p>
               </div>
             </div>
 
@@ -509,25 +509,25 @@ export default function AdminAnalytics() {
             <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-5">
               <div className="flex items-center gap-2 mb-5">
                 <Users className="h-3.5 w-3.5 text-violet-400" />
-                <p className="text-[9px] tracking-widest text-foreground/35 uppercase">Top Customers by Spending</p>
+                <p className="text-[11px] tracking-widest text-foreground/35 uppercase">Top Customers by Spending</p>
               </div>
               <div className="space-y-3">
                 {(data?.customers.topSpenders ?? []).map((c, i) => {
                   const maxSpend = data?.customers.topSpenders[0]?.totalSpent ?? 1
                   return (
                     <div key={c.id} className="flex items-center gap-3 p-3 rounded-xl border border-white/6 hover:border-white/12 transition-all">
-                      <div className="w-7 h-7 rounded-full bg-violet-500/15 flex items-center justify-center flex-shrink-0 text-[10px] font-black text-violet-400">
+                      <div className="w-7 h-7 rounded-full bg-violet-500/15 flex items-center justify-center flex-shrink-0 text-[12px] font-black text-violet-400">
                         {i + 1}
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex justify-between items-start">
                           <div className="min-w-0">
-                            <p className="text-[11px] font-semibold text-foreground/75 truncate">{c.name || "—"}</p>
-                            <p className="text-[8px] text-foreground/30 font-mono truncate">{c.email}</p>
+                            <p className="text-[13px] font-semibold text-foreground/75 truncate">{c.name || "—"}</p>
+                            <p className="text-[10px] text-foreground/30 font-mono truncate">{c.email}</p>
                           </div>
                           <div className="text-right flex-shrink-0 ml-3">
-                            <p className="text-[11px] font-bold text-emerald-400 font-mono">{formatPrice(c.totalSpent)}</p>
-                            <p className="text-[8px] text-foreground/25 font-mono">{c.orderCount} orders</p>
+                            <p className="text-[13px] font-bold text-emerald-400 font-mono">{formatPrice(c.totalSpent)}</p>
+                            <p className="text-[10px] text-foreground/25 font-mono">{c.orderCount} orders</p>
                           </div>
                         </div>
                         <div className="h-1 bg-white/5 rounded-full mt-1.5 overflow-hidden">
@@ -538,7 +538,7 @@ export default function AdminAnalytics() {
                   )
                 })}
                 {!data?.customers.topSpenders?.length && (
-                  <p className="text-[9px] text-foreground/25 text-center py-8">No customer spending data yet</p>
+                  <p className="text-[11px] text-foreground/25 text-center py-8">No customer spending data yet</p>
                 )}
               </div>
             </div>
@@ -557,7 +557,7 @@ export default function AdminAnalytics() {
                 { label: "All Time",   val: data?.revenue.total ?? 0,      color: "text-violet-400"   },
               ].map(({ label, val, color }) => (
                 <div key={label} className="rounded-2xl border border-white/8 bg-white/[0.02] p-4">
-                  <p className="text-[9px] tracking-widest text-foreground/30 uppercase mb-2">{label}</p>
+                  <p className="text-[11px] tracking-widest text-foreground/30 uppercase mb-2">{label}</p>
                   <p className={`text-xl font-black font-mono ${color}`}>{formatPrice(val)}</p>
                 </div>
               ))}
@@ -565,7 +565,7 @@ export default function AdminAnalytics() {
 
             {/* Month vs last month */}
             <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-5">
-              <p className="text-[9px] tracking-widest text-foreground/35 uppercase mb-5">This Month vs Last Month</p>
+              <p className="text-[11px] tracking-widest text-foreground/35 uppercase mb-5">This Month vs Last Month</p>
               <div className="grid lg:grid-cols-2 gap-6">
                 <div className="space-y-3">
                   {[
@@ -575,7 +575,7 @@ export default function AdminAnalytics() {
                     const max = Math.max(data?.revenue.thisMonth ?? 0, data?.revenue.lastMonth ?? 0) || 1
                     return (
                       <div key={label} className="space-y-1">
-                        <div className="flex justify-between text-[10px]">
+                        <div className="flex justify-between text-[12px]">
                           <span className="text-foreground/50">{label}</span>
                           <span className="font-mono text-foreground/65">{formatPrice(val)}</span>
                         </div>
@@ -601,7 +601,7 @@ export default function AdminAnalytics() {
                     const max = Math.max(data?.orders.thisMonth ?? 0, data?.orders.lastMonth ?? 0) || 1
                     return (
                       <div key={label} className="space-y-1">
-                        <div className="flex justify-between text-[10px]">
+                        <div className="flex justify-between text-[12px]">
                           <span className="text-foreground/50">{label}</span>
                           <span className="font-mono text-foreground/65">{val} orders</span>
                         </div>
@@ -624,8 +624,8 @@ export default function AdminAnalytics() {
             {/* 30-day revenue chart (big) */}
             <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-5">
               <div className="flex items-center justify-between mb-5">
-                <p className="text-[9px] tracking-widest text-foreground/35 uppercase">Daily Revenue — Last 30 Days</p>
-                <p className="text-[9px] font-mono text-emerald-400">{formatPrice(data?.revenue.thisMonth ?? 0)} this month</p>
+                <p className="text-[11px] tracking-widest text-foreground/35 uppercase">Daily Revenue — Last 30 Days</p>
+                <p className="text-[11px] font-mono text-emerald-400">{formatPrice(data?.revenue.thisMonth ?? 0)} this month</p>
               </div>
               {loading
                 ? <div className="h-36 bg-white/4 animate-pulse rounded-xl" />
@@ -635,16 +635,16 @@ export default function AdminAnalytics() {
 
             {/* Category revenue */}
             <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-5">
-              <p className="text-[9px] tracking-widest text-foreground/35 uppercase mb-5">Revenue by Category</p>
+              <p className="text-[11px] tracking-widest text-foreground/35 uppercase mb-5">Revenue by Category</p>
               <div className="grid sm:grid-cols-2 gap-3">
                 {(data?.categories ?? []).map((c, i) => (
                   <div key={c.name} className="flex items-center gap-3 p-3 rounded-xl border border-white/6">
                     <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: CAT_COLORS[i % CAT_COLORS.length] }} />
                     <div className="flex-1 min-w-0">
-                      <p className="text-[10px] text-foreground/65 truncate">{c.name}</p>
-                      <p className="text-[9px] font-mono text-foreground/30">{c.pct}% of total</p>
+                      <p className="text-[12px] text-foreground/65 truncate">{c.name}</p>
+                      <p className="text-[11px] font-mono text-foreground/30">{c.pct}% of total</p>
                     </div>
-                    <p className="text-[11px] font-bold text-emerald-400 font-mono flex-shrink-0">{formatPrice(c.revenue)}</p>
+                    <p className="text-[13px] font-bold text-emerald-400 font-mono flex-shrink-0">{formatPrice(c.revenue)}</p>
                   </div>
                 ))}
               </div>

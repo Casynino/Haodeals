@@ -139,22 +139,22 @@ export default function AdminDashboard() {
             <h1 className="text-base font-semibold tracking-[0.2em] text-foreground/85">DASHBOARD</h1>
             <div className="flex items-center gap-1.5">
               <div className="w-1.5 h-1.5 bg-emerald-400/80 rounded-full animate-pulse" />
-              <span className="text-[8px] text-emerald-400/65 tracking-widest">Live</span>
+              <span className="text-[10px] text-emerald-400/65 tracking-widest">Live</span>
             </div>
           </div>
-          {lastRefresh && <p className="text-[8px] text-foreground/20 mt-0.5">Updated {lastRefresh.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" })}</p>}
+          {lastRefresh && <p className="text-[10px] text-foreground/20 mt-0.5">Updated {lastRefresh.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" })}</p>}
         </div>
         <div className="flex items-center gap-2">
           <button onClick={() => setShowAnnounce(!showAnnounce)}
-            className="flex items-center gap-1.5 px-3 py-1.5 border border-yellow-400/20 text-[9px] tracking-widest text-yellow-400/60 hover:text-yellow-400 hover:border-yellow-400/40 transition-colors">
+            className="flex items-center gap-1.5 px-3 py-1.5 border border-yellow-400/20 text-[11px] tracking-widest text-yellow-400/60 hover:text-yellow-400 hover:border-yellow-400/40 transition-colors">
             <Megaphone className="h-3 w-3" /> ANNOUNCE
           </button>
           <button onClick={() => fetchAll()} disabled={loading}
-            className="flex items-center gap-1.5 px-3 py-1.5 border border-white/12 text-[9px] tracking-widest text-foreground/40 hover:text-foreground/70 hover:border-white/22 transition-all disabled:opacity-40">
+            className="flex items-center gap-1.5 px-3 py-1.5 border border-white/12 text-[11px] tracking-widest text-foreground/40 hover:text-foreground/70 hover:border-white/22 transition-all disabled:opacity-40">
             <RefreshCw className={`h-3 w-3 ${loading ? "animate-spin" : ""}`} /> REFRESH
           </button>
           <Link href="/admin/products"
-            className="flex items-center gap-1.5 px-3 py-1.5 border border-white/20 text-[9px] tracking-widest text-foreground/50 hover:text-foreground hover:border-white/40 transition-colors">
+            className="flex items-center gap-1.5 px-3 py-1.5 border border-white/20 text-[11px] tracking-widest text-foreground/50 hover:text-foreground hover:border-white/40 transition-colors">
             <Plus className="h-3 w-3" /> ADD.PRODUCT
           </Link>
         </div>
@@ -165,11 +165,11 @@ export default function AdminDashboard() {
         <div className="border border-yellow-400/15 bg-yellow-400/[0.025] p-4 rounded-2xl">
           <form onSubmit={handleAnnounce} className="grid sm:grid-cols-3 gap-3">
             <input value={announce.subject} onChange={(e) => setAnnounce({ ...announce, subject: e.target.value })} placeholder="Subject…" required
-              className="bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-[10px] text-foreground/70 placeholder:text-foreground/20 focus:outline-none focus:border-yellow-400/30" />
+              className="bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-[12px] text-foreground/70 placeholder:text-foreground/20 focus:outline-none focus:border-yellow-400/30" />
             <input value={announce.message} onChange={(e) => setAnnounce({ ...announce, message: e.target.value })} placeholder="Message…" required
-              className="bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-[10px] text-foreground/70 placeholder:text-foreground/20 focus:outline-none focus:border-yellow-400/30" />
+              className="bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-[12px] text-foreground/70 placeholder:text-foreground/20 focus:outline-none focus:border-yellow-400/30" />
             <button type="submit" disabled={sending}
-              className="flex items-center justify-center gap-2 py-2 bg-yellow-400/80 text-black text-[9px] font-bold tracking-widest rounded-xl hover:bg-yellow-400 transition-colors disabled:opacity-50">
+              className="flex items-center justify-center gap-2 py-2 bg-yellow-400/80 text-black text-[11px] font-bold tracking-widest rounded-xl hover:bg-yellow-400 transition-colors disabled:opacity-50">
               {sending ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <><Megaphone className="h-3.5 w-3.5" /> SEND TO ALL</>}
             </button>
           </form>
@@ -186,14 +186,14 @@ export default function AdminDashboard() {
               </div>
               <Spark data={spark} color={growth !== undefined ? (growth >= 0 ? "#34d399" : "#fb7185") : "#a78bfa"} />
             </div>
-            <p className="text-[9px] text-foreground/30 tracking-widest uppercase mb-0.5">{label}</p>
+            <p className="text-[11px] text-foreground/30 tracking-widest uppercase mb-0.5">{label}</p>
             {loading
               ? <div className="h-6 w-24 bg-white/6 animate-pulse rounded-lg mb-1" />
               : <p className="text-xl font-black text-foreground/88 tracking-tight">{value}</p>
             }
-            {sub && <p className="text-[9px] text-foreground/30 font-mono">{sub}</p>}
+            {sub && <p className="text-[11px] text-foreground/30 font-mono">{sub}</p>}
             {growth !== undefined && !loading && (
-              <div className={`flex items-center gap-1 mt-2 text-[9px] font-mono font-semibold ${growth >= 0 ? "text-emerald-400" : "text-rose-400"}`}>
+              <div className={`flex items-center gap-1 mt-2 text-[11px] font-mono font-semibold ${growth >= 0 ? "text-emerald-400" : "text-rose-400"}`}>
                 {growth >= 0 ? <TrendingUp className="h-3 w-3" /> : <TrendingDown className="h-3 w-3" />}
                 {growth >= 0 ? "+" : ""}{growth}% vs last month
               </div>
@@ -207,11 +207,11 @@ export default function AdminDashboard() {
         <div className="lg:col-span-2 rounded-2xl border border-white/8 bg-white/[0.02] p-5">
           <div className="flex items-center justify-between mb-4">
             <div>
-              <p className="text-[9px] tracking-widest text-foreground/30 uppercase">Revenue Trend</p>
+              <p className="text-[11px] tracking-widest text-foreground/30 uppercase">Revenue Trend</p>
               <p className="text-sm font-semibold text-foreground/70 mt-0.5">Last 30 days</p>
             </div>
             <div className="text-right">
-              <p className="text-[8px] text-foreground/25 font-mono">This month</p>
+              <p className="text-[10px] text-foreground/25 font-mono">This month</p>
               <p className="text-base font-bold text-emerald-400 font-mono">{formatPrice(analytics?.revenue.thisMonth ?? 0)}</p>
             </div>
           </div>
@@ -223,13 +223,13 @@ export default function AdminDashboard() {
 
         {/* Category breakdown */}
         <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-5">
-          <p className="text-[9px] tracking-widest text-foreground/30 uppercase mb-4">Revenue by Category</p>
+          <p className="text-[11px] tracking-widest text-foreground/30 uppercase mb-4">Revenue by Category</p>
           <div className="space-y-2.5">
             {(analytics?.categories ?? []).slice(0, 5).map((c, i) => {
               const COLORS = ["#a78bfa","#34d399","#f59e0b","#60a5fa","#fb7185"]
               return (
                 <div key={c.name} className="space-y-1">
-                  <div className="flex justify-between text-[9px]">
+                  <div className="flex justify-between text-[11px]">
                     <div className="flex items-center gap-1.5">
                       <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: COLORS[i] }} />
                       <span className="text-foreground/55 truncate max-w-[100px]">{c.name}</span>
@@ -242,7 +242,7 @@ export default function AdminDashboard() {
                 </div>
               )
             })}
-            {!analytics?.categories.length && !loading && <p className="text-[9px] text-foreground/22 text-center py-4">No sales data yet</p>}
+            {!analytics?.categories.length && !loading && <p className="text-[11px] text-foreground/22 text-center py-4">No sales data yet</p>}
           </div>
         </div>
       </div>
@@ -254,9 +254,9 @@ export default function AdminDashboard() {
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
               <Star className="h-3.5 w-3.5 text-amber-400" />
-              <p className="text-[9px] tracking-widest text-foreground/30 uppercase">Top Selling Products</p>
+              <p className="text-[11px] tracking-widest text-foreground/30 uppercase">Top Selling Products</p>
             </div>
-            <Link href="/admin/analytics" className="text-[8px] text-foreground/25 hover:text-foreground/55 transition-colors flex items-center gap-1">
+            <Link href="/admin/analytics" className="text-[10px] text-foreground/25 hover:text-foreground/55 transition-colors flex items-center gap-1">
               Full report <ChevronRight className="h-2.5 w-2.5" />
             </Link>
           </div>
@@ -265,18 +265,18 @@ export default function AdminDashboard() {
               <div key={p.id} className="flex items-center gap-3">
                 <span className="text-foreground/18 font-mono text-xs w-4 flex-shrink-0">{i + 1}</span>
                 <div className="flex-1 min-w-0 space-y-0.5">
-                  <div className="flex justify-between text-[10px]">
+                  <div className="flex justify-between text-[12px]">
                     <span className="text-foreground/65 truncate">{p.name}</span>
                     <span className="text-emerald-400 font-mono flex-shrink-0 ml-2">{formatPrice(p.revenue)}</span>
                   </div>
                   <div className="h-1 bg-white/5 rounded-full overflow-hidden">
                     <div className="h-full bg-violet-500/60 rounded-full" style={{ width: `${topSellMax ? (p.sold / topSellMax) * 100 : 0}%` }} />
                   </div>
-                  <p className="text-[8px] text-foreground/25 font-mono">{p.sold} sold · {p.category}</p>
+                  <p className="text-[10px] text-foreground/25 font-mono">{p.sold} sold · {p.category}</p>
                 </div>
               </div>
             ))}
-            {!analytics?.products.topSelling.length && !loading && <p className="text-[9px] text-foreground/22 text-center py-4">No sales data yet</p>}
+            {!analytics?.products.topSelling.length && !loading && <p className="text-[11px] text-foreground/22 text-center py-4">No sales data yet</p>}
           </div>
         </div>
 
@@ -285,32 +285,32 @@ export default function AdminDashboard() {
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
               <AlertTriangle className="h-3.5 w-3.5 text-amber-400" />
-              <p className="text-[9px] tracking-widest text-amber-400/55 uppercase">Stock Alerts</p>
+              <p className="text-[11px] tracking-widest text-amber-400/55 uppercase">Stock Alerts</p>
             </div>
-            <Link href="/admin/inventory" className="text-[8px] text-foreground/25 hover:text-foreground/55 transition-colors flex items-center gap-1">
+            <Link href="/admin/inventory" className="text-[10px] text-foreground/25 hover:text-foreground/55 transition-colors flex items-center gap-1">
               Manage <ChevronRight className="h-2.5 w-2.5" />
             </Link>
           </div>
           {analytics?.products.outOfStock ? (
             <div className="mb-3 p-2.5 rounded-xl bg-rose-500/8 border border-rose-500/15">
-              <p className="text-[9px] text-rose-400 font-mono">{analytics.products.outOfStock} product{analytics.products.outOfStock > 1 ? "s" : ""} OUT OF STOCK — losing sales!</p>
+              <p className="text-[11px] text-rose-400 font-mono">{analytics.products.outOfStock} product{analytics.products.outOfStock > 1 ? "s" : ""} OUT OF STOCK — losing sales!</p>
             </div>
           ) : null}
           <div className="space-y-2.5 max-h-44 overflow-y-auto">
             {(analytics?.products.lowStock ?? []).map((p) => (
               <div key={p.id} className="flex items-center justify-between">
                 <div className="min-w-0">
-                  <p className="text-[10px] text-foreground/65 truncate">{p.name}</p>
-                  <p className="text-[8px] text-foreground/28 font-mono">{p.category}</p>
+                  <p className="text-[12px] text-foreground/65 truncate">{p.name}</p>
+                  <p className="text-[10px] text-foreground/28 font-mono">{p.category}</p>
                 </div>
-                <span className={`text-[9px] font-mono font-bold px-2 py-0.5 rounded-full flex-shrink-0 ml-2
+                <span className={`text-[11px] font-mono font-bold px-2 py-0.5 rounded-full flex-shrink-0 ml-2
                   ${p.stock <= 3 ? "bg-rose-500/12 text-rose-400" : "bg-amber-500/12 text-amber-400"}`}>
                   {p.stock} left
                 </span>
               </div>
             ))}
             {!analytics?.products.lowStock.length && !loading && (
-              <p className="text-[9px] text-foreground/22 text-center py-4">✓ All products well stocked</p>
+              <p className="text-[11px] text-foreground/22 text-center py-4">✓ All products well stocked</p>
             )}
           </div>
         </div>
@@ -321,25 +321,25 @@ export default function AdminDashboard() {
         <div className="flex items-center justify-between px-5 py-3 border-b border-white/8">
           <div className="flex items-center gap-2">
             <Activity className="h-3.5 w-3.5 text-foreground/30" />
-            <p className="text-[9px] tracking-widest text-foreground/30 uppercase">Recent Orders</p>
+            <p className="text-[11px] tracking-widest text-foreground/30 uppercase">Recent Orders</p>
           </div>
-          <Link href="/admin/orders" className="flex items-center gap-1 text-[8px] tracking-widest text-foreground/25 hover:text-foreground/55 transition-colors">
+          <Link href="/admin/orders" className="flex items-center gap-1 text-[10px] tracking-widest text-foreground/25 hover:text-foreground/55 transition-colors">
             VIEW ALL <ChevronRight className="h-2.5 w-2.5" />
           </Link>
         </div>
         {loading
           ? <div className="p-4 space-y-2">{[1,2,3].map((i) => <div key={i} className="h-10 bg-white/4 animate-pulse rounded-xl" />)}</div>
           : recentOrders.length === 0
-          ? <p className="text-[9px] text-foreground/22 text-center py-8">No orders yet</p>
+          ? <p className="text-[11px] text-foreground/22 text-center py-8">No orders yet</p>
           : (
             <div className="divide-y divide-white/[0.05]">
               {recentOrders.map((o) => (
                 <div key={o.id} className="flex items-center gap-3 px-5 py-3 hover:bg-white/[0.02] transition-colors">
                   <div className="flex-1 min-w-0">
-                    <p className="text-[10px] text-foreground/70 uppercase tracking-wide truncate">{o.user.name ?? o.user.email}</p>
-                    <p className="text-[8px] text-foreground/25 font-mono">#{o.id.slice(0,8).toUpperCase()} · {(o.items as unknown[]).length} items · {new Date(o.createdAt).toLocaleDateString("en-GB", { day: "2-digit", month: "short" })}</p>
+                    <p className="text-[12px] text-foreground/70 uppercase tracking-wide truncate">{o.user.name ?? o.user.email}</p>
+                    <p className="text-[10px] text-foreground/25 font-mono">#{o.id.slice(0,8).toUpperCase()} · {(o.items as unknown[]).length} items · {new Date(o.createdAt).toLocaleDateString("en-GB", { day: "2-digit", month: "short" })}</p>
                   </div>
-                  <span className={`text-[9px] border px-2 py-0.5 hidden sm:inline flex-shrink-0 ${STATUS_COLOR[o.status] ?? "text-foreground/40 border-white/12"}`}>
+                  <span className={`text-[11px] border px-2 py-0.5 hidden sm:inline flex-shrink-0 ${STATUS_COLOR[o.status] ?? "text-foreground/40 border-white/12"}`}>
                     {o.status.replace(/_/g, " ").toUpperCase()}
                   </span>
                   <span className="text-emerald-400/80 text-xs font-mono font-semibold flex-shrink-0">{formatPrice(o.total)}</span>
@@ -355,7 +355,7 @@ export default function AdminDashboard() {
         <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-5">
           <div className="flex items-center gap-2 mb-4">
             <Zap className="h-3.5 w-3.5 text-yellow-400" />
-            <p className="text-[9px] tracking-widest text-foreground/30 uppercase">Insights & Recommended Actions</p>
+            <p className="text-[11px] tracking-widest text-foreground/30 uppercase">Insights & Recommended Actions</p>
           </div>
           <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-2">
             {analytics!.insights.map((ins, i) => {
@@ -365,8 +365,8 @@ export default function AdminDashboard() {
                 <div key={i} className={`flex items-start gap-3 p-3 rounded-xl border ${cfg.cls}`}>
                   <Icon className="h-3.5 w-3.5 flex-shrink-0 mt-0.5" />
                   <div className="min-w-0">
-                    <p className="text-[10px] text-foreground/72 leading-snug">{ins.text}</p>
-                    <p className="text-[8px] opacity-55 mt-0.5 font-mono">→ {ins.action}</p>
+                    <p className="text-[12px] text-foreground/72 leading-snug">{ins.text}</p>
+                    <p className="text-[10px] opacity-55 mt-0.5 font-mono">→ {ins.action}</p>
                   </div>
                 </div>
               )
