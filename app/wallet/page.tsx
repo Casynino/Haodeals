@@ -7,7 +7,7 @@ import Link from "next/link"
 import {
   Copy, RefreshCw, Smartphone, Loader2, CheckCircle2,
   ArrowDownToLine, ArrowUpFromLine, ShoppingBag, Clock,
-  ArrowLeftRight, Eye, EyeOff, X,
+  ArrowLeftRight, Eye, EyeOff, X, Landmark,
 } from "lucide-react"
 import { toast } from "sonner"
 import { formatPrice } from "@/lib/utils"
@@ -17,6 +17,8 @@ import { formatPrice } from "@/lib/utils"
 interface WalletData {
   displayId:  string
   balanceTzs: number
+  isTreasury?: boolean
+  treasuryBalanceTzs?: number | null
 }
 
 interface TxItem {
@@ -567,6 +569,36 @@ export default function WalletPage() {
             </div>
           )}
         </div>
+
+        {/* ── Treasury pool (only when this account also holds the treasury) ── */}
+        {wallet?.isTreasury && (
+          <Link
+            href="/admin/wallets"
+            className="block rounded-2xl border border-emerald-500/20 bg-emerald-500/[0.04] p-4 hover:bg-emerald-500/[0.07] transition-colors"
+          >
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2.5">
+                <div className="w-9 h-9 rounded-xl bg-emerald-500/15 flex items-center justify-center flex-shrink-0">
+                  <Landmark className="h-4 w-4 text-emerald-400" />
+                </div>
+                <div>
+                  <p className="text-[10px] tracking-[0.2em] text-emerald-400/80 font-mono uppercase">Treasury Pool</p>
+                  <p className="text-[9px] text-foreground/35 mt-0.5">Funds accepting payments across HaoDeals</p>
+                </div>
+              </div>
+              <div className="text-right">
+                <p className="text-sm font-black font-mono text-emerald-400">
+                  {wallet.treasuryBalanceTzs === null ? "—" : formatPrice(wallet.treasuryBalanceTzs ?? 0)}
+                </p>
+                <p className="text-[8px] text-foreground/30 font-mono mt-0.5">Manage in admin →</p>
+              </div>
+            </div>
+            <p className="text-[8px] text-foreground/25 mt-3 leading-relaxed">
+              This is the shared business treasury, separate from your personal balance above. It holds every
+              user&apos;s funds and your order revenue.
+            </p>
+          </Link>
+        )}
 
         {/* ── Quick Action Tiles ───────────────────────────────────────── */}
         {action === "idle" && (

@@ -13,9 +13,30 @@ export async function GET() {
   const userId = session.user.id as string
   const balanceTzs = await computeBalance(userId)
 
+  // If this account's own wallet is also the HaoDeals treasury, surface the
+  // pooled treasury balance alongside their personal balance. The treasury
+  // wallet stores our HaoDeals user id as its nTZS externalId.
+  let isTreasury = false
+  let treasuryBalanceTzs: number | null = null
+  const role = (session.user as { role?: string }).role
+  const treasuryId = process.env.NTZS_TREASURY_USER_ID
+  if (role === "admin" && treasuryId) {
+    try {
+      const treasury = await ntzs.getUser(treasuryId)
+      if (treasury.externalId === userId) {
+        isTreasury = true
+        treasuryBalanceTzs = treasury.balanceTzs ?? null
+      }
+    } catch {
+      // treasury unreachable — fall through with the personal balance only
+    }
+  }
+
   return NextResponse.json({
     displayId:  userId.slice(-6).toUpperCase(),
     balanceTzs,
+    isTreasury,
+    treasuryBalanceTzs,
   })
 }
 
