@@ -40,7 +40,10 @@ export async function GET() {
   })
 }
 
-// Deposit: mints nTZS tokens directly into the HaoDeals treasury wallet.
+// Deposit: mints nTZS tokens directly into the HaoDeals treasury wallet
+// (NTZS_TREASURY_USER_ID). collectToTreasury MUST stay false — when true,
+// nTZS routes the minted funds to the account's collection wallet instead of
+// the userId's wallet, so the treasury balance we read would never move.
 // The user's balance is tracked in our own DB (Transaction records).
 export async function POST(req: Request) {
   const session = await auth()
@@ -65,7 +68,7 @@ export async function POST(req: Request) {
       amountTzs: Math.round(amount),
       paymentMethod: "mobile_money",
       phoneNumber: normalizedPhone,
-      collectToTreasury: true,
+      collectToTreasury: false,
     })
     await prisma.transaction.create({
       data: {
