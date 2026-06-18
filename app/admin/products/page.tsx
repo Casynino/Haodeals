@@ -222,20 +222,20 @@ export default function AdminProductsPage() {
       {/* Header */}
       <div className="flex items-center justify-between mb-6 border-b border-white/10 pb-4">
         <div className="flex items-center gap-3">
-          <span className="text-foreground/30 text-[10px]">//</span>
-          <h1 className="text-[11px] tracking-[0.3em] text-foreground/70">PRODUCTS.MANAGER</h1>
-          <span className="text-[9px] text-foreground/30">[{products.length}.ITEMS]</span>
+          <span className="text-foreground/30 text-[12px]">//</span>
+          <h1 className="text-[13px] tracking-[0.3em] text-foreground/70">PRODUCTS.MANAGER</h1>
+          <span className="text-[11px] text-foreground/30">[{products.length}.ITEMS]</span>
         </div>
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger
-            className="flex items-center gap-1.5 px-3 py-1.5 border border-white/20 text-[9px] tracking-widest text-foreground/50 hover:text-foreground hover:border-white/40 transition-colors"
+            className="flex items-center gap-1.5 px-3 py-1.5 border border-white/20 text-[11px] tracking-widest text-foreground/50 hover:text-foreground hover:border-white/40 transition-colors"
             onClick={openAdd}
           >
             <Plus className="h-3 w-3" /> ADD.PRODUCT
           </DialogTrigger>
           <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto bg-background border border-white/20 font-mono">
             <DialogHeader>
-              <DialogTitle className="text-[10px] tracking-widest text-foreground/60">
+              <DialogTitle className="text-[12px] tracking-widest text-foreground/60">
                 {editing ? "// EDIT.PRODUCT" : "// NEW.PRODUCT"}
               </DialogTitle>
             </DialogHeader>
@@ -245,21 +245,21 @@ export default function AdminProductsPage() {
                 { key: "description", label: "DESCRIPTION", placeholder: "Product description", multiline: true },
               ].map((field) => (
                 <div key={field.key}>
-                  <label className="text-[8px] tracking-widest text-foreground/30 block mb-1">{field.label}</label>
+                  <label className="text-[10px] tracking-widest text-foreground/30 block mb-1">{field.label}</label>
                   {field.multiline ? (
                     <textarea
                       value={form[field.key as keyof typeof form] as string}
                       onChange={(e) => setForm({ ...form, [field.key]: e.target.value })}
                       placeholder={field.placeholder}
                       rows={2}
-                      className="w-full bg-transparent border border-white/15 px-2.5 py-2 text-[10px] text-foreground/70 placeholder:text-foreground/20 focus:outline-none focus:border-white/40 transition-colors resize-none"
+                      className="w-full bg-transparent border border-white/15 px-2.5 py-2 text-[12px] text-foreground/70 placeholder:text-foreground/20 focus:outline-none focus:border-white/40 transition-colors resize-none"
                     />
                   ) : (
                     <input
                       value={form[field.key as keyof typeof form] as string}
                       onChange={(e) => setForm({ ...form, [field.key]: e.target.value })}
                       placeholder={field.placeholder}
-                      className="w-full bg-transparent border border-white/15 px-2.5 py-2 text-[10px] text-foreground/70 placeholder:text-foreground/20 focus:outline-none focus:border-white/40 transition-colors"
+                      className="w-full bg-transparent border border-white/15 px-2.5 py-2 text-[12px] text-foreground/70 placeholder:text-foreground/20 focus:outline-none focus:border-white/40 transition-colors"
                     />
                   )}
                 </div>
@@ -272,30 +272,30 @@ export default function AdminProductsPage() {
                   { key: "stock", label: "STOCK", placeholder: "100" },
                 ].map((field) => (
                   <div key={field.key}>
-                    <label className="text-[8px] tracking-widest text-foreground/30 block mb-1">{field.label}</label>
+                    <label className="text-[10px] tracking-widest text-foreground/30 block mb-1">{field.label}</label>
                     <input
                       type="number"
                       value={form[field.key as keyof typeof form] as string}
                       onChange={(e) => setForm({ ...form, [field.key]: e.target.value })}
                       placeholder={field.placeholder}
-                      className="w-full bg-transparent border border-white/15 px-2.5 py-2 text-[10px] text-foreground/70 placeholder:text-foreground/20 focus:outline-none focus:border-white/40 transition-colors"
+                      className="w-full bg-transparent border border-white/15 px-2.5 py-2 text-[12px] text-foreground/70 placeholder:text-foreground/20 focus:outline-none focus:border-white/40 transition-colors"
                     />
                   </div>
                 ))}
               </div>
 
               <div>
-                <label className="text-[8px] tracking-widest text-foreground/30 block mb-1">CATEGORY *</label>
+                <label className="text-[10px] tracking-widest text-foreground/30 block mb-1">CATEGORY *</label>
                 <Select
                   value={form.categoryId}
                   onValueChange={(v) => v && setForm({ ...form, categoryId: v })}
                 >
-                  <SelectTrigger className="bg-transparent border-white/15 text-[10px] text-foreground/70 focus:border-white/40">
+                  <SelectTrigger className="bg-transparent border-white/15 text-[12px] text-foreground/70 focus:border-white/40">
                     <SelectValue placeholder="SELECT.CATEGORY" />
                   </SelectTrigger>
                   <SelectContent className="bg-background border-white/20 font-mono">
                     {categories.map((cat) => (
-                      <SelectItem key={cat.id} value={cat.id} className="text-[10px] tracking-wide">
+                      <SelectItem key={cat.id} value={cat.id} className="text-[12px] tracking-wide">
                         {cat.name.toUpperCase()}
                       </SelectItem>
                     ))}
@@ -306,8 +306,8 @@ export default function AdminProductsPage() {
               {/* Product Options */}
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <label className="text-[8px] tracking-widest text-foreground/30">PRODUCT.OPTIONS</label>
-                  <span className="text-[7px] text-foreground/20">SIZE · COLOR · STORAGE · ETC</span>
+                  <label className="text-[10px] tracking-widest text-foreground/30">PRODUCT.OPTIONS</label>
+                  <span className="text-[10px] text-foreground/20">SIZE · COLOR · STORAGE · ETC</span>
                 </div>
 
                 {/* Preset chips */}
@@ -318,7 +318,7 @@ export default function AdminProductsPage() {
                       type="button"
                       onClick={() => addPresetOption(preset)}
                       disabled={!!options.find((o) => o.name === preset.name)}
-                      className="px-2 py-0.5 text-[8px] tracking-widest border border-white/15 text-foreground/40 hover:text-foreground hover:border-white/40 transition-colors disabled:opacity-20 disabled:cursor-not-allowed"
+                      className="px-2 py-0.5 text-[10px] tracking-widest border border-white/15 text-foreground/40 hover:text-foreground hover:border-white/40 transition-colors disabled:opacity-20 disabled:cursor-not-allowed"
                     >
                       + {preset.name.toUpperCase()}
                     </button>
@@ -333,12 +333,12 @@ export default function AdminProductsPage() {
                     onChange={(e) => setNewOptionName(e.target.value)}
                     onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), addCustomOption())}
                     placeholder="CUSTOM OPTION NAME..."
-                    className="flex-1 bg-transparent border border-white/15 px-2 py-1.5 text-[9px] text-foreground/70 placeholder:text-foreground/20 focus:outline-none focus:border-white/40 transition-colors"
+                    className="flex-1 bg-transparent border border-white/15 px-2 py-1.5 text-[11px] text-foreground/70 placeholder:text-foreground/20 focus:outline-none focus:border-white/40 transition-colors"
                   />
                   <button
                     type="button"
                     onClick={addCustomOption}
-                    className="px-3 border border-white/15 text-[9px] text-foreground/40 hover:text-foreground hover:border-white/40 transition-colors"
+                    className="px-3 border border-white/15 text-[11px] text-foreground/40 hover:text-foreground hover:border-white/40 transition-colors"
                   >
                     <Plus className="h-3 w-3" />
                   </button>
@@ -348,14 +348,14 @@ export default function AdminProductsPage() {
                 {options.map((opt, idx) => (
                   <div key={idx} className="border border-white/10 p-2.5 space-y-2">
                     <div className="flex items-center justify-between">
-                      <span className="text-[9px] tracking-widest text-foreground/60">{opt.name.toUpperCase()}</span>
+                      <span className="text-[11px] tracking-widest text-foreground/60">{opt.name.toUpperCase()}</span>
                       <button type="button" onClick={() => removeOption(idx)} className="text-foreground/20 hover:text-red-400/70 transition-colors">
                         <X className="h-3 w-3" />
                       </button>
                     </div>
                     <div className="flex flex-wrap gap-1">
                       {opt.values.map((val) => (
-                        <span key={val} className="flex items-center gap-1 px-1.5 py-0.5 bg-foreground/5 border border-white/10 text-[8px] text-foreground/60">
+                        <span key={val} className="flex items-center gap-1 px-1.5 py-0.5 bg-foreground/5 border border-white/10 text-[10px] text-foreground/60">
                           {val}
                           <button type="button" onClick={() => removeOptionValue(idx, val)} className="text-foreground/20 hover:text-red-400/70 transition-colors">
                             <X className="h-2 w-2" />
@@ -369,9 +369,9 @@ export default function AdminProductsPage() {
                           onChange={(e) => setNewOptionValues({ ...newOptionValues, [idx]: e.target.value })}
                           onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), addOptionValue(idx))}
                           placeholder="Add value..."
-                          className="w-24 bg-transparent border border-dashed border-white/15 px-1.5 py-0.5 text-[8px] text-foreground/60 placeholder:text-foreground/20 focus:outline-none focus:border-white/40"
+                          className="w-24 bg-transparent border border-dashed border-white/15 px-1.5 py-0.5 text-[10px] text-foreground/60 placeholder:text-foreground/20 focus:outline-none focus:border-white/40"
                         />
-                        <button type="button" onClick={() => addOptionValue(idx)} className="px-1.5 border border-dashed border-white/15 text-[8px] text-foreground/30 hover:text-foreground hover:border-white/40 transition-colors">
+                        <button type="button" onClick={() => addOptionValue(idx)} className="px-1.5 border border-dashed border-white/15 text-[10px] text-foreground/30 hover:text-foreground hover:border-white/40 transition-colors">
                           +
                         </button>
                       </div>
@@ -382,7 +382,7 @@ export default function AdminProductsPage() {
 
               {/* Image upload */}
               <div>
-                <label className="text-[8px] tracking-widest text-foreground/30 block mb-1">PRODUCT.IMAGES</label>
+                <label className="text-[10px] tracking-widest text-foreground/30 block mb-1">PRODUCT.IMAGES</label>
 
                 {/* Uploaded previews */}
                 {uploadedUrls.length > 0 && (
@@ -403,7 +403,7 @@ export default function AdminProductsPage() {
                 )}
 
                 {/* Upload button */}
-                <label className={`flex items-center justify-center gap-2 w-full py-3 border border-dashed border-white/20 text-[9px] tracking-widest cursor-pointer transition-colors ${uploading ? "text-foreground/20" : "text-foreground/40 hover:border-white/40 hover:text-foreground/60"}`}>
+                <label className={`flex items-center justify-center gap-2 w-full py-3 border border-dashed border-white/20 text-[11px] tracking-widest cursor-pointer transition-colors ${uploading ? "text-foreground/20" : "text-foreground/40 hover:border-white/40 hover:text-foreground/60"}`}>
                   <input
                     type="file"
                     accept="image/*"
@@ -424,7 +424,7 @@ export default function AdminProductsPage() {
                     </>
                   )}
                 </label>
-                <p className="text-[7px] text-foreground/20 mt-1">JPG · PNG · WEBP · GIF</p>
+                <p className="text-[10px] text-foreground/20 mt-1">JPG · PNG · WEBP · GIF</p>
               </div>
 
               <div className="flex items-center gap-2">
@@ -435,25 +435,25 @@ export default function AdminProductsPage() {
                   onChange={(e) => setForm({ ...form, featured: e.target.checked })}
                   className="w-3 h-3 accent-foreground"
                 />
-                <label htmlFor="featured" className="text-[9px] tracking-widest text-foreground/40">FEATURED.PRODUCT</label>
+                <label htmlFor="featured" className="text-[11px] tracking-widest text-foreground/40">FEATURED.PRODUCT</label>
               </div>
 
               {/* Deal countdown timer */}
               <div>
-                <label className="text-[8px] tracking-widest text-foreground/30 block mb-1">
+                <label className="text-[10px] tracking-widest text-foreground/30 block mb-1">
                   DEAL.ENDS.AT <span className="text-foreground/20">(OPTIONAL — activates countdown timer)</span>
                 </label>
                 <input
                   type="datetime-local"
                   value={form.dealEndsAt}
                   onChange={(e) => setForm({ ...form, dealEndsAt: e.target.value })}
-                  className="w-full bg-transparent border border-white/15 px-2.5 py-2 text-[10px] text-foreground/70 focus:outline-none focus:border-white/40 transition-colors"
+                  className="w-full bg-transparent border border-white/15 px-2.5 py-2 text-[12px] text-foreground/70 focus:outline-none focus:border-white/40 transition-colors"
                 />
                 {form.dealEndsAt && (
                   <button
                     type="button"
                     onClick={() => setForm({ ...form, dealEndsAt: "" })}
-                    className="text-[8px] text-foreground/30 hover:text-red-400/70 transition-colors mt-1"
+                    className="text-[10px] text-foreground/30 hover:text-red-400/70 transition-colors mt-1"
                   >
                     ✕ Clear timer
                   </button>
@@ -462,14 +462,14 @@ export default function AdminProductsPage() {
 
               <div className="border-t border-white/10 pt-3 flex gap-2">
                 <button
-                  className="flex-1 py-2 bg-foreground text-background text-[9px] tracking-widest font-bold hover:bg-foreground/90 transition-colors disabled:opacity-50"
+                  className="flex-1 py-2 bg-foreground text-background text-[11px] tracking-widest font-bold hover:bg-foreground/90 transition-colors disabled:opacity-50"
                   onClick={handleSave}
                   disabled={saving}
                 >
                   {saving ? "SAVING..." : editing ? "UPDATE.PRODUCT" : "CREATE.PRODUCT"}
                 </button>
                 <button
-                  className="px-4 py-2 border border-white/20 text-[9px] tracking-widest text-foreground/40 hover:text-foreground hover:border-white/40 transition-colors"
+                  className="px-4 py-2 border border-white/20 text-[11px] tracking-widest text-foreground/40 hover:text-foreground hover:border-white/40 transition-colors"
                   onClick={() => setOpen(false)}
                 >
                   CANCEL
@@ -487,7 +487,7 @@ export default function AdminProductsPage() {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="SEARCH.PRODUCTS..."
-          className="w-full pl-8 pr-8 py-2 bg-transparent border border-white/15 text-[10px] tracking-widest text-foreground/70 placeholder:text-foreground/20 focus:outline-none focus:border-white/40 transition-colors"
+          className="w-full pl-8 pr-8 py-2 bg-transparent border border-white/15 text-[12px] tracking-widest text-foreground/70 placeholder:text-foreground/20 focus:outline-none focus:border-white/40 transition-colors"
         />
         {search && (
           <button onClick={() => setSearch("")} className="absolute right-3 top-1/2 -translate-y-1/2 text-foreground/30 hover:text-foreground">
@@ -504,14 +504,14 @@ export default function AdminProductsPage() {
       ) : filtered.length === 0 ? (
         <div className="text-center py-24 border border-white/10">
           <Package className="h-10 w-10 mx-auto mb-3 opacity-20" />
-          <p className="text-[10px] tracking-widest text-foreground/30">NO.PRODUCTS.FOUND</p>
+          <p className="text-[12px] tracking-widest text-foreground/30">NO.PRODUCTS.FOUND</p>
         </div>
       ) : (
         <div className="border border-white/10 overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="border-b border-white/10 bg-foreground/3 text-[8px] tracking-widest text-foreground/25">
+                <tr className="border-b border-white/10 bg-foreground/3 text-[10px] tracking-widest text-foreground/25">
                   <th className="text-left p-3">PRODUCT</th>
                   <th className="text-left p-3">CATEGORY</th>
                   <th className="text-right p-3">PRICE</th>
@@ -534,22 +534,22 @@ export default function AdminProductsPage() {
                           />
                         </div>
                         <div>
-                          <p className="text-[10px] text-foreground/70 line-clamp-1 uppercase tracking-wide">{product.name}</p>
+                          <p className="text-[12px] text-foreground/70 line-clamp-1 uppercase tracking-wide">{product.name}</p>
                           {product.featured && (
-                            <span className="text-[7px] text-yellow-400/60 border border-yellow-400/25 px-1 tracking-widest">FEATURED</span>
+                            <span className="text-[10px] text-yellow-400/60 border border-yellow-400/25 px-1 tracking-widest">FEATURED</span>
                           )}
                         </div>
                       </div>
                     </td>
-                    <td className="p-3 text-[9px] text-foreground/30 uppercase">{product.category.name}</td>
+                    <td className="p-3 text-[11px] text-foreground/30 uppercase">{product.category.name}</td>
                     <td className="p-3 text-right">
-                      <span className="text-[10px] text-green-400/70">{formatPrice(product.price)}</span>
+                      <span className="text-[12px] text-green-400/70">{formatPrice(product.price)}</span>
                       {product.originalPrice && (
-                        <span className="text-[8px] text-foreground/20 line-through ml-1">{formatPrice(product.originalPrice)}</span>
+                        <span className="text-[10px] text-foreground/20 line-through ml-1">{formatPrice(product.originalPrice)}</span>
                       )}
                     </td>
                     <td className="p-3 text-right">
-                      <span className={`text-[8px] border px-1.5 py-0.5 tracking-widest ${
+                      <span className={`text-[10px] border px-1.5 py-0.5 tracking-widest ${
                         product.stock === 0
                           ? "text-red-400/60 border-red-400/25"
                           : product.stock < 10
@@ -559,7 +559,7 @@ export default function AdminProductsPage() {
                         {product.stock === 0 ? "OUT" : product.stock}
                       </span>
                     </td>
-                    <td className="p-3 text-right text-[9px] text-foreground/30">{product._count.orderItems}</td>
+                    <td className="p-3 text-right text-[11px] text-foreground/30">{product._count.orderItems}</td>
                     <td className="p-3 text-right">
                       <div className="flex items-center justify-end gap-1">
                         <button

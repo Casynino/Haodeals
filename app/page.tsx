@@ -81,7 +81,7 @@ export default async function HomePage() {
             {/* Top rule */}
             <div className="flex items-center gap-2 mb-4 opacity-60">
               <div className="w-6 h-px bg-foreground" />
-              <span className="text-foreground text-[10px] font-mono tracking-widest">HAODEALS</span>
+              <span className="text-foreground text-[12px] font-mono tracking-widest">HAODEALS</span>
               <div className="flex-1 h-px bg-foreground" />
             </div>
 
@@ -111,7 +111,7 @@ export default async function HomePage() {
               {[["20+", "PRODUCTS"], ["5", "CATEGORIES"], ["70%", "MAX OFF"]].map(([val, label]) => (
                 <div key={label}>
                   <div className="text-xl text-foreground font-bold">{val}</div>
-                  <div className="text-[10px] tracking-widest">{label}</div>
+                  <div className="text-[12px] tracking-widest">{label}</div>
                 </div>
               ))}
             </div>
@@ -136,7 +136,7 @@ export default async function HomePage() {
 
             {/* Bottom rule */}
             <div className="flex items-center gap-2 mt-7 opacity-25">
-              <span className="text-foreground text-[9px] font-mono">∞</span>
+              <span className="text-foreground text-[11px] font-mono">∞</span>
               <div className="flex-1 h-px bg-foreground" />
             </div>
           </div>
@@ -155,14 +155,14 @@ export default async function HomePage() {
         {/* Bottom status bar */}
         <div className="absolute bottom-0 left-0 right-0 z-20 border-t border-foreground/10 bg-background/80 backdrop-blur-sm">
           <div className="container mx-auto px-4 py-2 flex items-center justify-between">
-            <div className="flex items-center gap-4 text-[10px] font-mono text-foreground/50">
+            <div className="flex items-center gap-4 text-[12px] font-mono text-foreground/50">
               <span>Free shipping over TSh 100K</span>
               <span className="text-foreground/20">|</span>
               <span>30-day returns</span>
               <span className="text-foreground/20">|</span>
               <span>Secure checkout</span>
             </div>
-            <div className="flex items-center gap-2 text-[10px] font-mono text-foreground/50">
+            <div className="flex items-center gap-2 text-[12px] font-mono text-foreground/50">
               <div className="flex gap-1">
                 {[0, 1, 2].map((i) => (
                   <div key={i} className="w-1.5 h-1.5 bg-green-400/60 rounded-full animate-pulse" style={{ animationDelay: `${i * 0.2}s` }} />
@@ -182,7 +182,7 @@ export default async function HomePage() {
               <div className="flex items-center gap-3">
                 <h2 className="text-sm font-mono tracking-[0.25em] text-foreground/80 font-semibold">CATEGORIES</h2>
               </div>
-              <Link href="/products" className="flex items-center gap-1 text-[10px] font-mono text-foreground/55 hover:text-foreground tracking-widest transition-colors">
+              <Link href="/products" className="flex items-center gap-1 text-[12px] font-mono text-foreground/55 hover:text-foreground tracking-widest transition-colors">
                 View All <ArrowRight className="h-3 w-3" />
               </Link>
             </div>
@@ -201,8 +201,8 @@ export default async function HomePage() {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
                   <div className="absolute bottom-0 left-0 right-0 p-2.5">
-                    <p className="text-[11px] font-mono text-white tracking-widest uppercase font-medium">{cat.name}</p>
-                    <p className="text-[10px] text-white/55 mt-0.5">{cat._count.products} items</p>
+                    <p className="text-[13px] font-mono text-white tracking-widest uppercase font-medium">{cat.name}</p>
+                    <p className="text-[12px] text-white/55 mt-0.5">{cat._count.products} items</p>
                   </div>
                 </Link>
               ))}
@@ -219,12 +219,12 @@ export default async function HomePage() {
               <div className="flex items-center gap-3">
                 <span className="text-foreground/40 text-xs">//</span>
                 <h2 className="text-sm font-mono tracking-[0.25em] text-foreground/80 font-semibold">Flash Deals</h2>
-                <div className="flex items-center gap-1.5 text-[10px] font-mono text-green-400/75">
+                <div className="flex items-center gap-1.5 text-[12px] font-mono text-green-400/75">
                   <div className="w-1.5 h-1.5 bg-green-400/75 rounded-full animate-pulse" />
                   Live
                 </div>
               </div>
-              <Link href="/products" className="flex items-center gap-1 text-[10px] font-mono text-foreground/55 hover:text-foreground tracking-widest transition-colors">
+              <Link href="/products" className="flex items-center gap-1 text-[12px] font-mono text-foreground/55 hover:text-foreground tracking-widest transition-colors">
                 All Deals <ArrowRight className="h-3 w-3" />
               </Link>
             </div>
@@ -246,7 +246,7 @@ export default async function HomePage() {
                 <span className="text-foreground/40 text-xs">//</span>
                 <h2 className="text-sm font-mono tracking-[0.25em] text-foreground/80 font-semibold">Featured</h2>
               </div>
-              <Link href="/products?featured=true" className="flex items-center gap-1 text-[10px] font-mono text-foreground/55 hover:text-foreground tracking-widest transition-colors">
+              <Link href="/products?featured=true" className="flex items-center gap-1 text-[12px] font-mono text-foreground/55 hover:text-foreground tracking-widest transition-colors">
                 View All <ArrowRight className="h-3 w-3" />
               </Link>
             </div>
@@ -272,7 +272,7 @@ export default async function HomePage() {
             {isLoggedIn ? (
               /* Logged-in: push straight to deals */
               <div className="text-center space-y-4">
-                <p className="text-[9px] font-mono text-foreground/30 tracking-widest">Today&apos;s Deals</p>
+                <p className="text-[11px] font-mono text-foreground/30 tracking-widest">Today&apos;s Deals</p>
                 <h2 className="text-2xl md:text-3xl font-black font-mono tracking-widest">
                   Welcome Back!<br />
                   <span className="text-foreground/40">Deals Are Waiting</span>
@@ -290,7 +290,7 @@ export default async function HomePage() {
             ) : (
               /* Guest: drive signup with offer */
               <div className="text-center space-y-4">
-                <p className="text-[9px] font-mono text-foreground/30 tracking-widest">Limited Time Offer</p>
+                <p className="text-[11px] font-mono text-foreground/30 tracking-widest">Limited Time Offer</p>
                 <h2 className="text-2xl md:text-3xl font-black font-mono tracking-widest">
                   Get 20% Off<br />
                   <span className="text-foreground/40">Your First Order</span>
@@ -304,7 +304,7 @@ export default async function HomePage() {
                     Create Free Account
                   </button>
                 </Link>
-                <p className="text-[9px] font-mono text-foreground/20 tracking-widest">No spam, ever.</p>
+                <p className="text-[11px] font-mono text-foreground/20 tracking-widest">No spam, ever.</p>
               </div>
             )}
           </div>

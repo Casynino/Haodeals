@@ -81,21 +81,21 @@ export function ProductCard({ product }: ProductCardProps) {
           />
 
           {discount && (
-            <div className="absolute top-0 left-0 bg-[#ee0000] text-white text-[10px] font-mono font-bold px-2 py-0.5 tracking-widest z-10">
+            <div className="absolute top-0 left-0 bg-[#ee0000] text-white text-[12px] font-mono font-bold px-2 py-0.5 tracking-widest z-10">
               -{discount}%
             </div>
           )}
 
           {outOfStock && (
             <div className="absolute inset-0 bg-background/75 flex items-center justify-center z-10">
-              <span className="text-[10px] font-mono tracking-widest text-foreground/70 border border-foreground/25 px-2 py-1">
+              <span className="text-[12px] font-mono tracking-widest text-foreground/70 border border-foreground/25 px-2 py-1">
                 OUT OF STOCK
               </span>
             </div>
           )}
 
           {product.featured && (
-            <div className="absolute top-0 right-0 bg-yellow-400/20 border-l border-b border-yellow-500/40 text-yellow-600 dark:text-yellow-400/80 text-[10px] font-mono px-2 py-0.5 tracking-widest z-10">
+            <div className="absolute top-0 right-0 bg-yellow-400/20 border-l border-b border-yellow-500/40 text-yellow-600 dark:text-yellow-400/80 text-[12px] font-mono px-2 py-0.5 tracking-widest z-10">
               FEATURED
             </div>
           )}
@@ -103,7 +103,7 @@ export function ProductCard({ product }: ProductCardProps) {
 
         {/* Info */}
         <div className="p-3 space-y-1.5 border-t border-foreground/[0.06]">
-          <p className="text-[10px] text-foreground/45 tracking-widest uppercase font-mono">
+          <p className="text-[12px] text-foreground/45 tracking-widest uppercase font-mono">
             {product.category?.name}
           </p>
           <h3 className="text-xs text-foreground/85 line-clamp-2 leading-relaxed group-hover:text-foreground transition-colors tracking-wide">
@@ -116,7 +116,7 @@ export function ProductCard({ product }: ProductCardProps) {
                   <div key={s} className={`w-2 h-2 rounded-[1px] ${s <= Math.round(avgRating) ? "bg-yellow-400/75" : "bg-foreground/10"}`} />
                 ))}
               </div>
-              <span className="text-[10px] text-foreground/40">({product.reviews?.length})</span>
+              <span className="text-[12px] text-foreground/40">({product.reviews?.length})</span>
             </div>
           )}
           <div className="flex items-baseline gap-2 pt-1 border-t border-foreground/[0.06]">
@@ -124,7 +124,7 @@ export function ProductCard({ product }: ProductCardProps) {
               {formatPrice(effectivePrice)}
             </span>
             {dealOn && product.originalPrice && (
-              <span className="text-[10px] text-foreground/38 line-through font-mono">
+              <span className="text-[12px] text-foreground/38 line-through font-mono">
                 {formatPrice(product.originalPrice)}
               </span>
             )}
@@ -137,14 +137,14 @@ export function ProductCard({ product }: ProductCardProps) {
         <button
           onClick={handleBuyNow}
           disabled={outOfStock || buyingNow}
-          className="flex-1 flex items-center justify-center gap-1.5 py-2 bg-[#ee0000] hover:bg-red-700 text-white text-[9px] font-mono font-bold tracking-widest active:scale-[0.97] transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+          className="flex-1 flex items-center justify-center gap-1.5 py-2 bg-[#ee0000] hover:bg-red-700 text-white text-[11px] font-mono font-bold tracking-widest active:scale-[0.97] transition-all disabled:opacity-40 disabled:cursor-not-allowed"
         >
           {buyingNow ? <Loader2 className="h-3 w-3 animate-spin" /> : <><Zap className="h-3 w-3" /> BUY NOW</>}
         </button>
         <button
           onClick={handleAddToCart}
           disabled={outOfStock}
-          className="flex items-center justify-center gap-1 px-3 py-2 border border-foreground/15 text-foreground/55 text-[9px] font-mono tracking-widest hover:border-foreground/35 hover:text-foreground/80 active:scale-[0.97] transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+          className="flex items-center justify-center gap-1 px-3 py-2 border border-foreground/15 text-foreground/55 text-[11px] font-mono tracking-widest hover:border-foreground/35 hover:text-foreground/80 active:scale-[0.97] transition-all disabled:opacity-40 disabled:cursor-not-allowed"
           title="Add to Bag"
         >
           <ShoppingCart className="h-3 w-3 flex-shrink-0" />

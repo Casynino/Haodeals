@@ -112,8 +112,8 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
   if (!product) {
     return (
       <div className="container mx-auto px-4 py-24 text-center font-mono">
-        <p className="text-[11px] tracking-widest text-foreground/40 mb-4">PRODUCT.NOT.FOUND</p>
-        <Link href="/products" className="px-4 py-2 text-[10px] tracking-widest border border-white/20 text-foreground/60 hover:text-foreground hover:border-white/40 transition-colors">
+        <p className="text-[13px] tracking-widest text-foreground/40 mb-4">PRODUCT.NOT.FOUND</p>
+        <Link href="/products" className="px-4 py-2 text-[12px] tracking-widest border border-white/20 text-foreground/60 hover:text-foreground hover:border-white/40 transition-colors">
           BACK.TO.PRODUCTS
         </Link>
       </div>
@@ -122,7 +122,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
 
   return (
     <div className="container mx-auto px-4 py-8 font-mono">
-      <Link href="/products" className="inline-flex items-center gap-1 text-[9px] tracking-widest text-foreground/40 hover:text-foreground transition-colors mb-6">
+      <Link href="/products" className="inline-flex items-center gap-1 text-[11px] tracking-widest text-foreground/40 hover:text-foreground transition-colors mb-6">
         <ChevronLeft className="h-3 w-3" />
         PRODUCTS.INDEX
       </Link>
@@ -139,13 +139,13 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
               priority
             />
             {dealActive && discount && (
-              <div className="absolute top-0 left-0 bg-foreground text-background text-[9px] font-bold px-2 py-0.5 tracking-widest z-10">
+              <div className="absolute top-0 left-0 bg-foreground text-background text-[11px] font-bold px-2 py-0.5 tracking-widest z-10">
                 -{discount}%
               </div>
             )}
             {product.stock === 0 && (
               <div className="absolute inset-0 bg-background/60 flex items-center justify-center z-10">
-                <span className="text-[11px] tracking-[0.3em] text-foreground/60 border border-white/20 px-4 py-2 bg-background/80">
+                <span className="text-[13px] tracking-[0.3em] text-foreground/60 border border-white/20 px-4 py-2 bg-background/80">
                   OUT OF STOCK
                 </span>
               </div>
@@ -173,7 +173,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
         <div className="space-y-4">
           <div>
             <div className="flex items-center justify-between gap-4 mb-1.5">
-              <p className="text-[10px] tracking-widest text-foreground/55">{product.category?.name?.toUpperCase()}</p>
+              <p className="text-[12px] tracking-widest text-foreground/55">{product.category?.name?.toUpperCase()}</p>
               <ShareButton productName={product.name} productPath={`/products/${product.id}`} />
             </div>
             <h1 className="text-xl font-bold tracking-wide uppercase text-foreground/95">{product.name}</h1>
@@ -217,9 +217,9 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
               {productOptions.map((opt) => (
                 <div key={opt.name}>
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-[8px] tracking-widest text-foreground/40">{opt.name.toUpperCase()}</span>
+                    <span className="text-[10px] tracking-widest text-foreground/40">{opt.name.toUpperCase()}</span>
                     {selectedOptions[opt.name] && (
-                      <span className="text-[8px] text-foreground/60 border border-white/15 px-1.5 py-0.5">
+                      <span className="text-[10px] text-foreground/60 border border-white/15 px-1.5 py-0.5">
                         {selectedOptions[opt.name]}
                       </span>
                     )}
@@ -230,7 +230,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                         key={val}
                         type="button"
                         onClick={() => setSelectedOptions((prev) => ({ ...prev, [opt.name]: val }))}
-                        className={`px-3 py-1.5 text-[9px] tracking-widest border transition-all ${
+                        className={`px-3 py-1.5 text-[11px] tracking-widest border transition-all ${
                           selectedOptions[opt.name] === val
                             ? "border-foreground/70 text-foreground bg-foreground/10"
                             : "border-white/15 text-foreground/50 hover:border-white/40 hover:text-foreground"
@@ -243,7 +243,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                 </div>
               ))}
               {!allOptionsSelected && (
-                <p className="text-[8px] text-foreground/30 tracking-widest">
+                <p className="text-[10px] text-foreground/30 tracking-widest">
                   SELECT ALL OPTIONS TO CONTINUE
                 </p>
               )}
@@ -252,7 +252,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
 
           {/* Quantity */}
           <div className="flex items-center gap-4">
-            <span className="text-[9px] tracking-widest text-foreground/40">QTY:</span>
+            <span className="text-[11px] tracking-widest text-foreground/40">QTY:</span>
             <div className="flex items-center border border-white/20">
               <button
                 onClick={() => setQuantity(Math.max(1, quantity - 1))}
@@ -260,7 +260,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
               >
                 <Minus className="h-2.5 w-2.5" />
               </button>
-              <span className="w-8 text-center text-[10px]">{quantity}</span>
+              <span className="w-8 text-center text-[12px]">{quantity}</span>
               <button
                 onClick={() => setQuantity(Math.min(product.stock, quantity + 1))}
                 disabled={quantity >= product.stock}
@@ -276,7 +276,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
             <button
               onClick={handleBuyNow}
               disabled={product.stock === 0 || !allOptionsSelected}
-              className="flex items-center justify-center gap-2 py-3 bg-[#ee0000] text-white text-[10px] tracking-widest font-bold hover:bg-red-700 transition-colors disabled:opacity-30"
+              className="flex items-center justify-center gap-2 py-3 bg-[#ee0000] text-white text-[12px] tracking-widest font-bold hover:bg-red-700 transition-colors disabled:opacity-30"
             >
               <Zap className="h-3.5 w-3.5" />
               BUY NOW
@@ -284,7 +284,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
             <button
               onClick={handleAddToCart}
               disabled={product.stock === 0 || !allOptionsSelected}
-              className="flex items-center justify-center gap-2 py-3 border border-white/25 text-foreground/75 text-[10px] tracking-widest hover:bg-foreground/5 hover:border-white/45 transition-colors disabled:opacity-30"
+              className="flex items-center justify-center gap-2 py-3 border border-white/25 text-foreground/75 text-[12px] tracking-widest hover:bg-foreground/5 hover:border-white/45 transition-colors disabled:opacity-30"
             >
               <ShoppingCart className="h-3.5 w-3.5" />
               ADD TO BAG
@@ -303,8 +303,8 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
             ].map(({ icon: Icon, label, sub }) => (
               <div key={label} className="flex flex-col items-center gap-1.5 text-center p-2.5 border border-white/10">
                 <Icon className="h-4 w-4 text-foreground/50" />
-                <p className="text-[10px] tracking-wide text-foreground/65">{label}</p>
-                <p className="text-[10px] text-foreground/40">{sub}</p>
+                <p className="text-[12px] tracking-wide text-foreground/65">{label}</p>
+                <p className="text-[12px] text-foreground/40">{sub}</p>
               </div>
             ))}
           </div>
@@ -321,7 +321,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`px-4 py-2.5 text-[9px] tracking-widest transition-colors border-r border-white/5 ${
+              className={`px-4 py-2.5 text-[11px] tracking-widest transition-colors border-r border-white/5 ${
                 activeTab === tab.id
                   ? "text-foreground border-b-2 border-b-foreground"
                   : "text-foreground/40 hover:text-foreground"
@@ -335,33 +335,33 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
         {activeTab === "reviews" && (
           <div className="py-6 space-y-6">
             <div className="border border-white/10 p-5 space-y-3">
-              <p className="text-[9px] tracking-widest text-foreground/40">// SUBMIT.REVIEW</p>
+              <p className="text-[11px] tracking-widest text-foreground/40">// SUBMIT.REVIEW</p>
               <div className="flex gap-1">
                 {[1, 2, 3, 4, 5].map((star) => (
                   <button key={star} onClick={() => setReviewRating(star)}>
                     <div className={`w-4 h-4 border transition-colors ${star <= reviewRating ? "bg-yellow-400/70 border-yellow-400/70" : "border-white/20 hover:border-yellow-400/40"}`} />
                   </button>
                 ))}
-                <span className="text-[9px] text-foreground/30 ml-2">{reviewRating}/5</span>
+                <span className="text-[11px] text-foreground/30 ml-2">{reviewRating}/5</span>
               </div>
               <textarea
                 placeholder="SHARE.YOUR.EXPERIENCE..."
                 value={reviewComment}
                 onChange={(e) => setReviewComment(e.target.value)}
                 rows={3}
-                className="w-full bg-transparent border border-white/15 p-2.5 text-[10px] text-foreground/70 placeholder:text-foreground/20 focus:outline-none focus:border-white/40 transition-colors resize-none tracking-wide"
+                className="w-full bg-transparent border border-white/15 p-2.5 text-[12px] text-foreground/70 placeholder:text-foreground/20 focus:outline-none focus:border-white/40 transition-colors resize-none tracking-wide"
               />
               <button
                 onClick={submitReview}
                 disabled={submittingReview || !session}
-                className="px-4 py-1.5 text-[9px] tracking-widest border border-white/20 text-foreground/60 hover:text-foreground hover:border-white/40 transition-colors disabled:opacity-30"
+                className="px-4 py-1.5 text-[11px] tracking-widest border border-white/20 text-foreground/60 hover:text-foreground hover:border-white/40 transition-colors disabled:opacity-30"
               >
                 {session ? (submittingReview ? "SUBMITTING..." : "SUBMIT.REVIEW") : "SIGN.IN.TO.REVIEW"}
               </button>
             </div>
 
             {product.reviews?.length === 0 ? (
-              <p className="text-[10px] tracking-widest text-foreground/30 text-center py-8">NO.REVIEWS.YET</p>
+              <p className="text-[12px] tracking-widest text-foreground/30 text-center py-8">NO.REVIEWS.YET</p>
             ) : (
               <div className="space-y-3">
                 {product.reviews?.map((review) => (
@@ -375,7 +375,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                           ))}
                         </div>
                       </div>
-                      <p className="text-[8px] text-foreground/25">{new Date(review.createdAt).toLocaleDateString()}</p>
+                      <p className="text-[10px] text-foreground/25">{new Date(review.createdAt).toLocaleDateString()}</p>
                     </div>
                     {review.comment && (
                       <p className="text-xs text-foreground/65 leading-relaxed">{review.comment}</p>
@@ -390,8 +390,8 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
         {activeTab === "details" && (
           <div className="py-6">
             <div className="border border-white/10 p-5 space-y-4">
-              <p className="text-[9px] tracking-widest text-foreground/40">// PRODUCT.SPECIFICATIONS</p>
-              <p className="text-[10px] text-foreground/50 leading-relaxed">{product.description}</p>
+              <p className="text-[11px] tracking-widest text-foreground/40">// PRODUCT.SPECIFICATIONS</p>
+              <p className="text-[12px] text-foreground/50 leading-relaxed">{product.description}</p>
               <div className="border-t border-white/10 pt-4 grid grid-cols-2 gap-2">
                 {[
                   ["CATEGORY", product.category?.name?.toUpperCase() ?? "—"],
@@ -399,7 +399,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                   ["SKU", product.id.slice(0, 8).toUpperCase()],
                   ["STATUS", product.stock > 0 ? "IN STOCK" : "OUT OF STOCK"],
                 ].map(([label, value]) => (
-                  <div key={label} className="flex items-center justify-between py-1.5 border-b border-white/5 text-[9px]">
+                  <div key={label} className="flex items-center justify-between py-1.5 border-b border-white/5 text-[11px]">
                     <span className="text-foreground/30 tracking-widest">{label}</span>
                     <span className="text-foreground/60">{value}</span>
                   </div>
@@ -407,9 +407,9 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
               </div>
               {productOptions && productOptions.length > 0 && (
                 <div className="border-t border-white/10 pt-4 space-y-2">
-                  <p className="text-[8px] tracking-widest text-foreground/30">AVAILABLE.OPTIONS</p>
+                  <p className="text-[10px] tracking-widest text-foreground/30">AVAILABLE.OPTIONS</p>
                   {productOptions.map((opt) => (
-                    <div key={opt.name} className="flex items-start justify-between gap-3 text-[9px] border-b border-white/5 pb-2">
+                    <div key={opt.name} className="flex items-start justify-between gap-3 text-[11px] border-b border-white/5 pb-2">
                       <span className="text-foreground/30 tracking-widest shrink-0">{opt.name.toUpperCase()}</span>
                       <span className="text-foreground/50 text-right">{opt.values.join(" · ")}</span>
                     </div>

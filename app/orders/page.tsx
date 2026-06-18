@@ -40,8 +40,8 @@ export default function OrdersPage() {
     return (
       <div className="container mx-auto px-4 py-8 max-w-3xl font-mono">
         <div className="flex items-center gap-3 mb-6 border-b border-white/10 pb-4">
-          <span className="text-foreground/30 text-[10px]">//</span>
-          <h1 className="text-[11px] tracking-[0.3em] text-foreground/70">MY ORDERS</h1>
+          <span className="text-foreground/30 text-[12px]">//</span>
+          <h1 className="text-[13px] tracking-[0.3em] text-foreground/70">MY ORDERS</h1>
         </div>
         <div className="space-y-3 animate-pulse">
           {[1, 2, 3].map((i) => (
@@ -59,12 +59,12 @@ export default function OrdersPage() {
           <Package className="h-10 w-10 opacity-20" />
         </div>
         <div>
-          <p className="text-[11px] tracking-widest text-foreground/50 mb-1">No orders yet</p>
-          <p className="text-[9px] text-foreground/25">Your order history will appear here once you place an order.</p>
+          <p className="text-[13px] tracking-widest text-foreground/50 mb-1">No orders yet</p>
+          <p className="text-[11px] text-foreground/25">Your order history will appear here once you place an order.</p>
         </div>
         <Link
           href="/products"
-          className="px-5 py-2.5 text-[10px] tracking-widest border border-white/20 text-foreground/60 hover:text-foreground hover:border-white/40 transition-colors flex items-center gap-2"
+          className="px-5 py-2.5 text-[12px] tracking-widest border border-white/20 text-foreground/60 hover:text-foreground hover:border-white/40 transition-colors flex items-center gap-2"
         >
           <ShoppingCart className="h-3 w-3" /> Browse deals
         </Link>
@@ -98,7 +98,7 @@ export default function OrdersPage() {
             >
               <div className="flex items-start justify-between">
                 <div className="space-y-0.5">
-                  <p className="text-[10px] tracking-widest text-foreground/55 font-medium">
+                  <p className="text-[12px] tracking-widest text-foreground/55 font-medium">
                     ORDER #{order.id.slice(0, 8).toUpperCase()}
                     {order.trackingId && (
                       <span className="ml-2 text-foreground/40">· {order.trackingId}</span>
@@ -113,7 +113,7 @@ export default function OrdersPage() {
                 <div className="flex flex-col items-end gap-1.5">
                   <div className="flex items-center gap-1.5">
                     <span className={`inline-block w-1.5 h-1.5 ${cfg.dot}`} />
-                    <span className={`text-[10px] tracking-wide border px-2 py-0.5 ${cfg.color}`}>
+                    <span className={`text-[12px] tracking-wide border px-2 py-0.5 ${cfg.color}`}>
                       {cfg.label}
                     </span>
                   </div>
@@ -136,7 +136,7 @@ export default function OrdersPage() {
                   </div>
                 ))}
                 {order.items.length > 5 && (
-                  <div className="w-12 h-12 flex-shrink-0 border border-white/10 bg-foreground/5 flex items-center justify-center text-[9px] text-foreground/30">
+                  <div className="w-12 h-12 flex-shrink-0 border border-white/10 bg-foreground/5 flex items-center justify-center text-[11px] text-foreground/30">
                     +{order.items.length - 5}
                   </div>
                 )}

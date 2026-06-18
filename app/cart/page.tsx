@@ -20,9 +20,9 @@ export default function CartPage() {
         <div className="border border-white/10 p-8">
           <ShoppingCart className="h-12 w-12 opacity-20" />
         </div>
-        <p className="text-[11px] tracking-widest text-foreground/40">Your bag is empty</p>
-        <p className="text-[9px] text-foreground/20">Add some items to your bag</p>
-        <Link href="/products" className="px-6 py-2 text-[10px] tracking-widest border border-white/20 text-foreground/60 hover:text-foreground hover:border-white/40 transition-colors flex items-center gap-2">
+        <p className="text-[13px] tracking-widest text-foreground/40">Your bag is empty</p>
+        <p className="text-[11px] text-foreground/20">Add some items to your bag</p>
+        <Link href="/products" className="px-6 py-2 text-[12px] tracking-widest border border-white/20 text-foreground/60 hover:text-foreground hover:border-white/40 transition-colors flex items-center gap-2">
           Browse Deals <ArrowRight className="h-3 w-3" />
         </Link>
       </div>
@@ -39,7 +39,7 @@ export default function CartPage() {
         </div>
         <button
           onClick={() => { clearCart(); toast.success("Bag cleared") }}
-          className="text-[9px] tracking-widest text-foreground/30 hover:text-red-400/70 transition-colors"
+          className="text-[11px] tracking-widest text-foreground/30 hover:text-red-400/70 transition-colors"
         >
           Clear Bag
         </button>
@@ -70,7 +70,7 @@ export default function CartPage() {
                 <div className="flex items-center gap-2 mt-1">
                   <span className="text-sm text-green-400 font-mono">{formatPrice(item.price)}</span>
                   {item.originalPrice && item.originalPrice > item.price && (
-                    <span className="text-[10px] text-foreground/40 line-through">{formatPrice(item.originalPrice)}</span>
+                    <span className="text-[12px] text-foreground/40 line-through">{formatPrice(item.originalPrice)}</span>
                   )}
                 </div>
                 <div className="flex items-center justify-between mt-2">
@@ -81,7 +81,7 @@ export default function CartPage() {
                     >
                       <Minus className="h-2.5 w-2.5" />
                     </button>
-                    <span className="w-6 text-center text-[9px]">{item.quantity}</span>
+                    <span className="w-6 text-center text-[11px]">{item.quantity}</span>
                     <button
                       onClick={() => updateQuantity(item.id, item.quantity + 1)}
                       disabled={item.quantity >= item.stock}
@@ -90,7 +90,7 @@ export default function CartPage() {
                       <Plus className="h-2.5 w-2.5" />
                     </button>
                   </div>
-                  <span className="text-[10px] text-foreground/60">{formatPrice(item.price * item.quantity)}</span>
+                  <span className="text-[12px] text-foreground/60">{formatPrice(item.price * item.quantity)}</span>
                 </div>
               </div>
             </div>
@@ -102,7 +102,7 @@ export default function CartPage() {
           <div className="border border-white/10 p-5 space-y-4 sticky top-24">
             <p className="text-xs tracking-widest text-foreground/60 font-semibold">Order Summary</p>
 
-            <div className="space-y-2.5 text-[10px]">
+            <div className="space-y-2.5 text-[12px]">
               <div className="flex justify-between">
                 <span className="text-foreground/55">Subtotal ({items.length} {items.length === 1 ? "item" : "items"})</span>
                 <span className="text-foreground/80">{formatPrice(cartTotal)}</span>
@@ -117,13 +117,13 @@ export default function CartPage() {
             <div className="space-y-1.5">
               <Link
                 href="/checkout"
-                className="block text-center py-2 text-[10px] tracking-widest bg-foreground text-background hover:bg-foreground/90 transition-colors font-bold flex items-center justify-center gap-2"
+                className="block text-center py-2 text-[12px] tracking-widest bg-foreground text-background hover:bg-foreground/90 transition-colors font-bold flex items-center justify-center gap-2"
               >
                 Proceed to Checkout <ArrowRight className="h-3 w-3" />
               </Link>
               <Link
                 href="/products"
-                className="block text-center py-2 text-[10px] tracking-widest border border-white/20 text-foreground/50 hover:text-foreground hover:border-white/40 transition-colors"
+                className="block text-center py-2 text-[12px] tracking-widest border border-white/20 text-foreground/50 hover:text-foreground hover:border-white/40 transition-colors"
               >
                 Continue Shopping
               </Link>
@@ -131,7 +131,7 @@ export default function CartPage() {
 
             <HaoPlusBanner variant="cart" />
 
-            <div className="flex items-center justify-center gap-4 text-[8px] text-foreground/25 pt-1">
+            <div className="flex items-center justify-center gap-4 text-[10px] text-foreground/25 pt-1">
               <div className="flex items-center gap-1">
                 <ShieldCheck className="h-2.5 w-2.5" /> Secure checkout
               </div>
@@ -147,12 +147,12 @@ export default function CartPage() {
       <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-background border-t border-white/15 px-4 py-3">
         <div className="flex items-center justify-between gap-4">
           <div>
-            <p className="text-[8px] tracking-widest text-foreground/30">Total</p>
+            <p className="text-[10px] tracking-widest text-foreground/30">Total</p>
             <p className="text-green-400/80 font-mono text-sm font-bold">{formatPrice(finalTotal)}</p>
           </div>
           <Link
             href="/checkout"
-            className="flex-1 text-center py-2.5 text-[10px] tracking-widest bg-foreground text-background hover:bg-foreground/90 transition-colors font-bold flex items-center justify-center gap-2"
+            className="flex-1 text-center py-2.5 text-[12px] tracking-widest bg-foreground text-background hover:bg-foreground/90 transition-colors font-bold flex items-center justify-center gap-2"
           >
             Proceed to Checkout <ArrowRight className="h-3 w-3" />
           </Link>

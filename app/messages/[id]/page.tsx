@@ -91,7 +91,7 @@ export default function ConversationPage({
     return (
       <div className="container mx-auto px-4 py-16 text-center font-mono">
         <p className="text-foreground/40 text-xs tracking-widest">Conversation not found</p>
-        <Link href="/messages" className="text-[10px] text-foreground/30 hover:text-foreground/60 transition-colors mt-3 inline-block">
+        <Link href="/messages" className="text-[12px] text-foreground/30 hover:text-foreground/60 transition-colors mt-3 inline-block">
           ← Back to messages
         </Link>
       </div>
@@ -106,13 +106,13 @@ export default function ConversationPage({
       <div className="mb-5 border-b border-white/10 pb-4">
         <Link
           href="/messages"
-          className="flex items-center gap-1.5 text-[10px] tracking-widest text-foreground/40 hover:text-foreground/70 transition-colors mb-3"
+          className="flex items-center gap-1.5 text-[12px] tracking-widest text-foreground/40 hover:text-foreground/70 transition-colors mb-3"
         >
           <ChevronLeft className="h-3 w-3" /> BACK TO INBOX
         </Link>
         <div className="flex items-start justify-between gap-3">
           <h1 className="text-lg font-semibold tracking-[0.15em] text-foreground/90">{conversation.subject}</h1>
-          <span className={`text-[9px] tracking-wide border px-2 py-0.5 flex-shrink-0 mt-1 ${
+          <span className={`text-[11px] tracking-wide border px-2 py-0.5 flex-shrink-0 mt-1 ${
             conversation.status === "open"
               ? "text-blue-400/60 border-blue-400/20"
               : "text-foreground/30 border-white/15"
@@ -128,17 +128,17 @@ export default function ConversationPage({
       {/* Messages */}
       <div className="flex-1 space-y-3 mb-5 overflow-y-auto">
         {messages.length === 0 && (
-          <p className="text-center text-[10px] text-foreground/25 tracking-wider py-8">No messages yet.</p>
+          <p className="text-center text-[12px] text-foreground/25 tracking-wider py-8">No messages yet.</p>
         )}
         {messages.map((msg) => {
           if (msg.senderRole === "system") {
             return (
               <div key={msg.id} className="flex justify-center">
                 <div className="max-w-[80%] text-center">
-                  <p className="text-[10px] text-foreground/40 italic px-4 py-2 border border-white/8 bg-foreground/[0.02]">
+                  <p className="text-[12px] text-foreground/40 italic px-4 py-2 border border-white/8 bg-foreground/[0.02]">
                     {msg.body}
                   </p>
-                  <p className="text-[9px] text-foreground/25 mt-1">
+                  <p className="text-[11px] text-foreground/25 mt-1">
                     {new Date(msg.createdAt).toLocaleString("en-US", {
                       month: "short", day: "numeric", hour: "2-digit", minute: "2-digit",
                     })}
@@ -160,7 +160,7 @@ export default function ConversationPage({
                 }`}>
                   {msg.body}
                 </div>
-                <div className={`flex items-center gap-1.5 text-[9px] text-foreground/30 ${isCustomer ? "flex-row-reverse" : ""}`}>
+                <div className={`flex items-center gap-1.5 text-[11px] text-foreground/30 ${isCustomer ? "flex-row-reverse" : ""}`}>
                   {!isCustomer && (
                     <span className="text-yellow-400/60 font-medium">
                       {msg.sender?.name ?? "Support"}
@@ -182,7 +182,7 @@ export default function ConversationPage({
       {/* Reply input */}
       {conversation.status !== "closed" && (
         <form onSubmit={handleSend} className="border-t border-white/10 pt-4">
-          {error && <p className="text-[10px] text-red-400/70 mb-2">{error}</p>}
+          {error && <p className="text-[12px] text-red-400/70 mb-2">{error}</p>}
           <div className="flex gap-2">
             <textarea
               ref={inputRef}
@@ -207,13 +207,13 @@ export default function ConversationPage({
               {sending ? "..." : "Send"}
             </button>
           </div>
-          <p className="text-[9px] text-foreground/25 mt-1.5">Our support team typically replies within a few hours.</p>
+          <p className="text-[11px] text-foreground/25 mt-1.5">Our support team typically replies within a few hours.</p>
         </form>
       )}
 
       {conversation.status === "closed" && (
         <div className="border-t border-white/10 pt-4">
-          <p className="text-[10px] text-foreground/35 text-center tracking-wider">This conversation is closed.</p>
+          <p className="text-[12px] text-foreground/35 text-center tracking-wider">This conversation is closed.</p>
         </div>
       )}
     </div>

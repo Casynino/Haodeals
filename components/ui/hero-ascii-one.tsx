@@ -133,7 +133,7 @@ export default function HeroAscii() {
             {/* Top rule */}
             <div className="flex items-center gap-2 mb-3 opacity-60">
               <div className="w-8 h-px bg-white" />
-              <span className="text-white text-[10px] font-mono tracking-wider">∞</span>
+              <span className="text-white text-[12px] font-mono tracking-wider">∞</span>
               <div className="flex-1 h-px bg-white" />
             </div>
 
@@ -188,7 +188,7 @@ export default function HeroAscii() {
 
             {/* Bottom rule */}
             <div className="hidden lg:flex items-center gap-2 mt-6 opacity-40">
-              <span className="text-white text-[9px] font-mono">∞</span>
+              <span className="text-white text-[11px] font-mono">∞</span>
               <div className="flex-1 h-px bg-white" />
             </div>
 
@@ -202,7 +202,7 @@ export default function HeroAscii() {
         style={{ bottom: '5vh' }}
       >
         <div className="container mx-auto px-4 lg:px-8 py-2 lg:py-3 flex items-center justify-between">
-          <div className="flex items-center gap-3 lg:gap-6 text-[8px] lg:text-[9px] font-mono text-white/50">
+          <div className="flex items-center gap-3 lg:gap-6 text-[10px] lg:text-[11px] font-mono text-white/50">
             <span className="hidden lg:inline">Free shipping over TSh 100K</span>
             <span className="lg:hidden">Free shipping</span>
             <div className="hidden lg:flex gap-1">
@@ -213,7 +213,7 @@ export default function HeroAscii() {
             <span className="hidden lg:inline">30-day returns</span>
             <span className="hidden lg:inline">Secure checkout</span>
           </div>
-          <div className="flex items-center gap-2 lg:gap-4 text-[8px] lg:text-[9px] font-mono text-white/50">
+          <div className="flex items-center gap-2 lg:gap-4 text-[10px] lg:text-[11px] font-mono text-white/50">
             <span className="hidden lg:inline">◐ Live deals</span>
             <div className="flex gap-1">
               <div className="w-1 h-1 bg-white/60 rounded-full animate-pulse" />

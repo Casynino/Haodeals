@@ -30,7 +30,7 @@ export default function ProfilePage() {
           <div>
             <h2 className="text-base font-bold tracking-wide uppercase text-foreground/90">{user?.name ?? "USER"}</h2>
             <p className="text-xs text-foreground/60 mt-0.5">{user?.email}</p>
-            <span className={`inline-block mt-1.5 text-[10px] tracking-widest border px-2 py-0.5 ${
+            <span className={`inline-block mt-1.5 text-[12px] tracking-widest border px-2 py-0.5 ${
               user?.role === "admin"
                 ? "border-yellow-400/40 text-yellow-400/80"
                 : "border-white/25 text-foreground/55"
@@ -41,7 +41,7 @@ export default function ProfilePage() {
         </div>
 
         <div className="border-t border-white/10 pt-4 space-y-3">
-          <p className="text-[10px] tracking-widest text-foreground/45">Account details</p>
+          <p className="text-[12px] tracking-widest text-foreground/45">Account details</p>
           {[
             { icon: User, label: "Name", value: user?.name ?? "—" },
             { icon: Mail, label: "Email", value: user?.email ?? "—" },
@@ -52,7 +52,7 @@ export default function ProfilePage() {
                 <Icon className="h-3.5 w-3.5 text-foreground/50" />
               </div>
               <div>
-                <p className="text-[10px] text-foreground/45 tracking-wider">{label}</p>
+                <p className="text-[12px] text-foreground/45 tracking-wider">{label}</p>
                 <p className="text-xs text-foreground/75 mt-0.5">{value}</p>
               </div>
             </div>
@@ -60,7 +60,7 @@ export default function ProfilePage() {
         </div>
 
         <div className="border-t border-white/10 pt-4 space-y-2">
-          <p className="text-[10px] tracking-widest text-foreground/45">Quick actions</p>
+          <p className="text-[12px] tracking-widest text-foreground/45">Quick actions</p>
           <Link
             href="/orders"
             className="flex items-center gap-2.5 w-full px-3.5 py-2.5 border border-white/18 text-xs text-foreground/65 hover:text-foreground hover:border-white/35 transition-colors"

@@ -19,7 +19,7 @@ export default function ShippingPage() {
           <div className="max-w-2xl">
             <div className="flex items-center gap-2 mb-5">
               <div className="w-1.5 h-1.5 bg-blue-400/70 rounded-full animate-pulse" />
-              <span className="text-[9px] tracking-[0.3em] text-blue-400/60 uppercase">Delivery Information</span>
+              <span className="text-[11px] tracking-[0.3em] text-blue-400/60 uppercase">Delivery Information</span>
             </div>
             <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-foreground/92 mb-4 leading-tight">
               Shipping &amp; Delivery<br className="hidden sm:block" /> Policy
@@ -33,15 +33,15 @@ export default function ShippingPage() {
             <div className="flex items-center gap-2.5 mt-6 flex-wrap">
               <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/22">
                 <Calendar className="h-3 w-3 text-emerald-400" />
-                <span className="text-[9px] text-emerald-400/85">Free Weekend Delivery</span>
+                <span className="text-[11px] text-emerald-400/85">Free Weekend Delivery</span>
               </div>
               <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/22">
                 <Zap className="h-3 w-3 text-blue-400" />
-                <span className="text-[9px] text-blue-400/85">Express Nationwide</span>
+                <span className="text-[11px] text-blue-400/85">Express Nationwide</span>
               </div>
               <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/[0.05] border border-white/10">
                 <MapPin className="h-3 w-3 text-foreground/40" />
-                <span className="text-[9px] text-foreground/45">Tanzania Only</span>
+                <span className="text-[11px] text-foreground/45">Tanzania Only</span>
               </div>
             </div>
           </div>
@@ -53,7 +53,7 @@ export default function ShippingPage() {
         {/* ── Delivery options ─────────────────────────────────────────── */}
         <section>
           <div className="mb-7">
-            <p className="text-[9px] tracking-[0.3em] text-foreground/28 uppercase mb-1.5">Delivery Options</p>
+            <p className="text-[11px] tracking-[0.3em] text-foreground/28 uppercase mb-1.5">Delivery Options</p>
             <h2 className="text-xl font-bold text-foreground/82">How We Deliver</h2>
           </div>
 
@@ -65,19 +65,19 @@ export default function ShippingPage() {
                 <div className="w-12 h-12 rounded-2xl bg-emerald-500/15 border border-emerald-500/20 flex items-center justify-center">
                   <Calendar className="h-5 w-5 text-emerald-400" />
                 </div>
-                <span className="text-[9px] font-black px-2.5 py-1 rounded-full bg-emerald-500/18 text-emerald-400 border border-emerald-500/22 tracking-widest">
+                <span className="text-[11px] font-black px-2.5 py-1 rounded-full bg-emerald-500/18 text-emerald-400 border border-emerald-500/22 tracking-widest">
                   FREE
                 </span>
               </div>
               <h3 className="text-sm font-bold text-foreground/85 mb-2">Weekend Free Delivery</h3>
-              <p className="text-[10px] text-foreground/48 leading-relaxed flex-1">
+              <p className="text-[12px] text-foreground/48 leading-relaxed flex-1">
                 Available on selected weekends for customers in <strong className="text-foreground/65">Dar es Salaam</strong>.
                 Eligible orders are delivered at no delivery cost to the customer. Availability may vary based on location
                 and order volume.
               </p>
               <div className="flex items-center gap-2 mt-4 pt-4 border-t border-emerald-500/12">
                 <MapPin className="h-3 w-3 text-emerald-400/55 flex-shrink-0" />
-                <span className="text-[9px] text-foreground/35">Dar es Salaam only · Weekends</span>
+                <span className="text-[11px] text-foreground/35">Dar es Salaam only · Weekends</span>
               </div>
             </div>
 
@@ -87,12 +87,12 @@ export default function ShippingPage() {
                 <div className="w-12 h-12 rounded-2xl bg-blue-500/15 border border-blue-500/20 flex items-center justify-center">
                   <Zap className="h-5 w-5 text-blue-400" />
                 </div>
-                <span className="text-[9px] font-black px-2.5 py-1 rounded-full bg-blue-500/15 text-blue-400 border border-blue-500/22 tracking-widest">
+                <span className="text-[11px] font-black px-2.5 py-1 rounded-full bg-blue-500/15 text-blue-400 border border-blue-500/22 tracking-widest">
                   PAID
                 </span>
               </div>
               <h3 className="text-sm font-bold text-foreground/85 mb-2">Express Delivery</h3>
-              <p className="text-[10px] text-foreground/48 leading-relaxed flex-1">
+              <p className="text-[12px] text-foreground/48 leading-relaxed flex-1">
                 Available <strong className="text-foreground/65">throughout Tanzania</strong>. After your order is
                 confirmed, HaoDeals coordinates with third-party delivery partners — Bolt, boda boda, bus services, or
                 air cargo — based on your location. You will be contacted about the delivery cost and arrangements before
@@ -100,7 +100,7 @@ export default function ShippingPage() {
               </p>
               <div className="flex items-center gap-2 mt-4 pt-4 border-t border-blue-500/12">
                 <Truck className="h-3 w-3 text-blue-400/55 flex-shrink-0" />
-                <span className="text-[9px] text-foreground/35">Cost determined after order · ~10–30 mins (Dar)</span>
+                <span className="text-[11px] text-foreground/35">Cost determined after order · ~10–30 mins (Dar)</span>
               </div>
             </div>
 
@@ -110,19 +110,19 @@ export default function ShippingPage() {
                 <div className="w-12 h-12 rounded-2xl bg-violet-500/15 border border-violet-500/20 flex items-center justify-center">
                   <Gift className="h-5 w-5 text-violet-400" />
                 </div>
-                <span className="text-[9px] font-black px-2.5 py-1 rounded-full bg-violet-500/15 text-violet-400 border border-violet-500/22 tracking-widest">
+                <span className="text-[11px] font-black px-2.5 py-1 rounded-full bg-violet-500/15 text-violet-400 border border-violet-500/22 tracking-widest">
                   FREE
                 </span>
               </div>
               <h3 className="text-sm font-bold text-foreground/85 mb-2">Promotional Free Delivery</h3>
-              <p className="text-[10px] text-foreground/48 leading-relaxed flex-1">
+              <p className="text-[12px] text-foreground/48 leading-relaxed flex-1">
                 Occasionally offered during <strong className="text-foreground/65">special campaigns, promotions, or
                 selected events</strong>. Eligibility and conditions vary by promotion. Watch for announcements on the
                 website or through our notifications.
               </p>
               <div className="flex items-center gap-2 mt-4 pt-4 border-t border-violet-500/12">
                 <Tag className="h-3 w-3 text-violet-400/55 flex-shrink-0" />
-                <span className="text-[9px] text-foreground/35">Announced during campaigns</span>
+                <span className="text-[11px] text-foreground/35">Announced during campaigns</span>
               </div>
             </div>
 
@@ -133,9 +133,9 @@ export default function ShippingPage() {
         <section className="rounded-2xl border border-white/8 bg-white/[0.02] p-6 sm:p-8">
           <div className="flex items-center gap-2.5 mb-6">
             <Truck className="h-4 w-4 text-blue-400/60" />
-            <p className="text-[9px] tracking-[0.3em] text-foreground/30 uppercase">Express Delivery Partners</p>
+            <p className="text-[11px] tracking-[0.3em] text-foreground/30 uppercase">Express Delivery Partners</p>
           </div>
-          <p className="text-[11px] text-foreground/50 mb-6 leading-relaxed max-w-2xl">
+          <p className="text-[13px] text-foreground/50 mb-6 leading-relaxed max-w-2xl">
             For express orders, HaoDeals works with a range of third-party delivery providers. The right provider is
             selected based on your location, product size, urgency, and availability.
           </p>
@@ -150,12 +150,12 @@ export default function ShippingPage() {
                 <div className={`w-9 h-9 rounded-full flex items-center justify-center mx-auto border ${bg}`}>
                   <Icon className={`h-4 w-4 ${color}`} />
                 </div>
-                <p className="text-[10px] font-semibold text-foreground/72">{label}</p>
-                <p className="text-[8px] text-foreground/35">{desc}</p>
+                <p className="text-[12px] font-semibold text-foreground/72">{label}</p>
+                <p className="text-[10px] text-foreground/35">{desc}</p>
               </div>
             ))}
           </div>
-          <p className="text-[9px] text-foreground/30 mt-5 leading-relaxed">
+          <p className="text-[11px] text-foreground/30 mt-5 leading-relaxed">
             * Delivery cost is determined by the provider based on distance, product weight/size, and current
             availability. HaoDeals will contact you with the delivery quote before dispatching your order.
           </p>
@@ -164,9 +164,9 @@ export default function ShippingPage() {
         {/* ── How delivery works timeline ──────────────────────────────── */}
         <section>
           <div className="text-center mb-10">
-            <p className="text-[9px] tracking-[0.3em] text-foreground/28 uppercase mb-2">Step by Step</p>
+            <p className="text-[11px] tracking-[0.3em] text-foreground/28 uppercase mb-2">Step by Step</p>
             <h2 className="text-xl font-bold text-foreground/82">How Delivery Works</h2>
-            <p className="text-[11px] text-foreground/38 mt-2">From your tap to your door</p>
+            <p className="text-[13px] text-foreground/38 mt-2">From your tap to your door</p>
           </div>
 
           <div className="max-w-3xl mx-auto space-y-0">
@@ -215,13 +215,13 @@ export default function ShippingPage() {
                 {/* Content */}
                 <div className={`flex-1 pb-8 ${highlight ? "rounded-2xl border border-amber-500/15 bg-amber-500/[0.03] p-4 -ml-2 mb-4" : ""}`}>
                   <div className="flex items-center gap-2 mb-1">
-                    <span className="text-[7px] font-mono text-foreground/20 tracking-widest">{step}</span>
-                    <h3 className="text-[11px] font-bold text-foreground/80">{title}</h3>
+                    <span className="text-[10px] font-mono text-foreground/20 tracking-widest">{step}</span>
+                    <h3 className="text-[13px] font-bold text-foreground/80">{title}</h3>
                     {highlight && (
-                      <span className="text-[7px] px-1.5 py-0.5 rounded bg-amber-500/15 text-amber-400 border border-amber-500/20 tracking-widest">IMPORTANT</span>
+                      <span className="text-[10px] px-1.5 py-0.5 rounded bg-amber-500/15 text-amber-400 border border-amber-500/20 tracking-widest">IMPORTANT</span>
                     )}
                   </div>
-                  <p className="text-[10px] text-foreground/45 leading-relaxed">{desc}</p>
+                  <p className="text-[12px] text-foreground/45 leading-relaxed">{desc}</p>
                 </div>
               </div>
             ))}
@@ -231,7 +231,7 @@ export default function ShippingPage() {
         {/* ── Key facts grid ───────────────────────────────────────────── */}
         <section>
           <div className="mb-6">
-            <p className="text-[9px] tracking-[0.3em] text-foreground/28 uppercase mb-1.5">Key Facts</p>
+            <p className="text-[11px] tracking-[0.3em] text-foreground/28 uppercase mb-1.5">Key Facts</p>
             <h2 className="text-xl font-bold text-foreground/82">Important Delivery Information</h2>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
@@ -248,8 +248,8 @@ export default function ShippingPage() {
                   <Icon className={`h-3.5 w-3.5 ${color}`} />
                 </div>
                 <div>
-                  <p className="text-[10px] font-bold text-foreground/72 mb-1">{title}</p>
-                  <p className="text-[9px] text-foreground/40 leading-relaxed">{desc}</p>
+                  <p className="text-[12px] font-bold text-foreground/72 mb-1">{title}</p>
+                  <p className="text-[11px] text-foreground/40 leading-relaxed">{desc}</p>
                 </div>
               </div>
             ))}
@@ -260,7 +260,7 @@ export default function ShippingPage() {
         <section className="space-y-3">
           <div className="flex items-center gap-2 mb-5">
             <Info className="h-3.5 w-3.5 text-foreground/28" />
-            <p className="text-[9px] tracking-[0.3em] text-foreground/28 uppercase">Important Notices</p>
+            <p className="text-[11px] tracking-[0.3em] text-foreground/28 uppercase">Important Notices</p>
           </div>
           {[
             {
@@ -288,8 +288,8 @@ export default function ShippingPage() {
               <div key={i} className={`flex items-start gap-3.5 p-4 rounded-xl border ${s.wrap}`}>
                 <s.Icon className={`h-4 w-4 ${s.icon} flex-shrink-0 mt-0.5`} />
                 <div>
-                  <p className="text-[10px] font-bold text-foreground/72 mb-1">{title}</p>
-                  <p className="text-[10px] text-foreground/48 leading-relaxed">{text}</p>
+                  <p className="text-[12px] font-bold text-foreground/72 mb-1">{title}</p>
+                  <p className="text-[12px] text-foreground/48 leading-relaxed">{text}</p>
                 </div>
               </div>
             )
@@ -304,18 +304,18 @@ export default function ShippingPage() {
             </div>
             <div>
               <p className="text-sm font-bold text-foreground/82">Questions about your delivery?</p>
-              <p className="text-[10px] text-foreground/42 mt-1 leading-relaxed">
+              <p className="text-[12px] text-foreground/42 mt-1 leading-relaxed">
                 Track your order in the Orders section or contact our team for delivery enquiries.
               </p>
             </div>
           </div>
           <div className="flex gap-2 flex-shrink-0 flex-wrap justify-center">
             <Link href="/orders"
-              className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-white/15 text-foreground/55 text-[10px] font-mono hover:text-foreground hover:border-white/28 transition-all">
+              className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-white/15 text-foreground/55 text-[12px] font-mono hover:text-foreground hover:border-white/28 transition-all">
               Track My Order
             </Link>
             <Link href="/contact"
-              className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-[10px] font-semibold tracking-wide transition-all active:scale-95">
+              className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-[12px] font-semibold tracking-wide transition-all active:scale-95">
               Contact Support <ArrowRight className="h-3.5 w-3.5" />
             </Link>
           </div>

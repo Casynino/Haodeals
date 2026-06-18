@@ -103,7 +103,7 @@ export default function SettingsPage() {
   if (status === "loading") {
     return (
       <div className="container mx-auto px-4 py-24 flex items-center justify-center font-mono">
-        <div className="flex items-center gap-2 text-foreground/30 text-[10px]">
+        <div className="flex items-center gap-2 text-foreground/30 text-[12px]">
           <Loader2 className="h-3 w-3 animate-spin" /> LOADING...
         </div>
       </div>
@@ -115,13 +115,13 @@ export default function SettingsPage() {
 
       {/* Header */}
       <div className="flex items-center gap-3 border-b border-foreground/10 pb-4">
-        <span className="text-foreground/30 text-[10px]">//</span>
-        <h1 className="text-[11px] tracking-[0.3em] text-foreground/70">ACCOUNT.SETTINGS</h1>
+        <span className="text-foreground/30 text-[12px]">//</span>
+        <h1 className="text-[13px] tracking-[0.3em] text-foreground/70">ACCOUNT.SETTINGS</h1>
       </div>
 
       {/* Avatar */}
       <div className="border border-foreground/15 p-5 space-y-4">
-        <p className="text-[9px] tracking-widest text-foreground/40">// PROFILE.PICTURE</p>
+        <p className="text-[11px] tracking-widest text-foreground/40">// PROFILE.PICTURE</p>
         <div className="flex items-center gap-4">
           <div className="relative w-16 h-16 border border-foreground/20 overflow-hidden bg-foreground/5 flex-shrink-0">
             {form.image ? (
@@ -142,12 +142,12 @@ export default function SettingsPage() {
               type="button"
               onClick={() => fileRef.current?.click()}
               disabled={uploading}
-              className="flex items-center gap-2 px-4 py-2 border border-foreground/20 text-[10px] tracking-widest text-foreground/60 hover:text-foreground hover:border-foreground/40 transition-colors disabled:opacity-40"
+              className="flex items-center gap-2 px-4 py-2 border border-foreground/20 text-[12px] tracking-widest text-foreground/60 hover:text-foreground hover:border-foreground/40 transition-colors disabled:opacity-40"
             >
               <Camera className="h-3 w-3" />
               {uploading ? "UPLOADING..." : "CHANGE.PHOTO"}
             </button>
-            <p className="text-[8px] text-foreground/20">JPG, PNG, WEBP · MAX 4MB</p>
+            <p className="text-[10px] text-foreground/20">JPG, PNG, WEBP · MAX 4MB</p>
           </div>
           <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={handleAvatarChange} />
         </div>
@@ -158,18 +158,18 @@ export default function SettingsPage() {
         <div className="absolute top-0 left-0 w-3 h-3 border-t border-l border-foreground/20" />
         <div className="absolute bottom-0 right-0 w-3 h-3 border-b border-r border-foreground/20" />
 
-        <p className="text-[9px] tracking-widest text-foreground/40">// PERSONAL.INFO</p>
+        <p className="text-[11px] tracking-widest text-foreground/40">// PERSONAL.INFO</p>
 
         <div className="space-y-1.5">
-          <label className="text-[8px] tracking-widest text-foreground/30 block">EMAIL.ADDRESS</label>
-          <p className="text-[10px] text-foreground/40 px-3 py-2 border border-foreground/10 bg-foreground/5">
+          <label className="text-[10px] tracking-widest text-foreground/30 block">EMAIL.ADDRESS</label>
+          <p className="text-[12px] text-foreground/40 px-3 py-2 border border-foreground/10 bg-foreground/5">
             {session?.user?.email}
           </p>
-          <p className="text-[8px] text-foreground/20">EMAIL CANNOT BE CHANGED</p>
+          <p className="text-[10px] text-foreground/20">EMAIL CANNOT BE CHANGED</p>
         </div>
 
         <div className="space-y-1.5">
-          <label className="text-[8px] tracking-widest text-foreground/30 flex items-center gap-1.5 mb-1">
+          <label className="text-[10px] tracking-widest text-foreground/30 flex items-center gap-1.5 mb-1">
             <User className="h-2.5 w-2.5" /> DISPLAY.NAME
           </label>
           <input
@@ -179,12 +179,12 @@ export default function SettingsPage() {
             placeholder="Your name"
             minLength={2}
             required
-            className="w-full bg-transparent border border-foreground/15 px-3 py-2 text-[10px] text-foreground/80 placeholder:text-foreground/20 focus:outline-none focus:border-foreground/40 transition-colors"
+            className="w-full bg-transparent border border-foreground/15 px-3 py-2 text-[12px] text-foreground/80 placeholder:text-foreground/20 focus:outline-none focus:border-foreground/40 transition-colors"
           />
         </div>
 
         <div className="space-y-1.5">
-          <label className="text-[8px] tracking-widest text-foreground/30 flex items-center gap-1.5 mb-1">
+          <label className="text-[10px] tracking-widest text-foreground/30 flex items-center gap-1.5 mb-1">
             <Phone className="h-2.5 w-2.5" /> PHONE.NUMBER
           </label>
           <input
@@ -192,13 +192,13 @@ export default function SettingsPage() {
             value={form.phone}
             onChange={(e) => setForm({ ...form, phone: e.target.value })}
             placeholder="+255 712 345 678"
-            className="w-full bg-transparent border border-foreground/15 px-3 py-2 text-[10px] text-foreground/80 placeholder:text-foreground/20 focus:outline-none focus:border-foreground/40 transition-colors"
+            className="w-full bg-transparent border border-foreground/15 px-3 py-2 text-[12px] text-foreground/80 placeholder:text-foreground/20 focus:outline-none focus:border-foreground/40 transition-colors"
           />
-          <p className="text-[8px] text-foreground/20">USED FOR MOBILE MONEY PAYMENTS</p>
+          <p className="text-[10px] text-foreground/20">USED FOR MOBILE MONEY PAYMENTS</p>
         </div>
 
         <div className="space-y-1.5">
-          <label className="text-[8px] tracking-widest text-foreground/30 flex items-center gap-1.5 mb-1">
+          <label className="text-[10px] tracking-widest text-foreground/30 flex items-center gap-1.5 mb-1">
             <MapPin className="h-2.5 w-2.5" /> DELIVERY.ADDRESS
           </label>
           <input
@@ -206,15 +206,15 @@ export default function SettingsPage() {
             value={form.address}
             onChange={(e) => setForm({ ...form, address: e.target.value })}
             placeholder="123 Kariakoo Street, Dar es Salaam"
-            className="w-full bg-transparent border border-foreground/15 px-3 py-2 text-[10px] text-foreground/80 placeholder:text-foreground/20 focus:outline-none focus:border-foreground/40 transition-colors"
+            className="w-full bg-transparent border border-foreground/15 px-3 py-2 text-[12px] text-foreground/80 placeholder:text-foreground/20 focus:outline-none focus:border-foreground/40 transition-colors"
           />
-          <p className="text-[8px] text-foreground/20">AUTO-FILLED AT CHECKOUT</p>
+          <p className="text-[10px] text-foreground/20">AUTO-FILLED AT CHECKOUT</p>
         </div>
 
         <button
           type="submit"
           disabled={saving}
-          className="w-full flex items-center justify-center gap-2 py-2.5 bg-foreground text-background text-[10px] tracking-widest font-bold hover:bg-foreground/90 transition-colors disabled:opacity-50"
+          className="w-full flex items-center justify-center gap-2 py-2.5 bg-foreground text-background text-[12px] tracking-widest font-bold hover:bg-foreground/90 transition-colors disabled:opacity-50"
         >
           {saving ? <><Loader2 className="h-3.5 w-3.5 animate-spin" /> SAVING...</> : <><Save className="h-3.5 w-3.5" /> SAVE.CHANGES</>}
         </button>
@@ -222,7 +222,7 @@ export default function SettingsPage() {
 
       {/* Password */}
       <form onSubmit={handleChangePassword} className="border border-foreground/15 p-5 space-y-4">
-        <p className="text-[9px] tracking-widest text-foreground/40">// CHANGE.PASSWORD</p>
+        <p className="text-[11px] tracking-widest text-foreground/40">// CHANGE.PASSWORD</p>
 
         {[
           { label: "CURRENT.PASSWORD", key: "current" as const, show: showCurrent, toggle: () => setShowCurrent(!showCurrent) },
@@ -230,7 +230,7 @@ export default function SettingsPage() {
           { label: "CONFIRM.PASSWORD", key: "confirm" as const, show: showNext,    toggle: () => setShowNext(!showNext) },
         ].map(({ label, key, show, toggle }) => (
           <div key={key} className="space-y-1.5">
-            <label className="text-[8px] tracking-widest text-foreground/30 block">{label}</label>
+            <label className="text-[10px] tracking-widest text-foreground/30 block">{label}</label>
             <div className="relative">
               <input
                 type={show ? "text" : "password"}
@@ -239,7 +239,7 @@ export default function SettingsPage() {
                 placeholder="••••••••"
                 required
                 minLength={key !== "current" ? 6 : 1}
-                className="w-full bg-transparent border border-foreground/15 px-3 py-2 pr-9 text-[10px] text-foreground/80 placeholder:text-foreground/20 focus:outline-none focus:border-foreground/40 transition-colors"
+                className="w-full bg-transparent border border-foreground/15 px-3 py-2 pr-9 text-[12px] text-foreground/80 placeholder:text-foreground/20 focus:outline-none focus:border-foreground/40 transition-colors"
               />
               <button type="button" onClick={toggle} className="absolute right-3 top-1/2 -translate-y-1/2 text-foreground/30 hover:text-foreground/60 transition-colors">
                 {show ? <EyeOff className="h-3 w-3" /> : <Eye className="h-3 w-3" />}
@@ -251,7 +251,7 @@ export default function SettingsPage() {
         <button
           type="submit"
           disabled={savingPw}
-          className="w-full flex items-center justify-center gap-2 py-2.5 border border-foreground/20 text-[10px] tracking-widest text-foreground/60 hover:text-foreground hover:border-foreground/40 transition-colors disabled:opacity-50"
+          className="w-full flex items-center justify-center gap-2 py-2.5 border border-foreground/20 text-[12px] tracking-widest text-foreground/60 hover:text-foreground hover:border-foreground/40 transition-colors disabled:opacity-50"
         >
           {savingPw ? <><Loader2 className="h-3.5 w-3.5 animate-spin" /> UPDATING...</> : <><KeyRound className="h-3.5 w-3.5" /> UPDATE.PASSWORD</>}
         </button>

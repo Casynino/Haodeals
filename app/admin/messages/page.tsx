@@ -39,14 +39,14 @@ export default function AdminMessagesPage() {
           <span className="text-foreground/45 text-xs">//</span>
           <h1 className="text-lg font-semibold tracking-[0.2em] text-foreground/90">MESSAGES</h1>
           {totalUnread > 0 && (
-            <span className="px-2 py-0.5 bg-yellow-400/90 text-black text-[9px] font-bold tracking-widest">
+            <span className="px-2 py-0.5 bg-yellow-400/90 text-black text-[11px] font-bold tracking-widest">
               {totalUnread} UNREAD
             </span>
           )}
         </div>
         <Link
           href="/admin"
-          className="text-[9px] tracking-widest text-foreground/40 hover:text-foreground/70 transition-colors"
+          className="text-[11px] tracking-widest text-foreground/40 hover:text-foreground/70 transition-colors"
         >
           ← DASHBOARD
         </Link>
@@ -63,7 +63,7 @@ export default function AdminMessagesPage() {
           <div className="border border-white/10 p-8">
             <MessageSquare className="h-10 w-10 opacity-20" />
           </div>
-          <p className="text-[11px] tracking-widest text-foreground/40">No conversations yet</p>
+          <p className="text-[13px] tracking-widest text-foreground/40">No conversations yet</p>
         </div>
       ) : (
         <div className="space-y-2">
@@ -89,14 +89,14 @@ export default function AdminMessagesPage() {
                     </div>
 
                     <div className="flex items-center gap-3 flex-wrap">
-                      <p className="text-[10px] text-foreground/50">
+                      <p className="text-[12px] text-foreground/50">
                         {conv.user.name ?? conv.user.email}
                         {conv.user.name && (
                           <span className="text-foreground/30 ml-1">({conv.user.email})</span>
                         )}
                       </p>
                       {conv.order && (
-                        <span className="inline-flex items-center gap-1 text-[10px] text-foreground/40 border border-white/10 px-1.5 py-0.5">
+                        <span className="inline-flex items-center gap-1 text-[12px] text-foreground/40 border border-white/10 px-1.5 py-0.5">
                           <Package className="h-2.5 w-2.5" />
                           {conv.order.trackingId ?? conv.order.id.slice(0, 8).toUpperCase()}
                         </span>
@@ -104,7 +104,7 @@ export default function AdminMessagesPage() {
                     </div>
 
                     {lastMessage && (
-                      <p className="text-[10px] text-foreground/35 truncate mt-1">
+                      <p className="text-[12px] text-foreground/35 truncate mt-1">
                         {lastMessage.senderRole === "customer" && <span className="text-foreground/50">Customer: </span>}
                         {lastMessage.senderRole === "system" && <span className="text-foreground/25">System: </span>}
                         {lastMessage.body}
@@ -113,13 +113,13 @@ export default function AdminMessagesPage() {
                   </div>
 
                   <div className="flex flex-col items-end gap-1.5 flex-shrink-0">
-                    <p className="text-[10px] text-foreground/35">{formatRelativeDate(conv.lastMessageAt)}</p>
+                    <p className="text-[12px] text-foreground/35">{formatRelativeDate(conv.lastMessageAt)}</p>
                     {hasUnread && (
-                      <span className="w-5 h-5 flex items-center justify-center bg-yellow-400/90 text-black text-[9px] font-bold">
+                      <span className="w-5 h-5 flex items-center justify-center bg-yellow-400/90 text-black text-[11px] font-bold">
                         {conv.adminUnread > 9 ? "9+" : conv.adminUnread}
                       </span>
                     )}
-                    <span className={`text-[9px] tracking-wide border px-2 py-0.5 ${
+                    <span className={`text-[11px] tracking-wide border px-2 py-0.5 ${
                       conv.status === "open"
                         ? "text-blue-400/60 border-blue-400/20"
                         : "text-foreground/30 border-white/15"

@@ -45,7 +45,7 @@ function LoginForm() {
 
       {/* Already signed in — switching accounts banner */}
       {currentUser && (
-        <div className="flex items-start gap-2.5 px-3 py-2.5 bg-foreground/5 border border-white/10 text-[10px] font-mono text-foreground/50">
+        <div className="flex items-start gap-2.5 px-3 py-2.5 bg-foreground/5 border border-white/10 text-[12px] font-mono text-foreground/50">
           <UserCheck className="h-3.5 w-3.5 mt-0.5 shrink-0 text-foreground/30" />
           <span>
             Signed in as <span className="text-foreground/70">{currentUser.email}</span>.{" "}

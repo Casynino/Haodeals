@@ -88,7 +88,7 @@ export default function MessagesPage() {
         </div>
         <button
           onClick={() => setShowNew((v) => !v)}
-          className="flex items-center gap-1.5 px-3 py-1.5 border border-white/20 text-[9px] tracking-widest text-foreground/50 hover:text-foreground hover:border-white/40 transition-colors"
+          className="flex items-center gap-1.5 px-3 py-1.5 border border-white/20 text-[11px] tracking-widest text-foreground/50 hover:text-foreground hover:border-white/40 transition-colors"
         >
           {showNew ? <X className="h-3 w-3" /> : <Plus className="h-3 w-3" />}
           {showNew ? "CANCEL" : "NEW.MESSAGE"}
@@ -98,10 +98,10 @@ export default function MessagesPage() {
       {/* New conversation form */}
       {showNew && (
         <div className="border border-white/15 p-5 mb-6 space-y-4">
-          <p className="text-[10px] tracking-widest text-foreground/55">// NEW.SUPPORT.MESSAGE</p>
+          <p className="text-[12px] tracking-widest text-foreground/55">// NEW.SUPPORT.MESSAGE</p>
           <form onSubmit={handleNewConversation} className="space-y-3">
             <div>
-              <label className="text-[10px] tracking-widest text-foreground/45 block mb-1.5">SUBJECT</label>
+              <label className="text-[12px] tracking-widest text-foreground/45 block mb-1.5">SUBJECT</label>
               <input
                 type="text"
                 value={newSubject}
@@ -112,7 +112,7 @@ export default function MessagesPage() {
               />
             </div>
             <div>
-              <label className="text-[10px] tracking-widest text-foreground/45 block mb-1.5">MESSAGE</label>
+              <label className="text-[12px] tracking-widest text-foreground/45 block mb-1.5">MESSAGE</label>
               <textarea
                 value={newBody}
                 onChange={(e) => setNewBody(e.target.value)}
@@ -122,11 +122,11 @@ export default function MessagesPage() {
                 className="w-full bg-transparent border border-white/15 px-3 py-2 text-xs text-foreground/70 placeholder:text-foreground/20 focus:outline-none focus:border-white/40 transition-colors resize-none"
               />
             </div>
-            {error && <p className="text-[10px] text-red-400/70">{error}</p>}
+            {error && <p className="text-[12px] text-red-400/70">{error}</p>}
             <button
               type="submit"
               disabled={submitting}
-              className="flex items-center gap-2 px-4 py-2 bg-foreground text-background text-[10px] tracking-widest hover:opacity-90 transition-opacity disabled:opacity-50"
+              className="flex items-center gap-2 px-4 py-2 bg-foreground text-background text-[12px] tracking-widest hover:opacity-90 transition-opacity disabled:opacity-50"
             >
               <Send className="h-3 w-3" />
               {submitting ? "SENDING..." : "SEND.MESSAGE"}
@@ -141,8 +141,8 @@ export default function MessagesPage() {
             <MessageSquare className="h-10 w-10 opacity-20" />
           </div>
           <div>
-            <p className="text-[11px] tracking-widest text-foreground/50 mb-1">No messages yet</p>
-            <p className="text-[9px] text-foreground/25">Order updates and support messages will appear here.</p>
+            <p className="text-[13px] tracking-widest text-foreground/50 mb-1">No messages yet</p>
+            <p className="text-[11px] text-foreground/25">Order updates and support messages will appear here.</p>
           </div>
         </div>
       ) : (
@@ -168,12 +168,12 @@ export default function MessagesPage() {
                       </p>
                     </div>
                     {conv.order && (
-                      <p className="text-[10px] text-foreground/40 mb-1">
+                      <p className="text-[12px] text-foreground/40 mb-1">
                         Order #{conv.order.trackingId ?? conv.order.id.slice(0, 8).toUpperCase()}
                       </p>
                     )}
                     {lastMessage && (
-                      <p className="text-[10px] text-foreground/45 truncate">
+                      <p className="text-[12px] text-foreground/45 truncate">
                         {lastMessage.senderRole === "admin" && <span className="text-yellow-400/60">Admin: </span>}
                         {lastMessage.senderRole === "system" && <span className="text-foreground/30">System: </span>}
                         {lastMessage.body}
@@ -181,13 +181,13 @@ export default function MessagesPage() {
                     )}
                   </div>
                   <div className="flex flex-col items-end gap-1.5 flex-shrink-0">
-                    <p className="text-[10px] text-foreground/35">{formatRelativeDate(conv.lastMessageAt)}</p>
+                    <p className="text-[12px] text-foreground/35">{formatRelativeDate(conv.lastMessageAt)}</p>
                     {hasUnread && (
-                      <span className="w-4 h-4 flex items-center justify-center bg-green-400/80 text-black text-[9px] font-bold">
+                      <span className="w-4 h-4 flex items-center justify-center bg-green-400/80 text-black text-[11px] font-bold">
                         {conv.customerUnread > 9 ? "9+" : conv.customerUnread}
                       </span>
                     )}
-                    <span className={`text-[9px] tracking-wide border px-2 py-0.5 ${
+                    <span className={`text-[11px] tracking-wide border px-2 py-0.5 ${
                       conv.status === "open"
                         ? "text-blue-400/60 border-blue-400/20"
                         : "text-foreground/30 border-white/15"

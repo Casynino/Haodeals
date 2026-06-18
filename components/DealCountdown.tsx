@@ -117,7 +117,7 @@ export function DealCountdown({ dealEndsAt }: { dealEndsAt?: string | null }) {
             ${cfg.dot} ${cfg.pulse ? "animate-pulse" : ""}
           `}
         />
-        <span className={`text-[10px] tracking-[0.16em] font-medium uppercase ${cfg.lbl}`}>
+        <span className={`text-[12px] tracking-[0.16em] font-medium uppercase ${cfg.lbl}`}>
           {cfg.lblTxt}
         </span>
       </div>
