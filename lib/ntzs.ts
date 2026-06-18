@@ -32,6 +32,7 @@ export interface NtzsUser {
   id: string
   walletAddress: string
   email: string
+  externalId?: string | null
 }
 
 // nTZS deposit lifecycle: "submitted" → "minted" (success) | "failed"/"expired"/"cancelled"
