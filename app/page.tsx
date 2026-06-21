@@ -56,62 +56,41 @@ export default async function HomePage() {
   return (
     <div className="flex flex-col">
 
-      {/* ── Hero: Spline robot + terminal text ── */}
+      {/* ── Hero: Spline scene + glassy gold content ── */}
       <div className="relative h-screen bg-background overflow-hidden flex">
 
-        {/* Spotlight */}
         <Spotlight className="-top-40 left-0 md:left-60 md:-top-20" fill="white" />
 
-        {/* Corner accents */}
-        <div className="absolute top-0 left-0 w-10 h-10 border-t-2 border-l-2 border-foreground/20 z-20 pointer-events-none" />
-        <div className="absolute top-0 right-0 w-10 h-10 border-t-2 border-r-2 border-foreground/20 z-20 pointer-events-none" />
-        <div className="absolute bottom-0 left-0 w-10 h-10 border-b-2 border-l-2 border-foreground/20 z-20 pointer-events-none" />
-        <div className="absolute bottom-0 right-0 w-10 h-10 border-b-2 border-r-2 border-foreground/20 z-20 pointer-events-none" />
-
-        {/* Scanline */}
-        <div
-          className="absolute inset-0 pointer-events-none z-10"
-          style={{ background: "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(128,128,128,0.04) 2px, rgba(128,128,128,0.04) 4px)" }}
-        />
+        {/* Ambient gold glow blobs */}
+        <div className="gold-glow absolute -top-24 -left-24 w-[34rem] h-[34rem] rounded-full pointer-events-none z-0 opacity-70" />
+        <div className="gold-glow absolute bottom-0 left-1/3 w-[26rem] h-[26rem] rounded-full pointer-events-none z-0 opacity-50" />
 
         {/* Left: text content */}
         <div className="relative z-20 w-full md:w-1/2 flex flex-col justify-center px-6 md:px-14 lg:px-20">
-          <div className="max-w-md">
+          <div className="max-w-lg">
 
-            {/* Top rule */}
-            <div className="flex items-center gap-2 mb-4 opacity-60">
-              <div className="w-6 h-px bg-foreground" />
-              <span className="text-foreground text-[12px] font-mono tracking-widest">HAODEALS</span>
-              <div className="flex-1 h-px bg-foreground" />
+            {/* Eyebrow pill */}
+            <div className="inline-flex items-center gap-2 glass rounded-full px-3.5 py-1.5 mb-6">
+              <span className="text-gold text-sm leading-none">✦</span>
+              <span className="text-[12px] text-foreground/70 tracking-wide">HaoDeals · Tanzania 🇹🇿</span>
             </div>
 
-            <h1 className="text-3xl sm:text-4xl md:text-6xl font-black text-foreground font-mono tracking-widest leading-none mb-1">
-              BEST
-            </h1>
-            <h1 className="text-3xl sm:text-4xl md:text-6xl font-black font-mono tracking-widest leading-none mb-4">
-              <span className="text-foreground/35">DEALS.</span>
-              <span className="text-foreground">EVER.</span>
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-foreground tracking-tight leading-[1.05] mb-5">
+              Premium deals,<br />
+              <span className="text-gold">delivered</span> to your door.
             </h1>
 
-            {/* Dot row */}
-            <div className="flex gap-0.5 mb-5 opacity-30">
-              {Array.from({ length: 28 }).map((_, i) => (
-                <div key={i} className="w-1 h-1 bg-foreground" />
-              ))}
-            </div>
-
-            <p className="text-xs md:text-sm text-foreground/65 font-mono leading-relaxed mb-7 max-w-xs">
-              Save up to 70% OFF on TECH · FASHION · ACCESSORIES · SHOES · SPORTS
-              <br /><br />
-              Shop now &amp; get fast delivery across Tanzania 🇹🇿
+            <p className="text-sm md:text-base text-foreground/60 leading-relaxed mb-8 max-w-md">
+              Up to 70% off across Tech, Fashion, Accessories, Shoes &amp; Sports — with fast,
+              reliable delivery anywhere in Tanzania.
             </p>
 
             {/* Stats */}
-            <div className="flex gap-6 mb-7 font-mono text-foreground/55">
-              {[["20+", "PRODUCTS"], ["5", "CATEGORIES"], ["70%", "MAX OFF"]].map(([val, label]) => (
-                <div key={label}>
-                  <div className="text-xl text-foreground font-bold">{val}</div>
-                  <div className="text-[12px] tracking-widest">{label}</div>
+            <div className="flex gap-3 mb-8">
+              {[["20+", "Products"], ["5", "Categories"], ["70%", "Max off"]].map(([val, label]) => (
+                <div key={label} className="glass rounded-2xl px-4 py-3 flex-1">
+                  <div className="text-xl text-foreground font-bold tracking-tight">{val}</div>
+                  <div className="text-[11px] text-foreground/45 mt-0.5">{label}</div>
                 </div>
               ))}
             </div>
@@ -119,90 +98,80 @@ export default async function HomePage() {
             {/* CTAs */}
             <div className="flex flex-wrap gap-3">
               <Link href="/products">
-                <button className="relative px-5 py-2 bg-transparent text-foreground font-mono text-xs border border-foreground hover:bg-foreground hover:text-background transition-all duration-200 tracking-widest group">
-                  <span className="absolute -top-px -left-px w-2 h-2 border-t border-l border-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
-                  <span className="absolute -bottom-px -right-px w-2 h-2 border-b border-r border-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
-                  Shop Now
+                <button className="flex items-center gap-2 px-6 py-3 rounded-full bg-gold text-black text-sm font-semibold hover:brightness-110 active:scale-[0.98] transition-all shadow-[0_10px_30px_-10px_var(--gold-soft)]">
+                  Shop Now <ArrowRight className="h-4 w-4" />
                 </button>
               </Link>
               {!isLoggedIn && (
                 <Link href="/register">
-                  <button className="px-5 py-2 bg-transparent text-foreground/50 font-mono text-xs border border-foreground/30 hover:border-foreground hover:text-foreground transition-all duration-200 tracking-widest">
+                  <button className="px-6 py-3 rounded-full glass text-foreground/80 text-sm font-medium hover:text-foreground hover:border-gold/30 transition-all">
                     Create Free Account
                   </button>
                 </Link>
               )}
             </div>
-
-            {/* Bottom rule */}
-            <div className="flex items-center gap-2 mt-7 opacity-25">
-              <span className="text-foreground text-[11px] font-mono">∞</span>
-              <div className="flex-1 h-px bg-foreground" />
-            </div>
           </div>
         </div>
 
-        {/* Spline robot — right half on desktop, full bg on mobile */}
+        {/* Spline scene — right half on desktop, full bg on mobile */}
         <div className="absolute right-0 top-0 w-full md:w-1/2 h-full z-0">
           <SplineScene
             scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
             className="w-full h-full"
           />
-          {/* Mobile: gradient so left-side text stays legible */}
           <div className="md:hidden absolute inset-0 bg-gradient-to-r from-background via-background/75 to-transparent pointer-events-none" />
         </div>
 
-        {/* Bottom status bar */}
-        <div className="absolute bottom-0 left-0 right-0 z-20 border-t border-foreground/10 bg-background/80 backdrop-blur-sm">
-          <div className="container mx-auto px-4 py-2 flex items-center justify-between">
-            <div className="flex items-center gap-4 text-[12px] font-mono text-foreground/50">
-              <span>Free shipping over TSh 100K</span>
-              <span className="text-foreground/20">|</span>
-              <span>30-day returns</span>
-              <span className="text-foreground/20">|</span>
-              <span>Secure checkout</span>
-            </div>
-            <div className="flex items-center gap-2 text-[12px] font-mono text-foreground/50">
-              <div className="flex gap-1">
-                {[0, 1, 2].map((i) => (
-                  <div key={i} className="w-1.5 h-1.5 bg-green-400/60 rounded-full animate-pulse" style={{ animationDelay: `${i * 0.2}s` }} />
-                ))}
+        {/* Bottom trust bar */}
+        <div className="absolute bottom-0 left-0 right-0 z-20">
+          <div className="container mx-auto px-4 pb-4">
+            <div className="glass rounded-2xl px-4 py-2.5 flex items-center justify-between">
+              <div className="flex items-center gap-3 text-[12px] text-foreground/55">
+                <span>Free shipping over TSh 100K</span>
+                <span className="text-foreground/15">·</span>
+                <span className="hidden sm:inline">30-day returns</span>
+                <span className="hidden sm:inline text-foreground/15">·</span>
+                <span className="hidden sm:inline">Secure checkout</span>
               </div>
-              <span>Live deals</span>
+              <div className="flex items-center gap-2 text-[12px] text-foreground/55">
+                <span className="w-1.5 h-1.5 bg-gold rounded-full animate-pulse" />
+                Live deals
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* ── Categories Grid ── */}
+      {/* ── Categories ── */}
       {categories.length > 0 && (
-        <section className="py-12 border-b border-white/5">
+        <section className="py-12">
           <div className="container mx-auto px-4">
-            <div className="flex items-center justify-between mb-6">
-              <div className="flex items-center gap-3">
-                <h2 className="text-sm font-mono tracking-[0.25em] text-foreground/80 font-semibold">CATEGORIES</h2>
+            <div className="flex items-end justify-between mb-6">
+              <div>
+                <h2 className="text-xl font-bold tracking-tight text-foreground">Shop by category</h2>
+                <p className="text-[13px] text-foreground/45 mt-1">Find exactly what you&apos;re after</p>
               </div>
-              <Link href="/products" className="flex items-center gap-1 text-[12px] font-mono text-foreground/55 hover:text-foreground tracking-widest transition-colors">
-                View All <ArrowRight className="h-3 w-3" />
+              <Link href="/products" className="flex items-center gap-1 text-[13px] text-gold hover:brightness-110 transition-all">
+                View all <ArrowRight className="h-3.5 w-3.5" />
               </Link>
             </div>
-            <div className="grid grid-cols-3 md:grid-cols-6 gap-2">
+            <div className="grid grid-cols-3 md:grid-cols-6 gap-3">
               {categories.map((cat) => (
                 <Link
                   key={cat.id}
                   href={`/products?category=${cat.slug}`}
-                  className="group relative aspect-square overflow-hidden bg-foreground/5 border border-white/12 hover:border-white/35 transition-colors"
+                  className="group relative aspect-square overflow-hidden rounded-2xl glass hover:border-gold/30 transition-all hover:-translate-y-1"
                 >
                   <Image
                     src={cat.image || categoryImages[cat.slug] || "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=400&h=400&fit=crop"}
                     alt={cat.name}
                     fill
-                    className="object-cover opacity-55 group-hover:opacity-75 transition-opacity grayscale"
+                    className="object-cover opacity-70 group-hover:opacity-90 group-hover:scale-105 transition-all duration-500"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
-                  <div className="absolute bottom-0 left-0 right-0 p-2.5">
-                    <p className="text-[13px] font-mono text-white tracking-widest uppercase font-medium">{cat.name}</p>
-                    <p className="text-[12px] text-white/55 mt-0.5">{cat._count.products} items</p>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent" />
+                  <div className="absolute bottom-0 left-0 right-0 p-3">
+                    <p className="text-[13px] text-white font-semibold tracking-tight">{cat.name}</p>
+                    <p className="text-[11px] text-white/55 mt-0.5">{cat._count.products} items</p>
                   </div>
                 </Link>
               ))}
@@ -213,22 +182,23 @@ export default async function HomePage() {
 
       {/* ── Flash Deals ── */}
       {dealProducts.length > 0 && (
-        <section className="py-12 border-b border-white/5">
+        <section className="py-12">
           <div className="container mx-auto px-4">
-            <div className="flex items-center justify-between mb-6">
-              <div className="flex items-center gap-3">
-                <span className="text-foreground/40 text-xs">//</span>
-                <h2 className="text-sm font-mono tracking-[0.25em] text-foreground/80 font-semibold">Flash Deals</h2>
-                <div className="flex items-center gap-1.5 text-[12px] font-mono text-green-400/75">
-                  <div className="w-1.5 h-1.5 bg-green-400/75 rounded-full animate-pulse" />
-                  Live
+            <div className="flex items-end justify-between mb-6">
+              <div>
+                <div className="flex items-center gap-2.5">
+                  <h2 className="text-xl font-bold tracking-tight text-foreground">Flash deals</h2>
+                  <span className="inline-flex items-center gap-1.5 text-[11px] text-gold glass rounded-full px-2.5 py-1">
+                    <span className="w-1.5 h-1.5 bg-gold rounded-full animate-pulse" /> Live
+                  </span>
                 </div>
+                <p className="text-[13px] text-foreground/45 mt-1">Fresh drops, limited time</p>
               </div>
-              <Link href="/products" className="flex items-center gap-1 text-[12px] font-mono text-foreground/55 hover:text-foreground tracking-widest transition-colors">
-                All Deals <ArrowRight className="h-3 w-3" />
+              <Link href="/products" className="flex items-center gap-1 text-[13px] text-gold hover:brightness-110 transition-all">
+                All deals <ArrowRight className="h-3.5 w-3.5" />
               </Link>
             </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
               {dealProducts.map((product) => (
                 <ProductCard key={product.id} product={product as unknown as Product} />
               ))}
@@ -239,18 +209,18 @@ export default async function HomePage() {
 
       {/* ── Featured ── */}
       {featuredProducts.length > 0 && (
-        <section className="py-12 border-b border-white/5">
+        <section className="py-12">
           <div className="container mx-auto px-4">
-            <div className="flex items-center justify-between mb-6">
-              <div className="flex items-center gap-3">
-                <span className="text-foreground/40 text-xs">//</span>
-                <h2 className="text-sm font-mono tracking-[0.25em] text-foreground/80 font-semibold">Featured</h2>
+            <div className="flex items-end justify-between mb-6">
+              <div>
+                <h2 className="text-xl font-bold tracking-tight text-foreground">Featured picks</h2>
+                <p className="text-[13px] text-foreground/45 mt-1">Hand-selected favourites</p>
               </div>
-              <Link href="/products?featured=true" className="flex items-center gap-1 text-[12px] font-mono text-foreground/55 hover:text-foreground tracking-widest transition-colors">
-                View All <ArrowRight className="h-3 w-3" />
+              <Link href="/products?featured=true" className="flex items-center gap-1 text-[13px] text-gold hover:brightness-110 transition-all">
+                View all <ArrowRight className="h-3.5 w-3.5" />
               </Link>
             </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
               {featuredProducts.map((product) => (
                 <ProductCard key={product.id} product={product as unknown as Product} />
               ))}
@@ -260,51 +230,40 @@ export default async function HomePage() {
       )}
 
       {/* ── CTA Block ── */}
-      <section className="py-16 border-b border-white/5">
-        <div className="container mx-auto px-4 max-w-2xl">
-          <div className="border border-white/15 p-8 relative">
-            {/* Corner accents */}
-            <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-white/30" />
-            <div className="absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-white/30" />
-            <div className="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-white/30" />
-            <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-white/30" />
-
+      <section className="py-16">
+        <div className="container mx-auto px-4 max-w-3xl">
+          <div className="relative glass rounded-3xl p-8 md:p-12 overflow-hidden text-center">
+            <div className="gold-glow absolute -top-16 left-1/2 -translate-x-1/2 w-80 h-80 rounded-full pointer-events-none" />
             {isLoggedIn ? (
-              /* Logged-in: push straight to deals */
-              <div className="text-center space-y-4">
-                <p className="text-[11px] font-mono text-foreground/30 tracking-widest">Today&apos;s Deals</p>
-                <h2 className="text-2xl md:text-3xl font-black font-mono tracking-widest">
-                  Welcome Back!<br />
-                  <span className="text-foreground/40">Deals Are Waiting</span>
+              <div className="relative space-y-4">
+                <p className="text-[12px] text-gold tracking-[0.2em] uppercase">Today&apos;s Deals</p>
+                <h2 className="text-2xl md:text-4xl font-bold tracking-tight">
+                  Welcome back — your deals are waiting
                 </h2>
-                <div className="w-full h-px bg-white/10" />
-                <p className="text-sm text-foreground/50 leading-relaxed">
+                <p className="text-sm text-foreground/55 leading-relaxed max-w-md mx-auto">
                   New deals added daily across Tech, Fashion, Accessories, Shoes &amp; Sports.
                 </p>
-                <Link href="/products">
-                  <button className="mt-2 px-8 py-2.5 bg-foreground text-background font-mono text-xs tracking-widest hover:bg-foreground/90 transition-colors font-bold flex items-center gap-2 mx-auto">
-                    View All Deals <ArrowRight className="h-3.5 w-3.5" />
+                <Link href="/products" className="inline-block pt-2">
+                  <button className="flex items-center gap-2 px-7 py-3 rounded-full bg-gold text-black text-sm font-semibold hover:brightness-110 active:scale-[0.98] transition-all mx-auto">
+                    View All Deals <ArrowRight className="h-4 w-4" />
                   </button>
                 </Link>
               </div>
             ) : (
-              /* Guest: drive signup with offer */
-              <div className="text-center space-y-4">
-                <p className="text-[11px] font-mono text-foreground/30 tracking-widest">Limited Time Offer</p>
-                <h2 className="text-2xl md:text-3xl font-black font-mono tracking-widest">
-                  Get 20% Off<br />
-                  <span className="text-foreground/40">Your First Order</span>
+              <div className="relative space-y-4">
+                <p className="text-[12px] text-gold tracking-[0.2em] uppercase">Limited Time Offer</p>
+                <h2 className="text-2xl md:text-4xl font-bold tracking-tight">
+                  Get 20% off your first order
                 </h2>
-                <div className="w-full h-px bg-white/10" />
-                <p className="text-sm text-foreground/50 leading-relaxed">
+                <p className="text-sm text-foreground/55 leading-relaxed max-w-md mx-auto">
                   Sign up today and unlock exclusive deals, early access to flash sales, and personalised recommendations.
                 </p>
-                <Link href="/register">
-                  <button className="mt-2 px-8 py-2.5 bg-foreground text-background font-mono text-xs tracking-widest hover:bg-foreground/90 transition-colors font-bold">
+                <Link href="/register" className="inline-block pt-2">
+                  <button className="px-7 py-3 rounded-full bg-gold text-black text-sm font-semibold hover:brightness-110 active:scale-[0.98] transition-all mx-auto">
                     Create Free Account
                   </button>
                 </Link>
-                <p className="text-[11px] font-mono text-foreground/20 tracking-widest">No spam, ever.</p>
+                <p className="text-[12px] text-foreground/30">No spam, ever.</p>
               </div>
             )}
           </div>

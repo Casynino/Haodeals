@@ -1,11 +1,16 @@
 import type { Metadata, Viewport } from "next"
-import { Geist_Mono } from "next/font/google"
+import { Geist, Geist_Mono } from "next/font/google"
 import Script from "next/script"
 import "./globals.css"
 import { Providers } from "@/components/providers"
 import { Navbar } from "@/components/Navbar"
 import { Footer } from "@/components/Footer"
 import { WhatsAppButton } from "@/components/WhatsAppButton"
+
+const geistSans = Geist({
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
+})
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
@@ -64,10 +69,10 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistMono.variable} h-full antialiased dark`}
+      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased dark`}
       suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col bg-background text-foreground font-mono">
+      <body className="min-h-full flex flex-col bg-background text-foreground font-sans">
         {/* Runs before ANY Next.js/module code — next-auth reads window.BroadcastChannel
             at useEffect time, so this is guaranteed to be in place first.
             Effect: login/logout on Tab A stays on Tab A only. */}

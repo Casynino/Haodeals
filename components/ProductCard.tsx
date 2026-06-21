@@ -63,68 +63,69 @@ export function ProductCard({ product }: ProductCardProps) {
   }
 
   return (
-    <div className="group relative border border-foreground/[0.08] hover:border-foreground/20 transition-all duration-200 bg-card overflow-hidden shadow-sm hover:shadow-md">
+    <div className="group relative glass rounded-3xl overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_22px_60px_-18px_rgba(0,0,0,0.65)]">
 
       {/* Wishlist heart */}
-      <div className="absolute top-2 right-2 z-30">
+      <div className="absolute top-3 right-3 z-30">
         <WishlistHeart productId={product.id} productName={product.name} />
       </div>
 
       {/* Image + Info */}
       <Link href={`/products/${product.id}`} className="block">
-        <ProductTilt className="relative aspect-square overflow-hidden bg-foreground/[0.04]">
+        <ProductTilt className="relative aspect-square overflow-hidden rounded-3xl bg-foreground/[0.04] m-1.5">
           <Image
             src={images[0] ?? "/placeholder.jpg"}
             alt={product.name}
             fill
-            className="object-cover transition-opacity duration-500 opacity-90 group-hover:opacity-100"
+            className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
           />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent" />
 
           {discount && (
-            <div className="absolute top-0 left-0 bg-[#ee0000] text-white text-[12px] font-mono font-bold px-2 py-0.5 tracking-widest z-10">
+            <div className="absolute top-2.5 left-2.5 bg-gold text-black text-[11px] font-bold px-2 py-0.5 rounded-full shadow-sm z-10">
               -{discount}%
             </div>
           )}
 
           {outOfStock && (
-            <div className="absolute inset-0 bg-background/75 flex items-center justify-center z-10">
-              <span className="text-[12px] font-mono tracking-widest text-foreground/70 border border-foreground/25 px-2 py-1">
+            <div className="absolute inset-0 bg-background/55 backdrop-blur-[2px] flex items-center justify-center z-10 rounded-3xl">
+              <span className="text-[11px] tracking-widest text-foreground/80 glass rounded-full px-3 py-1.5">
                 OUT OF STOCK
               </span>
             </div>
           )}
 
           {product.featured && (
-            <div className="absolute top-0 right-0 bg-yellow-400/20 border-l border-b border-yellow-500/40 text-yellow-600 dark:text-yellow-400/80 text-[12px] font-mono px-2 py-0.5 tracking-widest z-10">
-              FEATURED
+            <div className="absolute bottom-2.5 left-2.5 flex items-center gap-1 bg-black/35 backdrop-blur-md border border-gold/30 text-gold text-[10px] font-semibold px-2 py-0.5 rounded-full z-10">
+              ★ FEATURED
             </div>
           )}
         </ProductTilt>
 
         {/* Info */}
-        <div className="p-3 space-y-1.5 border-t border-foreground/[0.06]">
-          <p className="text-[12px] text-foreground/45 tracking-widest uppercase font-mono">
+        <div className="px-3.5 pt-2 pb-1 space-y-1.5">
+          <p className="text-[10px] text-gold/80 tracking-[0.18em] uppercase font-medium">
             {product.category?.name}
           </p>
-          <h3 className="text-xs text-foreground/85 line-clamp-2 leading-relaxed group-hover:text-foreground transition-colors tracking-wide">
+          <h3 className="text-[13px] font-medium text-foreground/85 line-clamp-2 leading-snug group-hover:text-foreground transition-colors">
             {product.name}
           </h3>
           {avgRating !== null && (
             <div className="flex items-center gap-1.5">
               <div className="flex gap-0.5">
                 {[1,2,3,4,5].map((s) => (
-                  <div key={s} className={`w-2 h-2 rounded-[1px] ${s <= Math.round(avgRating) ? "bg-yellow-400/75" : "bg-foreground/10"}`} />
+                  <div key={s} className={`w-1.5 h-1.5 rounded-full ${s <= Math.round(avgRating) ? "bg-gold" : "bg-foreground/12"}`} />
                 ))}
               </div>
-              <span className="text-[12px] text-foreground/40">({product.reviews?.length})</span>
+              <span className="text-[11px] text-foreground/40">({product.reviews?.length})</span>
             </div>
           )}
-          <div className="flex items-baseline gap-2 pt-1 border-t border-foreground/[0.06]">
-            <span className="text-sm font-mono font-semibold text-green-600 dark:text-green-400">
+          <div className="flex items-baseline gap-2 pt-0.5">
+            <span className="text-[15px] font-bold text-foreground tracking-tight">
               {formatPrice(effectivePrice)}
             </span>
             {dealOn && product.originalPrice && (
-              <span className="text-[12px] text-foreground/38 line-through font-mono">
+              <span className="text-[11px] text-foreground/35 line-through">
                 {formatPrice(product.originalPrice)}
               </span>
             )}
@@ -133,22 +134,22 @@ export function ProductCard({ product }: ProductCardProps) {
       </Link>
 
       {/* Action buttons */}
-      <div className="px-3 pb-3 pt-2 flex gap-1.5 border-t border-foreground/[0.04]">
+      <div className="px-3.5 pb-3.5 pt-2 flex gap-2">
         <button
           onClick={handleBuyNow}
           disabled={outOfStock || buyingNow}
-          className="flex-1 flex items-center justify-center gap-1.5 py-2 bg-[#ee0000] hover:bg-red-700 text-white text-[11px] font-mono font-bold tracking-widest active:scale-[0.97] transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+          className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-full bg-gold text-black text-[12px] font-semibold hover:brightness-110 active:scale-[0.97] transition-all disabled:opacity-40 disabled:cursor-not-allowed"
         >
-          {buyingNow ? <Loader2 className="h-3 w-3 animate-spin" /> : <><Zap className="h-3 w-3" /> BUY NOW</>}
+          {buyingNow ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <><Zap className="h-3.5 w-3.5" /> Buy Now</>}
         </button>
         <button
           onClick={handleAddToCart}
           disabled={outOfStock}
-          className="flex items-center justify-center gap-1 px-3 py-2 border border-foreground/15 text-foreground/55 text-[11px] font-mono tracking-widest hover:border-foreground/35 hover:text-foreground/80 active:scale-[0.97] transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+          className="flex items-center justify-center gap-1 px-3.5 py-2.5 rounded-full glass-soft text-foreground/70 text-[12px] font-medium hover:text-foreground hover:border-gold/30 active:scale-[0.97] transition-all disabled:opacity-40 disabled:cursor-not-allowed"
           title="Add to Bag"
         >
-          <ShoppingCart className="h-3 w-3 flex-shrink-0" />
-          <span className="hidden sm:inline">BAG</span>
+          <ShoppingCart className="h-3.5 w-3.5 flex-shrink-0" />
+          <span className="hidden sm:inline">Bag</span>
         </button>
       </div>
     </div>
