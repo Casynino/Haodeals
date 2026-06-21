@@ -65,7 +65,12 @@ export default async function HomePage() {
   const heroProduct = featuredProducts[0] ?? dealProducts[0]
   const heroImage = heroProduct?.images?.[0]
 
-  // Promotional carousel slides
+  // Banner imagery (reuses image IDs already proven in the codebase)
+  const bannerShopping = "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=1200&h=600&fit=crop"
+  const bannerFashion  = "https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=1200&h=600&fit=crop"
+  const bannerAccess   = "https://images.unsplash.com/photo-1591561954557-26941169b49e?w=1200&h=600&fit=crop"
+
+  // Promotional carousel slides (image-first)
   const slides: PromoSlide[] = [
     {
       eyebrow: "New deals daily",
@@ -73,7 +78,7 @@ export default async function HomePage() {
       subtitle: "Tech, Fashion, Accessories, Shoes & Sports, with fast delivery across Tanzania.",
       cta: "Shop Now",
       href: "/products",
-      image: heroImage,
+      image: heroImage ?? bannerShopping,
       gradient: "bg-[radial-gradient(120%_120%_at_0%_0%,var(--gold-soft),transparent_55%)]",
     },
     {
@@ -82,7 +87,7 @@ export default async function HomePage() {
       subtitle: "Order this weekend and we'll deliver it free — fast, within the city.",
       cta: "Browse deals",
       href: "/products",
-      image: null,
+      image: bannerFashion,
       gradient: "bg-[radial-gradient(120%_120%_at_0%_0%,rgba(56,135,90,0.16),transparent_55%)]",
     },
     isLoggedIn
@@ -92,7 +97,7 @@ export default async function HomePage() {
           subtitle: "Handpicked for you — tap through to grab it before it's gone.",
           cta: "View deal",
           href: heroProduct ? `/products/${heroProduct.id}` : "/products",
-          image: heroImage,
+          image: heroImage ?? bannerAccess,
           gradient: "bg-[radial-gradient(120%_120%_at_0%_0%,rgba(120,90,210,0.16),transparent_55%)]",
         }
       : {
@@ -101,7 +106,7 @@ export default async function HomePage() {
           subtitle: "Sign up free to unlock exclusive deals and early access to flash sales.",
           cta: "Create free account",
           href: "/register",
-          image: null,
+          image: bannerAccess,
           gradient: "bg-[radial-gradient(120%_120%_at_0%_0%,rgba(120,90,210,0.16),transparent_55%)]",
         },
   ]
