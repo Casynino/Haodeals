@@ -349,3 +349,50 @@
 .gold-ring { box-shadow: 0 0 0 1px var(--gold-soft), 0 0 24px -6px var(--gold-soft); }
 /* Subtle ambient gold glow blob for backgrounds */
 .gold-glow { background: radial-gradient(closest-side, var(--gold-soft), transparent); }
+
+/* ─── Futuristic living background ───────────────────────────── */
+/* A slow-drifting gold aurora behind all content — keeps every page
+   feeling alive instead of flat. Sits above the base canvas, behind content. */
+@keyframes aurora-drift {
+  0%   { transform: translate3d(0, 0, 0) scale(1); }
+  50%  { transform: translate3d(2%, -2%, 0) scale(1.12); }
+  100% { transform: translate3d(0, 0, 0) scale(1); }
+}
+body::before {
+  content: "";
+  position: fixed;
+  inset: -12%;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(38% 38% at 12% 8%,  var(--gold-soft), transparent 70%),
+    radial-gradient(34% 34% at 88% 18%, var(--gold-soft), transparent 70%),
+    radial-gradient(44% 44% at 50% 96%, var(--gold-soft), transparent 70%);
+  filter: blur(36px);
+  animation: aurora-drift 20s ease-in-out infinite;
+}
+
+/* ─── Motion utilities ──────────────────────────────────────── */
+/* Ken Burns slow zoom for banner imagery */
+@keyframes kenburns { 0% { transform: scale(1); } 100% { transform: scale(1.12); } }
+.animate-kenburns { animation: kenburns 16s ease-in-out infinite alternate; }
+
+/* Shimmer skeleton loader */
+@keyframes shimmer { 100% { transform: translateX(100%); } }
+.skeleton { position: relative; overflow: hidden; background: var(--glass-bg); }
+.skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--color-foreground) 9%, transparent), transparent);
+  animation: shimmer 1.5s infinite;
+}
+
+/* Section reveal-on-enter (paired with motion-safe) */
+@keyframes rise-in { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+.animate-rise-in { animation: rise-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) both; }
+
+@media (prefers-reduced-motion: reduce) {
+  body::before, .animate-kenburns, .skeleton::after, .animate-rise-in { animation: none !important; }
+}
