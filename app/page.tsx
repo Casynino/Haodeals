@@ -2,12 +2,13 @@ import { prisma } from "@/lib/prisma"
 import { auth } from "@/auth"
 import { ProductCard } from "@/components/ProductCard"
 import {
-  ArrowRight, Search, Sparkles, Truck, Tag, ShieldCheck,
+  ArrowRight, Search, Truck, Tag, ShieldCheck,
   Smartphone, Shirt, Watch, Footprints, Dumbbell, Package,
 } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
 import type { Product } from "@/types"
+import { PromoCarousel, type PromoSlide } from "@/components/PromoCarousel"
 
 // Always fetch fresh data so new products appear immediately
 export const dynamic = "force-dynamic"
@@ -64,63 +65,53 @@ export default async function HomePage() {
   const heroProduct = featuredProducts[0] ?? dealProducts[0]
   const heroImage = heroProduct?.images?.[0]
 
+  // Promotional carousel slides
+  const slides: PromoSlide[] = [
+    {
+      eyebrow: "New deals daily",
+      title: "Up to 70% off — premium deals, delivered",
+      subtitle: "Tech, Fashion, Accessories, Shoes & Sports, with fast delivery across Tanzania.",
+      cta: "Shop Now",
+      href: "/products",
+      image: heroImage,
+      gradient: "bg-[radial-gradient(120%_120%_at_0%_0%,var(--gold-soft),transparent_55%)]",
+    },
+    {
+      eyebrow: "Weekend special",
+      title: "Free delivery in Dar es Salaam",
+      subtitle: "Order this weekend and we'll deliver it free — fast, within the city.",
+      cta: "Browse deals",
+      href: "/products",
+      image: null,
+      gradient: "bg-[radial-gradient(120%_120%_at_0%_0%,rgba(56,135,90,0.16),transparent_55%)]",
+    },
+    isLoggedIn
+      ? {
+          eyebrow: "Featured deal",
+          title: heroProduct?.name ?? "Today's featured deal",
+          subtitle: "Handpicked for you — tap through to grab it before it's gone.",
+          cta: "View deal",
+          href: heroProduct ? `/products/${heroProduct.id}` : "/products",
+          image: heroImage,
+          gradient: "bg-[radial-gradient(120%_120%_at_0%_0%,rgba(120,90,210,0.16),transparent_55%)]",
+        }
+      : {
+          eyebrow: "Limited time",
+          title: "Get 20% off your first order",
+          subtitle: "Sign up free to unlock exclusive deals and early access to flash sales.",
+          cta: "Create free account",
+          href: "/register",
+          image: null,
+          gradient: "bg-[radial-gradient(120%_120%_at_0%_0%,rgba(120,90,210,0.16),transparent_55%)]",
+        },
+  ]
+
   return (
     <div className="flex flex-col pb-10">
 
-      {/* ── Hero promo banner ─────────────────────────────────────── */}
+      {/* ── Promotional carousel ──────────────────────────────────── */}
       <section className="container mx-auto px-4 pt-5">
-        <div className="relative overflow-hidden rounded-3xl glass p-6 md:p-10">
-          <div className="gold-glow absolute -top-24 -right-16 w-[28rem] h-[28rem] rounded-full pointer-events-none" />
-          <div className="gold-glow absolute -bottom-20 -left-10 w-72 h-72 rounded-full pointer-events-none opacity-60" />
-          <div className="relative grid md:grid-cols-2 gap-8 items-center">
-            {/* Copy */}
-            <div>
-              <div className="inline-flex items-center gap-2 glass-soft rounded-full px-3.5 py-1.5 mb-5">
-                <Sparkles className="h-3.5 w-3.5 text-gold" />
-                <span className="text-[12px] text-foreground/70">New deals added daily · Tanzania 🇹🇿</span>
-              </div>
-              <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight leading-[1.05] mb-4">
-                Up to <span className="text-gold">70% off</span><br />
-                premium deals, delivered.
-              </h1>
-              <p className="text-sm md:text-base text-foreground/55 leading-relaxed mb-7 max-w-md">
-                Shop Tech, Fashion, Accessories, Shoes &amp; Sports — handpicked deals
-                with fast, reliable delivery across the country.
-              </p>
-              <div className="flex flex-wrap gap-3">
-                <Link href="/products">
-                  <button className="flex items-center gap-2 px-6 py-3 rounded-full bg-gold text-black text-sm font-semibold hover:brightness-110 active:scale-[0.98] transition-all shadow-[0_12px_34px_-12px_var(--gold-soft)]">
-                    Shop Now <ArrowRight className="h-4 w-4" />
-                  </button>
-                </Link>
-                {!isLoggedIn && (
-                  <Link href="/register">
-                    <button className="px-6 py-3 rounded-full glass text-foreground/80 text-sm font-medium hover:text-foreground hover:border-gold/30 transition-all">
-                      Join free
-                    </button>
-                  </Link>
-                )}
-              </div>
-            </div>
-
-            {/* Featured product visual */}
-            {heroProduct && heroImage && (
-              <Link href={`/products/${heroProduct.id}`} className="group relative block">
-                <div className="relative aspect-[4/3] rounded-3xl overflow-hidden glass-soft">
-                  <Image src={heroImage} alt={heroProduct.name} fill className="object-cover transition-transform duration-500 group-hover:scale-105" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                  <div className="absolute top-3 left-3 bg-gold text-black text-[11px] font-bold px-2.5 py-1 rounded-full">
-                    Featured deal
-                  </div>
-                  <div className="absolute bottom-3 left-3 right-3 glass rounded-2xl px-3.5 py-2.5">
-                    <p className="text-[13px] font-semibold text-foreground line-clamp-1">{heroProduct.name}</p>
-                    <p className="text-[11px] text-gold mt-0.5">Tap to view →</p>
-                  </div>
-                </div>
-              </Link>
-            )}
-          </div>
-        </div>
+        <PromoCarousel slides={slides} />
       </section>
 
       {/* ── Search shortcut ───────────────────────────────────────── */}
