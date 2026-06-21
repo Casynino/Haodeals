@@ -1,12 +1,13 @@
 import { prisma } from "@/lib/prisma"
 import { auth } from "@/auth"
 import { ProductCard } from "@/components/ProductCard"
-import { ArrowRight } from "lucide-react"
+import {
+  ArrowRight, Search, Sparkles, Truck, Tag, ShieldCheck,
+  Smartphone, Shirt, Watch, Footprints, Dumbbell, Package,
+} from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
 import type { Product } from "@/types"
-import { SplineScene } from "@/components/ui/splite"
-import { Spotlight } from "@/components/ui/spotlight"
 
 // Always fetch fresh data so new products appear immediately
 export const dynamic = "force-dynamic"
@@ -44,6 +45,14 @@ const categoryImages: Record<string, string> = {
   sports:       "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=600&h=600&fit=crop",
 }
 
+const categoryIcons: Record<string, typeof Package> = {
+  "tech-deals": Smartphone,
+  fashion:      Shirt,
+  accessories:  Watch,
+  shoes:        Footprints,
+  sports:       Dumbbell,
+}
+
 export default async function HomePage() {
   const [session, featuredProducts, categories, dealProducts] = await Promise.all([
     auth(),
@@ -52,221 +61,259 @@ export default async function HomePage() {
     getDealsProducts(),
   ])
   const isLoggedIn = !!session?.user
+  const heroProduct = featuredProducts[0] ?? dealProducts[0]
+  const heroImage = heroProduct?.images?.[0]
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col pb-10">
 
-      {/* ── Hero: Spline scene + glassy gold content ── */}
-      <div className="relative h-screen bg-background overflow-hidden flex">
-
-        <Spotlight className="-top-40 left-0 md:left-60 md:-top-20" fill="white" />
-
-        {/* Ambient gold glow blobs */}
-        <div className="gold-glow absolute -top-24 -left-24 w-[34rem] h-[34rem] rounded-full pointer-events-none z-0 opacity-70" />
-        <div className="gold-glow absolute bottom-0 left-1/3 w-[26rem] h-[26rem] rounded-full pointer-events-none z-0 opacity-50" />
-
-        {/* Left: text content */}
-        <div className="relative z-20 w-full md:w-1/2 flex flex-col justify-center px-6 md:px-14 lg:px-20">
-          <div className="max-w-lg">
-
-            {/* Eyebrow pill */}
-            <div className="inline-flex items-center gap-2 glass rounded-full px-3.5 py-1.5 mb-6">
-              <span className="text-gold text-sm leading-none">✦</span>
-              <span className="text-[12px] text-foreground/70 tracking-wide">HaoDeals · Tanzania 🇹🇿</span>
-            </div>
-
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-foreground tracking-tight leading-[1.05] mb-5">
-              Premium deals,<br />
-              <span className="text-gold">delivered</span> to your door.
-            </h1>
-
-            <p className="text-sm md:text-base text-foreground/60 leading-relaxed mb-8 max-w-md">
-              Up to 70% off across Tech, Fashion, Accessories, Shoes &amp; Sports — with fast,
-              reliable delivery anywhere in Tanzania.
-            </p>
-
-            {/* Stats */}
-            <div className="flex gap-3 mb-8">
-              {[["20+", "Products"], ["5", "Categories"], ["70%", "Max off"]].map(([val, label]) => (
-                <div key={label} className="glass rounded-2xl px-4 py-3 flex-1">
-                  <div className="text-xl text-foreground font-bold tracking-tight">{val}</div>
-                  <div className="text-[11px] text-foreground/45 mt-0.5">{label}</div>
-                </div>
-              ))}
-            </div>
-
-            {/* CTAs */}
-            <div className="flex flex-wrap gap-3">
-              <Link href="/products">
-                <button className="flex items-center gap-2 px-6 py-3 rounded-full bg-gold text-black text-sm font-semibold hover:brightness-110 active:scale-[0.98] transition-all shadow-[0_10px_30px_-10px_var(--gold-soft)]">
-                  Shop Now <ArrowRight className="h-4 w-4" />
-                </button>
-              </Link>
-              {!isLoggedIn && (
-                <Link href="/register">
-                  <button className="px-6 py-3 rounded-full glass text-foreground/80 text-sm font-medium hover:text-foreground hover:border-gold/30 transition-all">
-                    Create Free Account
+      {/* ── Hero promo banner ─────────────────────────────────────── */}
+      <section className="container mx-auto px-4 pt-5">
+        <div className="relative overflow-hidden rounded-3xl glass p-6 md:p-10">
+          <div className="gold-glow absolute -top-24 -right-16 w-[28rem] h-[28rem] rounded-full pointer-events-none" />
+          <div className="gold-glow absolute -bottom-20 -left-10 w-72 h-72 rounded-full pointer-events-none opacity-60" />
+          <div className="relative grid md:grid-cols-2 gap-8 items-center">
+            {/* Copy */}
+            <div>
+              <div className="inline-flex items-center gap-2 glass-soft rounded-full px-3.5 py-1.5 mb-5">
+                <Sparkles className="h-3.5 w-3.5 text-gold" />
+                <span className="text-[12px] text-foreground/70">New deals added daily · Tanzania 🇹🇿</span>
+              </div>
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight leading-[1.05] mb-4">
+                Up to <span className="text-gold">70% off</span><br />
+                premium deals, delivered.
+              </h1>
+              <p className="text-sm md:text-base text-foreground/55 leading-relaxed mb-7 max-w-md">
+                Shop Tech, Fashion, Accessories, Shoes &amp; Sports — handpicked deals
+                with fast, reliable delivery across the country.
+              </p>
+              <div className="flex flex-wrap gap-3">
+                <Link href="/products">
+                  <button className="flex items-center gap-2 px-6 py-3 rounded-full bg-gold text-black text-sm font-semibold hover:brightness-110 active:scale-[0.98] transition-all shadow-[0_12px_34px_-12px_var(--gold-soft)]">
+                    Shop Now <ArrowRight className="h-4 w-4" />
                   </button>
                 </Link>
-              )}
-            </div>
-          </div>
-        </div>
-
-        {/* Spline scene — right half on desktop, full bg on mobile */}
-        <div className="absolute right-0 top-0 w-full md:w-1/2 h-full z-0">
-          <SplineScene
-            scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
-            className="w-full h-full"
-          />
-          <div className="md:hidden absolute inset-0 bg-gradient-to-r from-background via-background/75 to-transparent pointer-events-none" />
-        </div>
-
-        {/* Bottom trust bar */}
-        <div className="absolute bottom-0 left-0 right-0 z-20">
-          <div className="container mx-auto px-4 pb-4">
-            <div className="glass rounded-2xl px-4 py-2.5 flex items-center justify-between">
-              <div className="flex items-center gap-3 text-[12px] text-foreground/55">
-                <span>Free shipping over TSh 100K</span>
-                <span className="text-foreground/15">·</span>
-                <span className="hidden sm:inline">30-day returns</span>
-                <span className="hidden sm:inline text-foreground/15">·</span>
-                <span className="hidden sm:inline">Secure checkout</span>
-              </div>
-              <div className="flex items-center gap-2 text-[12px] text-foreground/55">
-                <span className="w-1.5 h-1.5 bg-gold rounded-full animate-pulse" />
-                Live deals
+                {!isLoggedIn && (
+                  <Link href="/register">
+                    <button className="px-6 py-3 rounded-full glass text-foreground/80 text-sm font-medium hover:text-foreground hover:border-gold/30 transition-all">
+                      Join free
+                    </button>
+                  </Link>
+                )}
               </div>
             </div>
-          </div>
-        </div>
-      </div>
 
-      {/* ── Categories ── */}
-      {categories.length > 0 && (
-        <section className="py-12">
-          <div className="container mx-auto px-4">
-            <div className="flex items-end justify-between mb-6">
-              <div>
-                <h2 className="text-xl font-bold tracking-tight text-foreground">Shop by category</h2>
-                <p className="text-[13px] text-foreground/45 mt-1">Find exactly what you&apos;re after</p>
-              </div>
-              <Link href="/products" className="flex items-center gap-1 text-[13px] text-gold hover:brightness-110 transition-all">
-                View all <ArrowRight className="h-3.5 w-3.5" />
-              </Link>
-            </div>
-            <div className="grid grid-cols-3 md:grid-cols-6 gap-3">
-              {categories.map((cat) => (
-                <Link
-                  key={cat.id}
-                  href={`/products?category=${cat.slug}`}
-                  className="group relative aspect-square overflow-hidden rounded-2xl glass hover:border-gold/30 transition-all hover:-translate-y-1"
-                >
-                  <Image
-                    src={cat.image || categoryImages[cat.slug] || "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=400&h=400&fit=crop"}
-                    alt={cat.name}
-                    fill
-                    className="object-cover opacity-70 group-hover:opacity-90 group-hover:scale-105 transition-all duration-500"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent" />
-                  <div className="absolute bottom-0 left-0 right-0 p-3">
-                    <p className="text-[13px] text-white font-semibold tracking-tight">{cat.name}</p>
-                    <p className="text-[11px] text-white/55 mt-0.5">{cat._count.products} items</p>
+            {/* Featured product visual */}
+            {heroProduct && heroImage && (
+              <Link href={`/products/${heroProduct.id}`} className="group relative block">
+                <div className="relative aspect-[4/3] rounded-3xl overflow-hidden glass-soft">
+                  <Image src={heroImage} alt={heroProduct.name} fill className="object-cover transition-transform duration-500 group-hover:scale-105" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                  <div className="absolute top-3 left-3 bg-gold text-black text-[11px] font-bold px-2.5 py-1 rounded-full">
+                    Featured deal
                   </div>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* ── Flash Deals ── */}
-      {dealProducts.length > 0 && (
-        <section className="py-12">
-          <div className="container mx-auto px-4">
-            <div className="flex items-end justify-between mb-6">
-              <div>
-                <div className="flex items-center gap-2.5">
-                  <h2 className="text-xl font-bold tracking-tight text-foreground">Flash deals</h2>
-                  <span className="inline-flex items-center gap-1.5 text-[11px] text-gold glass rounded-full px-2.5 py-1">
-                    <span className="w-1.5 h-1.5 bg-gold rounded-full animate-pulse" /> Live
-                  </span>
+                  <div className="absolute bottom-3 left-3 right-3 glass rounded-2xl px-3.5 py-2.5">
+                    <p className="text-[13px] font-semibold text-foreground line-clamp-1">{heroProduct.name}</p>
+                    <p className="text-[11px] text-gold mt-0.5">Tap to view →</p>
+                  </div>
                 </div>
-                <p className="text-[13px] text-foreground/45 mt-1">Fresh drops, limited time</p>
-              </div>
-              <Link href="/products" className="flex items-center gap-1 text-[13px] text-gold hover:brightness-110 transition-all">
-                All deals <ArrowRight className="h-3.5 w-3.5" />
               </Link>
-            </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-              {dealProducts.map((product) => (
-                <ProductCard key={product.id} product={product as unknown as Product} />
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* ── Featured ── */}
-      {featuredProducts.length > 0 && (
-        <section className="py-12">
-          <div className="container mx-auto px-4">
-            <div className="flex items-end justify-between mb-6">
-              <div>
-                <h2 className="text-xl font-bold tracking-tight text-foreground">Featured picks</h2>
-                <p className="text-[13px] text-foreground/45 mt-1">Hand-selected favourites</p>
-              </div>
-              <Link href="/products?featured=true" className="flex items-center gap-1 text-[13px] text-gold hover:brightness-110 transition-all">
-                View all <ArrowRight className="h-3.5 w-3.5" />
-              </Link>
-            </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-              {featuredProducts.map((product) => (
-                <ProductCard key={product.id} product={product as unknown as Product} />
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* ── CTA Block ── */}
-      <section className="py-16">
-        <div className="container mx-auto px-4 max-w-3xl">
-          <div className="relative glass rounded-3xl p-8 md:p-12 overflow-hidden text-center">
-            <div className="gold-glow absolute -top-16 left-1/2 -translate-x-1/2 w-80 h-80 rounded-full pointer-events-none" />
-            {isLoggedIn ? (
-              <div className="relative space-y-4">
-                <p className="text-[12px] text-gold tracking-[0.2em] uppercase">Today&apos;s Deals</p>
-                <h2 className="text-2xl md:text-4xl font-bold tracking-tight">
-                  Welcome back — your deals are waiting
-                </h2>
-                <p className="text-sm text-foreground/55 leading-relaxed max-w-md mx-auto">
-                  New deals added daily across Tech, Fashion, Accessories, Shoes &amp; Sports.
-                </p>
-                <Link href="/products" className="inline-block pt-2">
-                  <button className="flex items-center gap-2 px-7 py-3 rounded-full bg-gold text-black text-sm font-semibold hover:brightness-110 active:scale-[0.98] transition-all mx-auto">
-                    View All Deals <ArrowRight className="h-4 w-4" />
-                  </button>
-                </Link>
-              </div>
-            ) : (
-              <div className="relative space-y-4">
-                <p className="text-[12px] text-gold tracking-[0.2em] uppercase">Limited Time Offer</p>
-                <h2 className="text-2xl md:text-4xl font-bold tracking-tight">
-                  Get 20% off your first order
-                </h2>
-                <p className="text-sm text-foreground/55 leading-relaxed max-w-md mx-auto">
-                  Sign up today and unlock exclusive deals, early access to flash sales, and personalised recommendations.
-                </p>
-                <Link href="/register" className="inline-block pt-2">
-                  <button className="px-7 py-3 rounded-full bg-gold text-black text-sm font-semibold hover:brightness-110 active:scale-[0.98] transition-all mx-auto">
-                    Create Free Account
-                  </button>
-                </Link>
-                <p className="text-[12px] text-foreground/30">No spam, ever.</p>
-              </div>
             )}
           </div>
+        </div>
+      </section>
+
+      {/* ── Search shortcut ───────────────────────────────────────── */}
+      <section className="container mx-auto px-4 pt-4">
+        <Link
+          href="/products"
+          className="flex items-center gap-3 glass rounded-2xl px-4 py-3.5 text-foreground/45 hover:border-gold/30 transition-all"
+        >
+          <Search className="h-4 w-4 text-gold" />
+          <span className="text-sm">Search products, categories and deals…</span>
+        </Link>
+      </section>
+
+      {/* ── Trust strip ───────────────────────────────────────────── */}
+      <section className="container mx-auto px-4 pt-3">
+        <div className="grid grid-cols-3 gap-3">
+          {[
+            { Icon: Truck,       label: "Fast delivery",   sub: "Across Tanzania" },
+            { Icon: Tag,         label: "Up to 70% off",   sub: "Daily deals" },
+            { Icon: ShieldCheck, label: "Secure checkout", sub: "Shop with trust" },
+          ].map(({ Icon, label, sub }) => (
+            <div key={label} className="glass rounded-2xl px-3.5 py-3 flex items-center gap-3">
+              <div className="w-9 h-9 rounded-xl bg-gold-soft flex items-center justify-center flex-shrink-0">
+                <Icon className="h-4 w-4 text-gold" />
+              </div>
+              <div className="min-w-0">
+                <p className="text-[12px] font-semibold text-foreground/85 truncate">{label}</p>
+                <p className="text-[11px] text-foreground/40 truncate">{sub}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ── Shop by category (quick nav) ──────────────────────────── */}
+      {categories.length > 0 && (
+        <section className="container mx-auto px-4 pt-9">
+          <h2 className="text-xl font-bold tracking-tight text-foreground mb-4">Shop by category</h2>
+          <div className="flex gap-3 overflow-x-auto no-scrollbar pb-1">
+            {categories.map((cat) => {
+              const Icon = categoryIcons[cat.slug] ?? Package
+              return (
+                <Link key={cat.id} href={`/products?category=${cat.slug}`} className="group flex flex-col items-center gap-2 flex-shrink-0 w-[4.5rem]">
+                  <div className="w-16 h-16 rounded-2xl glass flex items-center justify-center group-hover:border-gold/40 group-hover:-translate-y-0.5 transition-all">
+                    <Icon className="h-6 w-6 text-gold" />
+                  </div>
+                  <span className="text-[11px] text-foreground/60 text-center leading-tight line-clamp-2">{cat.name}</span>
+                </Link>
+              )
+            })}
+          </div>
+        </section>
+      )}
+
+      {/* ── Flash deals ───────────────────────────────────────────── */}
+      {dealProducts.length > 0 && (
+        <section className="container mx-auto px-4 pt-9">
+          <div className="flex items-end justify-between mb-5">
+            <div>
+              <div className="flex items-center gap-2.5">
+                <h2 className="text-xl font-bold tracking-tight text-foreground">Flash deals</h2>
+                <span className="inline-flex items-center gap-1.5 text-[11px] text-gold glass rounded-full px-2.5 py-1">
+                  <span className="w-1.5 h-1.5 bg-gold rounded-full animate-pulse" /> Live
+                </span>
+              </div>
+              <p className="text-[13px] text-foreground/45 mt-1">Fresh drops, limited time</p>
+            </div>
+            <Link href="/products" className="flex items-center gap-1 text-[13px] text-gold hover:brightness-110 transition-all">
+              All deals <ArrowRight className="h-3.5 w-3.5" />
+            </Link>
+          </div>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+            {dealProducts.slice(0, 8).map((product) => (
+              <ProductCard key={product.id} product={product as unknown as Product} />
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* ── Mid-page promo banner ─────────────────────────────────── */}
+      <section className="container mx-auto px-4 pt-10">
+        <div
+          className="relative overflow-hidden rounded-3xl p-7 md:p-9"
+          style={{ background: "linear-gradient(125deg, rgba(212,175,55,0.20) 0%, rgba(154,118,17,0.10) 35%, rgba(0,0,0,0.35) 100%)" }}
+        >
+          <div className="gold-glow absolute -top-16 right-10 w-72 h-72 rounded-full pointer-events-none" />
+          <div className="relative flex flex-col sm:flex-row sm:items-center sm:justify-between gap-5">
+            <div>
+              <p className="text-[12px] text-gold tracking-[0.2em] uppercase mb-2">Weekend special</p>
+              <h3 className="text-2xl md:text-3xl font-bold tracking-tight text-foreground">
+                Free delivery in Dar es Salaam
+              </h3>
+              <p className="text-sm text-foreground/55 mt-2 max-w-md">
+                Order this weekend and we&apos;ll deliver it free — fast, within the city.
+              </p>
+            </div>
+            <Link href="/products" className="flex-shrink-0">
+              <button className="flex items-center gap-2 px-6 py-3 rounded-full bg-gold text-black text-sm font-semibold hover:brightness-110 active:scale-[0.98] transition-all">
+                Browse deals <ArrowRight className="h-4 w-4" />
+              </button>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Collections (visual category showcase) ────────────────── */}
+      {categories.length > 0 && (
+        <section className="container mx-auto px-4 pt-10">
+          <div className="flex items-end justify-between mb-5">
+            <div>
+              <h2 className="text-xl font-bold tracking-tight text-foreground">Collections</h2>
+              <p className="text-[13px] text-foreground/45 mt-1">Browse curated category edits</p>
+            </div>
+            <Link href="/products" className="flex items-center gap-1 text-[13px] text-gold hover:brightness-110 transition-all">
+              View all <ArrowRight className="h-3.5 w-3.5" />
+            </Link>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            {categories.map((cat, i) => (
+              <Link
+                key={cat.id}
+                href={`/products?category=${cat.slug}`}
+                className={`group relative overflow-hidden rounded-3xl glass hover:border-gold/30 hover:-translate-y-1 transition-all ${i === 0 ? "col-span-2 md:col-span-1 aspect-[2/1] md:aspect-[4/5]" : "aspect-[4/5]"}`}
+              >
+                <Image
+                  src={cat.image || categoryImages[cat.slug] || "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=600&h=600&fit=crop"}
+                  alt={cat.name}
+                  fill
+                  className="object-cover opacity-75 group-hover:opacity-95 group-hover:scale-105 transition-all duration-500"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/25 to-transparent" />
+                <div className="absolute bottom-0 left-0 right-0 p-4">
+                  <p className="text-[15px] text-white font-semibold tracking-tight">{cat.name}</p>
+                  <p className="text-[12px] text-gold mt-0.5">{cat._count.products} items →</p>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* ── Featured picks ────────────────────────────────────────── */}
+      {featuredProducts.length > 0 && (
+        <section className="container mx-auto px-4 pt-10">
+          <div className="flex items-end justify-between mb-5">
+            <div>
+              <h2 className="text-xl font-bold tracking-tight text-foreground">Featured picks</h2>
+              <p className="text-[13px] text-foreground/45 mt-1">Hand-selected favourites</p>
+            </div>
+            <Link href="/products?featured=true" className="flex items-center gap-1 text-[13px] text-gold hover:brightness-110 transition-all">
+              View all <ArrowRight className="h-3.5 w-3.5" />
+            </Link>
+          </div>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+            {featuredProducts.map((product) => (
+              <ProductCard key={product.id} product={product as unknown as Product} />
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* ── Closing CTA ───────────────────────────────────────────── */}
+      <section className="container mx-auto px-4 pt-12">
+        <div className="relative glass rounded-3xl p-8 md:p-12 overflow-hidden text-center max-w-3xl mx-auto">
+          <div className="gold-glow absolute -top-16 left-1/2 -translate-x-1/2 w-80 h-80 rounded-full pointer-events-none" />
+          {isLoggedIn ? (
+            <div className="relative space-y-4">
+              <p className="text-[12px] text-gold tracking-[0.2em] uppercase">Today&apos;s Deals</p>
+              <h2 className="text-2xl md:text-4xl font-bold tracking-tight">Welcome back — your deals are waiting</h2>
+              <p className="text-sm text-foreground/55 leading-relaxed max-w-md mx-auto">
+                New deals added daily across Tech, Fashion, Accessories, Shoes &amp; Sports.
+              </p>
+              <Link href="/products" className="inline-block pt-2">
+                <button className="flex items-center gap-2 px-7 py-3 rounded-full bg-gold text-black text-sm font-semibold hover:brightness-110 active:scale-[0.98] transition-all mx-auto">
+                  View All Deals <ArrowRight className="h-4 w-4" />
+                </button>
+              </Link>
+            </div>
+          ) : (
+            <div className="relative space-y-4">
+              <p className="text-[12px] text-gold tracking-[0.2em] uppercase">Limited Time Offer</p>
+              <h2 className="text-2xl md:text-4xl font-bold tracking-tight">Get 20% off your first order</h2>
+              <p className="text-sm text-foreground/55 leading-relaxed max-w-md mx-auto">
+                Sign up today and unlock exclusive deals, early access to flash sales, and personalised recommendations.
+              </p>
+              <Link href="/register" className="inline-block pt-2">
+                <button className="px-7 py-3 rounded-full bg-gold text-black text-sm font-semibold hover:brightness-110 active:scale-[0.98] transition-all mx-auto">
+                  Create Free Account
+                </button>
+              </Link>
+              <p className="text-[12px] text-foreground/30">No spam, ever.</p>
+            </div>
+          )}
         </div>
       </section>
 
