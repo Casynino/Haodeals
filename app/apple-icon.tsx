@@ -26,7 +26,7 @@ export default function AppleIcon() {
             lineHeight: 1,
           }}
         >
-          hão
+          hǎo
         </span>
         <span
           style={{

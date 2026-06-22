@@ -27,7 +27,7 @@ export default function Icon() {
             lineHeight: 1,
           }}
         >
-          hão
+          hǎo
         </span>
         <span
           style={{
