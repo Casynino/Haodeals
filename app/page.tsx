@@ -65,12 +65,13 @@ export default async function HomePage() {
   const heroProduct = featuredProducts[0] ?? dealProducts[0]
   const heroImage = heroProduct?.images?.[0]
 
-  // Banner imagery (reuses image IDs already proven in the codebase)
-  const bannerShopping = "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=1200&h=600&fit=crop"
-  const bannerFashion  = "https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=1200&h=600&fit=crop"
-  const bannerAccess   = "https://images.unsplash.com/photo-1591561954557-26941169b49e?w=1200&h=600&fit=crop"
+  // Banner imagery — people / lifestyle shots (verified live).
+  // To use a video instead, drop an .mp4 in /public/banners and set `video: "/banners/clip.mp4"` on a slide.
+  const bannerShopper  = "https://images.unsplash.com/photo-1483985988355-763728e1935b?w=1280&h=620&fit=crop"  // woman with shopping bags
+  const bannerDelivery = "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=1280&h=620&fit=crop"     // delivery / parcels
+  const bannerCrew     = "https://images.unsplash.com/photo-1607083206869-4c7672e72a8a?w=1280&h=620&fit=crop"  // friends shopping
 
-  // Promotional carousel slides (image-first)
+  // Promotional carousel slides (image-first, people/lifestyle)
   const slides: PromoSlide[] = [
     {
       eyebrow: "New deals daily",
@@ -78,7 +79,7 @@ export default async function HomePage() {
       subtitle: "Tech, Fashion, Accessories, Shoes & Sports, with fast delivery across Tanzania.",
       cta: "Shop Now",
       href: "/products",
-      image: heroImage ?? bannerShopping,
+      image: bannerShopper,
       gradient: "bg-[radial-gradient(120%_120%_at_0%_0%,var(--gold-soft),transparent_55%)]",
     },
     {
@@ -87,7 +88,7 @@ export default async function HomePage() {
       subtitle: "Order this weekend and we'll deliver it free — fast, within the city.",
       cta: "Browse deals",
       href: "/products",
-      image: bannerFashion,
+      image: bannerDelivery,
       gradient: "bg-[radial-gradient(120%_120%_at_0%_0%,rgba(56,135,90,0.16),transparent_55%)]",
     },
     isLoggedIn
@@ -97,7 +98,7 @@ export default async function HomePage() {
           subtitle: "Handpicked for you — tap through to grab it before it's gone.",
           cta: "View deal",
           href: heroProduct ? `/products/${heroProduct.id}` : "/products",
-          image: heroImage ?? bannerAccess,
+          image: bannerCrew,
           gradient: "bg-[radial-gradient(120%_120%_at_0%_0%,rgba(120,90,210,0.16),transparent_55%)]",
         }
       : {
@@ -106,7 +107,7 @@ export default async function HomePage() {
           subtitle: "Sign up free to unlock exclusive deals and early access to flash sales.",
           cta: "Create free account",
           href: "/register",
-          image: bannerAccess,
+          image: bannerCrew,
           gradient: "bg-[radial-gradient(120%_120%_at_0%_0%,rgba(120,90,210,0.16),transparent_55%)]",
         },
   ]
