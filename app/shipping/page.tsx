@@ -5,7 +5,7 @@ import {
   Phone, Bike, Wind, Bus, Info, Globe2, Shield,
 } from "lucide-react"
 
-export const metadata = { title: "Shipping & Delivery Policy — HaoDeals" }
+export const metadata = { title: "Shipping & Delivery Policy — Hǎodeals" }
 
 export default function ShippingPage() {
   return (
@@ -25,7 +25,7 @@ export default function ShippingPage() {
               Shipping &amp; Delivery<br className="hidden sm:block" /> Policy
             </h1>
             <p className="text-sm text-foreground/50 leading-relaxed max-w-lg">
-              HaoDeals operates within <strong className="text-foreground/70">Tanzania only</strong>. We currently offer
+              Hǎodeals operates within <strong className="text-foreground/70">Tanzania only</strong>. We currently offer
               weekend free delivery in Dar es Salaam and customer-arranged express delivery throughout the country.
             </p>
 
@@ -94,7 +94,7 @@ export default function ShippingPage() {
               <h3 className="text-sm font-bold text-foreground/85 mb-2">Express Delivery</h3>
               <p className="text-[12px] text-foreground/48 leading-relaxed flex-1">
                 Available <strong className="text-foreground/65">throughout Tanzania</strong>. After your order is
-                confirmed, HaoDeals coordinates with third-party delivery partners — Bolt, boda boda, bus services, or
+                confirmed, Hǎodeals coordinates with third-party delivery partners — Bolt, boda boda, bus services, or
                 air cargo — based on your location. You will be contacted about the delivery cost and arrangements before
                 the product is dispatched.
               </p>
@@ -136,7 +136,7 @@ export default function ShippingPage() {
             <p className="text-[11px] tracking-[0.3em] text-foreground/30 uppercase">Express Delivery Partners</p>
           </div>
           <p className="text-[13px] text-foreground/50 mb-6 leading-relaxed max-w-2xl">
-            For express orders, HaoDeals works with a range of third-party delivery providers. The right provider is
+            For express orders, Hǎodeals works with a range of third-party delivery providers. The right provider is
             selected based on your location, product size, urgency, and availability.
           </p>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
@@ -157,7 +157,7 @@ export default function ShippingPage() {
           </div>
           <p className="text-[11px] text-foreground/30 mt-5 leading-relaxed">
             * Delivery cost is determined by the provider based on distance, product weight/size, and current
-            availability. HaoDeals will contact you with the delivery quote before dispatching your order.
+            availability. Hǎodeals will contact you with the delivery quote before dispatching your order.
           </p>
         </section>
 
@@ -174,17 +174,17 @@ export default function ShippingPage() {
               {
                 step: "01", icon: CreditCard, color: "text-violet-400", bg: "bg-violet-500/12 border-violet-500/18",
                 title: "Customer Places Order",
-                desc: "Select your product, add to bag or use Buy Now, complete checkout, and pay from your HaoDeals wallet. Your order is instantly recorded.",
+                desc: "Select your product, add to bag or use Buy Now, complete checkout, and pay from your Hǎodeals wallet. Your order is instantly recorded.",
               },
               {
                 step: "02", icon: CheckCircle2, color: "text-blue-400", bg: "bg-blue-500/12 border-blue-500/18",
-                title: "HaoDeals Confirms Order",
+                title: "Hǎodeals Confirms Order",
                 desc: "Our team reviews your order and moves it to the packaging stage. You receive an in-app notification confirming your order has been accepted.",
               },
               {
                 step: "03", icon: Package, color: "text-amber-400", bg: "bg-amber-500/12 border-amber-500/18",
                 title: "Order is Packaged",
-                desc: "We prepare and securely package your product immediately. HaoDeals does not intentionally hold confirmed orders — dispatch begins right away.",
+                desc: "We prepare and securely package your product immediately. Hǎodeals does not intentionally hold confirmed orders — dispatch begins right away.",
               },
               {
                 step: "04", icon: Phone, color: "text-foreground/65", bg: "bg-white/8 border-white/12",
@@ -236,10 +236,10 @@ export default function ShippingPage() {
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
             {[
-              { icon: Globe2,       color: "text-foreground/45", title: "Tanzania Only",               desc: "HaoDeals does not offer international shipping. All deliveries are within Tanzania." },
+              { icon: Globe2,       color: "text-foreground/45", title: "Tanzania Only",               desc: "Hǎodeals does not offer international shipping. All deliveries are within Tanzania." },
               { icon: Clock,        color: "text-blue-400",      title: "10–30 Minutes (Dar es Salaam)", desc: "For express orders in Dar es Salaam, you can generally expect delivery within 10–30 minutes of dispatch confirmation." },
               { icon: Phone,        color: "text-emerald-400",   title: "We Contact You",              desc: "For paid deliveries, our team will reach out to confirm the delivery cost and arrangement before dispatching." },
-              { icon: Truck,        color: "text-amber-400",     title: "Immediate Dispatch",          desc: "HaoDeals aims to dispatch orders right away. We do not intentionally hold confirmed orders in the warehouse." },
+              { icon: Truck,        color: "text-amber-400",     title: "Immediate Dispatch",          desc: "Hǎodeals aims to dispatch orders right away. We do not intentionally hold confirmed orders in the warehouse." },
               { icon: AlertTriangle,color: "text-amber-400",     title: "Variable Timelines",          desc: "Delivery times may vary due to weather, transportation availability, public holidays, or other unforeseen circumstances." },
               { icon: Shield,       color: "text-violet-400",    title: "No Hidden Charges",           desc: "Any delivery costs are communicated to you before the product is dispatched. You will never be surprised." },
             ].map(({ icon: Icon, color, title, desc }) => (
@@ -266,7 +266,7 @@ export default function ShippingPage() {
             {
               type: "warning",
               title: "Delivery costs are not displayed on the platform",
-              text: "For express delivery, costs are not pre-set or shown at checkout. After you place your order, the HaoDeals team will contact you with the delivery cost based on your location, product size, and available providers.",
+              text: "For express delivery, costs are not pre-set or shown at checkout. After you place your order, the Hǎodeals team will contact you with the delivery cost based on your location, product size, and available providers.",
             },
             {
               type: "info",
@@ -275,7 +275,7 @@ export default function ShippingPage() {
             },
             {
               type: "info",
-              title: "HaoDeals dispatches orders quickly",
+              title: "Hǎodeals dispatches orders quickly",
               text: "We aim to dispatch all confirmed orders immediately. However, delivery timelines depend on the selected provider, your region, and external factors beyond our control.",
             },
           ].map(({ type, title, text }, i) => {

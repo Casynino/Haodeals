@@ -115,7 +115,7 @@ export async function POST(request: Request) {
   })
 
   try {
-    // Funds already sit in HaoDeals treasury (collected on deposit).
+    // Funds already sit in Hǎodeals treasury (collected on deposit).
     // The order itself serves as the debit against the user's DB balance.
 
     // Mark discount code as used

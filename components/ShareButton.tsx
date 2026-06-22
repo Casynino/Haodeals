@@ -92,7 +92,7 @@ export function ShareButton({ productName, productPath }: ShareButtonProps) {
         const shareText = isProduct
           ? productTextNoUrl(productName!)
           : WEBSITE_TEXT
-        await navigator.share({ title: productName ?? "HaoDeals", text: shareText, url })
+        await navigator.share({ title: productName ?? "Hǎodeals", text: shareText, url })
         toast.success("Shared! 🎉 Points coming soon", {
           description: "Earn rewards when the system launches",
         })
@@ -189,7 +189,7 @@ export function ShareButton({ productName, productPath }: ShareButtonProps) {
                       <p className="text-[10px] tracking-[0.2em] text-violet-400/58">SHARE &amp; EARN</p>
                     </div>
                     <p className="text-xs font-semibold text-foreground/78 max-w-[220px] truncate">
-                      {productName ?? "HaoDeals"}
+                      {productName ?? "Hǎodeals"}
                     </p>
                     <p className="text-[10px] text-foreground/28 mt-0.5">
                       Earn rewards every time you share

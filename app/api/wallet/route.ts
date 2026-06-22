@@ -13,9 +13,9 @@ export async function GET() {
   const userId = session.user.id as string
   const balanceTzs = await computeBalance(userId)
 
-  // If this account's own wallet is also the HaoDeals treasury, surface the
+  // If this account's own wallet is also the Hǎodeals treasury, surface the
   // pooled treasury balance alongside their personal balance. The treasury
-  // wallet stores our HaoDeals user id as its nTZS externalId.
+  // wallet stores our Hǎodeals user id as its nTZS externalId.
   let isTreasury = false
   let treasuryBalanceTzs: number | null = null
   const role = (session.user as { role?: string }).role
@@ -40,7 +40,7 @@ export async function GET() {
   })
 }
 
-// Deposit: mints nTZS tokens directly into the HaoDeals treasury wallet
+// Deposit: mints nTZS tokens directly into the Hǎodeals treasury wallet
 // (NTZS_TREASURY_USER_ID). collectToTreasury MUST stay false — when true,
 // nTZS routes the minted funds to the account's collection wallet instead of
 // the userId's wallet, so the treasury balance we read would never move.

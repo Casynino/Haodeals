@@ -31,7 +31,7 @@ function wrapHtml(preview: string, body: string, unsubscribeUrl?: string) {
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
   <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-  <title>HaoDeals</title>
+  <title>Hǎodeals</title>
   <style>
     body { margin:0; padding:0; background:#f4f4f4; }
     a { color: #ee0000; }
@@ -62,7 +62,7 @@ function wrapHtml(preview: string, body: string, unsubscribeUrl?: string) {
         <tr>
           <td style="background:#f9f9f9;border-top:1px solid #e5e5e5;padding:16px 32px;">
             <p style="font-family:Arial,sans-serif;font-size:11px;color:#999;margin:0;line-height:1.6;">
-              HaoDeals &middot; Tanzania&rsquo;s best deals &middot;
+              Hǎodeals &middot; Tanzania&rsquo;s best deals &middot;
               <a href="${APP_URL}" style="color:#bbb;text-decoration:underline;">${APP_URL.replace("https://", "")}</a>
               ${unsubscribeUrl ? `<br/><a href="${unsubscribeUrl}" style="color:#bbb;text-decoration:underline;">Unsubscribe</a>` : ""}
             </p>
@@ -77,7 +77,7 @@ function wrapHtml(preview: string, body: string, unsubscribeUrl?: string) {
 
 /** Standard transactional email headers (NOT bulk — avoids promotions tab) */
 const transactionalHeaders = {
-  "X-Mailer": "HaoDeals Mailer",
+  "X-Mailer": "Hǎodeals Mailer",
   "X-Priority": "3",
   "Importance": "Normal",
   "Auto-Submitted": "auto-generated",
@@ -97,7 +97,7 @@ export async function sendWelcomeEmail(to: string, name: string) {
     <p style="font-family:Arial,sans-serif;font-size:13px;color:#777;margin:0 0 24px;">Your account is ready.</p>
     <hr style="border:none;border-top:1px solid #e5e5e5;margin:0 0 24px;"/>
     <p style="font-family:Arial,sans-serif;font-size:15px;color:#333;line-height:1.7;margin:0 0 8px;">
-      You&rsquo;re now part of HaoDeals &mdash; the best place to shop online in Tanzania.
+      You&rsquo;re now part of Hǎodeals &mdash; the best place to shop online in Tanzania.
     </p>
     <p style="font-family:Arial,sans-serif;font-size:15px;color:#333;line-height:1.7;margin:0 0 28px;">
       Browse daily deals on tech, fashion, shoes, accessories and more. Get fast delivery anywhere in Tanzania.
@@ -109,13 +109,13 @@ export async function sendWelcomeEmail(to: string, name: string) {
   `
 
   await transport.sendMail({
-    from: `HaoDeals <${process.env.GMAIL_USER}>`,
+    from: `Hǎodeals <${process.env.GMAIL_USER}>`,
     replyTo: ADMIN_EMAIL,
     to,
-    subject: `Welcome to HaoDeals, ${displayName}!`,
+    subject: `Welcome to Hǎodeals, ${displayName}!`,
     headers: transactionalHeaders,
-    text: `Hi ${displayName},\n\nWelcome to HaoDeals! Your account is ready.\n\nBrowse deals on tech, fashion, shoes, accessories and more — with fast delivery across Tanzania.\n\n${APP_URL}/products\n\n— HaoDeals`,
-    html: wrapHtml(`Hi ${displayName}, welcome to HaoDeals! Your account is now active.`, body),
+    text: `Hi ${displayName},\n\nWelcome to Hǎodeals! Your account is ready.\n\nBrowse deals on tech, fashion, shoes, accessories and more — with fast delivery across Tanzania.\n\n${APP_URL}/products\n\n— Hǎodeals`,
+    html: wrapHtml(`Hi ${displayName}, welcome to Hǎodeals! Your account is now active.`, body),
   }).catch((err) => console.error("[email] welcome failed:", err))
 }
 
@@ -148,13 +148,13 @@ export async function sendDealAnnouncement(
     </a>
   `
 
-  const plainText = `${safeSubject}\n\n${message}\n\n${ctaLabel}: ${ctaUrl}\n\n---\nHaoDeals · ${APP_URL}\nTo unsubscribe, reply with "Unsubscribe" in the subject.`
+  const plainText = `${safeSubject}\n\n${message}\n\n${ctaLabel}: ${ctaUrl}\n\n---\nHǎodeals · ${APP_URL}\nTo unsubscribe, reply with "Unsubscribe" in the subject.`
 
   let sent = 0, failed = 0
 
   for (const to of recipients) {
     await transport.sendMail({
-      from: `HaoDeals <${process.env.GMAIL_USER}>`,
+      from: `Hǎodeals <${process.env.GMAIL_USER}>`,
       replyTo: ADMIN_EMAIL,
       to,
       subject: safeSubject,
@@ -162,7 +162,7 @@ export async function sendDealAnnouncement(
         "List-Unsubscribe": `<${unsubscribeUrl}>`,
         "List-Unsubscribe-Post": "List-Unsubscribe=One-Click",
         "Precedence": "bulk",
-        "X-Mailer": "HaoDeals Mailer",
+        "X-Mailer": "Hǎodeals Mailer",
         "Auto-Submitted": "auto-generated",
       },
       text: plainText,
@@ -187,7 +187,7 @@ export async function sendPasswordResetEmail(to: string, name: string, resetUrl:
     <p style="font-family:Arial,sans-serif;font-size:13px;color:#777;margin:0 0 24px;">Hi ${displayName},</p>
     <hr style="border:none;border-top:1px solid #e5e5e5;margin:0 0 24px;"/>
     <p style="font-family:Arial,sans-serif;font-size:15px;color:#333;line-height:1.7;margin:0 0 8px;">
-      We received a request to reset your HaoDeals password.
+      We received a request to reset your Hǎodeals password.
     </p>
     <p style="font-family:Arial,sans-serif;font-size:13px;color:#999;margin:0 0 28px;">
       This link expires in <strong style="color:#666;">1 hour</strong>. If you didn&rsquo;t request this, ignore this email.
@@ -202,13 +202,13 @@ export async function sendPasswordResetEmail(to: string, name: string, resetUrl:
   `
 
   await transport.sendMail({
-    from: `HaoDeals <${process.env.GMAIL_USER}>`,
+    from: `Hǎodeals <${process.env.GMAIL_USER}>`,
     replyTo: ADMIN_EMAIL,
     to,
-    subject: "Your HaoDeals password reset link",
+    subject: "Your Hǎodeals password reset link",
     headers: transactionalHeaders,
-    text: `Hi ${displayName},\n\nWe received a request to reset your HaoDeals password.\n\nReset link (expires in 1 hour):\n${resetUrl}\n\nIf you didn't request this, ignore this email.\n\n— HaoDeals`,
-    html: wrapHtml(`Reset your HaoDeals password — link expires in 1 hour.`, body),
+    text: `Hi ${displayName},\n\nWe received a request to reset your Hǎodeals password.\n\nReset link (expires in 1 hour):\n${resetUrl}\n\nIf you didn't request this, ignore this email.\n\n— Hǎodeals`,
+    html: wrapHtml(`Reset your Hǎodeals password — link expires in 1 hour.`, body),
   }).catch((err) => console.error("[email] password reset failed:", err))
 }
 
@@ -268,12 +268,12 @@ export async function sendOrderStatusEmail(
   `
 
   await transport.sendMail({
-    from: `HaoDeals <${process.env.GMAIL_USER}>`,
+    from: `Hǎodeals <${process.env.GMAIL_USER}>`,
     replyTo: ADMIN_EMAIL,
     to,
     subject: `Order #${shortId} — ${statusLabel}`,
     headers: transactionalHeaders,
-    text: `Hi ${displayName},\n\nYour order #${shortId} status: ${statusLabel}\n\n${order.message}\n\nTrack your order: ${trackingUrl}\n\n— HaoDeals`,
+    text: `Hi ${displayName},\n\nYour order #${shortId} status: ${statusLabel}\n\n${order.message}\n\nTrack your order: ${trackingUrl}\n\n— Hǎodeals`,
     html: wrapHtml(`Order #${shortId}: ${statusLabel}`, body),
   }).catch((err) => console.error("[email] order status failed:", err))
 }
@@ -297,7 +297,7 @@ export async function sendPromoCodeEmail(
     <p style="font-family:Arial,sans-serif;font-size:13px;color:#777;margin:0 0 24px;">Thank you, ${displayName}!</p>
     <hr style="border:none;border-top:1px solid #e5e5e5;margin:0 0 24px;"/>
     <p style="font-family:Arial,sans-serif;font-size:15px;color:#333;line-height:1.7;margin:0 0 20px;">
-      Your order has been delivered — thank you for shopping with HaoDeals! As a token of our appreciation, here's an exclusive discount code just for you:
+      Your order has been delivered — thank you for shopping with Hǎodeals! As a token of our appreciation, here's an exclusive discount code just for you:
     </p>
     <div style="text-align:center;margin:0 0 28px;">
       <div style="display:inline-block;padding:16px 32px;background:#f9f9f9;border:2px dashed #ee0000;">
@@ -315,12 +315,12 @@ export async function sendPromoCodeEmail(
   `
 
   await transport.sendMail({
-    from: `HaoDeals <${process.env.GMAIL_USER}>`,
+    from: `Hǎodeals <${process.env.GMAIL_USER}>`,
     replyTo: ADMIN_EMAIL,
     to,
     subject: `${displayName}, here's ${percent}% off your next order! 🎁`,
     headers: transactionalHeaders,
-    text: `Hi ${displayName},\n\nThank you for your order! Here's ${percent}% off your next purchase:\n\nCode: ${code}\nValid for 30 days.\n\nShop now: ${APP_URL}/products\n\n— HaoDeals`,
+    text: `Hi ${displayName},\n\nThank you for your order! Here's ${percent}% off your next purchase:\n\nCode: ${code}\nValid for 30 days.\n\nShop now: ${APP_URL}/products\n\n— Hǎodeals`,
     html: wrapHtml(`Your exclusive ${percent}% discount code: ${code}`, body),
   }).catch((err) => console.error("[email] promo code failed:", err))
 }
@@ -374,7 +374,7 @@ export async function sendOrderNotificationToAdmin(order: {
   `
 
   await transport.sendMail({
-    from: `HaoDeals <${process.env.GMAIL_USER}>`,
+    from: `Hǎodeals <${process.env.GMAIL_USER}>`,
     to: ADMIN_EMAIL,
     subject: `New order #${order.id.slice(0, 8).toUpperCase()} — TSh ${order.total.toLocaleString()}`,
     headers: transactionalHeaders,

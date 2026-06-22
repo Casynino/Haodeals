@@ -220,7 +220,7 @@ export default function HeroAscii() {
               <div className="w-1 h-1 bg-white/40 rounded-full animate-pulse" style={{ animationDelay: '0.2s' }} />
               <div className="w-1 h-1 bg-white/20 rounded-full animate-pulse" style={{ animationDelay: '0.4s' }} />
             </div>
-            <span className="hidden lg:inline">HaoDeals</span>
+            <span className="hidden lg:inline">Hǎodeals</span>
           </div>
         </div>
       </div>
