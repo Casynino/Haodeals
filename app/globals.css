@@ -251,10 +251,10 @@
   /* Warm gold accent — deeper in light mode for legibility */
   --gold: #9a7611;
   --gold-soft: rgba(154, 118, 17, 0.12);
-  /* Frosted glass surface */
-  --glass-bg: rgba(255, 255, 255, 0.6);
-  --glass-border: rgba(0, 0, 0, 0.06);
-  --glass-shadow: 0 10px 34px -14px rgba(0, 0, 0, 0.22);
+  /* Clean white card surface with a soft, premium shadow */
+  --glass-bg: rgba(255, 255, 255, 0.85);
+  --glass-border: rgba(0, 0, 0, 0.05);
+  --glass-shadow: 0 8px 30px -12px rgba(20, 16, 8, 0.14), 0 2px 8px -4px rgba(20, 16, 8, 0.08);
   --sidebar: oklch(0.95 0 0);
   --sidebar-foreground: oklch(0.06 0 0);
   --sidebar-primary: oklch(0.06 0 0);
@@ -326,8 +326,8 @@
   /* Custom scrollbar */
   ::-webkit-scrollbar { width: 6px; height: 6px; }
   ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.18); border-radius: 9999px; }
-  ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.35); }
+  ::-webkit-scrollbar-thumb { background: color-mix(in srgb, var(--color-foreground) 20%, transparent); border-radius: 9999px; }
+  ::-webkit-scrollbar-thumb:hover { background: color-mix(in srgb, var(--color-foreground) 35%, transparent); }
 }
 
 /* ─── Glassy Luxe surfaces ───────────────────────────────────── */
