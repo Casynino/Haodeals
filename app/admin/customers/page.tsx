@@ -52,7 +52,7 @@ export default function AdminCustomers() {
           { label: "Active Buyers",   val: active,           icon: ShoppingBag, color: "text-emerald-400", bg: "bg-emerald-500/10" },
           { label: "New This Month",  val: newThisMonth,     icon: UserPlus,  color: "text-blue-400",    bg: "bg-blue-500/10" },
         ].map(({ label, val, icon: Icon, color, bg }) => (
-          <div key={label} className="rounded-2xl border border-white/8 bg-white/[0.02] p-4">
+          <div key={label} className="rounded-2xl border border-foreground/8 bg-foreground/[0.02] p-4">
             <div className={`w-8 h-8 rounded-xl ${bg} flex items-center justify-center mb-2`}>
               <Icon className={`h-4 w-4 ${color}`} />
             </div>
@@ -66,13 +66,13 @@ export default function AdminCustomers() {
       <div className="relative max-w-sm">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3 w-3 text-foreground/22" />
         <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search customers…"
-          className="w-full pl-8 pr-8 py-2 bg-white/4 border border-white/10 rounded-xl text-[12px] text-foreground/65 placeholder:text-foreground/20 focus:outline-none focus:border-white/25 transition-colors" />
+          className="w-full pl-8 pr-8 py-2 bg-foreground/4 border border-foreground/10 rounded-xl text-[12px] text-foreground/65 placeholder:text-foreground/20 focus:outline-none focus:border-foreground/25 transition-colors" />
         {search && <button onClick={() => setSearch("")} className="absolute right-3 top-1/2 -translate-y-1/2 text-foreground/28 hover:text-foreground"><X className="h-3 w-3" /></button>}
       </div>
 
       {/* Customer table */}
-      <div className="rounded-2xl border border-white/8 bg-white/[0.02] overflow-hidden">
-        <div className="grid grid-cols-12 gap-3 px-4 py-2.5 border-b border-white/8 text-[10px] tracking-widest text-foreground/22 uppercase">
+      <div className="rounded-2xl border border-foreground/8 bg-foreground/[0.02] overflow-hidden">
+        <div className="grid grid-cols-12 gap-3 px-4 py-2.5 border-b border-foreground/8 text-[10px] tracking-widest text-foreground/22 uppercase">
           <span className="col-span-4">Customer</span>
           <span className="col-span-2 text-right">Orders</span>
           <span className="col-span-3 text-right">Total Spent</span>
@@ -80,7 +80,7 @@ export default function AdminCustomers() {
         </div>
 
         {loading ? (
-          <div className="p-4 space-y-2">{[1,2,3,4,5].map((i) => <div key={i} className="h-10 bg-white/4 animate-pulse rounded-xl" />)}</div>
+          <div className="p-4 space-y-2">{[1,2,3,4,5].map((i) => <div key={i} className="h-10 bg-foreground/4 animate-pulse rounded-xl" />)}</div>
         ) : filtered.length === 0 ? (
           <div className="text-center py-16">
             <Users className="h-8 w-8 mx-auto mb-2 text-foreground/10" />
@@ -89,7 +89,7 @@ export default function AdminCustomers() {
         ) : (
           <div className="divide-y divide-white/[0.045]">
             {filtered.map((c, i) => (
-              <div key={c.id} className="grid grid-cols-12 gap-3 items-center px-4 py-3 hover:bg-white/[0.02] transition-colors">
+              <div key={c.id} className="grid grid-cols-12 gap-3 items-center px-4 py-3 hover:bg-foreground/[0.02] transition-colors">
                 <div className="col-span-4 flex items-center gap-3 min-w-0">
                   <div className="w-7 h-7 rounded-full bg-violet-500/15 flex items-center justify-center flex-shrink-0 text-[11px] font-bold text-violet-400">
                     {i < 3 ? ["🥇","🥈","🥉"][i] : (c.name?.[0]?.toUpperCase() ?? "?")}

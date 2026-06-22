@@ -34,7 +34,7 @@ const BADGE: Record<string, { color: string; dot: string }> = {
   refund_processing:  { color: "text-orange-400/70 border-orange-400/25", dot: "bg-orange-400/60" },
   refunded:           { color: "text-green-400/70 border-green-400/25",  dot: "bg-green-400/60" },
 }
-const badge = (s: string) => BADGE[s] ?? { color: "text-foreground/40 border-white/15", dot: "bg-foreground/30" }
+const badge = (s: string) => BADGE[s] ?? { color: "text-foreground/40 border-foreground/15", dot: "bg-foreground/30" }
 
 /* ── Stage mini-bar (for admin order view) ─────────────────────── */
 function StageMini({ status }: { status: string }) {
@@ -209,7 +209,7 @@ function QuickAction({
                 </button>
                 <button
                   onClick={() => setShowCancel(false)}
-                  className="px-3 border border-white/10 text-foreground/30 hover:text-foreground/50 transition-colors"
+                  className="px-3 border border-foreground/10 text-foreground/30 hover:text-foreground/50 transition-colors"
                 >
                   <X className="h-3 w-3" />
                 </button>
@@ -292,7 +292,7 @@ export default function AdminOrdersPage() {
   return (
     <div className="container mx-auto px-4 py-8">
       {/* Header */}
-      <div className="flex items-center justify-between mb-5 border-b border-white/10 pb-4">
+      <div className="flex items-center justify-between mb-5 border-b border-foreground/10 pb-4">
         <div className="flex items-center gap-3">
           <span className="text-foreground/25 text-[12px]">//</span>
           <h1 className="text-[13px] tracking-[0.3em] text-foreground/65">ORDER MONITOR</h1>
@@ -318,7 +318,7 @@ export default function AdminOrdersPage() {
             key={s.label}
             onClick={() => setFilter(filter === s.filter ? "all" : s.filter)}
             className={`relative border px-4 py-3 text-left transition-colors ${
-              filter === s.filter ? "border-white/25 bg-white/4" : "border-white/10 hover:border-white/18"
+              filter === s.filter ? "border-foreground/25 bg-foreground/4" : "border-foreground/10 hover:border-foreground/18"
             }`}
           >
             {s.badge && (
@@ -337,7 +337,7 @@ export default function AdminOrdersPage() {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Search orders, customers, tracking..."
-          className="w-full pl-8 pr-8 py-2 bg-transparent border border-white/15 text-[12px] text-foreground/65 placeholder:text-foreground/20 focus:outline-none focus:border-white/35 transition-colors"
+          className="w-full pl-8 pr-8 py-2 bg-transparent border border-foreground/15 text-[12px] text-foreground/65 placeholder:text-foreground/20 focus:outline-none focus:border-foreground/35 transition-colors"
         />
         {search && (
           <button onClick={() => setSearch("")} className="absolute right-3 top-1/2 -translate-y-1/2 text-foreground/28 hover:text-foreground">
@@ -361,8 +361,8 @@ export default function AdminOrdersPage() {
             onClick={() => setFilter(v)}
             className={`px-3 py-1.5 text-[10px] tracking-wider border transition-colors ${
               filter === v
-                ? "border-white/35 text-foreground/75 bg-white/5"
-                : "border-white/10 text-foreground/28 hover:border-white/22"
+                ? "border-foreground/35 text-foreground/75 bg-foreground/5"
+                : "border-foreground/10 text-foreground/28 hover:border-foreground/22"
             }`}
           >
             {l}
@@ -373,10 +373,10 @@ export default function AdminOrdersPage() {
       {/* Orders list */}
       {loading ? (
         <div className="space-y-2 animate-pulse">
-          {[1, 2, 3].map((i) => <div key={i} className="h-20 bg-foreground/5 border border-white/5" />)}
+          {[1, 2, 3].map((i) => <div key={i} className="h-20 bg-foreground/5 border border-foreground/5" />)}
         </div>
       ) : filtered.length === 0 ? (
-        <div className="text-center py-24 border border-white/10">
+        <div className="text-center py-24 border border-foreground/10">
           <Package className="h-8 w-8 mx-auto mb-3 opacity-15" />
           <p className="text-[12px] tracking-widest text-foreground/25">No orders found</p>
         </div>
@@ -387,7 +387,7 @@ export default function AdminOrdersPage() {
             const isExp = expanded === order.id
 
             return (
-              <div key={order.id} className={`border transition-colors ${isExp ? "border-white/20" : "border-white/10 hover:border-white/17"}`}>
+              <div key={order.id} className={`border transition-colors ${isExp ? "border-foreground/20" : "border-foreground/10 hover:border-foreground/17"}`}>
                 {/* Row */}
                 <button
                   className="w-full text-left p-4"
@@ -437,7 +437,7 @@ export default function AdminOrdersPage() {
 
                 {/* Expanded */}
                 {isExp && (
-                  <div className="border-t border-white/10 px-4 pb-4 pt-3 space-y-4">
+                  <div className="border-t border-foreground/10 px-4 pb-4 pt-3 space-y-4">
                     {/* Customer + address */}
                     <div className="grid sm:grid-cols-2 gap-4">
                       <div>
@@ -463,7 +463,7 @@ export default function AdminOrdersPage() {
                       <p className="text-[10px] tracking-widest text-foreground/25 mb-2">ITEMS</p>
                       <div className="space-y-1">
                         {order.items.map((item) => (
-                          <div key={item.id} className="flex items-center justify-between text-[11px] border border-white/5 px-3 py-1.5">
+                          <div key={item.id} className="flex items-center justify-between text-[11px] border border-foreground/5 px-3 py-1.5">
                             <span className="text-foreground/55 truncate max-w-[200px]">{item.product.name}</span>
                             <div className="flex items-center gap-3 text-foreground/35 flex-shrink-0">
                               <span>×{item.quantity}</span>

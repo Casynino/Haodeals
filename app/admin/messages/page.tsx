@@ -34,7 +34,7 @@ export default function AdminMessagesPage() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <div className="flex items-center justify-between mb-6 border-b border-white/10 pb-4">
+      <div className="flex items-center justify-between mb-6 border-b border-foreground/10 pb-4">
         <div className="flex items-center gap-3">
           <span className="text-foreground/45 text-xs">//</span>
           <h1 className="text-lg font-semibold tracking-[0.2em] text-foreground/90">MESSAGES</h1>
@@ -55,12 +55,12 @@ export default function AdminMessagesPage() {
       {loading ? (
         <div className="space-y-2 animate-pulse">
           {[1, 2, 3, 4, 5].map((i) => (
-            <div key={i} className="border border-white/10 p-4 h-20 bg-foreground/5" />
+            <div key={i} className="border border-foreground/10 p-4 h-20 bg-foreground/5" />
           ))}
         </div>
       ) : conversations.length === 0 ? (
         <div className="flex flex-col items-center gap-4 py-20 text-center">
-          <div className="border border-white/10 p-8">
+          <div className="border border-foreground/10 p-8">
             <MessageSquare className="h-10 w-10 opacity-20" />
           </div>
           <p className="text-[13px] tracking-widest text-foreground/40">No conversations yet</p>
@@ -75,7 +75,7 @@ export default function AdminMessagesPage() {
               <Link
                 key={conv.id}
                 href={`/admin/messages/${conv.id}`}
-                className="block border border-white/10 hover:border-white/25 transition-colors p-4 group"
+                className="block border border-foreground/10 hover:border-foreground/25 transition-colors p-4 group"
               >
                 <div className="flex items-start justify-between gap-3">
                   <div className="min-w-0 flex-1">
@@ -96,7 +96,7 @@ export default function AdminMessagesPage() {
                         )}
                       </p>
                       {conv.order && (
-                        <span className="inline-flex items-center gap-1 text-[12px] text-foreground/40 border border-white/10 px-1.5 py-0.5">
+                        <span className="inline-flex items-center gap-1 text-[12px] text-foreground/40 border border-foreground/10 px-1.5 py-0.5">
                           <Package className="h-2.5 w-2.5" />
                           {conv.order.trackingId ?? conv.order.id.slice(0, 8).toUpperCase()}
                         </span>
@@ -122,7 +122,7 @@ export default function AdminMessagesPage() {
                     <span className={`text-[11px] tracking-wide border px-2 py-0.5 ${
                       conv.status === "open"
                         ? "text-blue-400/60 border-blue-400/20"
-                        : "text-foreground/30 border-white/15"
+                        : "text-foreground/30 border-foreground/15"
                     }`}>
                       {conv.status.toUpperCase()}
                     </span>

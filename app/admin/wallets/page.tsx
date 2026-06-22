@@ -169,7 +169,7 @@ export default function AdminWallets() {
           { label: "Total Withdrawn",     val: totals.withdrawn,    icon: ArrowUpFromLine, color: "text-rose-400",    bg: "bg-rose-500/10",    hint: "Paid out to users" },
           { label: "Order Revenue",       val: totals.spent,        icon: ShoppingBag,     color: "text-blue-400",    bg: "bg-blue-500/10",    hint: "Spent on orders" },
         ].map(({ label, val, icon: Icon, color, bg, hint }) => (
-          <div key={label} className="rounded-2xl border border-white/8 bg-white/[0.02] p-4">
+          <div key={label} className="rounded-2xl border border-foreground/8 bg-foreground/[0.02] p-4">
             <div className={`w-8 h-8 rounded-xl ${bg} flex items-center justify-center mb-2`}>
               <Icon className={`h-4 w-4 ${color}`} />
             </div>
@@ -181,7 +181,7 @@ export default function AdminWallets() {
       </div>
 
       {/* Treasury reconciliation */}
-      <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-4">
+      <div className="rounded-2xl border border-foreground/8 bg-foreground/[0.02] p-4">
         <div className="flex items-center justify-between gap-2 mb-3 flex-wrap">
           <div className="flex items-center gap-2">
             <Landmark className="h-3.5 w-3.5 text-amber-400/70" />
@@ -206,12 +206,12 @@ export default function AdminWallets() {
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            <div className="rounded-xl border border-white/8 bg-white/[0.015] p-3">
+            <div className="rounded-xl border border-foreground/8 bg-foreground/[0.015] p-3">
               <p className="text-[10px] text-foreground/30 tracking-widest">USER LIABILITY</p>
               <p className="text-sm font-black text-violet-400 mt-1">{formatPrice(totals.outstanding)}</p>
               <p className="text-[10px] text-foreground/22 mt-0.5">Sum of all user balances</p>
             </div>
-            <div className="rounded-xl border border-white/8 bg-white/[0.015] p-3">
+            <div className="rounded-xl border border-foreground/8 bg-foreground/[0.015] p-3">
               <p className="text-[10px] text-foreground/30 tracking-widest">TREASURY HOLDS</p>
               <p className="text-sm font-black text-emerald-400 mt-1">
                 {treasury !== null ? formatPrice(treasury) : "Unavailable"}
@@ -219,7 +219,7 @@ export default function AdminWallets() {
               <p className="text-[10px] text-foreground/22 mt-0.5">Live nTZS treasury balance</p>
             </div>
             <div className={`rounded-xl border p-3 ${
-              gap === null ? "border-white/8 bg-white/[0.015]"
+              gap === null ? "border-foreground/8 bg-foreground/[0.015]"
               : gap >= 1 ? "border-amber-500/20 bg-amber-500/[0.04]"
               : "border-emerald-500/20 bg-emerald-500/[0.04]"
             }`}>
@@ -251,7 +251,7 @@ export default function AdminWallets() {
 
         {/* Move external wallet funds into the treasury */}
         {data?.treasuryConfigured && (
-          <div className="mt-4 pt-4 border-t border-white/8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+          <div className="mt-4 pt-4 border-t border-foreground/8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
             <div>
               <p className="text-[12px] text-foreground/65">Consolidate another wallet</p>
               <p className="text-[10px] text-foreground/30 mt-1">
@@ -269,7 +269,7 @@ export default function AdminWallets() {
 
         {/* Sweep CTA — only when legacy per-user wallets still exist */}
         {data?.treasuryConfigured && totals.legacyWallets > 0 && (
-          <div className="mt-4 pt-4 border-t border-white/8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+          <div className="mt-4 pt-4 border-t border-foreground/8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
             <div>
               <p className="text-[12px] text-foreground/65 flex items-center gap-1.5">
                 <AlertTriangle className="h-3 w-3 text-amber-400" />
@@ -290,7 +290,7 @@ export default function AdminWallets() {
 
         {/* Last sweep summary */}
         {sweepResult && (
-          <div className="mt-4 pt-4 border-t border-white/8">
+          <div className="mt-4 pt-4 border-t border-foreground/8">
             <p className="text-[11px] text-foreground/45 mb-2">
               Last sweep: <span className="text-emerald-400">{sweepResult.swept} swept</span> · {sweepResult.noFunds} empty
               {sweepResult.treasury > 0 && <span> · {sweepResult.treasury} treasury</span>}
@@ -312,13 +312,13 @@ export default function AdminWallets() {
       <div className="relative max-w-sm">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3 w-3 text-foreground/22" />
         <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search users…"
-          className="w-full pl-8 pr-8 py-2 bg-white/4 border border-white/10 rounded-xl text-[12px] text-foreground/65 placeholder:text-foreground/20 focus:outline-none focus:border-white/25 transition-colors" />
+          className="w-full pl-8 pr-8 py-2 bg-foreground/4 border border-foreground/10 rounded-xl text-[12px] text-foreground/65 placeholder:text-foreground/20 focus:outline-none focus:border-foreground/25 transition-colors" />
         {search && <button onClick={() => setSearch("")} className="absolute right-3 top-1/2 -translate-y-1/2 text-foreground/28 hover:text-foreground"><X className="h-3 w-3" /></button>}
       </div>
 
       {/* Wallet table */}
-      <div className="rounded-2xl border border-white/8 bg-white/[0.02] overflow-hidden">
-        <div className="grid grid-cols-12 gap-2 px-4 py-2.5 border-b border-white/8 text-[10px] tracking-widest text-foreground/22 uppercase">
+      <div className="rounded-2xl border border-foreground/8 bg-foreground/[0.02] overflow-hidden">
+        <div className="grid grid-cols-12 gap-2 px-4 py-2.5 border-b border-foreground/8 text-[10px] tracking-widest text-foreground/22 uppercase">
           <span className="col-span-4">User</span>
           <span className="col-span-2 text-right">Deposited</span>
           <span className="col-span-2 text-right">Withdrawn</span>
@@ -327,7 +327,7 @@ export default function AdminWallets() {
         </div>
 
         {loading ? (
-          <div className="p-4 space-y-2">{[1,2,3,4,5].map((i) => <div key={i} className="h-10 bg-white/4 animate-pulse rounded-xl" />)}</div>
+          <div className="p-4 space-y-2">{[1,2,3,4,5].map((i) => <div key={i} className="h-10 bg-foreground/4 animate-pulse rounded-xl" />)}</div>
         ) : filtered.length === 0 ? (
           <div className="text-center py-16">
             <Wallet className="h-8 w-8 mx-auto mb-2 text-foreground/10" />
@@ -336,7 +336,7 @@ export default function AdminWallets() {
         ) : (
           <div className="divide-y divide-white/[0.045]">
             {filtered.map((w) => (
-              <div key={w.id} className="grid grid-cols-12 gap-2 items-center px-4 py-3 hover:bg-white/[0.02] transition-colors">
+              <div key={w.id} className="grid grid-cols-12 gap-2 items-center px-4 py-3 hover:bg-foreground/[0.02] transition-colors">
                 <div className="col-span-4 flex items-center gap-3 min-w-0">
                   <div className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 text-[11px] font-bold ${
                     w.role === "admin" ? "bg-amber-500/15 text-amber-400" : "bg-violet-500/15 text-violet-400"
@@ -391,7 +391,7 @@ export default function AdminWallets() {
       {confirmOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/65 backdrop-blur-sm" onClick={() => !sweeping && setConfirmOpen(false)} />
-          <div className="relative w-full max-w-md rounded-2xl border border-white/12 bg-background p-6 shadow-2xl">
+          <div className="relative w-full max-w-md rounded-2xl border border-foreground/12 bg-background p-6 shadow-2xl">
             <div className="flex items-center gap-2.5 mb-3">
               <div className="w-9 h-9 rounded-xl bg-amber-500/15 flex items-center justify-center">
                 <ArrowRightLeft className="h-4 w-4 text-amber-400" />
@@ -417,7 +417,7 @@ export default function AdminWallets() {
               <button
                 onClick={() => setConfirmOpen(false)}
                 disabled={sweeping}
-                className="flex-1 py-2.5 rounded-xl border border-white/12 text-foreground/55 text-[13px] tracking-widest hover:bg-white/[0.04] transition-all disabled:opacity-40"
+                className="flex-1 py-2.5 rounded-xl border border-foreground/12 text-foreground/55 text-[13px] tracking-widest hover:bg-foreground/[0.04] transition-all disabled:opacity-40"
               >
                 CANCEL
               </button>
@@ -437,7 +437,7 @@ export default function AdminWallets() {
       {consolidateOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/65 backdrop-blur-sm" onClick={() => !consolidating && setConsolidateOpen(false)} />
-          <div className="relative w-full max-w-md rounded-2xl border border-white/12 bg-background p-6 shadow-2xl">
+          <div className="relative w-full max-w-md rounded-2xl border border-foreground/12 bg-background p-6 shadow-2xl">
             <div className="flex items-center gap-2.5 mb-3">
               <div className="w-9 h-9 rounded-xl bg-blue-500/15 flex items-center justify-center">
                 <ArrowRightLeft className="h-4 w-4 text-blue-400" />
@@ -456,12 +456,12 @@ export default function AdminWallets() {
                 value={sourceId}
                 onChange={(e) => { setSourceId(e.target.value); setPreview(null) }}
                 placeholder="nTZS user id of the old wallet"
-                className="flex-1 bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-[13px] text-foreground/80 placeholder:text-foreground/20 focus:outline-none focus:border-blue-500/35 transition-colors"
+                className="flex-1 bg-foreground/5 border border-foreground/10 rounded-xl px-3 py-2 text-[13px] text-foreground/80 placeholder:text-foreground/20 focus:outline-none focus:border-blue-500/35 transition-colors"
               />
               <button
                 onClick={checkBalances}
                 disabled={checking || !sourceId.trim()}
-                className="px-3 py-2 rounded-xl border border-white/12 text-foreground/60 text-[12px] tracking-widest hover:bg-white/[0.04] transition-all disabled:opacity-40 flex items-center gap-1.5"
+                className="px-3 py-2 rounded-xl border border-foreground/12 text-foreground/60 text-[12px] tracking-widest hover:bg-foreground/[0.04] transition-all disabled:opacity-40 flex items-center gap-1.5"
               >
                 {checking ? <Loader2 className="h-3 w-3 animate-spin" /> : "CHECK"}
               </button>
@@ -476,11 +476,11 @@ export default function AdminWallets() {
                   </div>
                 ) : (
                   <>
-                    <div className="flex items-center justify-between rounded-xl border border-white/8 bg-white/[0.015] px-3 py-2.5">
+                    <div className="flex items-center justify-between rounded-xl border border-foreground/8 bg-foreground/[0.015] px-3 py-2.5">
                       <span className="text-[11px] text-foreground/40 tracking-widest">SOURCE HOLDS</span>
                       <span className="text-[12px] font-black text-blue-400">{formatPrice(preview.from.balanceTzs)}</span>
                     </div>
-                    <div className="flex items-center justify-between rounded-xl border border-white/8 bg-white/[0.015] px-3 py-2.5">
+                    <div className="flex items-center justify-between rounded-xl border border-foreground/8 bg-foreground/[0.015] px-3 py-2.5">
                       <span className="text-[11px] text-foreground/40 tracking-widest">TREASURY NOW</span>
                       <span className="text-[12px] font-black text-emerald-400">{formatPrice(preview.treasury.balanceTzs)}</span>
                     </div>
@@ -497,7 +497,7 @@ export default function AdminWallets() {
               <button
                 onClick={() => setConsolidateOpen(false)}
                 disabled={consolidating}
-                className="flex-1 py-2.5 rounded-xl border border-white/12 text-foreground/55 text-[13px] tracking-widest hover:bg-white/[0.04] transition-all disabled:opacity-40"
+                className="flex-1 py-2.5 rounded-xl border border-foreground/12 text-foreground/55 text-[13px] tracking-widest hover:bg-foreground/[0.04] transition-all disabled:opacity-40"
               >
                 CANCEL
               </button>

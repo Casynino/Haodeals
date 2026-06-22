@@ -150,11 +150,11 @@ export default function AdminDashboard() {
             <Megaphone className="h-3 w-3" /> ANNOUNCE
           </button>
           <button onClick={() => fetchAll()} disabled={loading}
-            className="flex items-center gap-1.5 px-3 py-1.5 border border-white/12 text-[11px] tracking-widest text-foreground/40 hover:text-foreground/70 hover:border-white/22 transition-all disabled:opacity-40">
+            className="flex items-center gap-1.5 px-3 py-1.5 border border-foreground/12 text-[11px] tracking-widest text-foreground/40 hover:text-foreground/70 hover:border-foreground/22 transition-all disabled:opacity-40">
             <RefreshCw className={`h-3 w-3 ${loading ? "animate-spin" : ""}`} /> REFRESH
           </button>
           <Link href="/admin/products"
-            className="flex items-center gap-1.5 px-3 py-1.5 border border-white/20 text-[11px] tracking-widest text-foreground/50 hover:text-foreground hover:border-white/40 transition-colors">
+            className="flex items-center gap-1.5 px-3 py-1.5 border border-foreground/20 text-[11px] tracking-widest text-foreground/50 hover:text-foreground hover:border-foreground/40 transition-colors">
             <Plus className="h-3 w-3" /> ADD.PRODUCT
           </Link>
         </div>
@@ -165,9 +165,9 @@ export default function AdminDashboard() {
         <div className="border border-yellow-400/15 bg-yellow-400/[0.025] p-4 rounded-2xl">
           <form onSubmit={handleAnnounce} className="grid sm:grid-cols-3 gap-3">
             <input value={announce.subject} onChange={(e) => setAnnounce({ ...announce, subject: e.target.value })} placeholder="Subject…" required
-              className="bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-[12px] text-foreground/70 placeholder:text-foreground/20 focus:outline-none focus:border-yellow-400/30" />
+              className="bg-foreground/5 border border-foreground/10 rounded-xl px-3 py-2 text-[12px] text-foreground/70 placeholder:text-foreground/20 focus:outline-none focus:border-yellow-400/30" />
             <input value={announce.message} onChange={(e) => setAnnounce({ ...announce, message: e.target.value })} placeholder="Message…" required
-              className="bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-[12px] text-foreground/70 placeholder:text-foreground/20 focus:outline-none focus:border-yellow-400/30" />
+              className="bg-foreground/5 border border-foreground/10 rounded-xl px-3 py-2 text-[12px] text-foreground/70 placeholder:text-foreground/20 focus:outline-none focus:border-yellow-400/30" />
             <button type="submit" disabled={sending}
               className="flex items-center justify-center gap-2 py-2 bg-yellow-400/80 text-black text-[11px] font-bold tracking-widest rounded-xl hover:bg-yellow-400 transition-colors disabled:opacity-50">
               {sending ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <><Megaphone className="h-3.5 w-3.5" /> SEND TO ALL</>}
@@ -179,7 +179,7 @@ export default function AdminDashboard() {
       {/* ── KPI cards ── */}
       <div className="grid grid-cols-2 xl:grid-cols-4 gap-3">
         {kpis.map(({ label, value, sub, growth, icon: Icon, color, accent, spark }) => (
-          <div key={label} className="rounded-2xl border border-white/8 bg-white/[0.02] p-4 hover:border-white/14 transition-all">
+          <div key={label} className="rounded-2xl border border-foreground/8 bg-foreground/[0.02] p-4 hover:border-foreground/14 transition-all">
             <div className="flex items-start justify-between mb-3">
               <div className={`w-8 h-8 rounded-xl flex items-center justify-center ${color}`}>
                 <Icon className="h-4 w-4" />
@@ -188,7 +188,7 @@ export default function AdminDashboard() {
             </div>
             <p className="text-[11px] text-foreground/30 tracking-widest uppercase mb-0.5">{label}</p>
             {loading
-              ? <div className="h-6 w-24 bg-white/6 animate-pulse rounded-lg mb-1" />
+              ? <div className="h-6 w-24 bg-foreground/6 animate-pulse rounded-lg mb-1" />
               : <p className="text-xl font-black text-foreground/88 tracking-tight">{value}</p>
             }
             {sub && <p className="text-[11px] text-foreground/30">{sub}</p>}
@@ -204,7 +204,7 @@ export default function AdminDashboard() {
 
       {/* ── Revenue chart + Category ── */}
       <div className="grid lg:grid-cols-3 gap-4">
-        <div className="lg:col-span-2 rounded-2xl border border-white/8 bg-white/[0.02] p-5">
+        <div className="lg:col-span-2 rounded-2xl border border-foreground/8 bg-foreground/[0.02] p-5">
           <div className="flex items-center justify-between mb-4">
             <div>
               <p className="text-[11px] tracking-widest text-foreground/30 uppercase">Revenue Trend</p>
@@ -216,13 +216,13 @@ export default function AdminDashboard() {
             </div>
           </div>
           {loading
-            ? <div className="h-24 bg-white/4 animate-pulse rounded-xl" />
+            ? <div className="h-24 bg-foreground/4 animate-pulse rounded-xl" />
             : <LineChart data={analytics?.revenue.daily ?? []} />
           }
         </div>
 
         {/* Category breakdown */}
-        <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-5">
+        <div className="rounded-2xl border border-foreground/8 bg-foreground/[0.02] p-5">
           <p className="text-[11px] tracking-widest text-foreground/30 uppercase mb-4">Revenue by Category</p>
           <div className="space-y-2.5">
             {(analytics?.categories ?? []).slice(0, 5).map((c, i) => {
@@ -236,7 +236,7 @@ export default function AdminDashboard() {
                     </div>
                     <span className="text-foreground/40">{c.pct}%</span>
                   </div>
-                  <div className="h-1 bg-white/5 rounded-full overflow-hidden">
+                  <div className="h-1 bg-foreground/5 rounded-full overflow-hidden">
                     <div className="h-full rounded-full" style={{ width: `${c.pct}%`, background: COLORS[i] + "99" }} />
                   </div>
                 </div>
@@ -250,7 +250,7 @@ export default function AdminDashboard() {
       {/* ── Top products + Low stock ── */}
       <div className="grid lg:grid-cols-2 gap-4">
         {/* Top products */}
-        <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-5">
+        <div className="rounded-2xl border border-foreground/8 bg-foreground/[0.02] p-5">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
               <Star className="h-3.5 w-3.5 text-amber-400" />
@@ -269,7 +269,7 @@ export default function AdminDashboard() {
                     <span className="text-foreground/65 truncate">{p.name}</span>
                     <span className="text-emerald-400 flex-shrink-0 ml-2">{formatPrice(p.revenue)}</span>
                   </div>
-                  <div className="h-1 bg-white/5 rounded-full overflow-hidden">
+                  <div className="h-1 bg-foreground/5 rounded-full overflow-hidden">
                     <div className="h-full bg-violet-500/60 rounded-full" style={{ width: `${topSellMax ? (p.sold / topSellMax) * 100 : 0}%` }} />
                   </div>
                   <p className="text-[10px] text-foreground/25">{p.sold} sold · {p.category}</p>
@@ -317,8 +317,8 @@ export default function AdminDashboard() {
       </div>
 
       {/* ── Recent orders ── */}
-      <div className="rounded-2xl border border-white/8 bg-white/[0.02]">
-        <div className="flex items-center justify-between px-5 py-3 border-b border-white/8">
+      <div className="rounded-2xl border border-foreground/8 bg-foreground/[0.02]">
+        <div className="flex items-center justify-between px-5 py-3 border-b border-foreground/8">
           <div className="flex items-center gap-2">
             <Activity className="h-3.5 w-3.5 text-foreground/30" />
             <p className="text-[11px] tracking-widest text-foreground/30 uppercase">Recent Orders</p>
@@ -328,18 +328,18 @@ export default function AdminDashboard() {
           </Link>
         </div>
         {loading
-          ? <div className="p-4 space-y-2">{[1,2,3].map((i) => <div key={i} className="h-10 bg-white/4 animate-pulse rounded-xl" />)}</div>
+          ? <div className="p-4 space-y-2">{[1,2,3].map((i) => <div key={i} className="h-10 bg-foreground/4 animate-pulse rounded-xl" />)}</div>
           : recentOrders.length === 0
           ? <p className="text-[11px] text-foreground/22 text-center py-8">No orders yet</p>
           : (
             <div className="divide-y divide-white/[0.05]">
               {recentOrders.map((o) => (
-                <div key={o.id} className="flex items-center gap-3 px-5 py-3 hover:bg-white/[0.02] transition-colors">
+                <div key={o.id} className="flex items-center gap-3 px-5 py-3 hover:bg-foreground/[0.02] transition-colors">
                   <div className="flex-1 min-w-0">
                     <p className="text-[12px] text-foreground/70 uppercase tracking-wide truncate">{o.user.name ?? o.user.email}</p>
                     <p className="text-[10px] text-foreground/25">#{o.id.slice(0,8).toUpperCase()} · {(o.items as unknown[]).length} items · {new Date(o.createdAt).toLocaleDateString("en-GB", { day: "2-digit", month: "short" })}</p>
                   </div>
-                  <span className={`text-[11px] border px-2 py-0.5 hidden sm:inline flex-shrink-0 ${STATUS_COLOR[o.status] ?? "text-foreground/40 border-white/12"}`}>
+                  <span className={`text-[11px] border px-2 py-0.5 hidden sm:inline flex-shrink-0 ${STATUS_COLOR[o.status] ?? "text-foreground/40 border-foreground/12"}`}>
                     {o.status.replace(/_/g, " ").toUpperCase()}
                   </span>
                   <span className="text-emerald-400/80 text-xs font-semibold flex-shrink-0">{formatPrice(o.total)}</span>
@@ -352,7 +352,7 @@ export default function AdminDashboard() {
 
       {/* ── Insights ── */}
       {(analytics?.insights ?? []).length > 0 && (
-        <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-5">
+        <div className="rounded-2xl border border-foreground/8 bg-foreground/[0.02] p-5">
           <div className="flex items-center gap-2 mb-4">
             <Zap className="h-3.5 w-3.5 text-yellow-400" />
             <p className="text-[11px] tracking-widest text-foreground/30 uppercase">Insights & Recommended Actions</p>

@@ -45,7 +45,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     return (
       <div className="flex flex-col h-full">
         {/* Brand header */}
-        <div className={`flex items-center gap-3 px-4 py-4 border-b border-white/8 min-h-[56px]
+        <div className={`flex items-center gap-3 px-4 py-4 border-b border-foreground/8 min-h-[56px]
           ${collapsed ? "justify-center" : "justify-between"}`}>
           {!collapsed && (
             <div>
@@ -78,7 +78,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 className={`group flex items-center gap-3 px-3 py-2.5 rounded-xl text-[12px] tracking-widest transition-all
                   ${active
                     ? "bg-violet-500/15 text-violet-400 border border-violet-500/20 shadow-sm"
-                    : "text-foreground/35 hover:text-foreground/68 hover:bg-white/[0.04] border border-transparent"
+                    : "text-foreground/35 hover:text-foreground/68 hover:bg-foreground/[0.04] border border-transparent"
                   } ${collapsed ? "justify-center px-2" : ""}`}
                 title={collapsed ? label : undefined}
               >
@@ -91,7 +91,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </nav>
 
         {/* User footer */}
-        <div className={`border-t border-white/8 px-3 py-3 ${collapsed ? "flex justify-center" : ""}`}>
+        <div className={`border-t border-foreground/8 px-3 py-3 ${collapsed ? "flex justify-center" : ""}`}>
           {collapsed ? (
             <div className="w-7 h-7 rounded-full bg-violet-500/20 flex items-center justify-center">
               <span className="text-[11px] font-bold text-violet-400">{user?.name?.[0]?.toUpperCase() ?? "A"}</span>
@@ -113,13 +113,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   }
 
   return (
-    // Admin stays on the dark token set for now (force `dark`) until it gets
-    // its own light "control center" pass — keeps it fully readable meanwhile.
-    <div className="dark flex bg-background text-foreground min-h-screen">
+    <div className="flex bg-background text-foreground min-h-screen">
 
       {/* ── Desktop sidebar ── */}
       <aside className={`hidden lg:flex flex-col flex-shrink-0 sticky top-16 h-[calc(100vh-4rem)]
-        border-r border-white/8 bg-background overflow-hidden transition-all duration-200
+        border-r border-foreground/8 bg-background overflow-hidden transition-all duration-200
         ${collapsed ? "w-14" : "w-56"}`}>
         <SidebarContent />
       </aside>
@@ -128,7 +126,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       {mobileOpen && (
         <div className="lg:hidden fixed inset-0 z-50 flex">
           <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setMobileOpen(false)} />
-          <aside className="relative w-56 h-full bg-background border-r border-white/10 flex flex-col z-10 shadow-2xl">
+          <aside className="relative w-56 h-full bg-background border-r border-foreground/10 flex flex-col z-10 shadow-2xl">
             <SidebarContent onClose={() => setMobileOpen(false)} />
           </aside>
         </div>
@@ -137,9 +135,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       {/* ── Main content ── */}
       <main className="flex-1 min-w-0">
         {/* Mobile topbar */}
-        <div className="lg:hidden flex items-center gap-3 px-4 py-3 border-b border-white/8 sticky top-0 bg-background/95 backdrop-blur-sm z-30">
+        <div className="lg:hidden flex items-center gap-3 px-4 py-3 border-b border-foreground/8 sticky top-0 bg-background/95 backdrop-blur-sm z-30">
           <button onClick={() => setMobileOpen(true)}
-            className="p-1.5 border border-white/12 rounded-lg text-foreground/40 hover:text-foreground/70 transition-colors">
+            className="p-1.5 border border-foreground/12 rounded-lg text-foreground/40 hover:text-foreground/70 transition-colors">
             <Menu className="h-4 w-4" />
           </button>
           <span className="text-[12px] tracking-[0.25em] text-foreground/55">ADMIN PANEL</span>

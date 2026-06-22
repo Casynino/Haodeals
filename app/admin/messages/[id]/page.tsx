@@ -102,7 +102,7 @@ export default function AdminConversationPage({
   return (
     <div className="container mx-auto px-4 py-6 max-w-3xl flex flex-col" style={{ minHeight: "calc(100vh - 80px)" }}>
       {/* Header */}
-      <div className="mb-5 border-b border-white/10 pb-4">
+      <div className="mb-5 border-b border-foreground/10 pb-4">
         <Link
           href="/admin/messages"
           className="flex items-center gap-1.5 text-[12px] tracking-widest text-foreground/40 hover:text-foreground/70 transition-colors mb-3"
@@ -113,7 +113,7 @@ export default function AdminConversationPage({
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
             <h1 className="text-lg font-semibold tracking-[0.15em] text-foreground/90 truncate">{conversation.subject}</h1>
-            <span className="inline-flex items-center gap-1.5 text-[12px] text-foreground/50 border border-white/10 px-2 py-0.5 mt-1.5">
+            <span className="inline-flex items-center gap-1.5 text-[12px] text-foreground/50 border border-foreground/10 px-2 py-0.5 mt-1.5">
               <User className="h-2.5 w-2.5" />
               {conversation.user.name ?? conversation.user.email}
               {conversation.user.name && (
@@ -124,7 +124,7 @@ export default function AdminConversationPage({
           <span className={`text-[11px] tracking-wide border px-2 py-0.5 flex-shrink-0 mt-1 ${
             conversation.status === "open"
               ? "text-blue-400/60 border-blue-400/20"
-              : "text-foreground/30 border-white/15"
+              : "text-foreground/30 border-foreground/15"
           }`}>
             {conversation.status.toUpperCase()}
           </span>
@@ -144,7 +144,7 @@ export default function AdminConversationPage({
             return (
               <div key={msg.id} className="flex justify-center">
                 <div className="max-w-[80%] text-center">
-                  <p className="text-[12px] text-foreground/40 italic px-4 py-2 border border-white/8 bg-foreground/[0.02]">
+                  <p className="text-[12px] text-foreground/40 italic px-4 py-2 border border-foreground/8 bg-foreground/[0.02]">
                     {msg.body}
                   </p>
                   <p className="text-[11px] text-foreground/25 mt-1">
@@ -165,7 +165,7 @@ export default function AdminConversationPage({
                 <div className={`px-4 py-2.5 text-xs text-foreground/80 border ${
                   isAdmin
                     ? "bg-yellow-400/[0.07] border-yellow-400/20"
-                    : "bg-foreground/[0.05] border-white/12"
+                    : "bg-foreground/[0.05] border-foreground/12"
                 }`}>
                   {msg.body}
                 </div>
@@ -192,7 +192,7 @@ export default function AdminConversationPage({
       </div>
 
       {/* Reply input */}
-      <form onSubmit={handleSend} className="border-t border-white/10 pt-4">
+      <form onSubmit={handleSend} className="border-t border-foreground/10 pt-4">
         {error && <p className="text-[12px] text-red-400/70 mb-2">{error}</p>}
         <div className="flex gap-2">
           <textarea
@@ -207,7 +207,7 @@ export default function AdminConversationPage({
             }}
             placeholder="Reply to customer... (Enter to send, Shift+Enter for newline)"
             rows={3}
-            className="flex-1 bg-transparent border border-white/15 px-3 py-2 text-xs text-foreground/70 placeholder:text-foreground/20 focus:outline-none focus:border-white/40 transition-colors resize-none"
+            className="flex-1 bg-transparent border border-foreground/15 px-3 py-2 text-xs text-foreground/70 placeholder:text-foreground/20 focus:outline-none focus:border-foreground/40 transition-colors resize-none"
           />
           <button
             type="submit"

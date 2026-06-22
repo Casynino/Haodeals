@@ -220,7 +220,7 @@ export default function AdminProductsPage() {
   return (
     <div className="container mx-auto px-4 py-8">
       {/* Header */}
-      <div className="flex items-center justify-between mb-6 border-b border-white/10 pb-4">
+      <div className="flex items-center justify-between mb-6 border-b border-foreground/10 pb-4">
         <div className="flex items-center gap-3">
           <span className="text-foreground/30 text-[12px]">//</span>
           <h1 className="text-[13px] tracking-[0.3em] text-foreground/70">PRODUCTS.MANAGER</h1>
@@ -228,12 +228,12 @@ export default function AdminProductsPage() {
         </div>
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger
-            className="flex items-center gap-1.5 px-3 py-1.5 border border-white/20 text-[11px] tracking-widest text-foreground/50 hover:text-foreground hover:border-white/40 transition-colors"
+            className="flex items-center gap-1.5 px-3 py-1.5 border border-foreground/20 text-[11px] tracking-widest text-foreground/50 hover:text-foreground hover:border-foreground/40 transition-colors"
             onClick={openAdd}
           >
             <Plus className="h-3 w-3" /> ADD.PRODUCT
           </DialogTrigger>
-          <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto bg-background border border-white/20">
+          <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto bg-background border border-foreground/20">
             <DialogHeader>
               <DialogTitle className="text-[12px] tracking-widest text-foreground/60">
                 {editing ? "// EDIT.PRODUCT" : "// NEW.PRODUCT"}
@@ -252,14 +252,14 @@ export default function AdminProductsPage() {
                       onChange={(e) => setForm({ ...form, [field.key]: e.target.value })}
                       placeholder={field.placeholder}
                       rows={2}
-                      className="w-full bg-transparent border border-white/15 px-2.5 py-2 text-[12px] text-foreground/70 placeholder:text-foreground/20 focus:outline-none focus:border-white/40 transition-colors resize-none"
+                      className="w-full bg-transparent border border-foreground/15 px-2.5 py-2 text-[12px] text-foreground/70 placeholder:text-foreground/20 focus:outline-none focus:border-foreground/40 transition-colors resize-none"
                     />
                   ) : (
                     <input
                       value={form[field.key as keyof typeof form] as string}
                       onChange={(e) => setForm({ ...form, [field.key]: e.target.value })}
                       placeholder={field.placeholder}
-                      className="w-full bg-transparent border border-white/15 px-2.5 py-2 text-[12px] text-foreground/70 placeholder:text-foreground/20 focus:outline-none focus:border-white/40 transition-colors"
+                      className="w-full bg-transparent border border-foreground/15 px-2.5 py-2 text-[12px] text-foreground/70 placeholder:text-foreground/20 focus:outline-none focus:border-foreground/40 transition-colors"
                     />
                   )}
                 </div>
@@ -278,7 +278,7 @@ export default function AdminProductsPage() {
                       value={form[field.key as keyof typeof form] as string}
                       onChange={(e) => setForm({ ...form, [field.key]: e.target.value })}
                       placeholder={field.placeholder}
-                      className="w-full bg-transparent border border-white/15 px-2.5 py-2 text-[12px] text-foreground/70 placeholder:text-foreground/20 focus:outline-none focus:border-white/40 transition-colors"
+                      className="w-full bg-transparent border border-foreground/15 px-2.5 py-2 text-[12px] text-foreground/70 placeholder:text-foreground/20 focus:outline-none focus:border-foreground/40 transition-colors"
                     />
                   </div>
                 ))}
@@ -290,10 +290,10 @@ export default function AdminProductsPage() {
                   value={form.categoryId}
                   onValueChange={(v) => v && setForm({ ...form, categoryId: v })}
                 >
-                  <SelectTrigger className="bg-transparent border-white/15 text-[12px] text-foreground/70 focus:border-white/40">
+                  <SelectTrigger className="bg-transparent border-foreground/15 text-[12px] text-foreground/70 focus:border-foreground/40">
                     <SelectValue placeholder="SELECT.CATEGORY" />
                   </SelectTrigger>
-                  <SelectContent className="bg-background border-white/20">
+                  <SelectContent className="bg-background border-foreground/20">
                     {categories.map((cat) => (
                       <SelectItem key={cat.id} value={cat.id} className="text-[12px] tracking-wide">
                         {cat.name.toUpperCase()}
@@ -318,7 +318,7 @@ export default function AdminProductsPage() {
                       type="button"
                       onClick={() => addPresetOption(preset)}
                       disabled={!!options.find((o) => o.name === preset.name)}
-                      className="px-2 py-0.5 text-[10px] tracking-widest border border-white/15 text-foreground/40 hover:text-foreground hover:border-white/40 transition-colors disabled:opacity-20 disabled:cursor-not-allowed"
+                      className="px-2 py-0.5 text-[10px] tracking-widest border border-foreground/15 text-foreground/40 hover:text-foreground hover:border-foreground/40 transition-colors disabled:opacity-20 disabled:cursor-not-allowed"
                     >
                       + {preset.name.toUpperCase()}
                     </button>
@@ -333,12 +333,12 @@ export default function AdminProductsPage() {
                     onChange={(e) => setNewOptionName(e.target.value)}
                     onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), addCustomOption())}
                     placeholder="CUSTOM OPTION NAME..."
-                    className="flex-1 bg-transparent border border-white/15 px-2 py-1.5 text-[11px] text-foreground/70 placeholder:text-foreground/20 focus:outline-none focus:border-white/40 transition-colors"
+                    className="flex-1 bg-transparent border border-foreground/15 px-2 py-1.5 text-[11px] text-foreground/70 placeholder:text-foreground/20 focus:outline-none focus:border-foreground/40 transition-colors"
                   />
                   <button
                     type="button"
                     onClick={addCustomOption}
-                    className="px-3 border border-white/15 text-[11px] text-foreground/40 hover:text-foreground hover:border-white/40 transition-colors"
+                    className="px-3 border border-foreground/15 text-[11px] text-foreground/40 hover:text-foreground hover:border-foreground/40 transition-colors"
                   >
                     <Plus className="h-3 w-3" />
                   </button>
@@ -346,7 +346,7 @@ export default function AdminProductsPage() {
 
                 {/* Option groups */}
                 {options.map((opt, idx) => (
-                  <div key={idx} className="border border-white/10 p-2.5 space-y-2">
+                  <div key={idx} className="border border-foreground/10 p-2.5 space-y-2">
                     <div className="flex items-center justify-between">
                       <span className="text-[11px] tracking-widest text-foreground/60">{opt.name.toUpperCase()}</span>
                       <button type="button" onClick={() => removeOption(idx)} className="text-foreground/20 hover:text-red-400/70 transition-colors">
@@ -355,7 +355,7 @@ export default function AdminProductsPage() {
                     </div>
                     <div className="flex flex-wrap gap-1">
                       {opt.values.map((val) => (
-                        <span key={val} className="flex items-center gap-1 px-1.5 py-0.5 bg-foreground/5 border border-white/10 text-[10px] text-foreground/60">
+                        <span key={val} className="flex items-center gap-1 px-1.5 py-0.5 bg-foreground/5 border border-foreground/10 text-[10px] text-foreground/60">
                           {val}
                           <button type="button" onClick={() => removeOptionValue(idx, val)} className="text-foreground/20 hover:text-red-400/70 transition-colors">
                             <X className="h-2 w-2" />
@@ -369,9 +369,9 @@ export default function AdminProductsPage() {
                           onChange={(e) => setNewOptionValues({ ...newOptionValues, [idx]: e.target.value })}
                           onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), addOptionValue(idx))}
                           placeholder="Add value..."
-                          className="w-24 bg-transparent border border-dashed border-white/15 px-1.5 py-0.5 text-[10px] text-foreground/60 placeholder:text-foreground/20 focus:outline-none focus:border-white/40"
+                          className="w-24 bg-transparent border border-dashed border-foreground/15 px-1.5 py-0.5 text-[10px] text-foreground/60 placeholder:text-foreground/20 focus:outline-none focus:border-foreground/40"
                         />
-                        <button type="button" onClick={() => addOptionValue(idx)} className="px-1.5 border border-dashed border-white/15 text-[10px] text-foreground/30 hover:text-foreground hover:border-white/40 transition-colors">
+                        <button type="button" onClick={() => addOptionValue(idx)} className="px-1.5 border border-dashed border-foreground/15 text-[10px] text-foreground/30 hover:text-foreground hover:border-foreground/40 transition-colors">
                           +
                         </button>
                       </div>
@@ -388,7 +388,7 @@ export default function AdminProductsPage() {
                 {uploadedUrls.length > 0 && (
                   <div className="flex flex-wrap gap-2 mb-2">
                     {uploadedUrls.map((url) => (
-                      <div key={url} className="relative w-16 h-16 border border-white/15 overflow-hidden group">
+                      <div key={url} className="relative w-16 h-16 border border-foreground/15 overflow-hidden group">
                         <Image src={url} alt="" fill className="object-cover opacity-70" />
                         <button
                           type="button"
@@ -403,7 +403,7 @@ export default function AdminProductsPage() {
                 )}
 
                 {/* Upload button */}
-                <label className={`flex items-center justify-center gap-2 w-full py-3 border border-dashed border-white/20 text-[11px] tracking-widest cursor-pointer transition-colors ${uploading ? "text-foreground/20" : "text-foreground/40 hover:border-white/40 hover:text-foreground/60"}`}>
+                <label className={`flex items-center justify-center gap-2 w-full py-3 border border-dashed border-foreground/20 text-[11px] tracking-widest cursor-pointer transition-colors ${uploading ? "text-foreground/20" : "text-foreground/40 hover:border-foreground/40 hover:text-foreground/60"}`}>
                   <input
                     type="file"
                     accept="image/*"
@@ -447,7 +447,7 @@ export default function AdminProductsPage() {
                   type="datetime-local"
                   value={form.dealEndsAt}
                   onChange={(e) => setForm({ ...form, dealEndsAt: e.target.value })}
-                  className="w-full bg-transparent border border-white/15 px-2.5 py-2 text-[12px] text-foreground/70 focus:outline-none focus:border-white/40 transition-colors"
+                  className="w-full bg-transparent border border-foreground/15 px-2.5 py-2 text-[12px] text-foreground/70 focus:outline-none focus:border-foreground/40 transition-colors"
                 />
                 {form.dealEndsAt && (
                   <button
@@ -460,7 +460,7 @@ export default function AdminProductsPage() {
                 )}
               </div>
 
-              <div className="border-t border-white/10 pt-3 flex gap-2">
+              <div className="border-t border-foreground/10 pt-3 flex gap-2">
                 <button
                   className="flex-1 py-2 bg-foreground text-background text-[11px] tracking-widest font-bold hover:bg-foreground/90 transition-colors disabled:opacity-50"
                   onClick={handleSave}
@@ -469,7 +469,7 @@ export default function AdminProductsPage() {
                   {saving ? "SAVING..." : editing ? "UPDATE.PRODUCT" : "CREATE.PRODUCT"}
                 </button>
                 <button
-                  className="px-4 py-2 border border-white/20 text-[11px] tracking-widest text-foreground/40 hover:text-foreground hover:border-white/40 transition-colors"
+                  className="px-4 py-2 border border-foreground/20 text-[11px] tracking-widest text-foreground/40 hover:text-foreground hover:border-foreground/40 transition-colors"
                   onClick={() => setOpen(false)}
                 >
                   CANCEL
@@ -487,7 +487,7 @@ export default function AdminProductsPage() {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="SEARCH.PRODUCTS..."
-          className="w-full pl-8 pr-8 py-2 bg-transparent border border-white/15 text-[12px] tracking-widest text-foreground/70 placeholder:text-foreground/20 focus:outline-none focus:border-white/40 transition-colors"
+          className="w-full pl-8 pr-8 py-2 bg-transparent border border-foreground/15 text-[12px] tracking-widest text-foreground/70 placeholder:text-foreground/20 focus:outline-none focus:border-foreground/40 transition-colors"
         />
         {search && (
           <button onClick={() => setSearch("")} className="absolute right-3 top-1/2 -translate-y-1/2 text-foreground/30 hover:text-foreground">
@@ -499,19 +499,19 @@ export default function AdminProductsPage() {
       {/* Table */}
       {loading ? (
         <div className="space-y-2 animate-pulse">
-          {[1, 2, 3, 4, 5].map((i) => <div key={i} className="h-14 bg-foreground/5 border border-white/5" />)}
+          {[1, 2, 3, 4, 5].map((i) => <div key={i} className="h-14 bg-foreground/5 border border-foreground/5" />)}
         </div>
       ) : filtered.length === 0 ? (
-        <div className="text-center py-24 border border-white/10">
+        <div className="text-center py-24 border border-foreground/10">
           <Package className="h-10 w-10 mx-auto mb-3 opacity-20" />
           <p className="text-[12px] tracking-widest text-foreground/30">NO.PRODUCTS.FOUND</p>
         </div>
       ) : (
-        <div className="border border-white/10 overflow-hidden">
+        <div className="border border-foreground/10 overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="border-b border-white/10 bg-foreground/3 text-[10px] tracking-widest text-foreground/25">
+                <tr className="border-b border-foreground/10 bg-foreground/3 text-[10px] tracking-widest text-foreground/25">
                   <th className="text-left p-3">PRODUCT</th>
                   <th className="text-left p-3">CATEGORY</th>
                   <th className="text-right p-3">PRICE</th>
@@ -525,7 +525,7 @@ export default function AdminProductsPage() {
                   <tr key={product.id} className="hover:bg-foreground/3 transition-colors">
                     <td className="p-3">
                       <div className="flex items-center gap-2">
-                        <div className="relative w-10 h-10 overflow-hidden bg-foreground/5 border border-white/10 flex-shrink-0">
+                        <div className="relative w-10 h-10 overflow-hidden bg-foreground/5 border border-foreground/10 flex-shrink-0">
                           <Image
                             src={product.images[0] ?? ""}
                             alt={product.name}
@@ -563,13 +563,13 @@ export default function AdminProductsPage() {
                     <td className="p-3 text-right">
                       <div className="flex items-center justify-end gap-1">
                         <button
-                          className="w-7 h-7 flex items-center justify-center border border-white/10 text-foreground/30 hover:text-foreground hover:border-white/30 transition-colors"
+                          className="w-7 h-7 flex items-center justify-center border border-foreground/10 text-foreground/30 hover:text-foreground hover:border-foreground/30 transition-colors"
                           onClick={() => openEdit(product)}
                         >
                           <Pencil className="h-3 w-3" />
                         </button>
                         <button
-                          className="w-7 h-7 flex items-center justify-center border border-white/10 text-foreground/30 hover:text-red-400/70 hover:border-red-400/30 transition-colors"
+                          className="w-7 h-7 flex items-center justify-center border border-foreground/10 text-foreground/30 hover:text-red-400/70 hover:border-red-400/30 transition-colors"
                           onClick={() => handleDelete(product.id)}
                         >
                           <Trash2 className="h-3 w-3" />
