@@ -126,7 +126,7 @@ export default function AdminConversationPage({
               ? "text-blue-400/60 border-blue-400/20"
               : "text-foreground/30 border-foreground/15"
           }`}>
-            {conversation.status.toUpperCase()}
+            {conversation.status}
           </span>
         </div>
       </div>

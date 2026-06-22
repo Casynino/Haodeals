@@ -73,7 +73,7 @@ const STATUS_META: Record<string, StatusMeta> = {
 
 function getMeta(status: string): StatusMeta {
   return STATUS_META[status] ?? {
-    label: status.replace(/_/g, " ").toUpperCase(),
+    label: status.replace(/_/g, " "),
     dot: "bg-foreground/30",
     badge: "text-foreground/50 border-white/15 bg-foreground/[0.04]",
     Icon: Clock,
@@ -87,7 +87,7 @@ export function OrderSummaryCard({ order }: { order: ConversationOrder }) {
 
   const ref = order.trackingId
     ? `Order #${order.trackingId}`
-    : `Order #${order.id.slice(0, 8).toUpperCase()}`
+    : `Order #${order.id.slice(0, 8)}`
 
   const statusMeta = getMeta(order.status)
   const StatusIcon = statusMeta.Icon
@@ -105,7 +105,7 @@ export function OrderSummaryCard({ order }: { order: ConversationOrder }) {
           <span className="text-[12px] tracking-[0.18em] text-foreground/65">{ref}</span>
           <span className={`text-[10px] tracking-widest border px-2 py-0.5 flex items-center gap-1 shrink-0 ${statusMeta.badge}`}>
             <StatusIcon className="h-2.5 w-2.5" />
-            {statusMeta.label.toUpperCase()}
+            {statusMeta.label}
           </span>
         </div>
 

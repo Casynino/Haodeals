@@ -67,7 +67,7 @@ export default function OrderDetailPage() {
     )
   }
 
-  const shortId = order.id.slice(0, 8).toUpperCase()
+  const shortId = order.id.slice(0, 8)
   const isDelivered = order.status === "delivered"
 
   return (

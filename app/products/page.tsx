@@ -15,10 +15,10 @@ const CATEGORIES = [
 ]
 
 const SORT_OPTIONS = [
-  { value: "newest", label: "NEWEST.FIRST" },
-  { value: "price-asc", label: "PRICE.LOW→HIGH" },
-  { value: "price-desc", label: "PRICE.HIGH→LOW" },
-  { value: "discount", label: "BIGGEST.DISCOUNT" },
+  { value: "newest", label: "Newest first" },
+  { value: "price-asc", label: "Price low→HIGH" },
+  { value: "price-desc", label: "Price high→LOW" },
+  { value: "discount", label: "Biggest discount" },
 ]
 
 function ProductsContent() {

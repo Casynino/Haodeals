@@ -294,7 +294,7 @@ export default function AdminOrdersPage() {
       {/* Header */}
       <div className="flex items-center justify-between mb-5 border-b border-foreground/10 pb-4">
         <div className="flex items-center gap-3">
-          <span className="text-foreground/25 text-[12px]">//</span>
+          <span className="text-foreground/25 text-[12px]"></span>
           <h1 className="text-[13px] tracking-[0.3em] text-foreground/65">ORDER MONITOR</h1>
         </div>
         <button
@@ -325,7 +325,7 @@ export default function AdminOrdersPage() {
               <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-current rounded-full animate-ping opacity-70" style={{ color: s.color.replace("/80", "") }} />
             )}
             <p className={`text-xl font-black ${s.color}`}>{s.value}</p>
-            <p className="text-[10px] tracking-widest text-foreground/28 mt-0.5">{s.label.toUpperCase()}</p>
+            <p className="text-[10px] tracking-widest text-foreground/28 mt-0.5">{s.label}</p>
           </button>
         ))}
       </div>
@@ -399,7 +399,7 @@ export default function AdminOrdersPage() {
                         {order.user.name ?? order.user.email}
                       </p>
                       <p className="text-[10px] text-foreground/22 mt-0.5">
-                        #{order.id.slice(0, 8).toUpperCase()}
+                        #{order.id.slice(0, 8)}
                         {order.trackingId && <span className="ml-1.5 text-foreground/15">· {order.trackingId}</span>}
                         {" · "}{new Date(order.createdAt).toLocaleDateString("en-US", {
                           month: "short", day: "numeric", year: "numeric",

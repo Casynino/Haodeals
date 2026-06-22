@@ -40,7 +40,7 @@ export default function OrdersPage() {
     return (
       <div className="container mx-auto px-4 py-8 max-w-3xl">
         <div className="flex items-center gap-3 mb-6 border-b border-white/10 pb-4">
-          <span className="text-foreground/30 text-[12px]">//</span>
+          <span className="text-foreground/30 text-[12px]"></span>
           <h1 className="text-[13px] tracking-[0.3em] text-foreground/70">MY ORDERS</h1>
         </div>
         <div className="space-y-3 animate-pulse">
@@ -76,7 +76,7 @@ export default function OrdersPage() {
     <div className="container mx-auto px-4 py-8 max-w-3xl">
       <div className="flex items-center justify-between mb-6 border-b border-white/10 pb-4">
         <div className="flex items-center gap-3">
-          <span className="text-foreground/45 text-xs">//</span>
+          <span className="text-foreground/45 text-xs"></span>
           <h1 className="text-lg font-semibold tracking-[0.2em] text-foreground/90">MY ORDERS</h1>
           <span className="text-xs text-foreground/50">{orders.length} orders</span>
         </div>
@@ -85,7 +85,7 @@ export default function OrdersPage() {
       <div className="space-y-3">
         {orders.map((order) => {
           const cfg = STATUS_CONFIG[order.status] ?? {
-            label: order.status.replace(/_/g, " ").toUpperCase(),
+            label: order.status.replace(/_/g, " "),
             color: "text-foreground/50 border-white/20",
             dot: "bg-foreground/40",
           }
@@ -99,7 +99,7 @@ export default function OrdersPage() {
               <div className="flex items-start justify-between">
                 <div className="space-y-0.5">
                   <p className="text-[12px] tracking-widest text-foreground/55 font-medium">
-                    ORDER #{order.id.slice(0, 8).toUpperCase()}
+                    ORDER #{order.id.slice(0, 8)}
                     {order.trackingId && (
                       <span className="ml-2 text-foreground/40">· {order.trackingId}</span>
                     )}

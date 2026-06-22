@@ -49,8 +49,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           ${collapsed ? "justify-center" : "justify-between"}`}>
           {!collapsed && (
             <div>
-              <p className="text-[13px] font-black tracking-[0.25em] text-foreground/85">[ HAO DEALS ]</p>
-              <p className="text-[10px] text-violet-400/55 tracking-[0.3em] mt-0.5">ADMIN CONSOLE</p>
+              <p className="text-[15px] font-bold tracking-tight text-foreground">Hao<span className="text-gold">Deals</span></p>
+              <p className="text-[11px] text-foreground/40 mt-0.5">Admin console</p>
             </div>
           )}
           <button
@@ -83,7 +83,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 title={collapsed ? label : undefined}
               >
                 <Icon className="h-4 w-4 flex-shrink-0" />
-                {!collapsed && <span>{label.toUpperCase()}</span>}
+                {!collapsed && <span>{label}</span>}
                 {active && !collapsed && <div className="ml-auto w-1 h-1 bg-violet-400 rounded-full" />}
               </Link>
             )
@@ -94,16 +94,16 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         <div className={`border-t border-foreground/8 px-3 py-3 ${collapsed ? "flex justify-center" : ""}`}>
           {collapsed ? (
             <div className="w-7 h-7 rounded-full bg-violet-500/20 flex items-center justify-center">
-              <span className="text-[11px] font-bold text-violet-400">{user?.name?.[0]?.toUpperCase() ?? "A"}</span>
+              <span className="text-[11px] font-bold text-violet-400">{user?.name?.[0] ?? "A"}</span>
             </div>
           ) : (
             <div className="flex items-center gap-2.5">
               <div className="w-7 h-7 rounded-full bg-violet-500/20 flex items-center justify-center flex-shrink-0">
-                <span className="text-[11px] font-bold text-violet-400">{user?.name?.[0]?.toUpperCase() ?? "A"}</span>
+                <span className="text-[11px] font-bold text-violet-400">{user?.name?.[0] ?? "A"}</span>
               </div>
               <div className="min-w-0 flex-1">
                 <p className="text-[11px] font-semibold text-foreground/65 truncate">{user?.name ?? "Admin"}</p>
-                <p className="text-[10px] text-violet-400/50 tracking-widest">ADMINISTRATOR</p>
+                <p className="text-[10px] text-foreground/40">Administrator</p>
               </div>
             </div>
           )}
@@ -140,7 +140,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             className="p-1.5 border border-foreground/12 rounded-lg text-foreground/40 hover:text-foreground/70 transition-colors">
             <Menu className="h-4 w-4" />
           </button>
-          <span className="text-[12px] tracking-[0.25em] text-foreground/55">ADMIN PANEL</span>
+          <span className="text-[13px] font-semibold tracking-tight text-foreground/70">Admin</span>
         </div>
 
         {children}

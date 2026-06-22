@@ -106,11 +106,8 @@ export function Navbar() {
       {/* Main nav */}
       <div className="container mx-auto px-4 h-14 flex items-center gap-6">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-1.5 font-bold text-sm tracking-[0.2em] shrink-0">
-          <span className="text-foreground/40">[</span>
-          <span className="text-foreground">HAO</span>
-          <span className="text-foreground/65">DEALS</span>
-          <span className="text-foreground/40">]</span>
+        <Link href="/" className="flex items-center font-bold text-lg tracking-tight shrink-0">
+          <span className="text-foreground">Hao</span><span className="text-gold">Deals</span>
         </Link>
 
         <span className="text-foreground/20 text-xs hidden md:block">|</span>
@@ -192,7 +189,7 @@ export function Navbar() {
             <DropdownMenu>
               <DropdownMenuTrigger className="flex items-center gap-1.5 px-2.5 py-1.5 text-xs tracking-wider text-foreground/60 hover:text-foreground hover:bg-foreground/5 transition-colors border border-transparent hover:border-white/15">
                 <span className="text-foreground/40">&gt;</span>
-                <span>{(user?.name ?? user?.email ?? "USER").toUpperCase().slice(0, 10)}</span>
+                <span>{(user?.name ?? user?.email ?? "USER").slice(0, 10)}</span>
                 {isAdmin && <span className="text-yellow-400/80 text-[12px]">[ADMIN]</span>}
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-56 bg-background border border-white/15 p-0 text-xs" align="end">

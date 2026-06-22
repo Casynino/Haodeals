@@ -212,7 +212,7 @@ export default function AdminAnalytics() {
             <button key={id} onClick={() => setTab(id)}
               className={`flex items-center gap-2 px-4 py-2.5 text-[12px] tracking-widest border-b-2 transition-all
                 ${tab === id ? "border-violet-500 text-violet-400" : "border-transparent text-foreground/38 hover:text-foreground/60"}`}>
-              <Icon className="h-3.5 w-3.5" /> {label.toUpperCase()}
+              <Icon className="h-3.5 w-3.5" /> {label}
             </button>
           ))}
         </div>

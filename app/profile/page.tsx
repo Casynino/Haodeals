@@ -8,12 +8,12 @@ export default function ProfilePage() {
   const { data: session } = useSession()
   const user = session?.user as { name?: string; email?: string; image?: string; id?: string; role?: string } | undefined
 
-  const initial = user?.name?.charAt(0).toUpperCase() ?? user?.email?.charAt(0).toUpperCase() ?? "U"
+  const initial = user?.name?.charAt(0) ?? user?.email?.charAt(0) ?? "U"
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-lg">
       <div className="flex items-center gap-3 mb-6 border-b border-white/12 pb-4">
-        <span className="text-foreground/45 text-xs">//</span>
+        <span className="text-foreground/45 text-xs"></span>
         <h1 className="text-lg font-semibold tracking-[0.2em] text-foreground/90">Profile</h1>
       </div>
 
@@ -45,7 +45,7 @@ export default function ProfilePage() {
           {[
             { icon: User, label: "Name", value: user?.name ?? "—" },
             { icon: Mail, label: "Email", value: user?.email ?? "—" },
-            { icon: ShieldCheck, label: "Account type", value: (user?.role ?? "customer").toUpperCase() },
+            { icon: ShieldCheck, label: "Account type", value: (user?.role ?? "customer") },
           ].map(({ icon: Icon, label, value }) => (
             <div key={label} className="flex items-center gap-3">
               <div className="w-8 h-8 border border-white/12 flex items-center justify-center flex-shrink-0">

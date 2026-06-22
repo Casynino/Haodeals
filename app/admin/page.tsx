@@ -155,7 +155,7 @@ export default function AdminDashboard() {
           </button>
           <Link href="/admin/products"
             className="flex items-center gap-1.5 px-3 py-1.5 border border-foreground/20 text-[11px] tracking-widest text-foreground/50 hover:text-foreground hover:border-foreground/40 transition-colors">
-            <Plus className="h-3 w-3" /> ADD.PRODUCT
+            <Plus className="h-3 w-3" /> Add product
           </Link>
         </div>
       </div>
@@ -337,10 +337,10 @@ export default function AdminDashboard() {
                 <div key={o.id} className="flex items-center gap-3 px-5 py-3 hover:bg-foreground/[0.02] transition-colors">
                   <div className="flex-1 min-w-0">
                     <p className="text-[12px] text-foreground/70 uppercase tracking-wide truncate">{o.user.name ?? o.user.email}</p>
-                    <p className="text-[10px] text-foreground/25">#{o.id.slice(0,8).toUpperCase()} · {(o.items as unknown[]).length} items · {new Date(o.createdAt).toLocaleDateString("en-GB", { day: "2-digit", month: "short" })}</p>
+                    <p className="text-[10px] text-foreground/25">#{o.id.slice(0,8)} · {(o.items as unknown[]).length} items · {new Date(o.createdAt).toLocaleDateString("en-GB", { day: "2-digit", month: "short" })}</p>
                   </div>
                   <span className={`text-[11px] border px-2 py-0.5 hidden sm:inline flex-shrink-0 ${STATUS_COLOR[o.status] ?? "text-foreground/40 border-foreground/12"}`}>
-                    {o.status.replace(/_/g, " ").toUpperCase()}
+                    {o.status.replace(/_/g, " ")}
                   </span>
                   <span className="text-emerald-400/80 text-xs font-semibold flex-shrink-0">{formatPrice(o.total)}</span>
                 </div>

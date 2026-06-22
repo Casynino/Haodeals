@@ -94,7 +94,7 @@ export default function AdminInventory() {
               <Icon className="h-3.5 w-3.5" />
             </div>
             <p className="text-xl font-black text-foreground/82">{val}</p>
-            <p className="text-[10px] tracking-widest text-foreground/28 mt-0.5">{label.toUpperCase()}</p>
+            <p className="text-[10px] tracking-widest text-foreground/28 mt-0.5">{label}</p>
           </div>
         ))}
       </div>
@@ -106,7 +106,7 @@ export default function AdminInventory() {
             <button key={id} onClick={() => setFilter(id)}
               className={`px-3 py-1.5 rounded-full text-[10px] tracking-widest border transition-all
                 ${filter === id ? "border-foreground/25 bg-foreground/6 text-foreground/75" : `border-foreground/8 ${color || "text-foreground/30"} hover:border-foreground/18`}`}>
-              {label.toUpperCase()}
+              {label}
             </button>
           ))}
         </div>

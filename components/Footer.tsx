@@ -25,11 +25,8 @@ export function Footer() {
             <div className="space-y-5">
               {/* Brand mark */}
               <div>
-                <div className="flex items-center gap-1 text-lg font-black tracking-[0.22em] mb-2">
-                  <span className="text-foreground/30">[</span>
-                  <span className="text-foreground">HAO</span>
-                  <span className="text-foreground/55">DEALS</span>
-                  <span className="text-foreground/30">]</span>
+                <div className="text-xl font-bold tracking-tight mb-2">
+                  <span className="text-foreground">Hao</span><span className="text-gold">Deals</span>
                 </div>
                 <p className="text-[13px] text-foreground/40 max-w-xs leading-relaxed">
                   Simple, fast, secure shopping with flexible payments and reliable delivery across Tanzania.

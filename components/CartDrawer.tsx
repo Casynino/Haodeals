@@ -35,8 +35,8 @@ export function CartDrawer() {
         {/* Header */}
         <SheetHeader className="px-4 py-3 border-b border-white/10">
           <SheetTitle className="text-[12px] tracking-widest text-foreground/60 flex items-center gap-2">
-            <span className="text-foreground/30">//</span>
-            BAG.CONTENTS
+            <span className="text-foreground/30"></span>
+            Bag contents
             <span className="ml-auto text-foreground/40">[{itemCount}]</span>
           </SheetTitle>
         </SheetHeader>
@@ -47,14 +47,14 @@ export function CartDrawer() {
               <ShoppingCart className="h-8 w-8 opacity-30" />
             </div>
             <div className="text-center">
-              <p className="text-[12px] tracking-widest mb-1">BAG.EMPTY</p>
+              <p className="text-[12px] tracking-widest mb-1">Bag empty</p>
               <p className="text-[11px] text-foreground/20">NO ITEMS IN BAG</p>
             </div>
             <Link
               href="/products"
               className="px-4 py-1.5 text-[12px] tracking-widest border border-white/20 text-foreground/60 hover:text-foreground hover:border-white/40 transition-colors"
             >
-              BROWSE.DEALS
+              Browse deals
             </Link>
           </div>
         ) : (
@@ -71,7 +71,7 @@ export function CartDrawer() {
                       <div className="flex flex-wrap gap-1 mt-0.5">
                         {item.selectedOptions.map((opt) => (
                           <span key={opt.name} className="text-[10px] tracking-widest text-foreground/40 border border-white/10 px-1 py-0.5">
-                            {opt.name.toUpperCase()}: {opt.value}
+                            {opt.name}: {opt.value}
                           </span>
                         ))}
                       </div>
@@ -124,7 +124,7 @@ export function CartDrawer() {
                 onClick={() => { setOpen(false); router.push("/cart") }}
                 className="w-full text-center py-1.5 text-[11px] tracking-widest text-foreground/30 hover:text-foreground transition-colors"
               >
-                VIEW.FULL.BAG
+                View full bag
               </button>
             </div>
           </>
