@@ -65,11 +65,13 @@ export default async function HomePage() {
   const heroProduct = featuredProducts[0] ?? dealProducts[0]
   const heroImage = heroProduct?.images?.[0]
 
-  // Banner imagery — people / lifestyle shots (verified live).
-  // To use a video instead, drop an .mp4 in /public/banners and set `video: "/banners/clip.mp4"` on a slide.
-  const bannerShopper  = "https://images.unsplash.com/photo-1483985988355-763728e1935b?w=1280&h=620&fit=crop"  // woman with shopping bags
-  const bannerDelivery = "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=1280&h=620&fit=crop"     // delivery / parcels
-  const bannerCrew     = "https://images.unsplash.com/photo-1607083206869-4c7672e72a8a?w=1280&h=620&fit=crop"  // friends shopping
+  // Banner imagery — African lifestyle shots (verified live).
+  // NOTE: swap any of these freely, or drop your own into /public/banners and
+  // reference e.g. "/banners/hero.jpg" (or set `video: "/banners/clip.mp4"`).
+  const bannerShopper  = "https://images.unsplash.com/photo-1591085686350-798c0f9faa7f?w=1280&h=620&fit=crop"
+  const bannerDelivery = "https://images.unsplash.com/photo-1583394838336-acd977736f90?w=1280&h=620&fit=crop"
+  const bannerCrew     = "https://images.unsplash.com/photo-1521577352947-9bb58764b69a?w=1280&h=620&fit=crop"
+  const bannerPromo    = "https://images.unsplash.com/photo-1531384441138-2736e62e0919?w=1280&h=620&fit=crop"
 
   // Promotional carousel slides (image-first, people/lifestyle)
   const slides: PromoSlide[] = [
@@ -197,28 +199,27 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* ── Mid-page promo banner ─────────────────────────────────── */}
+      {/* ── Mid-page promo banner (image-based) ───────────────────── */}
       <section className="container mx-auto px-4 pt-10">
-        <div
-          className="relative overflow-hidden rounded-3xl p-7 md:p-9"
-          style={{ background: "linear-gradient(125deg, rgba(212,175,55,0.20) 0%, rgba(154,118,17,0.10) 35%, rgba(0,0,0,0.35) 100%)" }}
-        >
+        <div className="relative overflow-hidden rounded-3xl h-[15rem] md:h-[17rem]">
+          <Image src={bannerPromo} alt="" fill className="object-cover" />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/55 to-black/15" />
           <div className="gold-glow absolute -top-16 right-10 w-72 h-72 rounded-full pointer-events-none" />
-          <div className="relative flex flex-col sm:flex-row sm:items-center sm:justify-between gap-5">
-            <div>
+          <div className="relative h-full flex items-center">
+            <div className="px-6 md:px-10 max-w-lg">
               <p className="text-[12px] text-gold tracking-[0.2em] uppercase mb-2">Weekend special</p>
-              <h3 className="text-2xl md:text-3xl font-bold tracking-tight text-foreground">
+              <h3 className="text-2xl md:text-3xl font-bold tracking-tight text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.6)]">
                 Free delivery in Dar es Salaam
               </h3>
-              <p className="text-sm text-foreground/55 mt-2 max-w-md">
+              <p className="text-sm text-white/75 mt-2 mb-5 max-w-md">
                 Order this weekend and we&apos;ll deliver it free — fast, within the city.
               </p>
+              <Link href="/products">
+                <button className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gold text-black text-sm font-semibold hover:brightness-110 active:scale-[0.98] transition-all">
+                  Browse deals <ArrowRight className="h-4 w-4" />
+                </button>
+              </Link>
             </div>
-            <Link href="/products" className="flex-shrink-0">
-              <button className="flex items-center gap-2 px-6 py-3 rounded-full bg-gold text-black text-sm font-semibold hover:brightness-110 active:scale-[0.98] transition-all">
-                Browse deals <ArrowRight className="h-4 w-4" />
-              </button>
-            </Link>
           </div>
         </div>
       </section>
