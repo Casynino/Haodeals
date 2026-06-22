@@ -16,7 +16,7 @@ export default function CartPage() {
 
   if (items.length === 0) {
     return (
-      <div className="container mx-auto px-4 py-24 flex flex-col items-center gap-6 text-center font-mono">
+      <div className="container mx-auto px-4 py-24 flex flex-col items-center gap-6 text-center">
         <div className="border border-white/10 p-8">
           <ShoppingCart className="h-12 w-12 opacity-20" />
         </div>
@@ -30,7 +30,7 @@ export default function CartPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8 pb-24 lg:pb-8 font-mono">
+    <div className="container mx-auto px-4 py-8 pb-24 lg:pb-8">
       {/* Header */}
       <div className="flex items-center justify-between mb-6 border-b border-white/10 pb-4">
         <div className="flex items-center gap-3">
@@ -68,7 +68,7 @@ export default function CartPage() {
                   </button>
                 </div>
                 <div className="flex items-center gap-2 mt-1">
-                  <span className="text-sm text-green-400 font-mono">{formatPrice(item.price)}</span>
+                  <span className="text-sm text-green-400">{formatPrice(item.price)}</span>
                   {item.originalPrice && item.originalPrice > item.price && (
                     <span className="text-[12px] text-foreground/40 line-through">{formatPrice(item.originalPrice)}</span>
                   )}
@@ -111,7 +111,7 @@ export default function CartPage() {
 
             <div className="border-t border-white/10 pt-3 flex justify-between items-center">
               <span className="text-xs tracking-widest text-foreground/60 font-semibold">Total</span>
-              <span className="text-green-400 font-mono text-base font-semibold">{formatPrice(finalTotal)}</span>
+              <span className="text-green-400 text-base font-semibold">{formatPrice(finalTotal)}</span>
             </div>
 
             <div className="space-y-1.5">
@@ -148,7 +148,7 @@ export default function CartPage() {
         <div className="flex items-center justify-between gap-4">
           <div>
             <p className="text-[10px] tracking-widest text-foreground/30">Total</p>
-            <p className="text-green-400/80 font-mono text-sm font-bold">{formatPrice(finalTotal)}</p>
+            <p className="text-green-400/80 text-sm font-bold">{formatPrice(finalTotal)}</p>
           </div>
           <Link
             href="/checkout"

@@ -11,7 +11,7 @@ export default function ProfilePage() {
   const initial = user?.name?.charAt(0).toUpperCase() ?? user?.email?.charAt(0).toUpperCase() ?? "U"
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-lg font-mono">
+    <div className="container mx-auto px-4 py-8 max-w-lg">
       <div className="flex items-center gap-3 mb-6 border-b border-white/12 pb-4">
         <span className="text-foreground/45 text-xs">//</span>
         <h1 className="text-lg font-semibold tracking-[0.2em] text-foreground/90">Profile</h1>

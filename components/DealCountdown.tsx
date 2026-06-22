@@ -72,7 +72,7 @@ function DigitUnit({
 }) {
   return (
     <div className="flex flex-col items-center gap-[5px]">
-      <span className={`font-mono text-[20px] font-semibold tabular-nums leading-none tracking-tight ${numCls}`}>
+      <span className={` text-[20px] font-semibold tabular-nums leading-none tracking-tight ${numCls}`}>
         {value}
       </span>
       <span className={`text-[7.5px] tracking-[0.13em] uppercase font-medium ${labelCls}`}>

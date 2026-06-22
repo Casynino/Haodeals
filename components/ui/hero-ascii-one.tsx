@@ -133,7 +133,7 @@ export default function HeroAscii() {
             {/* Top rule */}
             <div className="flex items-center gap-2 mb-3 opacity-60">
               <div className="w-8 h-px bg-white" />
-              <span className="text-white text-[12px] font-mono tracking-wider">∞</span>
+              <span className="text-white text-[12px] tracking-wider">∞</span>
               <div className="flex-1 h-px bg-white" />
             </div>
 
@@ -141,7 +141,7 @@ export default function HeroAscii() {
             <div className="relative">
               <div className="hidden lg:block absolute -right-3 top-0 bottom-0 w-1 dither-pattern opacity-40" />
               <h1
-                className="text-2xl lg:text-5xl font-bold text-white mb-3 lg:mb-4 leading-tight font-mono tracking-wider whitespace-nowrap lg:-ml-[5%]"
+                className="text-2xl lg:text-5xl font-bold text-white mb-3 lg:mb-4 leading-tight tracking-wider whitespace-nowrap lg:-ml-[5%]"
                 style={{ letterSpacing: '0.1em' }}
               >
                 BEST DEALS. EVER.
@@ -157,7 +157,7 @@ export default function HeroAscii() {
 
             {/* Description */}
             <div className="relative">
-              <p className="text-xs lg:text-base text-gray-300 mb-5 lg:mb-6 leading-relaxed font-mono opacity-80">
+              <p className="text-xs lg:text-base text-gray-300 mb-5 lg:mb-6 leading-relaxed opacity-80">
                 Terminal-grade savings on electronics, fashion & more. Up to 70% off. Daily drops. No noise — just deals.
               </p>
               <div
@@ -171,7 +171,7 @@ export default function HeroAscii() {
             {/* CTAs */}
             <div className="flex flex-col lg:flex-row gap-3 lg:gap-4">
               <Link href="/products">
-                <button className="relative px-5 lg:px-6 py-2 lg:py-2.5 bg-transparent text-white font-mono text-xs lg:text-sm border border-white hover:bg-white hover:text-black transition-all duration-200 group">
+                <button className="relative px-5 lg:px-6 py-2 lg:py-2.5 bg-transparent text-white text-xs lg:text-sm border border-white hover:bg-white hover:text-black transition-all duration-200 group">
                   <span className="hidden lg:block absolute -top-1 -left-1 w-2 h-2 border-t border-l border-white opacity-0 group-hover:opacity-100 transition-opacity" />
                   <span className="hidden lg:block absolute -bottom-1 -right-1 w-2 h-2 border-b border-r border-white opacity-0 group-hover:opacity-100 transition-opacity" />
                   Shop Now
@@ -179,7 +179,7 @@ export default function HeroAscii() {
               </Link>
               {!isLoggedIn && (
                 <Link href="/register">
-                  <button className="relative px-5 lg:px-6 py-2 lg:py-2.5 bg-transparent border border-white text-white font-mono text-xs lg:text-sm hover:bg-white hover:text-black transition-all duration-200">
+                  <button className="relative px-5 lg:px-6 py-2 lg:py-2.5 bg-transparent border border-white text-white text-xs lg:text-sm hover:bg-white hover:text-black transition-all duration-200">
                     Create Free Account
                   </button>
                 </Link>
@@ -188,7 +188,7 @@ export default function HeroAscii() {
 
             {/* Bottom rule */}
             <div className="hidden lg:flex items-center gap-2 mt-6 opacity-40">
-              <span className="text-white text-[11px] font-mono">∞</span>
+              <span className="text-white text-[11px]">∞</span>
               <div className="flex-1 h-px bg-white" />
             </div>
 
@@ -202,7 +202,7 @@ export default function HeroAscii() {
         style={{ bottom: '5vh' }}
       >
         <div className="container mx-auto px-4 lg:px-8 py-2 lg:py-3 flex items-center justify-between">
-          <div className="flex items-center gap-3 lg:gap-6 text-[10px] lg:text-[11px] font-mono text-white/50">
+          <div className="flex items-center gap-3 lg:gap-6 text-[10px] lg:text-[11px] text-white/50">
             <span className="hidden lg:inline">Free shipping over TSh 100K</span>
             <span className="lg:hidden">Free shipping</span>
             <div className="hidden lg:flex gap-1">
@@ -213,7 +213,7 @@ export default function HeroAscii() {
             <span className="hidden lg:inline">30-day returns</span>
             <span className="hidden lg:inline">Secure checkout</span>
           </div>
-          <div className="flex items-center gap-2 lg:gap-4 text-[10px] lg:text-[11px] font-mono text-white/50">
+          <div className="flex items-center gap-2 lg:gap-4 text-[10px] lg:text-[11px] text-white/50">
             <span className="hidden lg:inline">◐ Live deals</span>
             <div className="flex gap-1">
               <div className="w-1 h-1 bg-white/60 rounded-full animate-pulse" />

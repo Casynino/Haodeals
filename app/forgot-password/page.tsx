@@ -41,7 +41,7 @@ export default function ForgotPasswordPage() {
 
         {/* Brand */}
         <div className="text-center space-y-2">
-          <Link href="/" className="inline-flex items-center gap-1 font-mono font-black text-base tracking-widest mb-1">
+          <Link href="/" className="inline-flex items-center gap-1 font-black text-base tracking-widest mb-1">
             <span className="text-foreground/30">[</span>
             <span>HAO</span>
             <span className="text-foreground/60">DEALS</span>

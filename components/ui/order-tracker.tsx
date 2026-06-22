@@ -397,7 +397,7 @@ export default function OrderTracker({
     displayStage === 2 ? "transit" : "delivered"
 
   return (
-    <div className="relative font-mono overflow-hidden">
+    <div className="relative overflow-hidden">
       {/* Subtle grid */}
       <div
         className="absolute inset-0 pointer-events-none"

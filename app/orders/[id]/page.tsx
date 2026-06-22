@@ -48,7 +48,7 @@ export default function OrderDetailPage() {
   /* ── Loading ── */
   if (loading) {
     return (
-      <div className="container mx-auto px-4 py-8 max-w-2xl font-mono">
+      <div className="container mx-auto px-4 py-8 max-w-2xl">
         <div className="h-4 w-24 bg-foreground/5 mb-8 animate-pulse" />
         <div className="border border-white/10 h-96 animate-pulse bg-foreground/5" />
       </div>
@@ -58,7 +58,7 @@ export default function OrderDetailPage() {
   /* ── Not found ── */
   if (notFound || !order) {
     return (
-      <div className="container mx-auto px-4 py-24 text-center font-mono">
+      <div className="container mx-auto px-4 py-24 text-center">
         <p className="text-[12px] tracking-widest text-foreground/30 mb-4">Order not found</p>
         <Link href="/orders" className="text-[11px] text-foreground/40 hover:text-foreground underline underline-offset-4">
           Back to my orders
@@ -71,7 +71,7 @@ export default function OrderDetailPage() {
   const isDelivered = order.status === "delivered"
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-2xl font-mono">
+    <div className="container mx-auto px-4 py-8 max-w-2xl">
       {/* Back */}
       <Link
         href="/orders"
@@ -91,7 +91,7 @@ export default function OrderDetailPage() {
           </p>
         </div>
         <div className="flex flex-col items-end gap-1">
-          <p className="text-green-400/80 text-lg font-mono font-bold">{formatPrice(order.total)}</p>
+          <p className="text-green-400/80 text-lg font-bold">{formatPrice(order.total)}</p>
           <button
             onClick={fetchOrder}
             className="flex items-center gap-1 text-[10px] text-foreground/25 hover:text-foreground/50 transition-colors"
@@ -127,7 +127,7 @@ export default function OrderDetailPage() {
           >
             <div className="flex items-center gap-3">
               <span className="text-[10px] tracking-widest text-foreground/25">TRACKING ID</span>
-              <span className="text-[12px] text-foreground/55 font-mono">{order.trackingId}</span>
+              <span className="text-[12px] text-foreground/55">{order.trackingId}</span>
             </div>
             {copied
               ? <Check className="h-3 w-3 text-green-400" />
@@ -157,7 +157,7 @@ export default function OrderDetailPage() {
                   <p className="text-[12px] text-foreground/65 truncate">{item.product.name}</p>
                   <p className="text-[10px] text-foreground/28 mt-0.5">Qty: {item.quantity}</p>
                 </div>
-                <p className="text-[13px] text-green-400/65 font-mono flex-shrink-0">
+                <p className="text-[13px] text-green-400/65 flex-shrink-0">
                   {formatPrice(item.price * item.quantity)}
                 </p>
               </div>
@@ -165,7 +165,7 @@ export default function OrderDetailPage() {
           </div>
           <div className="flex items-center justify-between px-5 py-3 border-t border-white/8 bg-foreground/[0.02]">
             <span className="text-[10px] tracking-widest text-foreground/28">TOTAL</span>
-            <span className="text-sm text-green-400/75 font-mono font-bold">{formatPrice(order.total)}</span>
+            <span className="text-sm text-green-400/75 font-bold">{formatPrice(order.total)}</span>
           </div>
         </div>
 

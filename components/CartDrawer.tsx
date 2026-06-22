@@ -25,16 +25,16 @@ export function CartDrawer() {
       <SheetTrigger className="relative w-8 h-8 flex items-center justify-center text-foreground/40 hover:text-foreground hover:bg-foreground/5 transition-colors border border-transparent hover:border-white/10">
         <ShoppingCart className="h-3.5 w-3.5" />
         {itemCount > 0 && (
-          <span className="absolute -top-1 -right-1 w-4 h-4 flex items-center justify-center bg-foreground text-background text-[10px] font-mono font-bold">
+          <span className="absolute -top-1 -right-1 w-4 h-4 flex items-center justify-center bg-foreground text-background text-[10px] font-bold">
             {itemCount}
           </span>
         )}
       </SheetTrigger>
 
-      <SheetContent className="w-full sm:max-w-sm flex flex-col bg-background border-l border-white/10 font-mono p-0">
+      <SheetContent className="w-full sm:max-w-sm flex flex-col bg-background border-l border-white/10 p-0">
         {/* Header */}
         <SheetHeader className="px-4 py-3 border-b border-white/10">
-          <SheetTitle className="text-[12px] tracking-widest text-foreground/60 flex items-center gap-2 font-mono">
+          <SheetTitle className="text-[12px] tracking-widest text-foreground/60 flex items-center gap-2">
             <span className="text-foreground/30">//</span>
             BAG.CONTENTS
             <span className="ml-auto text-foreground/40">[{itemCount}]</span>
@@ -77,7 +77,7 @@ export function CartDrawer() {
                       </div>
                     )}
                     <div className="flex items-center gap-1.5 mt-0.5">
-                      <span className="text-xs text-green-400/80 font-mono">{formatPrice(item.price)}</span>
+                      <span className="text-xs text-green-400/80">{formatPrice(item.price)}</span>
                       {item.originalPrice && item.originalPrice > item.price && (
                         <span className="text-[11px] text-foreground/30 line-through">{formatPrice(item.originalPrice)}</span>
                       )}
@@ -112,7 +112,7 @@ export function CartDrawer() {
             <div className="border-t border-white/10 p-4 space-y-3">
               <div className="flex justify-between items-center text-[12px]">
                 <span className="tracking-widest text-foreground/40">TOTAL</span>
-                <span className="font-mono text-green-400/80 text-[13px]">{formatPrice(finalTotal)}</span>
+                <span className=" text-green-400/80 text-[13px]">{formatPrice(finalTotal)}</span>
               </div>
               <button
                 onClick={() => { setOpen(false); router.push("/checkout") }}

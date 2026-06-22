@@ -290,7 +290,7 @@ export default function AdminOrdersPage() {
   })
 
   return (
-    <div className="container mx-auto px-4 py-8 font-mono">
+    <div className="container mx-auto px-4 py-8">
       {/* Header */}
       <div className="flex items-center justify-between mb-5 border-b border-white/10 pb-4">
         <div className="flex items-center gap-3">
@@ -429,7 +429,7 @@ export default function AdminOrdersPage() {
                           {statusLabel(order.status)}
                         </span>
                       </div>
-                      <span className="text-green-400/65 text-sm font-mono">{formatPrice(order.total)}</span>
+                      <span className="text-green-400/65 text-sm">{formatPrice(order.total)}</span>
                       {isExp ? <ChevronUp className="h-3 w-3 text-foreground/25" /> : <ChevronDown className="h-3 w-3 text-foreground/25" />}
                     </div>
                   </div>

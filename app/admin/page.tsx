@@ -191,9 +191,9 @@ export default function AdminDashboard() {
               ? <div className="h-6 w-24 bg-white/6 animate-pulse rounded-lg mb-1" />
               : <p className="text-xl font-black text-foreground/88 tracking-tight">{value}</p>
             }
-            {sub && <p className="text-[11px] text-foreground/30 font-mono">{sub}</p>}
+            {sub && <p className="text-[11px] text-foreground/30">{sub}</p>}
             {growth !== undefined && !loading && (
-              <div className={`flex items-center gap-1 mt-2 text-[11px] font-mono font-semibold ${growth >= 0 ? "text-emerald-400" : "text-rose-400"}`}>
+              <div className={`flex items-center gap-1 mt-2 text-[11px] font-semibold ${growth >= 0 ? "text-emerald-400" : "text-rose-400"}`}>
                 {growth >= 0 ? <TrendingUp className="h-3 w-3" /> : <TrendingDown className="h-3 w-3" />}
                 {growth >= 0 ? "+" : ""}{growth}% vs last month
               </div>
@@ -211,8 +211,8 @@ export default function AdminDashboard() {
               <p className="text-sm font-semibold text-foreground/70 mt-0.5">Last 30 days</p>
             </div>
             <div className="text-right">
-              <p className="text-[10px] text-foreground/25 font-mono">This month</p>
-              <p className="text-base font-bold text-emerald-400 font-mono">{formatPrice(analytics?.revenue.thisMonth ?? 0)}</p>
+              <p className="text-[10px] text-foreground/25">This month</p>
+              <p className="text-base font-bold text-emerald-400">{formatPrice(analytics?.revenue.thisMonth ?? 0)}</p>
             </div>
           </div>
           {loading
@@ -234,7 +234,7 @@ export default function AdminDashboard() {
                       <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: COLORS[i] }} />
                       <span className="text-foreground/55 truncate max-w-[100px]">{c.name}</span>
                     </div>
-                    <span className="text-foreground/40 font-mono">{c.pct}%</span>
+                    <span className="text-foreground/40">{c.pct}%</span>
                   </div>
                   <div className="h-1 bg-white/5 rounded-full overflow-hidden">
                     <div className="h-full rounded-full" style={{ width: `${c.pct}%`, background: COLORS[i] + "99" }} />
@@ -263,16 +263,16 @@ export default function AdminDashboard() {
           <div className="space-y-3">
             {(analytics?.products.topSelling ?? []).slice(0, 5).map((p, i) => (
               <div key={p.id} className="flex items-center gap-3">
-                <span className="text-foreground/18 font-mono text-xs w-4 flex-shrink-0">{i + 1}</span>
+                <span className="text-foreground/18 text-xs w-4 flex-shrink-0">{i + 1}</span>
                 <div className="flex-1 min-w-0 space-y-0.5">
                   <div className="flex justify-between text-[12px]">
                     <span className="text-foreground/65 truncate">{p.name}</span>
-                    <span className="text-emerald-400 font-mono flex-shrink-0 ml-2">{formatPrice(p.revenue)}</span>
+                    <span className="text-emerald-400 flex-shrink-0 ml-2">{formatPrice(p.revenue)}</span>
                   </div>
                   <div className="h-1 bg-white/5 rounded-full overflow-hidden">
                     <div className="h-full bg-violet-500/60 rounded-full" style={{ width: `${topSellMax ? (p.sold / topSellMax) * 100 : 0}%` }} />
                   </div>
-                  <p className="text-[10px] text-foreground/25 font-mono">{p.sold} sold · {p.category}</p>
+                  <p className="text-[10px] text-foreground/25">{p.sold} sold · {p.category}</p>
                 </div>
               </div>
             ))}
@@ -293,7 +293,7 @@ export default function AdminDashboard() {
           </div>
           {analytics?.products.outOfStock ? (
             <div className="mb-3 p-2.5 rounded-xl bg-rose-500/8 border border-rose-500/15">
-              <p className="text-[11px] text-rose-400 font-mono">{analytics.products.outOfStock} product{analytics.products.outOfStock > 1 ? "s" : ""} OUT OF STOCK — losing sales!</p>
+              <p className="text-[11px] text-rose-400">{analytics.products.outOfStock} product{analytics.products.outOfStock > 1 ? "s" : ""} OUT OF STOCK — losing sales!</p>
             </div>
           ) : null}
           <div className="space-y-2.5 max-h-44 overflow-y-auto">
@@ -301,9 +301,9 @@ export default function AdminDashboard() {
               <div key={p.id} className="flex items-center justify-between">
                 <div className="min-w-0">
                   <p className="text-[12px] text-foreground/65 truncate">{p.name}</p>
-                  <p className="text-[10px] text-foreground/28 font-mono">{p.category}</p>
+                  <p className="text-[10px] text-foreground/28">{p.category}</p>
                 </div>
-                <span className={`text-[11px] font-mono font-bold px-2 py-0.5 rounded-full flex-shrink-0 ml-2
+                <span className={`text-[11px] font-bold px-2 py-0.5 rounded-full flex-shrink-0 ml-2
                   ${p.stock <= 3 ? "bg-rose-500/12 text-rose-400" : "bg-amber-500/12 text-amber-400"}`}>
                   {p.stock} left
                 </span>
@@ -337,12 +337,12 @@ export default function AdminDashboard() {
                 <div key={o.id} className="flex items-center gap-3 px-5 py-3 hover:bg-white/[0.02] transition-colors">
                   <div className="flex-1 min-w-0">
                     <p className="text-[12px] text-foreground/70 uppercase tracking-wide truncate">{o.user.name ?? o.user.email}</p>
-                    <p className="text-[10px] text-foreground/25 font-mono">#{o.id.slice(0,8).toUpperCase()} · {(o.items as unknown[]).length} items · {new Date(o.createdAt).toLocaleDateString("en-GB", { day: "2-digit", month: "short" })}</p>
+                    <p className="text-[10px] text-foreground/25">#{o.id.slice(0,8).toUpperCase()} · {(o.items as unknown[]).length} items · {new Date(o.createdAt).toLocaleDateString("en-GB", { day: "2-digit", month: "short" })}</p>
                   </div>
                   <span className={`text-[11px] border px-2 py-0.5 hidden sm:inline flex-shrink-0 ${STATUS_COLOR[o.status] ?? "text-foreground/40 border-white/12"}`}>
                     {o.status.replace(/_/g, " ").toUpperCase()}
                   </span>
-                  <span className="text-emerald-400/80 text-xs font-mono font-semibold flex-shrink-0">{formatPrice(o.total)}</span>
+                  <span className="text-emerald-400/80 text-xs font-semibold flex-shrink-0">{formatPrice(o.total)}</span>
                 </div>
               ))}
             </div>
@@ -366,7 +366,7 @@ export default function AdminDashboard() {
                   <Icon className="h-3.5 w-3.5 flex-shrink-0 mt-0.5" />
                   <div className="min-w-0">
                     <p className="text-[12px] text-foreground/72 leading-snug">{ins.text}</p>
-                    <p className="text-[10px] opacity-55 mt-0.5 font-mono">→ {ins.action}</p>
+                    <p className="text-[10px] opacity-55 mt-0.5">→ {ins.action}</p>
                   </div>
                 </div>
               )

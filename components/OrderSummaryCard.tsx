@@ -102,14 +102,14 @@ export function OrderSummaryCard({ order }: { order: ConversationOrder }) {
         <Package className="h-3.5 w-3.5 text-foreground/35 shrink-0" />
 
         <div className="flex-1 flex items-center gap-2 min-w-0 flex-wrap">
-          <span className="text-[12px] tracking-[0.18em] text-foreground/65 font-mono">{ref}</span>
+          <span className="text-[12px] tracking-[0.18em] text-foreground/65">{ref}</span>
           <span className={`text-[10px] tracking-widest border px-2 py-0.5 flex items-center gap-1 shrink-0 ${statusMeta.badge}`}>
             <StatusIcon className="h-2.5 w-2.5" />
             {statusMeta.label.toUpperCase()}
           </span>
         </div>
 
-        <span className="text-green-400/75 text-[13px] font-mono font-bold shrink-0 mr-1">
+        <span className="text-green-400/75 text-[13px] font-bold shrink-0 mr-1">
           {formatPrice(order.total)}
         </span>
 
@@ -156,7 +156,7 @@ export function OrderSummaryCard({ order }: { order: ConversationOrder }) {
                 </div>
 
                 {/* Line total */}
-                <p className="text-[12px] text-green-400/65 font-mono font-medium shrink-0">
+                <p className="text-[12px] text-green-400/65 font-medium shrink-0">
                   {formatPrice(item.price * item.quantity)}
                 </p>
               </div>
@@ -173,7 +173,7 @@ export function OrderSummaryCard({ order }: { order: ConversationOrder }) {
                     {item.product.name}
                     {item.quantity > 1 && <span className="text-foreground/25"> ×{item.quantity}</span>}
                   </span>
-                  <span className="text-foreground/45 font-mono shrink-0">
+                  <span className="text-foreground/45 shrink-0">
                     {formatPrice(item.price * item.quantity)}
                   </span>
                 </div>
@@ -184,7 +184,7 @@ export function OrderSummaryCard({ order }: { order: ConversationOrder }) {
                 <CreditCard className="h-3 w-3 text-green-400/60" />
                 <span className="text-[10px] text-green-400/60 tracking-wide">PAYMENT CONFIRMED</span>
               </div>
-              <span className="text-sm text-green-400/80 font-mono font-bold">
+              <span className="text-sm text-green-400/80 font-bold">
                 {formatPrice(order.total)}
               </span>
             </div>
@@ -242,7 +242,7 @@ export function OrderSummaryCard({ order }: { order: ConversationOrder }) {
           {/* ── Footer: placed date ── */}
           <div className="border-t border-white/6 px-4 py-2 flex items-center justify-between bg-foreground/[0.01]">
             <span className="text-[10px] tracking-[0.25em] text-foreground/20">ORDER PLACED</span>
-            <span className="text-[10px] text-foreground/30 font-mono">
+            <span className="text-[10px] text-foreground/30">
               {new Date(order.createdAt).toLocaleDateString("en-US", {
                 year: "numeric", month: "long", day: "numeric",
               })}

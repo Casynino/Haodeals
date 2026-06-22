@@ -26,11 +26,11 @@ function LoginForm() {
     // result.error is set to "CredentialsSignin" when credentials are wrong.
     // We MUST check !result.error — not result.ok — to know if auth succeeded.
     if (result && !result.error) {
-      toast.success("Welcome back!", { className: "font-mono text-xs" })
+      toast.success("Welcome back!", { className: " text-xs" })
       await tryAdminSignIn(form.email, form.password)
       window.location.href = callbackUrl
     } else {
-      toast.error("Incorrect email or password.", { className: "font-mono text-xs" })
+      toast.error("Incorrect email or password.", { className: " text-xs" })
     }
     setLoading(false)
   }
@@ -45,7 +45,7 @@ function LoginForm() {
 
       {/* Already signed in — switching accounts banner */}
       {currentUser && (
-        <div className="flex items-start gap-2.5 px-3 py-2.5 bg-foreground/5 border border-white/10 text-[12px] font-mono text-foreground/50">
+        <div className="flex items-start gap-2.5 px-3 py-2.5 bg-foreground/5 border border-white/10 text-[12px] text-foreground/50">
           <UserCheck className="h-3.5 w-3.5 mt-0.5 shrink-0 text-foreground/30" />
           <span>
             Signed in as <span className="text-foreground/70">{currentUser.email}</span>.{" "}
@@ -60,7 +60,7 @@ function LoginForm() {
 
       {/* Brand + heading */}
       <div className="text-center space-y-2">
-        <Link href="/" className="inline-flex items-center gap-1 font-mono font-black text-base tracking-widest mb-1">
+        <Link href="/" className="inline-flex items-center gap-1 font-black text-base tracking-widest mb-1">
           <span className="text-foreground/30">[</span>
           <span>HAO</span>
           <span className="text-foreground/60">DEALS</span>
@@ -105,7 +105,7 @@ function LoginForm() {
           <div className="w-full border-t border-white/10" />
         </div>
         <div className="relative flex justify-center">
-          <span className="bg-background px-3 text-xs text-foreground/30 font-mono">or sign in with email</span>
+          <span className="bg-background px-3 text-xs text-foreground/30">or sign in with email</span>
         </div>
       </div>
 

@@ -62,7 +62,7 @@ export default function MessagesPage() {
 
   if (loading) {
     return (
-      <div className="container mx-auto px-4 py-8 max-w-3xl font-mono">
+      <div className="container mx-auto px-4 py-8 max-w-3xl">
         <div className="flex items-center gap-3 mb-6 border-b border-white/10 pb-4">
           <span className="text-foreground/45 text-xs">//</span>
           <h1 className="text-lg font-semibold tracking-[0.2em] text-foreground/90">MESSAGES</h1>
@@ -77,7 +77,7 @@ export default function MessagesPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-3xl font-mono">
+    <div className="container mx-auto px-4 py-8 max-w-3xl">
       <div className="flex items-center justify-between mb-6 border-b border-white/10 pb-4">
         <div className="flex items-center gap-3">
           <span className="text-foreground/45 text-xs">//</span>

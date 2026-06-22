@@ -75,7 +75,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             const active = exact ? pathname === href : pathname.startsWith(href)
             return (
               <Link key={href} href={href}
-                className={`group flex items-center gap-3 px-3 py-2.5 rounded-xl text-[12px] tracking-widest transition-all font-mono
+                className={`group flex items-center gap-3 px-3 py-2.5 rounded-xl text-[12px] tracking-widest transition-all
                   ${active
                     ? "bg-violet-500/15 text-violet-400 border border-violet-500/20 shadow-sm"
                     : "text-foreground/35 hover:text-foreground/68 hover:bg-white/[0.04] border border-transparent"
@@ -115,7 +115,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   return (
     // Admin stays on the dark token set for now (force `dark`) until it gets
     // its own light "control center" pass — keeps it fully readable meanwhile.
-    <div className="dark flex font-mono bg-background text-foreground min-h-screen">
+    <div className="dark flex bg-background text-foreground min-h-screen">
 
       {/* ── Desktop sidebar ── */}
       <aside className={`hidden lg:flex flex-col flex-shrink-0 sticky top-16 h-[calc(100vh-4rem)]
@@ -142,7 +142,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             className="p-1.5 border border-white/12 rounded-lg text-foreground/40 hover:text-foreground/70 transition-colors">
             <Menu className="h-4 w-4" />
           </button>
-          <span className="text-[12px] tracking-[0.25em] text-foreground/55 font-mono">ADMIN PANEL</span>
+          <span className="text-[12px] tracking-[0.25em] text-foreground/55">ADMIN PANEL</span>
         </div>
 
         {children}

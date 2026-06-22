@@ -84,7 +84,7 @@ export default function AdminProductsPage() {
         const { url } = await res.json()
         urls.push(url)
       } else {
-        toast.error(`UPLOAD.FAILED: ${file.name}`, { className: "font-mono text-xs" })
+        toast.error(`UPLOAD.FAILED: ${file.name}`, { className: " text-xs" })
       }
     }
     const merged = [...uploadedUrls, ...urls]
@@ -176,7 +176,7 @@ export default function AdminProductsPage() {
 
   async function handleSave() {
     if (!form.name || !form.price || !form.categoryId) {
-      toast.error("REQUIRED.FIELDS.MISSING", { className: "font-mono text-xs" })
+      toast.error("REQUIRED.FIELDS.MISSING", { className: " text-xs" })
       return
     }
     setSaving(true)
@@ -193,11 +193,11 @@ export default function AdminProductsPage() {
       body: JSON.stringify(body),
     })
     if (res.ok) {
-      toast.success(editing ? "PRODUCT.UPDATED" : "PRODUCT.CREATED", { className: "font-mono text-xs" })
+      toast.success(editing ? "PRODUCT.UPDATED" : "PRODUCT.CREATED", { className: " text-xs" })
       setOpen(false)
       loadProducts()
     } else {
-      toast.error("SAVE.FAILED", { className: "font-mono text-xs" })
+      toast.error("SAVE.FAILED", { className: " text-xs" })
     }
     setSaving(false)
   }
@@ -206,10 +206,10 @@ export default function AdminProductsPage() {
     if (!confirm("DELETE THIS PRODUCT?")) return
     const res = await fetch(`/api/admin/products/${id}`, { method: "DELETE" })
     if (res.ok) {
-      toast.success("PRODUCT.DELETED", { className: "font-mono text-xs" })
+      toast.success("PRODUCT.DELETED", { className: " text-xs" })
       setProducts((prev) => prev.filter((p) => p.id !== id))
     } else {
-      toast.error("DELETE.FAILED", { className: "font-mono text-xs" })
+      toast.error("DELETE.FAILED", { className: " text-xs" })
     }
   }
 
@@ -218,7 +218,7 @@ export default function AdminProductsPage() {
   )
 
   return (
-    <div className="container mx-auto px-4 py-8 font-mono">
+    <div className="container mx-auto px-4 py-8">
       {/* Header */}
       <div className="flex items-center justify-between mb-6 border-b border-white/10 pb-4">
         <div className="flex items-center gap-3">
@@ -233,7 +233,7 @@ export default function AdminProductsPage() {
           >
             <Plus className="h-3 w-3" /> ADD.PRODUCT
           </DialogTrigger>
-          <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto bg-background border border-white/20 font-mono">
+          <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto bg-background border border-white/20">
             <DialogHeader>
               <DialogTitle className="text-[12px] tracking-widest text-foreground/60">
                 {editing ? "// EDIT.PRODUCT" : "// NEW.PRODUCT"}
@@ -293,7 +293,7 @@ export default function AdminProductsPage() {
                   <SelectTrigger className="bg-transparent border-white/15 text-[12px] text-foreground/70 focus:border-white/40">
                     <SelectValue placeholder="SELECT.CATEGORY" />
                   </SelectTrigger>
-                  <SelectContent className="bg-background border-white/20 font-mono">
+                  <SelectContent className="bg-background border-white/20">
                     {categories.map((cat) => (
                       <SelectItem key={cat.id} value={cat.id} className="text-[12px] tracking-wide">
                         {cat.name.toUpperCase()}

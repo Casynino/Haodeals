@@ -26,12 +26,12 @@ export default function OnboardingPage() {
     if (res.ok) {
       // Update the JWT session so needsPhone clears immediately
       await update({ phone })
-      toast.success("Phone number saved!", { className: "font-mono text-xs" })
+      toast.success("Phone number saved!", { className: " text-xs" })
       router.push("/products")
       router.refresh()
     } else {
       const data = await res.json()
-      toast.error(data.error ?? "Something went wrong. Please try again.", { className: "font-mono text-xs" })
+      toast.error(data.error ?? "Something went wrong. Please try again.", { className: " text-xs" })
     }
     setLoading(false)
   }
@@ -42,7 +42,7 @@ export default function OnboardingPage() {
 
         {/* Brand + heading */}
         <div className="text-center space-y-2">
-          <Link href="/" className="inline-flex items-center gap-1 font-mono font-black text-base tracking-widest mb-1">
+          <Link href="/" className="inline-flex items-center gap-1 font-black text-base tracking-widest mb-1">
             <span className="text-foreground/30">[</span>
             <span>HAO</span>
             <span className="text-foreground/60">DEALS</span>

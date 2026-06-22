@@ -91,7 +91,7 @@ export function StockBadge({ stock, compact = false, className = "" }: StockBadg
   // ── Compact chip (product cards) — dot + text only, no icon, no glow ────────
   if (compact) {
     return (
-      <div className={`inline-flex items-center gap-1 rounded-full border px-1.5 py-[2px] font-mono text-[10px] tracking-wide ${cfg.chip} ${className}`}>
+      <div className={`inline-flex items-center gap-1 rounded-full border px-1.5 py-[2px] text-[10px] tracking-wide ${cfg.chip} ${className}`}>
         <span className="relative flex shrink-0 h-[5px] w-[5px]">
           {cfg.ping && (
             <span className={`animate-ping absolute inline-flex h-full w-full rounded-full ${cfg.dot} opacity-50`} />
@@ -105,7 +105,7 @@ export function StockBadge({ stock, compact = false, className = "" }: StockBadg
 
   // ── Full badge (product page) — dot + icon + text + glow ────────────────────
   return (
-    <div className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 font-mono text-[11px] font-medium tracking-wide ${cfg.pill} ${cfg.glow} ${className}`}>
+    <div className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[11px] font-medium tracking-wide ${cfg.pill} ${cfg.glow} ${className}`}>
       <span className="relative flex shrink-0 h-[6px] w-[6px]">
         {cfg.ping && (
           <span className={`animate-ping absolute inline-flex h-full w-full rounded-full ${cfg.dot} opacity-50`} />

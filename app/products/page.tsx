@@ -60,7 +60,7 @@ function ProductsContent() {
   })
 
   return (
-    <div className="container mx-auto px-4 py-8 font-mono">
+    <div className="container mx-auto px-4 py-8">
       {/* Header */}
       <div className="border-b border-white/12 pb-6 mb-6">
         <div className="flex items-center gap-3 mb-1">

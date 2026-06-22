@@ -42,7 +42,7 @@ export default function AdminCustomers() {
           <Users className="h-4 w-4 text-violet-400/60" />
           <h1 className="text-base font-semibold tracking-[0.2em] text-foreground/85">CUSTOMERS</h1>
         </div>
-        <span className="text-[11px] font-mono text-foreground/30">{customers.length} registered</span>
+        <span className="text-[11px] text-foreground/30">{customers.length} registered</span>
       </div>
 
       {/* KPI row */}
@@ -57,7 +57,7 @@ export default function AdminCustomers() {
               <Icon className={`h-4 w-4 ${color}`} />
             </div>
             <p className="text-xl font-black text-foreground/85">{val}</p>
-            <p className="text-[10px] text-foreground/28 font-mono tracking-widest mt-0.5">{label.toUpperCase()}</p>
+            <p className="text-[10px] text-foreground/28 tracking-widest mt-0.5">{label.toUpperCase()}</p>
           </div>
         ))}
       </div>
@@ -84,7 +84,7 @@ export default function AdminCustomers() {
         ) : filtered.length === 0 ? (
           <div className="text-center py-16">
             <Users className="h-8 w-8 mx-auto mb-2 text-foreground/10" />
-            <p className="text-[11px] text-foreground/25 font-mono">{search ? "No customers match your search" : "No customers yet"}</p>
+            <p className="text-[11px] text-foreground/25">{search ? "No customers match your search" : "No customers yet"}</p>
           </div>
         ) : (
           <div className="divide-y divide-white/[0.045]">
@@ -96,21 +96,21 @@ export default function AdminCustomers() {
                   </div>
                   <div className="min-w-0">
                     <p className="text-[12px] font-semibold text-foreground/70 truncate">{c.name || "—"}</p>
-                    <p className="text-[10px] text-foreground/28 font-mono truncate">{c.email}</p>
+                    <p className="text-[10px] text-foreground/28 truncate">{c.email}</p>
                   </div>
                 </div>
                 <div className="col-span-2 text-right">
-                  <span className={`text-[12px] font-mono ${c.orderCount > 0 ? "text-foreground/60" : "text-foreground/22"}`}>
+                  <span className={`text-[12px] ${c.orderCount > 0 ? "text-foreground/60" : "text-foreground/22"}`}>
                     {c.orderCount}
                   </span>
                 </div>
                 <div className="col-span-3 text-right">
-                  <span className={`text-[12px] font-mono font-bold ${c.totalSpent > 0 ? "text-emerald-400" : "text-foreground/22"}`}>
+                  <span className={`text-[12px] font-bold ${c.totalSpent > 0 ? "text-emerald-400" : "text-foreground/22"}`}>
                     {formatPrice(c.totalSpent)}
                   </span>
                 </div>
                 <div className="col-span-3 text-right">
-                  <span className="text-[11px] text-foreground/28 font-mono">
+                  <span className="text-[11px] text-foreground/28">
                     {new Date(c.createdAt).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "2-digit" })}
                   </span>
                 </div>
@@ -125,7 +125,7 @@ export default function AdminCustomers() {
         <div className="flex items-center gap-3 p-4 rounded-2xl border border-emerald-500/15 bg-emerald-500/[0.03]">
           <TrendingUp className="h-4 w-4 text-emerald-400 flex-shrink-0" />
           <p className="text-[12px] text-foreground/55">
-            Top {Math.min(active, 5)} customers generated <span className="text-emerald-400 font-mono font-bold">
+            Top {Math.min(active, 5)} customers generated <span className="text-emerald-400 font-bold">
               {formatPrice(customers.slice(0, 5).reduce((s, c) => s + c.totalSpent, 0))}
             </span> in revenue
           </p>

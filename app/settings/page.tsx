@@ -55,7 +55,7 @@ export default function SettingsPage() {
       const { url } = await res.json()
       setForm((f) => ({ ...f, image: url }))
     } else {
-      toast.error("UPLOAD FAILED", { className: "font-mono text-xs" })
+      toast.error("UPLOAD FAILED", { className: " text-xs" })
     }
     setUploading(false)
   }
@@ -70,10 +70,10 @@ export default function SettingsPage() {
     })
     if (res.ok) {
       await update({ name: form.name, phone: form.phone || null, image: form.image || null })
-      toast.success("PROFILE.UPDATED", { className: "font-mono text-xs" })
+      toast.success("PROFILE.UPDATED", { className: " text-xs" })
     } else {
       const d = await res.json()
-      toast.error(d.error ?? "UPDATE FAILED", { className: "font-mono text-xs" })
+      toast.error(d.error ?? "UPDATE FAILED", { className: " text-xs" })
     }
     setSaving(false)
   }
@@ -81,7 +81,7 @@ export default function SettingsPage() {
   async function handleChangePassword(e: React.FormEvent) {
     e.preventDefault()
     if (pass.next !== pass.confirm) {
-      toast.error("PASSWORDS DO NOT MATCH", { className: "font-mono text-xs" })
+      toast.error("PASSWORDS DO NOT MATCH", { className: " text-xs" })
       return
     }
     setSavingPw(true)
@@ -91,18 +91,18 @@ export default function SettingsPage() {
       body: JSON.stringify({ currentPassword: pass.current, newPassword: pass.next }),
     })
     if (res.ok) {
-      toast.success("PASSWORD.UPDATED", { className: "font-mono text-xs" })
+      toast.success("PASSWORD.UPDATED", { className: " text-xs" })
       setPass({ current: "", next: "", confirm: "" })
     } else {
       const d = await res.json()
-      toast.error(d.error ?? "PASSWORD CHANGE FAILED", { className: "font-mono text-xs" })
+      toast.error(d.error ?? "PASSWORD CHANGE FAILED", { className: " text-xs" })
     }
     setSavingPw(false)
   }
 
   if (status === "loading") {
     return (
-      <div className="container mx-auto px-4 py-24 flex items-center justify-center font-mono">
+      <div className="container mx-auto px-4 py-24 flex items-center justify-center">
         <div className="flex items-center gap-2 text-foreground/30 text-[12px]">
           <Loader2 className="h-3 w-3 animate-spin" /> LOADING...
         </div>
@@ -111,7 +111,7 @@ export default function SettingsPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-xl font-mono space-y-4">
+    <div className="container mx-auto px-4 py-8 max-w-xl space-y-4">
 
       {/* Header */}
       <div className="flex items-center gap-3 border-b border-foreground/10 pb-4">

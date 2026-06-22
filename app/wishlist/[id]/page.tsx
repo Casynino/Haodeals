@@ -131,7 +131,7 @@ export default function GoalDetailPage({ params }: { params: Promise<{ id: strin
     if (res.ok) {
       await fetchGoal()
       setShowSave(false)
-      toast.success("Savings updated ✓", { className: "font-mono text-xs" })
+      toast.success("Savings updated ✓", { className: " text-xs" })
     }
     setUpdatingSaved(false)
   }
@@ -140,7 +140,7 @@ export default function GoalDetailPage({ params }: { params: Promise<{ id: strin
     if (!goal) return
     await fetch(`/api/wishlist/${goal.id}/items/${productId}`, { method: "DELETE" })
     fetchGoal()
-    toast("Removed from goal", { className: "font-mono text-xs" })
+    toast("Removed from goal", { className: " text-xs" })
   }
 
   async function markComplete() {
@@ -204,7 +204,7 @@ export default function GoalDetailPage({ params }: { params: Promise<{ id: strin
           {/* Mark complete button */}
           {!goal.isDefault && (
             <button onClick={markComplete}
-              className={`text-[11px] font-mono px-2.5 py-1 rounded-full border transition-all ${
+              className={`text-[11px] px-2.5 py-1 rounded-full border transition-all ${
                 goal.status === "completed"
                   ? "bg-emerald-500/15 text-emerald-400 border-emerald-500/25"
                   : "border-white/10 text-foreground/30 hover:border-white/20"
@@ -228,8 +228,8 @@ export default function GoalDetailPage({ params }: { params: Promise<{ id: strin
                     { label: "Products",  val: `${goal.items.length} items`, color: "text-foreground/50"},
                   ].map(({ label, val, color }) => (
                     <div key={label} className="rounded-xl bg-white/[0.04] border border-white/6 p-2.5">
-                      <p className={`text-[13px] font-bold font-mono ${color}`}>{val}</p>
-                      <p className="text-[10px] text-foreground/28 font-mono mt-0.5">{label}</p>
+                      <p className={`text-[13px] font-bold ${color}`}>{val}</p>
+                      <p className="text-[10px] text-foreground/28 mt-0.5">{label}</p>
                     </div>
                   ))}
                 </div>
@@ -245,7 +245,7 @@ export default function GoalDetailPage({ params }: { params: Promise<{ id: strin
             {showSave && (
               <div className="mt-4 pt-4 border-t border-white/8 flex gap-2 items-end">
                 <div className="flex-1">
-                  <label className="text-[11px] font-mono tracking-widest text-foreground/35 block mb-1">AMOUNT SAVED SO FAR (TZS)</label>
+                  <label className="text-[11px] tracking-widest text-foreground/35 block mb-1">AMOUNT SAVED SO FAR (TZS)</label>
                   <input type="number" value={newSaved} onChange={(e) => setNewSaved(e.target.value)} min={0}
                     className="w-full bg-white/5 border border-white/10 rounded-xl px-3.5 py-2.5 text-sm text-foreground/80 focus:outline-none focus:border-violet-500/40 transition-all" />
                 </div>
@@ -262,12 +262,12 @@ export default function GoalDetailPage({ params }: { params: Promise<{ id: strin
         {/* ── Products section ── */}
         <div className="space-y-3">
           <div className="flex items-center justify-between">
-            <p className="text-[12px] font-mono tracking-widest text-foreground/35 uppercase">
+            <p className="text-[12px] tracking-widest text-foreground/35 uppercase">
               {goal.isDefault ? "Saved Products" : "Products in Goal"}
               <span className="ml-2 text-foreground/20">{goal.items.length}</span>
             </p>
             <Link href={`/products?wishlist=${goal.id}`}
-              className="flex items-center gap-1 text-[11px] font-mono text-foreground/30 hover:text-foreground/60 transition-colors">
+              className="flex items-center gap-1 text-[11px] text-foreground/30 hover:text-foreground/60 transition-colors">
               <Plus className="h-3 w-3" /> Add products
             </Link>
           </div>
@@ -276,7 +276,7 @@ export default function GoalDetailPage({ params }: { params: Promise<{ id: strin
             <div className="rounded-2xl border border-dashed border-white/8 py-12 text-center space-y-2">
               <ShoppingBag className="h-8 w-8 text-foreground/12 mx-auto" />
               <p className="text-sm text-foreground/30">No products yet</p>
-              <Link href="/products" className="inline-flex items-center gap-1.5 text-xs text-violet-400/70 hover:text-violet-400 transition-colors font-mono mt-1">
+              <Link href="/products" className="inline-flex items-center gap-1.5 text-xs text-violet-400/70 hover:text-violet-400 transition-colors mt-1">
                 <Plus className="h-3 w-3" /> Browse & save products
               </Link>
             </div>
@@ -307,8 +307,8 @@ export default function GoalDetailPage({ params }: { params: Promise<{ id: strin
                           {item.product.name}
                         </p>
                       </Link>
-                      <p className="text-[11px] text-foreground/28 font-mono mt-0.5">{item.product.category.name}</p>
-                      <p className="text-sm font-bold text-emerald-400 font-mono mt-1">{formatPrice(item.product.price)}</p>
+                      <p className="text-[11px] text-foreground/28 mt-0.5">{item.product.category.name}</p>
+                      <p className="text-sm font-bold text-emerald-400 mt-1">{formatPrice(item.product.price)}</p>
                     </div>
 
                     {/* Actions */}
@@ -340,8 +340,8 @@ export default function GoalDetailPage({ params }: { params: Promise<{ id: strin
         {goal.items.length > 0 && (
           <div className={`rounded-2xl border ${c.border} ${c.bg} px-4 py-3 flex items-center justify-between`}>
             <div>
-              <p className="text-[11px] font-mono text-foreground/35 uppercase tracking-widest">Total Cost</p>
-              <p className="text-base font-black text-white font-mono">{formatPrice(goal.totalCost)}</p>
+              <p className="text-[11px] text-foreground/35 uppercase tracking-widest">Total Cost</p>
+              <p className="text-base font-black text-white">{formatPrice(goal.totalCost)}</p>
             </div>
             <Link href="/checkout"
               className={`flex items-center gap-1.5 px-4 py-2 rounded-xl ${c.btn} text-white text-xs font-semibold transition-all active:scale-95`}>

@@ -75,7 +75,7 @@ export default function AdminConversationPage({
 
   if (loading) {
     return (
-      <div className="container mx-auto px-4 py-8 max-w-3xl font-mono">
+      <div className="container mx-auto px-4 py-8 max-w-3xl">
         <div className="animate-pulse space-y-3">
           <div className="h-8 bg-foreground/5 w-1/3" />
           {[1, 2, 3].map((i) => (
@@ -88,7 +88,7 @@ export default function AdminConversationPage({
 
   if (!conversation) {
     return (
-      <div className="container mx-auto px-4 py-16 text-center font-mono">
+      <div className="container mx-auto px-4 py-16 text-center">
         <p className="text-foreground/40 text-xs tracking-widest">Conversation not found</p>
         <Link href="/admin/messages" className="text-[12px] text-foreground/30 hover:text-foreground/60 transition-colors mt-3 inline-block">
           ← Back to messages
@@ -100,7 +100,7 @@ export default function AdminConversationPage({
   const messages = conversation.messages ?? []
 
   return (
-    <div className="container mx-auto px-4 py-6 max-w-3xl font-mono flex flex-col" style={{ minHeight: "calc(100vh - 80px)" }}>
+    <div className="container mx-auto px-4 py-6 max-w-3xl flex flex-col" style={{ minHeight: "calc(100vh - 80px)" }}>
       {/* Header */}
       <div className="mb-5 border-b border-white/10 pb-4">
         <Link

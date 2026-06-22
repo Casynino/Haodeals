@@ -89,7 +89,7 @@ export function Navbar() {
       {/* Top status bar */}
       <div className="border-b border-white/8 hidden md:block">
         <div className="container mx-auto px-4 py-1.5 flex items-center justify-between">
-          <div className="flex items-center gap-4 text-[12px] text-foreground/50 font-mono">
+          <div className="flex items-center gap-4 text-[12px] text-foreground/50">
             <span>Free delivery nationwide</span>
             <span className="text-foreground/20">◦</span>
             <span>Secure checkout</span>
@@ -106,7 +106,7 @@ export function Navbar() {
       {/* Main nav */}
       <div className="container mx-auto px-4 h-14 flex items-center gap-6">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-1.5 font-mono font-bold text-sm tracking-[0.2em] shrink-0">
+        <Link href="/" className="flex items-center gap-1.5 font-bold text-sm tracking-[0.2em] shrink-0">
           <span className="text-foreground/40">[</span>
           <span className="text-foreground">HAO</span>
           <span className="text-foreground/65">DEALS</span>
@@ -121,7 +121,7 @@ export function Navbar() {
             <Link
               key={link.href}
               href={link.href}
-              className="px-3 py-1.5 text-xs font-mono tracking-wider text-foreground/55 hover:text-foreground hover:bg-foreground/5 transition-colors border border-transparent hover:border-white/12"
+              className="px-3 py-1.5 text-xs tracking-wider text-foreground/55 hover:text-foreground hover:bg-foreground/5 transition-colors border border-transparent hover:border-white/12"
             >
               {link.label}
             </Link>
@@ -155,7 +155,7 @@ export function Navbar() {
               >
                 <Bell className="h-4 w-4" />
                 {unreadCount > 0 && (
-                  <span className="absolute -top-1 -right-1 w-4 h-4 flex items-center justify-center bg-yellow-400 text-black text-[11px] font-mono font-bold rounded-none">
+                  <span className="absolute -top-1 -right-1 w-4 h-4 flex items-center justify-center bg-yellow-400 text-black text-[11px] font-bold rounded-none">
                     {unreadCount > 9 ? "9+" : unreadCount}
                   </span>
                 )}
@@ -190,12 +190,12 @@ export function Navbar() {
 
           {session ? (
             <DropdownMenu>
-              <DropdownMenuTrigger className="flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-mono tracking-wider text-foreground/60 hover:text-foreground hover:bg-foreground/5 transition-colors border border-transparent hover:border-white/15">
+              <DropdownMenuTrigger className="flex items-center gap-1.5 px-2.5 py-1.5 text-xs tracking-wider text-foreground/60 hover:text-foreground hover:bg-foreground/5 transition-colors border border-transparent hover:border-white/15">
                 <span className="text-foreground/40">&gt;</span>
                 <span>{(user?.name ?? user?.email ?? "USER").toUpperCase().slice(0, 10)}</span>
                 {isAdmin && <span className="text-yellow-400/80 text-[12px]">[ADMIN]</span>}
               </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-56 bg-background border border-white/15 p-0 font-mono text-xs" align="end">
+              <DropdownMenuContent className="w-56 bg-background border border-white/15 p-0 text-xs" align="end">
                 <div className="px-4 py-3 border-b border-white/10">
                   <p className="text-[12px] text-foreground/50 tracking-widest mb-0.5">Signed in as</p>
                   <p className="text-xs text-foreground/85 truncate">{user?.email}</p>
@@ -258,7 +258,7 @@ export function Navbar() {
             </DropdownMenu>
           ) : (
             <Link href="/login">
-              <button className="px-3.5 py-1.5 text-xs font-mono tracking-wider border border-white/25 text-foreground/65 hover:text-foreground hover:border-white/45 hover:bg-foreground/5 transition-colors">
+              <button className="px-3.5 py-1.5 text-xs tracking-wider border border-white/25 text-foreground/65 hover:text-foreground hover:border-white/45 hover:bg-foreground/5 transition-colors">
                 Sign In
               </button>
             </Link>
@@ -273,7 +273,7 @@ export function Navbar() {
             <Link
               key={link.href}
               href={link.href}
-              className="flex-shrink-0 px-4 py-2.5 text-xs font-mono tracking-wider text-foreground/55 hover:text-foreground border-r border-foreground/10 hover:bg-foreground/5 transition-colors"
+              className="flex-shrink-0 px-4 py-2.5 text-xs tracking-wider text-foreground/55 hover:text-foreground border-r border-foreground/10 hover:bg-foreground/5 transition-colors"
             >
               {link.label}
             </Link>
@@ -281,7 +281,7 @@ export function Navbar() {
           {session && (
             <Link
               href="/wallet"
-              className="flex-shrink-0 px-4 py-2.5 text-xs font-mono tracking-wider text-foreground/55 hover:text-foreground border-r border-foreground/10 hover:bg-foreground/5 transition-colors"
+              className="flex-shrink-0 px-4 py-2.5 text-xs tracking-wider text-foreground/55 hover:text-foreground border-r border-foreground/10 hover:bg-foreground/5 transition-colors"
             >
               WALLET
             </Link>
@@ -289,7 +289,7 @@ export function Navbar() {
           {session && isAdmin && (
             <Link
               href="/admin"
-              className="flex-shrink-0 px-4 py-2.5 text-xs font-mono tracking-wider text-yellow-400/65 hover:text-yellow-400 border-r border-foreground/10 transition-colors"
+              className="flex-shrink-0 px-4 py-2.5 text-xs tracking-wider text-yellow-400/65 hover:text-yellow-400 border-r border-foreground/10 transition-colors"
             >
               ADMIN
             </Link>

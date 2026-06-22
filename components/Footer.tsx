@@ -11,7 +11,7 @@ function InstagramIcon({ className }: { className?: string }) {
 
 export function Footer() {
   return (
-    <footer className="relative bg-background mt-auto font-mono overflow-hidden">
+    <footer className="relative bg-background mt-auto overflow-hidden">
 
       {/* Top glow */}
       <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-emerald-500/40 to-transparent" />
