@@ -24,7 +24,7 @@ export const viewport: Viewport = {
 }
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://haodeals.vercel.app"),
+  metadataBase: new URL("https://haodealtz.com"),
   title: {
     default: "HaoDeals — Good Deals Delivered",
     template: "%s | HaoDeals",
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://haodeals.vercel.app",
+    url: "https://haodealtz.com",
     siteName: "HaoDeals",
     title: "HaoDeals — Good Deals Delivered",
     description: "A collection of limited deals — now in stock. Tap to explore, shop, and enjoy fast delivery.",
