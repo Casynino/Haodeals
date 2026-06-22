@@ -20,7 +20,7 @@ export default function OGImage() {
         }}
       >
         <div style={{ display: "flex", alignItems: "baseline", lineHeight: 1 }}>
-          <span style={{ color: "#ee0000", fontSize: 148, fontWeight: 900 }}>hão</span>
+          <span style={{ color: "#ee0000", fontSize: 148, fontWeight: 900 }}>hǎo</span>
           <span style={{ color: "#0a0a0a", fontSize: 148, fontWeight: 900 }}>deals</span>
         </div>
         <div
