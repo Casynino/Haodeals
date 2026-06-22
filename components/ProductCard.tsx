@@ -51,7 +51,7 @@ export function ProductCard({ product }: ProductCardProps) {
     e.preventDefault(); e.stopPropagation()
     addItem({ ...product, price: effectivePrice })
     toast.success(`Added: ${product.name.slice(0, 28)}`, {
-      description: formatPrice(effectivePrice), className: "font-mono text-xs",
+      description: formatPrice(effectivePrice), className: " text-xs",
     })
   }
 

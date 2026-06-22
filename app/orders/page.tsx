@@ -38,7 +38,7 @@ export default function OrdersPage() {
 
   if (loading) {
     return (
-      <div className="container mx-auto px-4 py-8 max-w-3xl font-mono">
+      <div className="container mx-auto px-4 py-8 max-w-3xl">
         <div className="flex items-center gap-3 mb-6 border-b border-white/10 pb-4">
           <span className="text-foreground/30 text-[12px]">//</span>
           <h1 className="text-[13px] tracking-[0.3em] text-foreground/70">MY ORDERS</h1>
@@ -54,7 +54,7 @@ export default function OrdersPage() {
 
   if (orders.length === 0) {
     return (
-      <div className="container mx-auto px-4 py-24 flex flex-col items-center gap-6 text-center font-mono">
+      <div className="container mx-auto px-4 py-24 flex flex-col items-center gap-6 text-center">
         <div className="border border-white/10 p-8">
           <Package className="h-10 w-10 opacity-20" />
         </div>
@@ -73,7 +73,7 @@ export default function OrdersPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-3xl font-mono">
+    <div className="container mx-auto px-4 py-8 max-w-3xl">
       <div className="flex items-center justify-between mb-6 border-b border-white/10 pb-4">
         <div className="flex items-center gap-3">
           <span className="text-foreground/45 text-xs">//</span>
@@ -117,7 +117,7 @@ export default function OrdersPage() {
                       {cfg.label}
                     </span>
                   </div>
-                  <span className="text-green-400/80 text-sm font-mono">{formatPrice(order.total)}</span>
+                  <span className="text-green-400/80 text-sm">{formatPrice(order.total)}</span>
                 </div>
               </div>
 

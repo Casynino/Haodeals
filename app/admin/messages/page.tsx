@@ -33,7 +33,7 @@ export default function AdminMessagesPage() {
   const totalUnread = conversations.reduce((sum, c) => sum + c.adminUnread, 0)
 
   return (
-    <div className="container mx-auto px-4 py-8 font-mono">
+    <div className="container mx-auto px-4 py-8">
       <div className="flex items-center justify-between mb-6 border-b border-white/10 pb-4">
         <div className="flex items-center gap-3">
           <span className="text-foreground/45 text-xs">//</span>

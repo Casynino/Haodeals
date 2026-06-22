@@ -163,7 +163,7 @@ export function ShareButton({ productName, productPath }: ShareButtonProps) {
       {/* ── Modal ── */}
       {open && (
         <div
-          className="fixed inset-0 z-[60] bg-black/65 backdrop-blur-[2px] flex items-end sm:items-center justify-center font-mono"
+          className="fixed inset-0 z-[60] bg-black/65 backdrop-blur-[2px] flex items-end sm:items-center justify-center"
           onClick={() => !success && setOpen(false)}
         >
           <div

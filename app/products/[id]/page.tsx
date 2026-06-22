@@ -60,7 +60,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
       description: opts.length
         ? opts.map((o) => `${o.name}: ${o.value}`).join(" · ")
         : `Qty ${quantity} · ${formatPrice(product.price * quantity)}`,
-      className: "font-mono text-xs",
+      className: " text-xs",
     })
   }
 

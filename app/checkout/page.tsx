@@ -241,7 +241,7 @@ export default function CheckoutPage() {
   /* ── Order confirmed ── */
   if (stage === "confirmed") {
     return (
-      <div className="container mx-auto px-4 py-24 flex flex-col items-center gap-6 text-center font-mono max-w-sm">
+      <div className="container mx-auto px-4 py-24 flex flex-col items-center gap-6 text-center max-w-sm">
         <div className="relative">
           <div className="w-20 h-20 border border-green-400/30 flex items-center justify-center bg-green-400/5">
             <CheckCircle2 className="h-9 w-9 text-green-400/70" />
@@ -276,7 +276,7 @@ export default function CheckoutPage() {
 
   if (checkoutItems.length === 0) {
     return (
-      <div className="container mx-auto px-4 py-24 text-center font-mono">
+      <div className="container mx-auto px-4 py-24 text-center">
         <p className="text-[13px] tracking-widest text-foreground/40 mb-4">Your cart is empty</p>
         <Link href="/products" className="px-4 py-2 text-[12px] tracking-widest border border-foreground/20 text-foreground/55 hover:text-foreground hover:border-foreground/40 transition-colors">
           Browse deals
@@ -286,7 +286,7 @@ export default function CheckoutPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8 pb-24 lg:pb-8 max-w-6xl font-mono">
+    <div className="container mx-auto px-4 py-8 pb-24 lg:pb-8 max-w-6xl">
       <div className="flex items-center gap-3 mb-6 border-b border-foreground/10 pb-4">
         <span className="text-foreground/45 text-xs">//</span>
         <h1 className="text-lg font-semibold tracking-[0.2em] text-foreground/90">CHECKOUT</h1>
@@ -510,7 +510,7 @@ export default function CheckoutPage() {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between gap-2">
                     <span className="text-xs font-medium text-foreground/85 tracking-wide">Free Weekend Delivery</span>
-                    <span className="text-[12px] font-bold text-green-400/85 font-mono">FREE</span>
+                    <span className="text-[12px] font-bold text-green-400/85">FREE</span>
                   </div>
                   <p className="text-[11px] text-foreground/40 mt-1">
                     📦 Saturday &amp; Sunday only (Dar es Salaam customers only)
@@ -559,7 +559,7 @@ export default function CheckoutPage() {
                         key={label}
                         type="button"
                         onClick={() => setTransportMethod((t) => (t === label ? null : label))}
-                        className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-mono tracking-wide border transition-all ${
+                        className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] tracking-wide border transition-all ${
                           transportMethod === label
                             ? "border-amber-400/50 bg-amber-400/[0.1] text-amber-400/90"
                             : "border-white/15 text-foreground/45 hover:border-white/30 hover:text-foreground/65"
@@ -593,7 +593,7 @@ export default function CheckoutPage() {
               {appliedCode ? (
                 <div className="flex items-center justify-between border border-green-400/25 bg-green-400/[0.04] px-3 py-2">
                   <div>
-                    <p className="text-[12px] font-bold text-green-400/80 font-mono tracking-wider">{appliedCode.code}</p>
+                    <p className="text-[12px] font-bold text-green-400/80 tracking-wider">{appliedCode.code}</p>
                     <p className="text-[10px] text-green-400/50 mt-0.5">{appliedCode.percent}% off — saving {formatPrice(discountAmt)}</p>
                   </div>
                   <button type="button" onClick={() => setAppliedCode(null)} className="text-foreground/30 hover:text-foreground/60 transition-colors">
@@ -634,7 +634,7 @@ export default function CheckoutPage() {
               </div>
               <div className="flex items-center justify-between py-2 border border-foreground/10 px-3">
                 <span className="text-[12px] tracking-widest text-foreground/55">WALLET BALANCE</span>
-                <span className={`text-sm font-mono font-bold ${walletBalance !== null && walletBalance >= finalTotal ? "text-green-400" : "text-red-400/80"}`}>
+                <span className={`text-sm font-bold ${walletBalance !== null && walletBalance >= finalTotal ? "text-green-400" : "text-red-400/80"}`}>
                   {walletBalance !== null ? formatPrice(walletBalance) : "—"}
                 </span>
               </div>
@@ -703,7 +703,7 @@ export default function CheckoutPage() {
                 </div>
                 <div className="flex justify-between border-t border-foreground/10 pt-2">
                   <span className="text-foreground/55 font-bold">Total</span>
-                  <span className="text-green-400/80 font-mono font-bold">{formatPrice(finalTotal)}</span>
+                  <span className="text-green-400/80 font-bold">{formatPrice(finalTotal)}</span>
                 </div>
               </div>
 
@@ -730,7 +730,7 @@ export default function CheckoutPage() {
         <div className="flex items-center justify-between gap-4">
           <div>
             <p className="text-[10px] tracking-widest text-foreground/30">TOTAL</p>
-            <p className="text-green-400/80 font-mono text-sm font-bold">{formatPrice(finalTotal)}</p>
+            <p className="text-green-400/80 text-sm font-bold">{formatPrice(finalTotal)}</p>
             {deliveryMethod === "free_weekend"
               ? <p className="text-[10px] text-green-400/55">Free weekend delivery</p>
               : <p className="text-[10px] text-foreground/30">Express delivery — paid by customer</p>

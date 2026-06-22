@@ -30,11 +30,11 @@ export default function ContactPage() {
     await new Promise((r) => setTimeout(r, 900))
     setSending(false)
     setSent(true)
-    toast.success("Message received! We'll reply within 24 hours.", { className: "font-mono text-xs" })
+    toast.success("Message received! We'll reply within 24 hours.", { className: " text-xs" })
   }
 
   return (
-    <div className="min-h-screen font-mono bg-background">
+    <div className="min-h-screen bg-background">
 
       {/* ── Hero ──────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden border-b border-white/8">
@@ -178,7 +178,7 @@ export default function ContactPage() {
                 ].map(({ day, hours, active }) => (
                   <div key={day} className="flex justify-between items-center py-1.5 border-b border-white/5 last:border-0">
                     <span className="text-[12px] text-foreground/50">{day}</span>
-                    <span className={`text-[12px] font-mono ${active ? "text-foreground/65" : "text-foreground/28"}`}>{hours}</span>
+                    <span className={`text-[12px] ${active ? "text-foreground/65" : "text-foreground/28"}`}>{hours}</span>
                   </div>
                 ))}
               </div>

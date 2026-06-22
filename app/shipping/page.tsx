@@ -9,7 +9,7 @@ export const metadata = { title: "Shipping & Delivery Policy — HaoDeals" }
 
 export default function ShippingPage() {
   return (
-    <div className="min-h-screen font-mono bg-background">
+    <div className="min-h-screen bg-background">
 
       {/* ── Hero ──────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden border-b border-white/8">
@@ -215,7 +215,7 @@ export default function ShippingPage() {
                 {/* Content */}
                 <div className={`flex-1 pb-8 ${highlight ? "rounded-2xl border border-amber-500/15 bg-amber-500/[0.03] p-4 -ml-2 mb-4" : ""}`}>
                   <div className="flex items-center gap-2 mb-1">
-                    <span className="text-[10px] font-mono text-foreground/20 tracking-widest">{step}</span>
+                    <span className="text-[10px] text-foreground/20 tracking-widest">{step}</span>
                     <h3 className="text-[13px] font-bold text-foreground/80">{title}</h3>
                     {highlight && (
                       <span className="text-[10px] px-1.5 py-0.5 rounded bg-amber-500/15 text-amber-400 border border-amber-500/20 tracking-widest">IMPORTANT</span>
@@ -311,7 +311,7 @@ export default function ShippingPage() {
           </div>
           <div className="flex gap-2 flex-shrink-0 flex-wrap justify-center">
             <Link href="/orders"
-              className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-white/15 text-foreground/55 text-[12px] font-mono hover:text-foreground hover:border-white/28 transition-all">
+              className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-white/15 text-foreground/55 text-[12px] hover:text-foreground hover:border-white/28 transition-all">
               Track My Order
             </Link>
             <Link href="/contact"

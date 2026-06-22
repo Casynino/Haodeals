@@ -90,7 +90,7 @@ function SavedCard({ item, listId, onRemove }: {
   async function remove(e: React.MouseEvent) {
     e.preventDefault(); e.stopPropagation()
     await fetch(`/api/wishlist/${listId}/items/${item.product.id}`, { method: "DELETE" })
-    toast("Removed from wishlist", { className: "font-mono text-xs" })
+    toast("Removed from wishlist", { className: " text-xs" })
     onRemove()
   }
 
@@ -104,7 +104,7 @@ function SavedCard({ item, listId, onRemove }: {
 
       {/* Discount */}
       {disc && (
-        <div className="absolute top-2 left-2 z-10 bg-[#ee0000] text-white text-[10px] font-mono font-bold px-1.5 py-0.5 rounded-md">
+        <div className="absolute top-2 left-2 z-10 bg-[#ee0000] text-white text-[10px] font-bold px-1.5 py-0.5 rounded-md">
           -{disc}%
         </div>
       )}
@@ -119,17 +119,17 @@ function SavedCard({ item, listId, onRemove }: {
           }
           {oos && (
             <div className="absolute inset-0 bg-background/75 flex items-center justify-center">
-              <span className="text-[10px] font-mono text-foreground/50 border border-white/20 px-2 py-0.5 rounded-md">OUT OF STOCK</span>
+              <span className="text-[10px] text-foreground/50 border border-white/20 px-2 py-0.5 rounded-md">OUT OF STOCK</span>
             </div>
           )}
         </div>
         <div className="p-3 space-y-1">
-          <p className="text-[10px] text-foreground/28 font-mono uppercase tracking-widest truncate">{item.product.category?.name ?? ""}</p>
+          <p className="text-[10px] text-foreground/28 uppercase tracking-widest truncate">{item.product.category?.name ?? ""}</p>
           <p className="text-[13px] font-medium text-foreground/80 line-clamp-2 leading-snug group-hover:text-foreground transition-colors">{item.product.name}</p>
           <div className="flex items-baseline gap-1.5 pt-0.5">
-            <span className="text-sm font-bold text-emerald-400 font-mono">{formatPrice(item.product.price)}</span>
+            <span className="text-sm font-bold text-emerald-400">{formatPrice(item.product.price)}</span>
             {item.product.originalPrice && (
-              <span className="text-[11px] text-foreground/28 line-through font-mono">{formatPrice(item.product.originalPrice)}</span>
+              <span className="text-[11px] text-foreground/28 line-through">{formatPrice(item.product.originalPrice)}</span>
             )}
           </div>
         </div>
@@ -139,11 +139,11 @@ function SavedCard({ item, listId, onRemove }: {
       <div className="px-3 pb-3 flex gap-1.5">
         <button disabled={oos}
           onClick={(e) => { e.preventDefault(); setBuyNow(item.product as any); router.push("/checkout") }}
-          className="flex-1 flex items-center justify-center gap-1 py-2 bg-[#ee0000] hover:bg-red-700 text-white text-[10px] font-mono font-bold tracking-widest rounded-xl transition-all active:scale-95 disabled:opacity-40">
+          className="flex-1 flex items-center justify-center gap-1 py-2 bg-[#ee0000] hover:bg-red-700 text-white text-[10px] font-bold tracking-widest rounded-xl transition-all active:scale-95 disabled:opacity-40">
           <Zap className="h-2.5 w-2.5" /> BUY NOW
         </button>
         <button disabled={oos}
-          onClick={(e) => { e.preventDefault(); addItem(item.product as any); toast.success("Added to bag", { className: "font-mono text-xs" }) }}
+          onClick={(e) => { e.preventDefault(); addItem(item.product as any); toast.success("Added to bag", { className: " text-xs" }) }}
           className="px-3 py-2 border border-white/15 text-foreground/45 hover:text-foreground/75 hover:border-white/28 rounded-xl transition-all active:scale-95 disabled:opacity-40">
           <ShoppingCart className="h-3.5 w-3.5" />
         </button>
@@ -162,7 +162,7 @@ function RecoCard({ product }: { product: WProduct }) {
   return (
     <div className="group flex-shrink-0 w-40 rounded-2xl border border-white/8 bg-white/[0.025] overflow-hidden hover:border-white/22 hover:shadow-lg hover:shadow-black/25 transition-all duration-200">
       {disc && (
-        <div className="absolute top-2 left-2 z-10 bg-[#ee0000] text-white text-[10px] font-mono font-bold px-1.5 py-0.5 rounded-md">
+        <div className="absolute top-2 left-2 z-10 bg-[#ee0000] text-white text-[10px] font-bold px-1.5 py-0.5 rounded-md">
           -{disc}%
         </div>
       )}
@@ -175,17 +175,17 @@ function RecoCard({ product }: { product: WProduct }) {
           }
           {(product.stock ?? 0) === 0 && (
             <div className="absolute inset-0 bg-background/70 flex items-center justify-center">
-              <span className="text-[10px] font-mono text-foreground/40 border border-white/15 px-1.5 py-0.5 rounded">OUT OF STOCK</span>
+              <span className="text-[10px] text-foreground/40 border border-white/15 px-1.5 py-0.5 rounded">OUT OF STOCK</span>
             </div>
           )}
         </div>
         <div className="p-2.5 space-y-0.5">
-          <p className="text-[10px] text-foreground/28 font-mono uppercase tracking-widest truncate">{product.category?.name ?? ""}</p>
+          <p className="text-[10px] text-foreground/28 uppercase tracking-widest truncate">{product.category?.name ?? ""}</p>
           <p className="text-[12px] font-medium text-foreground/78 line-clamp-2 leading-snug group-hover:text-foreground transition-colors">{product.name}</p>
           <div className="flex items-baseline gap-1 pt-0.5">
-            <span className="text-[13px] font-bold text-emerald-400 font-mono">{formatPrice(product.price)}</span>
+            <span className="text-[13px] font-bold text-emerald-400">{formatPrice(product.price)}</span>
             {product.originalPrice && (
-              <span className="text-[10px] text-foreground/25 line-through font-mono">{formatPrice(product.originalPrice)}</span>
+              <span className="text-[10px] text-foreground/25 line-through">{formatPrice(product.originalPrice)}</span>
             )}
           </div>
         </div>
@@ -193,8 +193,8 @@ function RecoCard({ product }: { product: WProduct }) {
       <div className="px-2.5 pb-2.5">
         <button
           disabled={(product.stock ?? 0) === 0}
-          onClick={(e) => { e.preventDefault(); addItem(product as any); toast.success("Added to bag", { className: "font-mono text-xs" }) }}
-          className="w-full flex items-center justify-center gap-1 py-1.5 border border-white/12 text-foreground/38 hover:text-foreground/68 hover:border-white/22 rounded-xl text-[10px] font-mono transition-all active:scale-95 disabled:opacity-30">
+          onClick={(e) => { e.preventDefault(); addItem(product as any); toast.success("Added to bag", { className: " text-xs" }) }}
+          className="w-full flex items-center justify-center gap-1 py-1.5 border border-white/12 text-foreground/38 hover:text-foreground/68 hover:border-white/22 rounded-xl text-[10px] transition-all active:scale-95 disabled:opacity-30">
           <Plus className="h-2.5 w-2.5" /> Add to Bag
         </button>
       </div>
@@ -312,7 +312,7 @@ export default function WishlistPage() {
         {/* ── Header ── */}
         <div className="flex items-center justify-between pt-2">
           <div>
-            <p className="text-xs text-foreground/32 font-mono">Hello, {firstName}</p>
+            <p className="text-xs text-foreground/32">Hello, {firstName}</p>
             <h1 className="text-xl font-bold text-foreground tracking-tight">
               My Wishlist
               {items.length > 0 && (
@@ -321,7 +321,7 @@ export default function WishlistPage() {
             </h1>
           </div>
           <Link href="/products"
-            className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-rose-500/10 border border-rose-500/18 text-rose-400 text-xs font-mono hover:bg-rose-500/16 transition-all active:scale-95">
+            className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-rose-500/10 border border-rose-500/18 text-rose-400 text-xs hover:bg-rose-500/16 transition-all active:scale-95">
             <Plus className="h-3.5 w-3.5" /> Add
           </Link>
         </div>
@@ -337,7 +337,7 @@ export default function WishlistPage() {
             <p className="text-sm font-semibold text-foreground/45">Nothing saved yet</p>
             <p className="text-xs text-foreground/25">Tap ❤ on any product to save it here</p>
             <Link href="/products"
-              className="inline-flex items-center gap-2 mt-1 px-5 py-2.5 rounded-xl bg-rose-500/10 border border-rose-500/18 text-rose-400 text-xs font-mono hover:bg-rose-500/15 transition-all">
+              className="inline-flex items-center gap-2 mt-1 px-5 py-2.5 rounded-xl bg-rose-500/10 border border-rose-500/18 text-rose-400 text-xs hover:bg-rose-500/15 transition-all">
               <Plus className="h-3.5 w-3.5" /> Browse Products
             </Link>
           </div>
@@ -348,7 +348,7 @@ export default function WishlistPage() {
               <Heart className="h-3.5 w-3.5 text-rose-400 fill-current flex-shrink-0" />
               <p className="text-xs text-foreground/50 flex-1 min-w-0">
                 <span className="font-semibold text-foreground/75">{items.length} product{items.length !== 1 ? "s" : ""}</span>
-                {" "}saved{list?.totalCost ? <> · total <span className="text-emerald-400 font-mono font-semibold">{formatPrice(list.totalCost)}</span></> : ""}
+                {" "}saved{list?.totalCost ? <> · total <span className="text-emerald-400 font-semibold">{formatPrice(list.totalCost)}</span></> : ""}
               </p>
             </div>
 
@@ -375,12 +375,12 @@ export default function WishlistPage() {
               <p className="text-sm font-bold text-foreground/80">
                 {headline.title} {headline.emoji}
               </p>
-              <p className="text-[11px] text-foreground/28 font-mono">
+              <p className="text-[11px] text-foreground/28">
                 {items.length > 0 ? "Curated from your saved items · auto-scrolling" : "Featured picks for you · auto-scrolling"}
               </p>
             </div>
           </div>
-          <span className="text-[10px] font-mono text-foreground/20 border border-white/8 px-2 py-0.5 rounded-full">
+          <span className="text-[10px] text-foreground/20 border border-white/8 px-2 py-0.5 rounded-full">
             Hover to pause
           </span>
         </div>
@@ -391,7 +391,7 @@ export default function WishlistPage() {
         ) : recos.length === 0 ? (
           <div className="container mx-auto px-4 max-w-lg">
             <div className="rounded-2xl border border-dashed border-white/8 py-8 text-center">
-              <p className="text-xs text-foreground/28 font-mono">Save products to unlock personalised picks ✨</p>
+              <p className="text-xs text-foreground/28">Save products to unlock personalised picks ✨</p>
             </div>
           </div>
         ) : (

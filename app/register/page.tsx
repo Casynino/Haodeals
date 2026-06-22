@@ -30,13 +30,13 @@ export default function RegisterPage() {
     })
 
     if (res.ok) {
-      toast.success("Account created! Welcome to HaoDeals 🎉", { className: "font-mono text-xs" })
+      toast.success("Account created! Welcome to HaoDeals 🎉", { className: " text-xs" })
       await signIn("credentials", { email: form.email, password: form.password, redirect: false })
       // Hard navigate so the server re-reads the fresh session cookie.
       window.location.href = "/products"
     } else {
       const data = await res.json()
-      toast.error(data.error ?? "Something went wrong. Please try again.", { className: "font-mono text-xs" })
+      toast.error(data.error ?? "Something went wrong. Please try again.", { className: " text-xs" })
     }
     setLoading(false)
   }
@@ -52,7 +52,7 @@ export default function RegisterPage() {
 
         {/* Brand + heading */}
         <div className="text-center space-y-2">
-          <Link href="/" className="inline-flex items-center gap-1 font-mono font-black text-base tracking-widest mb-1">
+          <Link href="/" className="inline-flex items-center gap-1 font-black text-base tracking-widest mb-1">
             <span className="text-foreground/30">[</span>
             <span>HAO</span>
             <span className="text-foreground/60">DEALS</span>
@@ -107,7 +107,7 @@ export default function RegisterPage() {
             <div className="w-full border-t border-white/10" />
           </div>
           <div className="relative flex justify-center">
-            <span className="bg-background px-3 text-xs text-foreground/30 font-mono">or sign up with email</span>
+            <span className="bg-background px-3 text-xs text-foreground/30">or sign up with email</span>
           </div>
         </div>
 

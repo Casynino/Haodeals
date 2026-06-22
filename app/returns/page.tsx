@@ -8,7 +8,7 @@ export const metadata = { title: "Returns & Refund Policy — HaoDeals" }
 
 export default function ReturnsPage() {
   return (
-    <div className="min-h-screen font-mono bg-background">
+    <div className="min-h-screen bg-background">
 
       {/* ── Hero ──────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden border-b border-white/8">
@@ -133,7 +133,7 @@ export default function ReturnsPage() {
                 {/* Content */}
                 <div className={`flex-1 pb-8 ${i < arr.length - 1 ? "" : ""}`}>
                   <div className="flex items-center gap-2 mb-1">
-                    <span className="text-[10px] font-mono text-foreground/22">{step}</span>
+                    <span className="text-[10px] text-foreground/22">{step}</span>
                     <h3 className="text-[13px] font-bold text-foreground/78">{title}</h3>
                   </div>
                   <p className="text-[12px] text-foreground/42 leading-relaxed">{desc}</p>

@@ -53,7 +53,7 @@ function LineChart({ data, color = "#34d399" }: { data: { date: string; amount: 
   return (
     <div className="relative">
       {/* Y-axis labels */}
-      <div className="absolute left-0 top-0 h-full flex flex-col justify-between text-[10px] font-mono text-foreground/25 pr-1 pointer-events-none">
+      <div className="absolute left-0 top-0 h-full flex flex-col justify-between text-[10px] text-foreground/25 pr-1 pointer-events-none">
         {ticks.reverse().map((t, i) => <span key={i}>{t > 0 ? formatPrice(t).replace("TSh ", "") : "0"}</span>)}
       </div>
       <div className="pl-8">
@@ -80,7 +80,7 @@ function LineChart({ data, color = "#34d399" }: { data: { date: string; amount: 
           )}
         </svg>
         {/* X-axis labels */}
-        <div className="flex justify-between text-[10px] font-mono text-foreground/22 mt-1">
+        <div className="flex justify-between text-[10px] text-foreground/22 mt-1">
           {[data[0], data[Math.floor(data.length / 4)], data[Math.floor(data.length / 2)], data[Math.floor(data.length * 3 / 4)], data[data.length - 1]]
             .filter(Boolean).map((d, i) => <span key={i}>{d.date.slice(5)}</span>)}
         </div>
@@ -123,12 +123,12 @@ function KpiCard({ label, value, sub, growth, icon: Icon, color, spark }: {
         {spark && <Spark data={spark} color={growth && growth >= 0 ? "#34d399" : "#fb7185"} />}
       </div>
       <div>
-        <p className="text-[12px] font-mono text-foreground/38 tracking-widest uppercase">{label}</p>
+        <p className="text-[12px] text-foreground/38 tracking-widest uppercase">{label}</p>
         <p className="text-2xl font-black text-foreground/90 tracking-tight mt-0.5">{value}</p>
-        {sub && <p className="text-[12px] text-foreground/35 font-mono mt-0.5">{sub}</p>}
+        {sub && <p className="text-[12px] text-foreground/35 mt-0.5">{sub}</p>}
       </div>
       {growth !== undefined && (
-        <div className={`flex items-center gap-1 text-[12px] font-mono font-semibold ${up ? "text-emerald-400" : "text-rose-400"}`}>
+        <div className={`flex items-center gap-1 text-[12px] font-semibold ${up ? "text-emerald-400" : "text-rose-400"}`}>
           {up ? <TrendingUp className="h-3 w-3" /> : <TrendingDown className="h-3 w-3" />}
           {up ? "+" : ""}{growth}% vs last month
         </div>
@@ -176,7 +176,7 @@ export default function AdminAnalytics() {
   ]
 
   return (
-    <div className="min-h-screen bg-background font-mono">
+    <div className="min-h-screen bg-background">
       <div className="max-w-7xl mx-auto px-4 py-6 space-y-6">
 
         {/* ── Header ── */}
@@ -249,8 +249,8 @@ export default function AdminAnalytics() {
                     <p className="text-sm font-semibold text-foreground/75 mt-0.5">Last 30 days</p>
                   </div>
                   <div className="text-right">
-                    <p className="text-[11px] text-foreground/30 font-mono">This month</p>
-                    <p className="text-base font-bold text-emerald-400 font-mono">{formatPrice(data?.revenue.thisMonth ?? 0)}</p>
+                    <p className="text-[11px] text-foreground/30">This month</p>
+                    <p className="text-base font-bold text-emerald-400">{formatPrice(data?.revenue.thisMonth ?? 0)}</p>
                   </div>
                 </div>
                 {loading
@@ -272,7 +272,7 @@ export default function AdminAnalytics() {
                         <div key={c.name} className="flex items-center gap-2">
                           <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: CAT_COLORS[i % CAT_COLORS.length] }} />
                           <span className="text-[11px] text-foreground/55 truncate flex-1">{c.name}</span>
-                          <span className="text-[11px] font-mono text-foreground/45 flex-shrink-0">{c.pct}%</span>
+                          <span className="text-[11px] text-foreground/45 flex-shrink-0">{c.pct}%</span>
                         </div>
                       ))}
                     </div>
@@ -294,12 +294,12 @@ export default function AdminAnalytics() {
                     <div key={p.id} className="space-y-1">
                       <div className="flex items-center justify-between text-[12px]">
                         <div className="flex items-center gap-2 min-w-0">
-                          <span className="text-foreground/28 font-mono w-4 flex-shrink-0">{i + 1}</span>
+                          <span className="text-foreground/28 w-4 flex-shrink-0">{i + 1}</span>
                           <span className="text-foreground/70 truncate">{p.name}</span>
                         </div>
                         <div className="flex items-center gap-2 flex-shrink-0 ml-2">
                           <span className="text-foreground/35">{p.sold} sold</span>
-                          <span className="text-emerald-400 font-mono">{formatPrice(p.revenue)}</span>
+                          <span className="text-emerald-400">{formatPrice(p.revenue)}</span>
                         </div>
                       </div>
                       <div className="h-1 bg-white/5 rounded-full overflow-hidden">
@@ -333,7 +333,7 @@ export default function AdminAnalytics() {
                       <div key={s.status} className="space-y-0.5">
                         <div className="flex justify-between text-[11px]">
                           <span className="text-foreground/50 uppercase tracking-wide">{s.status.replace(/_/g, " ")}</span>
-                          <span className="font-mono text-foreground/45">{s.count} · {pct}%</span>
+                          <span className=" text-foreground/45">{s.count} · {pct}%</span>
                         </div>
                         <div className="h-1 bg-white/5 rounded-full overflow-hidden">
                           <div className={`h-full rounded-full ${color}`} style={{ width: `${pct}%` }} />
@@ -363,7 +363,7 @@ export default function AdminAnalytics() {
                         <Icon className="h-4 w-4 flex-shrink-0 mt-0.5" />
                         <div className="min-w-0">
                           <p className="text-[12px] text-foreground/75 leading-snug">{ins.text}</p>
-                          <p className="text-[11px] opacity-60 mt-0.5 font-mono">→ {ins.action}</p>
+                          <p className="text-[11px] opacity-60 mt-0.5">→ {ins.action}</p>
                         </div>
                       </div>
                     )
@@ -384,7 +384,7 @@ export default function AdminAnalytics() {
                 <div className="flex items-center gap-2 mb-4">
                   <AlertCircle className="h-3.5 w-3.5 text-rose-400" />
                   <p className="text-[11px] tracking-widest text-rose-400/60 uppercase">Out of Stock</p>
-                  <span className="ml-auto px-2 py-0.5 rounded-full bg-rose-500/15 text-rose-400 text-[11px] font-mono font-bold">{data?.products.outOfStock ?? 0}</span>
+                  <span className="ml-auto px-2 py-0.5 rounded-full bg-rose-500/15 text-rose-400 text-[11px] font-bold">{data?.products.outOfStock ?? 0}</span>
                 </div>
                 {(data?.products.outOfStock ?? 0) === 0
                   ? <p className="text-[11px] text-foreground/25 text-center py-4">✓ All products have stock</p>
@@ -396,16 +396,16 @@ export default function AdminAnalytics() {
                 <div className="flex items-center gap-2 mb-4">
                   <AlertTriangle className="h-3.5 w-3.5 text-amber-400" />
                   <p className="text-[11px] tracking-widest text-amber-400/60 uppercase">Low Stock (≤10)</p>
-                  <span className="ml-auto px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-400 text-[11px] font-mono font-bold">{data?.products.lowStock?.length ?? 0}</span>
+                  <span className="ml-auto px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-400 text-[11px] font-bold">{data?.products.lowStock?.length ?? 0}</span>
                 </div>
                 <div className="space-y-2 max-h-48 overflow-y-auto">
                   {(data?.products.lowStock ?? []).map((p) => (
                     <div key={p.id} className="flex items-center justify-between">
                       <div className="min-w-0">
                         <p className="text-[12px] text-foreground/65 truncate">{p.name}</p>
-                        <p className="text-[10px] text-foreground/28 font-mono">{p.category}</p>
+                        <p className="text-[10px] text-foreground/28">{p.category}</p>
                       </div>
-                      <span className={`text-[11px] font-mono font-bold px-2 py-0.5 rounded-full flex-shrink-0 ml-2
+                      <span className={`text-[11px] font-bold px-2 py-0.5 rounded-full flex-shrink-0 ml-2
                         ${p.stock <= 3 ? "bg-rose-500/15 text-rose-400" : "bg-amber-500/15 text-amber-400"}`}>
                         {p.stock} left
                       </span>
@@ -425,16 +425,16 @@ export default function AdminAnalytics() {
               <div className="space-y-4">
                 {(data?.products.topSelling ?? []).map((p, i) => (
                   <div key={p.id} className="flex items-center gap-4">
-                    <span className="text-lg font-black text-foreground/15 font-mono w-6 flex-shrink-0">{i + 1}</span>
+                    <span className="text-lg font-black text-foreground/15 w-6 flex-shrink-0">{i + 1}</span>
                     <div className="flex-1 min-w-0 space-y-1">
                       <div className="flex justify-between items-center">
                         <div className="min-w-0">
                           <p className="text-[13px] font-semibold text-foreground/75 truncate">{p.name}</p>
-                          <p className="text-[10px] text-foreground/28 font-mono">{p.category}</p>
+                          <p className="text-[10px] text-foreground/28">{p.category}</p>
                         </div>
                         <div className="text-right flex-shrink-0 ml-3">
-                          <p className="text-[12px] font-bold text-emerald-400 font-mono">{formatPrice(p.revenue)}</p>
-                          <p className="text-[10px] text-foreground/30 font-mono">{p.sold} units</p>
+                          <p className="text-[12px] font-bold text-emerald-400">{formatPrice(p.revenue)}</p>
+                          <p className="text-[10px] text-foreground/30">{p.sold} units</p>
                         </div>
                       </div>
                       <div className="h-1.5 bg-white/5 rounded-full overflow-hidden">
@@ -465,8 +465,8 @@ export default function AdminAnalytics() {
                         <span className="text-foreground/65">{c.name}</span>
                       </div>
                       <div className="flex items-center gap-3">
-                        <span className="text-emerald-400 font-mono">{formatPrice(c.revenue)}</span>
-                        <span className="text-foreground/35 font-mono w-8 text-right">{c.pct}%</span>
+                        <span className="text-emerald-400">{formatPrice(c.revenue)}</span>
+                        <span className="text-foreground/35 w-8 text-right">{c.pct}%</span>
                       </div>
                     </div>
                     <div className="h-2 bg-white/5 rounded-full overflow-hidden">
@@ -487,12 +487,12 @@ export default function AdminAnalytics() {
               <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-4 text-center">
                 <p className="text-[11px] tracking-widest text-foreground/30 uppercase mb-1">Total</p>
                 <p className="text-2xl font-black text-foreground/85">{data?.customers.total ?? "—"}</p>
-                <p className="text-[11px] text-foreground/30 font-mono mt-0.5">registered customers</p>
+                <p className="text-[11px] text-foreground/30 mt-0.5">registered customers</p>
               </div>
               <div className="rounded-2xl border border-emerald-500/15 bg-emerald-500/[0.03] p-4 text-center">
                 <p className="text-[11px] tracking-widest text-emerald-400/55 uppercase mb-1">New This Month</p>
                 <p className="text-2xl font-black text-emerald-400">+{data?.customers.thisMonth ?? 0}</p>
-                <p className="text-[11px] text-foreground/30 font-mono mt-0.5">new sign-ups</p>
+                <p className="text-[11px] text-foreground/30 mt-0.5">new sign-ups</p>
               </div>
               <div className="rounded-2xl border border-violet-500/15 bg-violet-500/[0.03] p-4 text-center col-span-2 lg:col-span-1">
                 <p className="text-[11px] tracking-widest text-violet-400/55 uppercase mb-1">Avg Spend / Customer</p>
@@ -501,7 +501,7 @@ export default function AdminAnalytics() {
                     ? formatPrice(data.customers.topSpenders.reduce((s, c) => s + c.totalSpent, 0) / data.customers.topSpenders.length)
                     : "—"}
                 </p>
-                <p className="text-[11px] text-foreground/30 font-mono mt-0.5">based on top spenders</p>
+                <p className="text-[11px] text-foreground/30 mt-0.5">based on top spenders</p>
               </div>
             </div>
 
@@ -523,11 +523,11 @@ export default function AdminAnalytics() {
                         <div className="flex justify-between items-start">
                           <div className="min-w-0">
                             <p className="text-[13px] font-semibold text-foreground/75 truncate">{c.name || "—"}</p>
-                            <p className="text-[10px] text-foreground/30 font-mono truncate">{c.email}</p>
+                            <p className="text-[10px] text-foreground/30 truncate">{c.email}</p>
                           </div>
                           <div className="text-right flex-shrink-0 ml-3">
-                            <p className="text-[13px] font-bold text-emerald-400 font-mono">{formatPrice(c.totalSpent)}</p>
-                            <p className="text-[10px] text-foreground/25 font-mono">{c.orderCount} orders</p>
+                            <p className="text-[13px] font-bold text-emerald-400">{formatPrice(c.totalSpent)}</p>
+                            <p className="text-[10px] text-foreground/25">{c.orderCount} orders</p>
                           </div>
                         </div>
                         <div className="h-1 bg-white/5 rounded-full mt-1.5 overflow-hidden">
@@ -558,7 +558,7 @@ export default function AdminAnalytics() {
               ].map(({ label, val, color }) => (
                 <div key={label} className="rounded-2xl border border-white/8 bg-white/[0.02] p-4">
                   <p className="text-[11px] tracking-widest text-foreground/30 uppercase mb-2">{label}</p>
-                  <p className={`text-xl font-black font-mono ${color}`}>{formatPrice(val)}</p>
+                  <p className={`text-xl font-black ${color}`}>{formatPrice(val)}</p>
                 </div>
               ))}
             </div>
@@ -577,7 +577,7 @@ export default function AdminAnalytics() {
                       <div key={label} className="space-y-1">
                         <div className="flex justify-between text-[12px]">
                           <span className="text-foreground/50">{label}</span>
-                          <span className="font-mono text-foreground/65">{formatPrice(val)}</span>
+                          <span className=" text-foreground/65">{formatPrice(val)}</span>
                         </div>
                         <div className="h-3 bg-white/5 rounded-full overflow-hidden">
                           <div className={`h-full rounded-full ${color} transition-all`} style={{ width: `${(val / max) * 100}%` }} />
@@ -603,7 +603,7 @@ export default function AdminAnalytics() {
                       <div key={label} className="space-y-1">
                         <div className="flex justify-between text-[12px]">
                           <span className="text-foreground/50">{label}</span>
-                          <span className="font-mono text-foreground/65">{val} orders</span>
+                          <span className=" text-foreground/65">{val} orders</span>
                         </div>
                         <div className="h-3 bg-white/5 rounded-full overflow-hidden">
                           <div className={`h-full rounded-full ${color} transition-all`} style={{ width: `${(val / max) * 100}%` }} />
@@ -625,7 +625,7 @@ export default function AdminAnalytics() {
             <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-5">
               <div className="flex items-center justify-between mb-5">
                 <p className="text-[11px] tracking-widest text-foreground/35 uppercase">Daily Revenue — Last 30 Days</p>
-                <p className="text-[11px] font-mono text-emerald-400">{formatPrice(data?.revenue.thisMonth ?? 0)} this month</p>
+                <p className="text-[11px] text-emerald-400">{formatPrice(data?.revenue.thisMonth ?? 0)} this month</p>
               </div>
               {loading
                 ? <div className="h-36 bg-white/4 animate-pulse rounded-xl" />
@@ -642,9 +642,9 @@ export default function AdminAnalytics() {
                     <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: CAT_COLORS[i % CAT_COLORS.length] }} />
                     <div className="flex-1 min-w-0">
                       <p className="text-[12px] text-foreground/65 truncate">{c.name}</p>
-                      <p className="text-[11px] font-mono text-foreground/30">{c.pct}% of total</p>
+                      <p className="text-[11px] text-foreground/30">{c.pct}% of total</p>
                     </div>
-                    <p className="text-[13px] font-bold text-emerald-400 font-mono flex-shrink-0">{formatPrice(c.revenue)}</p>
+                    <p className="text-[13px] font-bold text-emerald-400 flex-shrink-0">{formatPrice(c.revenue)}</p>
                   </div>
                 ))}
               </div>

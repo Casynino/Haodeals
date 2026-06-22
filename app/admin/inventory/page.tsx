@@ -94,7 +94,7 @@ export default function AdminInventory() {
               <Icon className="h-3.5 w-3.5" />
             </div>
             <p className="text-xl font-black text-foreground/82">{val}</p>
-            <p className="text-[10px] font-mono tracking-widest text-foreground/28 mt-0.5">{label.toUpperCase()}</p>
+            <p className="text-[10px] tracking-widest text-foreground/28 mt-0.5">{label.toUpperCase()}</p>
           </div>
         ))}
       </div>
@@ -104,7 +104,7 @@ export default function AdminInventory() {
         <div className="flex gap-1 flex-wrap">
           {FILTER_TABS.map(({ id, label, color }) => (
             <button key={id} onClick={() => setFilter(id)}
-              className={`px-3 py-1.5 rounded-full text-[10px] tracking-widest border transition-all font-mono
+              className={`px-3 py-1.5 rounded-full text-[10px] tracking-widest border transition-all
                 ${filter === id ? "border-white/25 bg-white/6 text-foreground/75" : `border-white/8 ${color || "text-foreground/30"} hover:border-white/18`}`}>
               {label.toUpperCase()}
             </button>
@@ -132,7 +132,7 @@ export default function AdminInventory() {
         ) : filtered.length === 0 ? (
           <div className="text-center py-12">
             <Boxes className="h-8 w-8 mx-auto mb-2 text-foreground/10" />
-            <p className="text-[11px] text-foreground/25 font-mono">No products found</p>
+            <p className="text-[11px] text-foreground/25">No products found</p>
           </div>
         ) : (
           <div className="divide-y divide-white/[0.04]">
@@ -147,17 +147,17 @@ export default function AdminInventory() {
                     </div>
                     <div className="min-w-0">
                       <Link href={`/products/${p.id}`} className="text-[12px] font-medium text-foreground/68 hover:text-foreground transition-colors truncate block">{p.name}</Link>
-                      <p className="text-[10px] text-foreground/25 font-mono truncate">{p.category.name}</p>
+                      <p className="text-[10px] text-foreground/25 truncate">{p.category.name}</p>
                     </div>
                   </div>
                   <div className="col-span-2 text-right">
-                    <span className="text-[12px] text-emerald-400/70 font-mono">{formatPrice(p.price)}</span>
+                    <span className="text-[12px] text-emerald-400/70">{formatPrice(p.price)}</span>
                   </div>
                   <div className="col-span-2 text-right">
-                    <span className="text-[12px] text-foreground/38 font-mono">{p._count.orderItems}</span>
+                    <span className="text-[12px] text-foreground/38">{p._count.orderItems}</span>
                   </div>
                   <div className="col-span-3 flex items-center justify-end gap-2">
-                    <span className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded-full border ${STOCK_BADGE[lvl]}`}>
+                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${STOCK_BADGE[lvl]}`}>
                       {p.stock === 0 ? "OUT" : `${p.stock} left`}
                     </span>
                     <Link href="/admin/products" className="text-[10px] text-foreground/22 hover:text-foreground/55 transition-colors hidden sm:inline">Edit</Link>

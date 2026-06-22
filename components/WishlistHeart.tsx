@@ -29,7 +29,7 @@ export function WishlistHeart({ productId, productName }: Props) {
     e.stopPropagation()
 
     if (status !== "authenticated") {
-      toast.error("Sign in to save products", { className: "font-mono text-xs" })
+      toast.error("Sign in to save products", { className: " text-xs" })
       router.push("/login?callbackUrl=/products")
       return
     }
@@ -40,14 +40,14 @@ export function WishlistHeart({ productId, productName }: Props) {
       if (nowLiked) {
         toast.success("Added to Wishlist ❤️", {
           description: productName.slice(0, 42),
-          className: "font-mono text-xs",
+          className: " text-xs",
           action: { label: "View", onClick: () => router.push("/wishlist") },
         })
       } else {
-        toast("Removed from Wishlist", { className: "font-mono text-xs" })
+        toast("Removed from Wishlist", { className: " text-xs" })
       }
     } catch {
-      toast.error("Something went wrong", { className: "font-mono text-xs" })
+      toast.error("Something went wrong", { className: " text-xs" })
     } finally {
       // Always stop the spinner — no matter what happened
       setBusy(false)

@@ -28,7 +28,7 @@ export function HaoPlusBanner({ variant = "product" }: { variant?: Variant }) {
         {/* Text */}
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-1">
-            <span className="text-[13px] font-bold tracking-[0.15em] text-yellow-400/90 font-mono">HAO+</span>
+            <span className="text-[13px] font-bold tracking-[0.15em] text-yellow-400/90">HAO+</span>
             <span className="text-[10px] tracking-widest text-yellow-400/50 border border-yellow-400/25 px-1.5 py-0.5">
               COMING SOON
             </span>
