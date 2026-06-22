@@ -3,7 +3,7 @@
 export function WhatsAppButton() {
   return (
     <a
-      href="https://wa.me/255788734003?text=Habari%20HaoDeals%20support%20team"
+      href="https://wa.me/255788734003?text=Habari%20Hǎodeals%20support%20team"
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Chat on WhatsApp"

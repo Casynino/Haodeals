@@ -4,7 +4,7 @@ import { prisma } from "@/lib/prisma"
 import { ntzs, normalizePhone } from "@/lib/ntzs"
 import { computeBalance } from "@/lib/wallet"
 
-// Withdrawal: redeems tokens from HaoDeals treasury and sends mobile money to user.
+// Withdrawal: redeems tokens from Hǎodeals treasury and sends mobile money to user.
 export async function POST(req: Request) {
   const session = await auth()
   if (!session?.user) {

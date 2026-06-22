@@ -12,7 +12,7 @@ export const revalidate = 0
  *
  * For every user that still has an individual nTZS wallet (`ntzsUserId`):
  *   1. Read the REAL balance held in their personal nTZS wallet (source of truth).
- *   2. Transfer that balance into the shared HaoDeals treasury.
+ *   2. Transfer that balance into the shared Hǎodeals treasury.
  *   3. Pin their DB ledger balance to the real swept amount via a signed
  *      `adjustment` transaction.
  *   4. Detach the legacy wallet (null `ntzsUserId`) so the user is now on the

@@ -26,8 +26,8 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL("https://haodealtz.com"),
   title: {
-    default: "HaoDeals — Good Deals Delivered",
-    template: "%s | HaoDeals",
+    default: "Hǎodeals — Good Deals Delivered",
+    template: "%s | Hǎodeals",
   },
   description:
     "A collection of limited deals — now in stock. Tap to explore, shop, and enjoy fast delivery.",
@@ -36,13 +36,13 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: "https://haodealtz.com",
-    siteName: "HaoDeals",
-    title: "HaoDeals — Good Deals Delivered",
+    siteName: "Hǎodeals",
+    title: "Hǎodeals — Good Deals Delivered",
     description: "A collection of limited deals — now in stock. Tap to explore, shop, and enjoy fast delivery.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "HaoDeals — Good Deals Delivered",
+    title: "Hǎodeals — Good Deals Delivered",
     description: "A collection of limited deals — now in stock. Tap to explore, shop, and enjoy fast delivery.",
   },
   icons: {
@@ -57,7 +57,7 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "HaoDeals",
+    title: "Hǎodeals",
   },
 }
 

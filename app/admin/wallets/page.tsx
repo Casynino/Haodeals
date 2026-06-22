@@ -383,7 +383,7 @@ export default function AdminWallets() {
 
       <p className="text-[10px] text-foreground/22 leading-relaxed">
         Balance = confirmed deposits + adjustments − withdrawals − order spend. Funds are held in the shared
-        HaoDeals treasury; individual balances are tracked here in the database.
+        Hǎodeals treasury; individual balances are tracked here in the database.
       </p>
       <div className="h-4" />
 
@@ -402,7 +402,7 @@ export default function AdminWallets() {
               <p>
                 This reads the <span className="text-foreground/80">real nTZS balance</span> of each of the{" "}
                 <span className="text-amber-400">{totals.legacyWallets}</span> legacy wallet(s),
-                transfers it into the HaoDeals treasury, and pins each user&apos;s ledger balance to that real amount.
+                transfers it into the Hǎodeals treasury, and pins each user&apos;s ledger balance to that real amount.
               </p>
               <p className="text-foreground/40">
                 After this, treasury holdings will back 100% of user balances (1:1). Each user is detached from their

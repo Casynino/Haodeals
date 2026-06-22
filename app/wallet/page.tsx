@@ -583,7 +583,7 @@ export default function WalletPage() {
                 </div>
                 <div>
                   <p className="text-[12px] tracking-[0.2em] text-emerald-400/80 uppercase">Treasury Pool</p>
-                  <p className="text-[11px] text-foreground/35 mt-0.5">Funds accepting payments across HaoDeals</p>
+                  <p className="text-[11px] text-foreground/35 mt-0.5">Funds accepting payments across Hǎodeals</p>
                 </div>
               </div>
               <div className="text-right">

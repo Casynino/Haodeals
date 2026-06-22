@@ -107,7 +107,7 @@ export function Navbar() {
       <div className="container mx-auto px-4 h-14 flex items-center gap-6">
         {/* Logo */}
         <Link href="/" className="flex items-center font-bold text-lg tracking-tight shrink-0">
-          <span className="text-foreground">Hao</span><span className="text-gold">Deals</span>
+          <span className="text-gold">Hǎo</span><span className="text-foreground">deals</span>
         </Link>
 
         <span className="text-foreground/20 text-xs hidden md:block">|</span>

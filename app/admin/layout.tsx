@@ -49,7 +49,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           ${collapsed ? "justify-center" : "justify-between"}`}>
           {!collapsed && (
             <div>
-              <p className="text-[15px] font-bold tracking-tight text-foreground">Hao<span className="text-gold">Deals</span></p>
+              <p className="text-[15px] font-bold tracking-tight text-foreground"><span className="text-gold">Hǎo</span>deals</p>
               <p className="text-[11px] text-foreground/40 mt-0.5">Admin console</p>
             </div>
           )}

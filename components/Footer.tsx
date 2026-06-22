@@ -26,7 +26,7 @@ export function Footer() {
               {/* Brand mark */}
               <div>
                 <div className="text-xl font-bold tracking-tight mb-2">
-                  <span className="text-foreground">Hao</span><span className="text-gold">Deals</span>
+                  <span className="text-gold">Hǎo</span><span className="text-foreground">deals</span>
                 </div>
                 <p className="text-[13px] text-foreground/40 max-w-xs leading-relaxed">
                   Simple, fast, secure shopping with flexible payments and reliable delivery across Tanzania.
@@ -131,7 +131,7 @@ export function Footer() {
       {/* ── Bottom bar ──────────────────────────────────────────────────── */}
       <div className="container mx-auto px-4 py-4">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p className="text-[11px] text-foreground/22 tracking-wide">© 2026 HaoDeals Tanzania — All rights reserved</p>
+          <p className="text-[11px] text-foreground/22 tracking-wide">© 2026 Hǎodeals Tanzania — All rights reserved</p>
           <div className="flex items-center gap-2 text-[11px] text-foreground/25">
             <Link href="#"         className="hover:text-foreground/55 transition-colors">Privacy</Link>
             <span className="text-foreground/10">·</span>

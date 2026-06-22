@@ -6,7 +6,7 @@ import { prisma } from "@/lib/prisma"
  *   completed deposits  +  reconciliation adjustments
  *   − non-failed withdrawals  −  paid-order spend
  *
- * Funds themselves live in the shared HaoDeals nTZS treasury; this is the
+ * Funds themselves live in the shared Hǎodeals nTZS treasury; this is the
  * authoritative per-user ledger balance.
  */
 export async function computeBalance(userId: string): Promise<number> {

@@ -4,7 +4,7 @@ import {
   Package, Search, Banknote, ArrowRight, Shield, Phone,
 } from "lucide-react"
 
-export const metadata = { title: "Returns & Refund Policy — HaoDeals" }
+export const metadata = { title: "Returns & Refund Policy — Hǎodeals" }
 
 export default function ReturnsPage() {
   return (
@@ -53,7 +53,7 @@ export default function ReturnsPage() {
             {
               icon: RotateCcw, color: "text-violet-400", bg: "bg-violet-500/10 border-violet-500/20",
               title: "Customer Bears Shipping",
-              desc: "HaoDeals does not cover return shipping costs. You are responsible for all costs associated with sending the product back to us.",
+              desc: "Hǎodeals does not cover return shipping costs. You are responsible for all costs associated with sending the product back to us.",
             },
             {
               icon: Search, color: "text-blue-400", bg: "bg-blue-500/10 border-blue-500/20",
@@ -73,7 +73,7 @@ export default function ReturnsPage() {
             {
               icon: Banknote, color: "text-emerald-400", bg: "bg-emerald-500/10 border-emerald-500/20",
               title: "Refund to Wallet",
-              desc: "Approved refunds are credited to your HaoDeals wallet within 1 working day after the review decision.",
+              desc: "Approved refunds are credited to your Hǎodeals wallet within 1 working day after the review decision.",
             },
           ].map(({ icon: Icon, color, bg, title, desc }) => (
             <div key={title} className={`rounded-2xl border p-5 space-y-3 ${bg}`}>
@@ -118,7 +118,7 @@ export default function ReturnsPage() {
               {
                 step: "05", icon: Banknote, color: "text-emerald-400", bg: "bg-emerald-500/15",
                 title: "Refund Decision & Processing",
-                desc: "If eligible, a full refund is credited to your HaoDeals wallet within 1 working day of the review decision. You will be notified by email.",
+                desc: "If eligible, a full refund is credited to your Hǎodeals wallet within 1 working day of the review decision. You will be notified by email.",
               },
             ].map(({ step, icon: Icon, color, bg, title, desc }, i, arr) => (
               <div key={step} className="relative flex gap-5">
@@ -152,7 +152,7 @@ export default function ReturnsPage() {
           {[
             { type: "warning", text: "Returns requested after 72 hours from delivery will NOT be accepted under any circumstances." },
             { type: "warning", text: "Products must be returned in the same condition as received. Damaged, used, or incomplete returns may be rejected." },
-            { type: "danger",  text: "HaoDeals does not accept returns for change of mind, wrong size chosen, or products matching their description exactly." },
+            { type: "danger",  text: "Hǎodeals does not accept returns for change of mind, wrong size chosen, or products matching their description exactly." },
             { type: "info",    text: "Keep your return tracking number. We are not responsible for packages lost in transit on the way back to our warehouse." },
             { type: "info",    text: "For urgent return requests, call us directly at 0788 734 003 during business hours." },
           ].map(({ type, text }, i) => {

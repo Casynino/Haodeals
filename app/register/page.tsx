@@ -30,7 +30,7 @@ export default function RegisterPage() {
     })
 
     if (res.ok) {
-      toast.success("Account created! Welcome to HaoDeals 🎉", { className: " text-xs" })
+      toast.success("Account created! Welcome to Hǎodeals 🎉", { className: " text-xs" })
       await signIn("credentials", { email: form.email, password: form.password, redirect: false })
       // Hard navigate so the server re-reads the fresh session cookie.
       window.location.href = "/products"
