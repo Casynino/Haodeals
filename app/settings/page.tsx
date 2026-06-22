@@ -70,7 +70,7 @@ export default function SettingsPage() {
     })
     if (res.ok) {
       await update({ name: form.name, phone: form.phone || null, image: form.image || null })
-      toast.success("PROFILE.UPDATED", { className: " text-xs" })
+      toast.success("Profile updated", { className: " text-xs" })
     } else {
       const d = await res.json()
       toast.error(d.error ?? "UPDATE FAILED", { className: " text-xs" })
@@ -91,7 +91,7 @@ export default function SettingsPage() {
       body: JSON.stringify({ currentPassword: pass.current, newPassword: pass.next }),
     })
     if (res.ok) {
-      toast.success("PASSWORD.UPDATED", { className: " text-xs" })
+      toast.success("Password updated", { className: " text-xs" })
       setPass({ current: "", next: "", confirm: "" })
     } else {
       const d = await res.json()
@@ -115,13 +115,13 @@ export default function SettingsPage() {
 
       {/* Header */}
       <div className="flex items-center gap-3 border-b border-foreground/10 pb-4">
-        <span className="text-foreground/30 text-[12px]">//</span>
-        <h1 className="text-[13px] tracking-[0.3em] text-foreground/70">ACCOUNT.SETTINGS</h1>
+        <span className="text-foreground/30 text-[12px]"></span>
+        <h1 className="text-[13px] tracking-[0.3em] text-foreground/70">Account settings</h1>
       </div>
 
       {/* Avatar */}
       <div className="border border-foreground/15 p-5 space-y-4">
-        <p className="text-[11px] tracking-widest text-foreground/40">// PROFILE.PICTURE</p>
+        <p className="text-[11px] tracking-widest text-foreground/40">Profile picture</p>
         <div className="flex items-center gap-4">
           <div className="relative w-16 h-16 border border-foreground/20 overflow-hidden bg-foreground/5 flex-shrink-0">
             {form.image ? (
@@ -145,7 +145,7 @@ export default function SettingsPage() {
               className="flex items-center gap-2 px-4 py-2 border border-foreground/20 text-[12px] tracking-widest text-foreground/60 hover:text-foreground hover:border-foreground/40 transition-colors disabled:opacity-40"
             >
               <Camera className="h-3 w-3" />
-              {uploading ? "UPLOADING..." : "CHANGE.PHOTO"}
+              {uploading ? "UPLOADING..." : "Change photo"}
             </button>
             <p className="text-[10px] text-foreground/20">JPG, PNG, WEBP · MAX 4MB</p>
           </div>
@@ -158,10 +158,10 @@ export default function SettingsPage() {
         <div className="absolute top-0 left-0 w-3 h-3 border-t border-l border-foreground/20" />
         <div className="absolute bottom-0 right-0 w-3 h-3 border-b border-r border-foreground/20" />
 
-        <p className="text-[11px] tracking-widest text-foreground/40">// PERSONAL.INFO</p>
+        <p className="text-[11px] tracking-widest text-foreground/40">Personal info</p>
 
         <div className="space-y-1.5">
-          <label className="text-[10px] tracking-widest text-foreground/30 block">EMAIL.ADDRESS</label>
+          <label className="text-[10px] tracking-widest text-foreground/30 block">Email address</label>
           <p className="text-[12px] text-foreground/40 px-3 py-2 border border-foreground/10 bg-foreground/5">
             {session?.user?.email}
           </p>
@@ -170,7 +170,7 @@ export default function SettingsPage() {
 
         <div className="space-y-1.5">
           <label className="text-[10px] tracking-widest text-foreground/30 flex items-center gap-1.5 mb-1">
-            <User className="h-2.5 w-2.5" /> DISPLAY.NAME
+            <User className="h-2.5 w-2.5" /> Display name
           </label>
           <input
             type="text"
@@ -185,7 +185,7 @@ export default function SettingsPage() {
 
         <div className="space-y-1.5">
           <label className="text-[10px] tracking-widest text-foreground/30 flex items-center gap-1.5 mb-1">
-            <Phone className="h-2.5 w-2.5" /> PHONE.NUMBER
+            <Phone className="h-2.5 w-2.5" /> Phone number
           </label>
           <input
             type="tel"
@@ -199,7 +199,7 @@ export default function SettingsPage() {
 
         <div className="space-y-1.5">
           <label className="text-[10px] tracking-widest text-foreground/30 flex items-center gap-1.5 mb-1">
-            <MapPin className="h-2.5 w-2.5" /> DELIVERY.ADDRESS
+            <MapPin className="h-2.5 w-2.5" /> Delivery address
           </label>
           <input
             type="text"
@@ -216,18 +216,18 @@ export default function SettingsPage() {
           disabled={saving}
           className="w-full flex items-center justify-center gap-2 py-2.5 bg-foreground text-background text-[12px] tracking-widest font-bold hover:bg-foreground/90 transition-colors disabled:opacity-50"
         >
-          {saving ? <><Loader2 className="h-3.5 w-3.5 animate-spin" /> SAVING...</> : <><Save className="h-3.5 w-3.5" /> SAVE.CHANGES</>}
+          {saving ? <><Loader2 className="h-3.5 w-3.5 animate-spin" /> SAVING...</> : <><Save className="h-3.5 w-3.5" /> Save changes</>}
         </button>
       </form>
 
       {/* Password */}
       <form onSubmit={handleChangePassword} className="border border-foreground/15 p-5 space-y-4">
-        <p className="text-[11px] tracking-widest text-foreground/40">// CHANGE.PASSWORD</p>
+        <p className="text-[11px] tracking-widest text-foreground/40">Change password</p>
 
         {[
-          { label: "CURRENT.PASSWORD", key: "current" as const, show: showCurrent, toggle: () => setShowCurrent(!showCurrent) },
-          { label: "NEW.PASSWORD",     key: "next"    as const, show: showNext,    toggle: () => setShowNext(!showNext) },
-          { label: "CONFIRM.PASSWORD", key: "confirm" as const, show: showNext,    toggle: () => setShowNext(!showNext) },
+          { label: "Current password", key: "current" as const, show: showCurrent, toggle: () => setShowCurrent(!showCurrent) },
+          { label: "New password",     key: "next"    as const, show: showNext,    toggle: () => setShowNext(!showNext) },
+          { label: "Confirm password", key: "confirm" as const, show: showNext,    toggle: () => setShowNext(!showNext) },
         ].map(({ label, key, show, toggle }) => (
           <div key={key} className="space-y-1.5">
             <label className="text-[10px] tracking-widest text-foreground/30 block">{label}</label>
@@ -253,7 +253,7 @@ export default function SettingsPage() {
           disabled={savingPw}
           className="w-full flex items-center justify-center gap-2 py-2.5 border border-foreground/20 text-[12px] tracking-widest text-foreground/60 hover:text-foreground hover:border-foreground/40 transition-colors disabled:opacity-50"
         >
-          {savingPw ? <><Loader2 className="h-3.5 w-3.5 animate-spin" /> UPDATING...</> : <><KeyRound className="h-3.5 w-3.5" /> UPDATE.PASSWORD</>}
+          {savingPw ? <><Loader2 className="h-3.5 w-3.5 animate-spin" /> UPDATING...</> : <><KeyRound className="h-3.5 w-3.5" /> Update password</>}
         </button>
       </form>
     </div>

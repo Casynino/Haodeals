@@ -272,7 +272,7 @@ function ExceptionScene({ status }: { status: string }) {
       </div>
       <div className="text-center">
         <p className="text-[13px] font-bold tracking-wider" style={{ color: exc?.color }}>
-          {exc?.label.toUpperCase()}
+          {exc?.label}
         </p>
       </div>
     </motion.div>
@@ -429,7 +429,7 @@ export default function OrderTracker({
                 textShadow: "0 0 16px rgba(238,0,0,0.4)",
               }}
             >
-              {trackingId ?? `#${orderId.slice(0, 8).toUpperCase()}`}
+              {trackingId ?? `#${orderId.slice(0, 8)}`}
             </p>
           </div>
           <div className="text-right mt-1">

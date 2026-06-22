@@ -64,7 +64,7 @@ export default function MessagesPage() {
     return (
       <div className="container mx-auto px-4 py-8 max-w-3xl">
         <div className="flex items-center gap-3 mb-6 border-b border-white/10 pb-4">
-          <span className="text-foreground/45 text-xs">//</span>
+          <span className="text-foreground/45 text-xs"></span>
           <h1 className="text-lg font-semibold tracking-[0.2em] text-foreground/90">MESSAGES</h1>
         </div>
         <div className="space-y-3 animate-pulse">
@@ -80,7 +80,7 @@ export default function MessagesPage() {
     <div className="container mx-auto px-4 py-8 max-w-3xl">
       <div className="flex items-center justify-between mb-6 border-b border-white/10 pb-4">
         <div className="flex items-center gap-3">
-          <span className="text-foreground/45 text-xs">//</span>
+          <span className="text-foreground/45 text-xs"></span>
           <h1 className="text-lg font-semibold tracking-[0.2em] text-foreground/90">MESSAGES</h1>
           {conversations.length > 0 && (
             <span className="text-xs text-foreground/50">{conversations.length} conversations</span>
@@ -91,14 +91,14 @@ export default function MessagesPage() {
           className="flex items-center gap-1.5 px-3 py-1.5 border border-white/20 text-[11px] tracking-widest text-foreground/50 hover:text-foreground hover:border-white/40 transition-colors"
         >
           {showNew ? <X className="h-3 w-3" /> : <Plus className="h-3 w-3" />}
-          {showNew ? "CANCEL" : "NEW.MESSAGE"}
+          {showNew ? "CANCEL" : "New message"}
         </button>
       </div>
 
       {/* New conversation form */}
       {showNew && (
         <div className="border border-white/15 p-5 mb-6 space-y-4">
-          <p className="text-[12px] tracking-widest text-foreground/55">// NEW.SUPPORT.MESSAGE</p>
+          <p className="text-[12px] tracking-widest text-foreground/55">New support message</p>
           <form onSubmit={handleNewConversation} className="space-y-3">
             <div>
               <label className="text-[12px] tracking-widest text-foreground/45 block mb-1.5">SUBJECT</label>
@@ -129,7 +129,7 @@ export default function MessagesPage() {
               className="flex items-center gap-2 px-4 py-2 bg-foreground text-background text-[12px] tracking-widest hover:opacity-90 transition-opacity disabled:opacity-50"
             >
               <Send className="h-3 w-3" />
-              {submitting ? "SENDING..." : "SEND.MESSAGE"}
+              {submitting ? "SENDING..." : "Send message"}
             </button>
           </form>
         </div>
@@ -169,7 +169,7 @@ export default function MessagesPage() {
                     </div>
                     {conv.order && (
                       <p className="text-[12px] text-foreground/40 mb-1">
-                        Order #{conv.order.trackingId ?? conv.order.id.slice(0, 8).toUpperCase()}
+                        Order #{conv.order.trackingId ?? conv.order.id.slice(0, 8)}
                       </p>
                     )}
                     {lastMessage && (
@@ -192,7 +192,7 @@ export default function MessagesPage() {
                         ? "text-blue-400/60 border-blue-400/20"
                         : "text-foreground/30 border-white/15"
                     }`}>
-                      {conv.status.toUpperCase()}
+                      {conv.status}
                     </span>
                   </div>
                 </div>

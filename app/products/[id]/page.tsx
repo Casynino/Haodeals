@@ -386,7 +386,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                 {[
                   ["Category", product.category?.name ?? "—"],
                   ["Stock", `${product.stock} units`],
-                  ["SKU", product.id.slice(0, 8).toUpperCase()],
+                  ["SKU", product.id.slice(0, 8)],
                   ["Status", product.stock > 0 ? "In stock" : "Out of stock"],
                 ].map(([label, value]) => (
                   <div key={label} className="flex items-center justify-between py-2 border-b border-foreground/5 text-[12px]">

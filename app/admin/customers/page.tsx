@@ -57,7 +57,7 @@ export default function AdminCustomers() {
               <Icon className={`h-4 w-4 ${color}`} />
             </div>
             <p className="text-xl font-black text-foreground/85">{val}</p>
-            <p className="text-[10px] text-foreground/28 tracking-widest mt-0.5">{label.toUpperCase()}</p>
+            <p className="text-[10px] text-foreground/28 tracking-widest mt-0.5">{label}</p>
           </div>
         ))}
       </div>
@@ -92,7 +92,7 @@ export default function AdminCustomers() {
               <div key={c.id} className="grid grid-cols-12 gap-3 items-center px-4 py-3 hover:bg-foreground/[0.02] transition-colors">
                 <div className="col-span-4 flex items-center gap-3 min-w-0">
                   <div className="w-7 h-7 rounded-full bg-violet-500/15 flex items-center justify-center flex-shrink-0 text-[11px] font-bold text-violet-400">
-                    {i < 3 ? ["🥇","🥈","🥉"][i] : (c.name?.[0]?.toUpperCase() ?? "?")}
+                    {i < 3 ? ["🥇","🥈","🥉"][i] : (c.name?.[0] ?? "?")}
                   </div>
                   <div className="min-w-0">
                     <p className="text-[12px] font-semibold text-foreground/70 truncate">{c.name || "—"}</p>

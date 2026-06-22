@@ -84,7 +84,7 @@ export default function AdminProductsPage() {
         const { url } = await res.json()
         urls.push(url)
       } else {
-        toast.error(`UPLOAD.FAILED: ${file.name}`, { className: " text-xs" })
+        toast.error(`Upload failed: ${file.name}`, { className: " text-xs" })
       }
     }
     const merged = [...uploadedUrls, ...urls]
@@ -176,7 +176,7 @@ export default function AdminProductsPage() {
 
   async function handleSave() {
     if (!form.name || !form.price || !form.categoryId) {
-      toast.error("REQUIRED.FIELDS.MISSING", { className: " text-xs" })
+      toast.error("Required fields missing", { className: " text-xs" })
       return
     }
     setSaving(true)
@@ -193,11 +193,11 @@ export default function AdminProductsPage() {
       body: JSON.stringify(body),
     })
     if (res.ok) {
-      toast.success(editing ? "PRODUCT.UPDATED" : "PRODUCT.CREATED", { className: " text-xs" })
+      toast.success(editing ? "Product updated" : "Product created", { className: " text-xs" })
       setOpen(false)
       loadProducts()
     } else {
-      toast.error("SAVE.FAILED", { className: " text-xs" })
+      toast.error("Save failed", { className: " text-xs" })
     }
     setSaving(false)
   }
@@ -206,10 +206,10 @@ export default function AdminProductsPage() {
     if (!confirm("DELETE THIS PRODUCT?")) return
     const res = await fetch(`/api/admin/products/${id}`, { method: "DELETE" })
     if (res.ok) {
-      toast.success("PRODUCT.DELETED", { className: " text-xs" })
+      toast.success("Product deleted", { className: " text-xs" })
       setProducts((prev) => prev.filter((p) => p.id !== id))
     } else {
-      toast.error("DELETE.FAILED", { className: " text-xs" })
+      toast.error("Delete failed", { className: " text-xs" })
     }
   }
 
@@ -222,8 +222,8 @@ export default function AdminProductsPage() {
       {/* Header */}
       <div className="flex items-center justify-between mb-6 border-b border-foreground/10 pb-4">
         <div className="flex items-center gap-3">
-          <span className="text-foreground/30 text-[12px]">//</span>
-          <h1 className="text-[13px] tracking-[0.3em] text-foreground/70">PRODUCTS.MANAGER</h1>
+          <span className="text-foreground/30 text-[12px]"></span>
+          <h1 className="text-[13px] tracking-[0.3em] text-foreground/70">Products manager</h1>
           <span className="text-[11px] text-foreground/30">[{products.length}.ITEMS]</span>
         </div>
         <Dialog open={open} onOpenChange={setOpen}>
@@ -231,17 +231,17 @@ export default function AdminProductsPage() {
             className="flex items-center gap-1.5 px-3 py-1.5 border border-foreground/20 text-[11px] tracking-widest text-foreground/50 hover:text-foreground hover:border-foreground/40 transition-colors"
             onClick={openAdd}
           >
-            <Plus className="h-3 w-3" /> ADD.PRODUCT
+            <Plus className="h-3 w-3" /> Add product
           </DialogTrigger>
           <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto bg-background border border-foreground/20">
             <DialogHeader>
               <DialogTitle className="text-[12px] tracking-widest text-foreground/60">
-                {editing ? "// EDIT.PRODUCT" : "// NEW.PRODUCT"}
+                {editing ? "// Edit product" : "// New product"}
               </DialogTitle>
             </DialogHeader>
             <div className="space-y-3 py-2">
               {[
-                { key: "name", label: "PRODUCT.NAME *", placeholder: "Product name" },
+                { key: "name", label: "Product name *", placeholder: "Product name" },
                 { key: "description", label: "DESCRIPTION", placeholder: "Product description", multiline: true },
               ].map((field) => (
                 <div key={field.key}>
@@ -268,7 +268,7 @@ export default function AdminProductsPage() {
               <div className="grid grid-cols-2 gap-2">
                 {[
                   { key: "price", label: "PRICE *", placeholder: "29.99" },
-                  { key: "originalPrice", label: "ORIG.PRICE", placeholder: "59.99" },
+                  { key: "originalPrice", label: "Orig price", placeholder: "59.99" },
                   { key: "stock", label: "STOCK", placeholder: "100" },
                 ].map((field) => (
                   <div key={field.key}>
@@ -291,12 +291,12 @@ export default function AdminProductsPage() {
                   onValueChange={(v) => v && setForm({ ...form, categoryId: v })}
                 >
                   <SelectTrigger className="bg-transparent border-foreground/15 text-[12px] text-foreground/70 focus:border-foreground/40">
-                    <SelectValue placeholder="SELECT.CATEGORY" />
+                    <SelectValue placeholder="Select category" />
                   </SelectTrigger>
                   <SelectContent className="bg-background border-foreground/20">
                     {categories.map((cat) => (
                       <SelectItem key={cat.id} value={cat.id} className="text-[12px] tracking-wide">
-                        {cat.name.toUpperCase()}
+                        {cat.name}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -306,7 +306,7 @@ export default function AdminProductsPage() {
               {/* Product Options */}
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <label className="text-[10px] tracking-widest text-foreground/30">PRODUCT.OPTIONS</label>
+                  <label className="text-[10px] tracking-widest text-foreground/30">Product options</label>
                   <span className="text-[10px] text-foreground/20">SIZE · COLOR · STORAGE · ETC</span>
                 </div>
 
@@ -320,7 +320,7 @@ export default function AdminProductsPage() {
                       disabled={!!options.find((o) => o.name === preset.name)}
                       className="px-2 py-0.5 text-[10px] tracking-widest border border-foreground/15 text-foreground/40 hover:text-foreground hover:border-foreground/40 transition-colors disabled:opacity-20 disabled:cursor-not-allowed"
                     >
-                      + {preset.name.toUpperCase()}
+                      + {preset.name}
                     </button>
                   ))}
                 </div>
@@ -348,7 +348,7 @@ export default function AdminProductsPage() {
                 {options.map((opt, idx) => (
                   <div key={idx} className="border border-foreground/10 p-2.5 space-y-2">
                     <div className="flex items-center justify-between">
-                      <span className="text-[11px] tracking-widest text-foreground/60">{opt.name.toUpperCase()}</span>
+                      <span className="text-[11px] tracking-widest text-foreground/60">{opt.name}</span>
                       <button type="button" onClick={() => removeOption(idx)} className="text-foreground/20 hover:text-red-400/70 transition-colors">
                         <X className="h-3 w-3" />
                       </button>
@@ -382,7 +382,7 @@ export default function AdminProductsPage() {
 
               {/* Image upload */}
               <div>
-                <label className="text-[10px] tracking-widest text-foreground/30 block mb-1">PRODUCT.IMAGES</label>
+                <label className="text-[10px] tracking-widest text-foreground/30 block mb-1">Product images</label>
 
                 {/* Uploaded previews */}
                 {uploadedUrls.length > 0 && (
@@ -420,7 +420,7 @@ export default function AdminProductsPage() {
                   ) : (
                     <>
                       <ImageIcon className="h-3 w-3" />
-                      {uploadedUrls.length > 0 ? "ADD.MORE.IMAGES" : "UPLOAD.IMAGES"}
+                      {uploadedUrls.length > 0 ? "Add more images" : "Upload images"}
                     </>
                   )}
                 </label>
@@ -435,13 +435,13 @@ export default function AdminProductsPage() {
                   onChange={(e) => setForm({ ...form, featured: e.target.checked })}
                   className="w-3 h-3 accent-foreground"
                 />
-                <label htmlFor="featured" className="text-[11px] tracking-widest text-foreground/40">FEATURED.PRODUCT</label>
+                <label htmlFor="featured" className="text-[11px] tracking-widest text-foreground/40">Featured product</label>
               </div>
 
               {/* Deal countdown timer */}
               <div>
                 <label className="text-[10px] tracking-widest text-foreground/30 block mb-1">
-                  DEAL.ENDS.AT <span className="text-foreground/20">(OPTIONAL — activates countdown timer)</span>
+                  Deal ends at <span className="text-foreground/20">(OPTIONAL — activates countdown timer)</span>
                 </label>
                 <input
                   type="datetime-local"
@@ -466,7 +466,7 @@ export default function AdminProductsPage() {
                   onClick={handleSave}
                   disabled={saving}
                 >
-                  {saving ? "SAVING..." : editing ? "UPDATE.PRODUCT" : "CREATE.PRODUCT"}
+                  {saving ? "SAVING..." : editing ? "Update product" : "Create product"}
                 </button>
                 <button
                   className="px-4 py-2 border border-foreground/20 text-[11px] tracking-widest text-foreground/40 hover:text-foreground hover:border-foreground/40 transition-colors"
@@ -486,7 +486,7 @@ export default function AdminProductsPage() {
         <input
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          placeholder="SEARCH.PRODUCTS..."
+          placeholder="Search products..."
           className="w-full pl-8 pr-8 py-2 bg-transparent border border-foreground/15 text-[12px] tracking-widest text-foreground/70 placeholder:text-foreground/20 focus:outline-none focus:border-foreground/40 transition-colors"
         />
         {search && (
@@ -504,7 +504,7 @@ export default function AdminProductsPage() {
       ) : filtered.length === 0 ? (
         <div className="text-center py-24 border border-foreground/10">
           <Package className="h-10 w-10 mx-auto mb-3 opacity-20" />
-          <p className="text-[12px] tracking-widest text-foreground/30">NO.PRODUCTS.FOUND</p>
+          <p className="text-[12px] tracking-widest text-foreground/30">No products found</p>
         </div>
       ) : (
         <div className="border border-foreground/10 overflow-hidden">

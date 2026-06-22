@@ -174,7 +174,7 @@ export default function AdminWallets() {
               <Icon className={`h-4 w-4 ${color}`} />
             </div>
             <p className="text-base font-black text-foreground/85">{formatPrice(val)}</p>
-            <p className="text-[10px] text-foreground/28 tracking-widest mt-0.5">{label.toUpperCase()}</p>
+            <p className="text-[10px] text-foreground/28 tracking-widest mt-0.5">{label}</p>
             <p className="text-[10px] text-foreground/20 mt-0.5">{hint}</p>
           </div>
         ))}
@@ -341,7 +341,7 @@ export default function AdminWallets() {
                   <div className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 text-[11px] font-bold ${
                     w.role === "admin" ? "bg-amber-500/15 text-amber-400" : "bg-violet-500/15 text-violet-400"
                   }`}>
-                    {w.name?.[0]?.toUpperCase() ?? "?"}
+                    {w.name?.[0] ?? "?"}
                   </div>
                   <div className="min-w-0">
                     <p className="text-[12px] font-semibold text-foreground/70 truncate flex items-center gap-1.5">

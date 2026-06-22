@@ -174,7 +174,7 @@ export default function CheckoutPage() {
     if (!promoInput.trim()) return
     setPromoLoading(true)
     try {
-      const res = await fetch(`/api/discounts?code=${encodeURIComponent(promoInput.trim().toUpperCase())}`)
+      const res = await fetch(`/api/discounts?code=${encodeURIComponent(promoInput.trim())}`)
       if (res.ok) {
         const data: DiscountCode = await res.json()
         setAppliedCode(data)
@@ -208,7 +208,7 @@ export default function CheckoutPage() {
     const fullAddress = `${selectedAddress.street}, ${selectedAddress.city}`
 
     // Tag delivery method (+ chosen transport) in address so admin can see it
-    const transportTag = transportMethod ? `:${transportMethod.toUpperCase().replace(/\s+/g, "_")}` : ""
+    const transportTag = transportMethod ? `:${transportMethod.replace(/\s+/g, "_")}` : ""
     const deliveryLabel = deliveryMethod === "express" ? ` [EXPRESS${transportTag}]` : " [FREE_WEEKEND]"
     const addressWithDelivery = fullAddress + deliveryLabel
 
@@ -288,7 +288,7 @@ export default function CheckoutPage() {
   return (
     <div className="container mx-auto px-4 py-8 pb-24 lg:pb-8 max-w-6xl">
       <div className="flex items-center gap-3 mb-6 border-b border-foreground/10 pb-4">
-        <span className="text-foreground/45 text-xs">//</span>
+        <span className="text-foreground/45 text-xs"></span>
         <h1 className="text-lg font-semibold tracking-[0.2em] text-foreground/90">CHECKOUT</h1>
         {isBuyNow && (
           <span className="ml-2 flex items-center gap-1.5 px-2 py-0.5 border border-[#ee0000]/40 bg-[#ee0000]/[0.07] text-[#ee0000]/80 text-[10px] tracking-widest font-bold">
@@ -335,7 +335,7 @@ export default function CheckoutPage() {
                       </div>
                       {selectedAddress.label && (
                         <span className="text-[10px] tracking-widest border border-white/15 px-1.5 py-0.5 text-foreground/38 shrink-0">
-                          {selectedAddress.label.toUpperCase()}
+                          {selectedAddress.label}
                         </span>
                       )}
                     </div>
@@ -398,7 +398,7 @@ export default function CheckoutPage() {
                             </div>
                             {addr.label && (
                               <span className="text-[10px] tracking-widest border border-white/12 px-1.5 py-0.5 text-foreground/32 shrink-0">
-                                {addr.label.toUpperCase()}
+                                {addr.label}
                               </span>
                             )}
                           </div>

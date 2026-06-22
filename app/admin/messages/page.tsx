@@ -36,7 +36,7 @@ export default function AdminMessagesPage() {
     <div className="container mx-auto px-4 py-8">
       <div className="flex items-center justify-between mb-6 border-b border-foreground/10 pb-4">
         <div className="flex items-center gap-3">
-          <span className="text-foreground/45 text-xs">//</span>
+          <span className="text-foreground/45 text-xs"></span>
           <h1 className="text-lg font-semibold tracking-[0.2em] text-foreground/90">MESSAGES</h1>
           {totalUnread > 0 && (
             <span className="px-2 py-0.5 bg-yellow-400/90 text-black text-[11px] font-bold tracking-widest">
@@ -98,7 +98,7 @@ export default function AdminMessagesPage() {
                       {conv.order && (
                         <span className="inline-flex items-center gap-1 text-[12px] text-foreground/40 border border-foreground/10 px-1.5 py-0.5">
                           <Package className="h-2.5 w-2.5" />
-                          {conv.order.trackingId ?? conv.order.id.slice(0, 8).toUpperCase()}
+                          {conv.order.trackingId ?? conv.order.id.slice(0, 8)}
                         </span>
                       )}
                     </div>
@@ -124,7 +124,7 @@ export default function AdminMessagesPage() {
                         ? "text-blue-400/60 border-blue-400/20"
                         : "text-foreground/30 border-foreground/15"
                     }`}>
-                      {conv.status.toUpperCase()}
+                      {conv.status}
                     </span>
                   </div>
                 </div>
