@@ -113,7 +113,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   }
 
   return (
-    <div className="flex font-mono">
+    // Admin stays on the dark token set for now (force `dark`) until it gets
+    // its own light "control center" pass — keeps it fully readable meanwhile.
+    <div className="dark flex font-mono bg-background text-foreground min-h-screen">
 
       {/* ── Desktop sidebar ── */}
       <aside className={`hidden lg:flex flex-col flex-shrink-0 sticky top-16 h-[calc(100vh-4rem)]

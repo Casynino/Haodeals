@@ -6,12 +6,12 @@ type Theme = "dark" | "light"
 type ThemeContextValue = { theme: Theme; setTheme: (t: Theme) => void }
 
 const ThemeContext = createContext<ThemeContextValue>({
-  theme: "dark",
+  theme: "light",
   setTheme: () => {},
 })
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setThemeState] = useState<Theme>("dark")
+  const [theme, setThemeState] = useState<Theme>("light")
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
