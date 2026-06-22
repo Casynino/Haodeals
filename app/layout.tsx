@@ -6,6 +6,7 @@ import { Providers } from "@/components/providers"
 import { Navbar } from "@/components/Navbar"
 import { Footer } from "@/components/Footer"
 import { WhatsAppButton } from "@/components/WhatsAppButton"
+import { BottomNav } from "@/components/BottomNav"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -79,9 +80,10 @@ export default function RootLayout({
         <Script id="bc-isolation" strategy="beforeInteractive">{`(function(){var R=window.BroadcastChannel;if(!R||window.__bcPatched)return;var N={name:"next-auth",onmessage:null,onmessageerror:null,postMessage:function(){},addEventListener:function(){},removeEventListener:function(){},dispatchEvent:function(){return true},close:function(){}};window.BroadcastChannel=function(n){return n==="next-auth"?N:new R(n)};window.BroadcastChannel.prototype=R.prototype;window.__bcPatched=true})();`}</Script>
         <Providers>
           <Navbar />
-          <main className="flex-1">{children}</main>
+          <main className="flex-1 pb-16 lg:pb-0">{children}</main>
           <Footer />
           <WhatsAppButton />
+          <BottomNav />
         </Providers>
       </body>
     </html>
