@@ -115,7 +115,7 @@ function KpiCard({ label, value, sub, growth, icon: Icon, color, spark }: {
 }) {
   const up = (growth ?? 0) >= 0
   return (
-    <div className="rounded-2xl border border-white/8 bg-white/[0.025] p-5 space-y-3 hover:border-white/15 transition-all">
+    <div className="rounded-2xl border border-foreground/8 bg-foreground/[0.025] p-5 space-y-3 hover:border-foreground/15 transition-all">
       <div className="flex items-start justify-between">
         <div className={`w-9 h-9 rounded-xl flex items-center justify-center ${color}`}>
           <Icon className="h-4.5 w-4.5" />
@@ -201,13 +201,13 @@ export default function AdminAnalytics() {
             </div>
           </div>
           <button onClick={fetchData} disabled={loading}
-            className="flex items-center gap-1.5 px-3 py-1.5 border border-white/12 text-[11px] tracking-widest text-foreground/40 hover:text-foreground/70 hover:border-white/22 transition-all active:scale-95 disabled:opacity-40">
+            className="flex items-center gap-1.5 px-3 py-1.5 border border-foreground/12 text-[11px] tracking-widest text-foreground/40 hover:text-foreground/70 hover:border-foreground/22 transition-all active:scale-95 disabled:opacity-40">
             <RefreshCw className={`h-3 w-3 ${loading ? "animate-spin" : ""}`} /> REFRESH
           </button>
         </div>
 
         {/* ── Tab nav ── */}
-        <div className="flex gap-1 border-b border-white/8 pb-0">
+        <div className="flex gap-1 border-b border-foreground/8 pb-0">
           {TABS.map(({ id, label, icon: Icon }) => (
             <button key={id} onClick={() => setTab(id)}
               className={`flex items-center gap-2 px-4 py-2.5 text-[12px] tracking-widest border-b-2 transition-all
@@ -242,7 +242,7 @@ export default function AdminAnalytics() {
             {/* Revenue chart + category donut */}
             <div className="grid lg:grid-cols-3 gap-4">
               {/* 30-day revenue chart */}
-              <div className="lg:col-span-2 rounded-2xl border border-white/8 bg-white/[0.02] p-5">
+              <div className="lg:col-span-2 rounded-2xl border border-foreground/8 bg-foreground/[0.02] p-5">
                 <div className="flex items-center justify-between mb-4">
                   <div>
                     <p className="text-[11px] tracking-widest text-foreground/35 uppercase">Revenue Trend</p>
@@ -254,16 +254,16 @@ export default function AdminAnalytics() {
                   </div>
                 </div>
                 {loading
-                  ? <div className="h-28 bg-white/4 animate-pulse rounded-xl" />
+                  ? <div className="h-28 bg-foreground/4 animate-pulse rounded-xl" />
                   : <LineChart data={data?.revenue.daily ?? []} />
                 }
               </div>
 
               {/* Category donut */}
-              <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-5">
+              <div className="rounded-2xl border border-foreground/8 bg-foreground/[0.02] p-5">
                 <p className="text-[11px] tracking-widest text-foreground/35 uppercase mb-4">By Category</p>
                 {loading ? (
-                  <div className="flex items-center justify-center h-28"><div className="w-28 h-28 bg-white/4 animate-pulse rounded-full" /></div>
+                  <div className="flex items-center justify-center h-28"><div className="w-28 h-28 bg-foreground/4 animate-pulse rounded-full" /></div>
                 ) : (
                   <div className="flex items-center gap-3">
                     <Donut segments={(data?.categories ?? []).map((c, i) => ({ name: c.name, pct: c.pct, color: CAT_COLORS[i % CAT_COLORS.length] }))} />
@@ -284,7 +284,7 @@ export default function AdminAnalytics() {
             {/* Top products + Order status */}
             <div className="grid lg:grid-cols-2 gap-4">
               {/* Top selling */}
-              <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-5">
+              <div className="rounded-2xl border border-foreground/8 bg-foreground/[0.02] p-5">
                 <div className="flex items-center gap-2 mb-4">
                   <Star className="h-3.5 w-3.5 text-amber-400" />
                   <p className="text-[11px] tracking-widest text-foreground/35 uppercase">Top Selling Products</p>
@@ -302,7 +302,7 @@ export default function AdminAnalytics() {
                           <span className="text-emerald-400">{formatPrice(p.revenue)}</span>
                         </div>
                       </div>
-                      <div className="h-1 bg-white/5 rounded-full overflow-hidden">
+                      <div className="h-1 bg-foreground/5 rounded-full overflow-hidden">
                         <div className="h-full rounded-full bg-gradient-to-r from-violet-500 to-violet-400"
                           style={{ width: `${topSellMax ? (p.sold / topSellMax) * 100 : 0}%` }} />
                       </div>
@@ -315,7 +315,7 @@ export default function AdminAnalytics() {
               </div>
 
               {/* Order status breakdown */}
-              <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-5">
+              <div className="rounded-2xl border border-foreground/8 bg-foreground/[0.02] p-5">
                 <div className="flex items-center gap-2 mb-4">
                   <ShoppingBag className="h-3.5 w-3.5 text-blue-400" />
                   <p className="text-[11px] tracking-widest text-foreground/35 uppercase">Order Status</p>
@@ -335,7 +335,7 @@ export default function AdminAnalytics() {
                           <span className="text-foreground/50 uppercase tracking-wide">{s.status.replace(/_/g, " ")}</span>
                           <span className=" text-foreground/45">{s.count} · {pct}%</span>
                         </div>
-                        <div className="h-1 bg-white/5 rounded-full overflow-hidden">
+                        <div className="h-1 bg-foreground/5 rounded-full overflow-hidden">
                           <div className={`h-full rounded-full ${color}`} style={{ width: `${pct}%` }} />
                         </div>
                       </div>
@@ -346,13 +346,13 @@ export default function AdminAnalytics() {
             </div>
 
             {/* Insights / Recommended Actions */}
-            <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-5">
+            <div className="rounded-2xl border border-foreground/8 bg-foreground/[0.02] p-5">
               <div className="flex items-center gap-2 mb-4">
                 <Zap className="h-3.5 w-3.5 text-yellow-400" />
                 <p className="text-[11px] tracking-widest text-foreground/35 uppercase">Recommended Actions & Insights</p>
               </div>
               {loading ? (
-                <div className="space-y-2">{[1,2,3].map((i) => <div key={i} className="h-10 bg-white/4 animate-pulse rounded-xl" />)}</div>
+                <div className="space-y-2">{[1,2,3].map((i) => <div key={i} className="h-10 bg-foreground/4 animate-pulse rounded-xl" />)}</div>
               ) : (
                 <div className="grid sm:grid-cols-2 gap-2">
                   {(data?.insights ?? []).map((ins, i) => {
@@ -417,7 +417,7 @@ export default function AdminAnalytics() {
             </div>
 
             {/* Top selling full list */}
-            <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-5">
+            <div className="rounded-2xl border border-foreground/8 bg-foreground/[0.02] p-5">
               <div className="flex items-center gap-2 mb-5">
                 <TrendingUp className="h-3.5 w-3.5 text-emerald-400" />
                 <p className="text-[11px] tracking-widest text-foreground/35 uppercase">Top Selling Products</p>
@@ -437,7 +437,7 @@ export default function AdminAnalytics() {
                           <p className="text-[10px] text-foreground/30">{p.sold} units</p>
                         </div>
                       </div>
-                      <div className="h-1.5 bg-white/5 rounded-full overflow-hidden">
+                      <div className="h-1.5 bg-foreground/5 rounded-full overflow-hidden">
                         <div className="h-full rounded-full transition-all"
                           style={{ width: `${topSellMax ? (p.sold / topSellMax) * 100 : 0}%`, background: `${CAT_COLORS[i % CAT_COLORS.length]}cc` }} />
                       </div>
@@ -451,7 +451,7 @@ export default function AdminAnalytics() {
             </div>
 
             {/* Category performance */}
-            <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-5">
+            <div className="rounded-2xl border border-foreground/8 bg-foreground/[0.02] p-5">
               <div className="flex items-center gap-2 mb-5">
                 <PieChart className="h-3.5 w-3.5 text-violet-400" />
                 <p className="text-[11px] tracking-widest text-foreground/35 uppercase">Category Performance</p>
@@ -469,7 +469,7 @@ export default function AdminAnalytics() {
                         <span className="text-foreground/35 w-8 text-right">{c.pct}%</span>
                       </div>
                     </div>
-                    <div className="h-2 bg-white/5 rounded-full overflow-hidden">
+                    <div className="h-2 bg-foreground/5 rounded-full overflow-hidden">
                       <div className="h-full rounded-full" style={{ width: `${c.pct}%`, background: CAT_COLORS[i % CAT_COLORS.length] + "aa" }} />
                     </div>
                   </div>
@@ -484,7 +484,7 @@ export default function AdminAnalytics() {
           <div className="space-y-5">
             {/* Customer KPIs */}
             <div className="grid grid-cols-2 lg:grid-cols-3 gap-3">
-              <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-4 text-center">
+              <div className="rounded-2xl border border-foreground/8 bg-foreground/[0.02] p-4 text-center">
                 <p className="text-[11px] tracking-widest text-foreground/30 uppercase mb-1">Total</p>
                 <p className="text-2xl font-black text-foreground/85">{data?.customers.total ?? "—"}</p>
                 <p className="text-[11px] text-foreground/30 mt-0.5">registered customers</p>
@@ -506,7 +506,7 @@ export default function AdminAnalytics() {
             </div>
 
             {/* Top customers */}
-            <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-5">
+            <div className="rounded-2xl border border-foreground/8 bg-foreground/[0.02] p-5">
               <div className="flex items-center gap-2 mb-5">
                 <Users className="h-3.5 w-3.5 text-violet-400" />
                 <p className="text-[11px] tracking-widest text-foreground/35 uppercase">Top Customers by Spending</p>
@@ -515,7 +515,7 @@ export default function AdminAnalytics() {
                 {(data?.customers.topSpenders ?? []).map((c, i) => {
                   const maxSpend = data?.customers.topSpenders[0]?.totalSpent ?? 1
                   return (
-                    <div key={c.id} className="flex items-center gap-3 p-3 rounded-xl border border-white/6 hover:border-white/12 transition-all">
+                    <div key={c.id} className="flex items-center gap-3 p-3 rounded-xl border border-foreground/6 hover:border-foreground/12 transition-all">
                       <div className="w-7 h-7 rounded-full bg-violet-500/15 flex items-center justify-center flex-shrink-0 text-[12px] font-black text-violet-400">
                         {i + 1}
                       </div>
@@ -530,7 +530,7 @@ export default function AdminAnalytics() {
                             <p className="text-[10px] text-foreground/25">{c.orderCount} orders</p>
                           </div>
                         </div>
-                        <div className="h-1 bg-white/5 rounded-full mt-1.5 overflow-hidden">
+                        <div className="h-1 bg-foreground/5 rounded-full mt-1.5 overflow-hidden">
                           <div className="h-full bg-violet-500/60 rounded-full" style={{ width: `${(c.totalSpent / maxSpend) * 100}%` }} />
                         </div>
                       </div>
@@ -556,7 +556,7 @@ export default function AdminAnalytics() {
                 { label: "This Month", val: data?.revenue.thisMonth ?? 0,  color: "text-emerald-400"  },
                 { label: "All Time",   val: data?.revenue.total ?? 0,      color: "text-violet-400"   },
               ].map(({ label, val, color }) => (
-                <div key={label} className="rounded-2xl border border-white/8 bg-white/[0.02] p-4">
+                <div key={label} className="rounded-2xl border border-foreground/8 bg-foreground/[0.02] p-4">
                   <p className="text-[11px] tracking-widest text-foreground/30 uppercase mb-2">{label}</p>
                   <p className={`text-xl font-black ${color}`}>{formatPrice(val)}</p>
                 </div>
@@ -564,7 +564,7 @@ export default function AdminAnalytics() {
             </div>
 
             {/* Month vs last month */}
-            <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-5">
+            <div className="rounded-2xl border border-foreground/8 bg-foreground/[0.02] p-5">
               <p className="text-[11px] tracking-widest text-foreground/35 uppercase mb-5">This Month vs Last Month</p>
               <div className="grid lg:grid-cols-2 gap-6">
                 <div className="space-y-3">
@@ -579,7 +579,7 @@ export default function AdminAnalytics() {
                           <span className="text-foreground/50">{label}</span>
                           <span className=" text-foreground/65">{formatPrice(val)}</span>
                         </div>
-                        <div className="h-3 bg-white/5 rounded-full overflow-hidden">
+                        <div className="h-3 bg-foreground/5 rounded-full overflow-hidden">
                           <div className={`h-full rounded-full ${color} transition-all`} style={{ width: `${(val / max) * 100}%` }} />
                         </div>
                       </div>
@@ -605,7 +605,7 @@ export default function AdminAnalytics() {
                           <span className="text-foreground/50">{label}</span>
                           <span className=" text-foreground/65">{val} orders</span>
                         </div>
-                        <div className="h-3 bg-white/5 rounded-full overflow-hidden">
+                        <div className="h-3 bg-foreground/5 rounded-full overflow-hidden">
                           <div className={`h-full rounded-full ${color} transition-all`} style={{ width: `${(val / max) * 100}%` }} />
                         </div>
                       </div>
@@ -622,23 +622,23 @@ export default function AdminAnalytics() {
             </div>
 
             {/* 30-day revenue chart (big) */}
-            <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-5">
+            <div className="rounded-2xl border border-foreground/8 bg-foreground/[0.02] p-5">
               <div className="flex items-center justify-between mb-5">
                 <p className="text-[11px] tracking-widest text-foreground/35 uppercase">Daily Revenue — Last 30 Days</p>
                 <p className="text-[11px] text-emerald-400">{formatPrice(data?.revenue.thisMonth ?? 0)} this month</p>
               </div>
               {loading
-                ? <div className="h-36 bg-white/4 animate-pulse rounded-xl" />
+                ? <div className="h-36 bg-foreground/4 animate-pulse rounded-xl" />
                 : <LineChart data={data?.revenue.daily ?? []} color="#34d399" />
               }
             </div>
 
             {/* Category revenue */}
-            <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-5">
+            <div className="rounded-2xl border border-foreground/8 bg-foreground/[0.02] p-5">
               <p className="text-[11px] tracking-widest text-foreground/35 uppercase mb-5">Revenue by Category</p>
               <div className="grid sm:grid-cols-2 gap-3">
                 {(data?.categories ?? []).map((c, i) => (
-                  <div key={c.name} className="flex items-center gap-3 p-3 rounded-xl border border-white/6">
+                  <div key={c.name} className="flex items-center gap-3 p-3 rounded-xl border border-foreground/6">
                     <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: CAT_COLORS[i % CAT_COLORS.length] }} />
                     <div className="flex-1 min-w-0">
                       <p className="text-[12px] text-foreground/65 truncate">{c.name}</p>
