@@ -12,6 +12,8 @@ export interface PromoSlide {
   cta: string
   href: string
   image?: string | null
+  /** optional looping background video (e.g. /banners/clip.mp4) — takes priority over image */
+  video?: string | null
   /** tailwind gradient classes for the slide background */
   gradient: string
 }
@@ -47,8 +49,18 @@ export function PromoCarousel({ slides }: { slides: PromoSlide[] }) {
         {slides.map((s, i) => (
           <div key={i} className="relative w-full flex-shrink-0">
             <div className="relative h-[17rem] sm:h-[19rem] md:h-[23rem] overflow-hidden">
-              {/* Full-bleed banner image with slow Ken Burns drift */}
-              {s.image && (
+              {/* Full-bleed banner: looping video if provided, else image with Ken Burns drift */}
+              {s.video ? (
+                <video
+                  className="absolute inset-0 w-full h-full object-cover"
+                  src={s.video}
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  poster={s.image ?? undefined}
+                />
+              ) : s.image ? (
                 <Image
                   src={s.image}
                   alt=""
@@ -56,7 +68,7 @@ export function PromoCarousel({ slides }: { slides: PromoSlide[] }) {
                   priority={i === 0}
                   className={`object-cover ${i === index ? "animate-kenburns" : ""}`}
                 />
-              )}
+              ) : null}
               {/* Readability scrim + gold tint */}
               <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/55 to-black/20" />
               <div className={`absolute inset-0 pointer-events-none ${s.gradient}`} />
