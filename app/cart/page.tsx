@@ -17,12 +17,12 @@ export default function CartPage() {
   if (items.length === 0) {
     return (
       <div className="container mx-auto px-4 py-24 flex flex-col items-center gap-6 text-center">
-        <div className="border border-white/10 p-8">
+        <div className="border border-foreground/10 p-8">
           <ShoppingCart className="h-12 w-12 opacity-20" />
         </div>
         <p className="text-[13px] tracking-widest text-foreground/40">Your bag is empty</p>
         <p className="text-[11px] text-foreground/20">Add some items to your bag</p>
-        <Link href="/products" className="px-6 py-2 text-[12px] tracking-widest border border-white/20 text-foreground/60 hover:text-foreground hover:border-white/40 transition-colors flex items-center gap-2">
+        <Link href="/products" className="px-6 py-2 text-[12px] tracking-widest border border-foreground/20 text-foreground/60 hover:text-foreground hover:border-foreground/40 transition-colors flex items-center gap-2">
           Browse Deals <ArrowRight className="h-3 w-3" />
         </Link>
       </div>
@@ -30,9 +30,9 @@ export default function CartPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8 pb-24 lg:pb-8">
+    <div className="container mx-auto px-4 py-8 pb-40 lg:pb-8">
       {/* Header */}
-      <div className="flex items-center justify-between mb-6 border-b border-white/10 pb-4">
+      <div className="flex items-center justify-between mb-6 border-b border-foreground/10 pb-4">
         <div className="flex items-center gap-3">
           <h1 className="text-lg font-semibold tracking-[0.2em] text-foreground/90">Your Bag</h1>
           <span className="text-xs text-foreground/55">{items.length} {items.length === 1 ? "item" : "items"}</span>
@@ -49,8 +49,8 @@ export default function CartPage() {
         {/* Cart items */}
         <div className="lg:col-span-2 space-y-2">
           {items.map((item) => (
-            <div key={item.id} className="flex gap-3 border border-white/10 hover:border-white/20 transition-colors p-3">
-              <Link href={`/products/${item.id}`} className="relative w-20 h-20 flex-shrink-0 overflow-hidden bg-foreground/5 border border-white/10">
+            <div key={item.id} className="flex gap-3 border border-foreground/10 hover:border-foreground/20 transition-colors p-3">
+              <Link href={`/products/${item.id}`} className="relative w-20 h-20 flex-shrink-0 overflow-hidden bg-foreground/5 border border-foreground/10">
                 <Image src={item.image} alt={item.name} fill className="object-cover opacity-70" />
               </Link>
               <div className="flex-1 min-w-0">
@@ -74,10 +74,10 @@ export default function CartPage() {
                   )}
                 </div>
                 <div className="flex items-center justify-between mt-2">
-                  <div className="flex items-center border border-white/20">
+                  <div className="flex items-center border border-foreground/20">
                     <button
                       onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                      className="w-6 h-6 flex items-center justify-center text-foreground/40 hover:text-foreground hover:bg-foreground/5 transition-colors border-r border-white/15"
+                      className="w-6 h-6 flex items-center justify-center text-foreground/40 hover:text-foreground hover:bg-foreground/5 transition-colors border-r border-foreground/15"
                     >
                       <Minus className="h-2.5 w-2.5" />
                     </button>
@@ -85,7 +85,7 @@ export default function CartPage() {
                     <button
                       onClick={() => updateQuantity(item.id, item.quantity + 1)}
                       disabled={item.quantity >= item.stock}
-                      className="w-6 h-6 flex items-center justify-center text-foreground/40 hover:text-foreground hover:bg-foreground/5 transition-colors border-l border-white/15 disabled:opacity-20"
+                      className="w-6 h-6 flex items-center justify-center text-foreground/40 hover:text-foreground hover:bg-foreground/5 transition-colors border-l border-foreground/15 disabled:opacity-20"
                     >
                       <Plus className="h-2.5 w-2.5" />
                     </button>
@@ -99,7 +99,7 @@ export default function CartPage() {
 
         {/* Order summary — desktop only (mobile gets sticky bottom bar) */}
         <div className="hidden lg:block lg:col-span-1">
-          <div className="border border-white/10 p-5 space-y-4 sticky top-24">
+          <div className="border border-foreground/10 p-5 space-y-4 sticky top-24">
             <p className="text-xs tracking-widest text-foreground/60 font-semibold">Order Summary</p>
 
             <div className="space-y-2.5 text-[12px]">
@@ -109,7 +109,7 @@ export default function CartPage() {
               </div>
             </div>
 
-            <div className="border-t border-white/10 pt-3 flex justify-between items-center">
+            <div className="border-t border-foreground/10 pt-3 flex justify-between items-center">
               <span className="text-xs tracking-widest text-foreground/60 font-semibold">Total</span>
               <span className="text-green-400 text-base font-semibold">{formatPrice(finalTotal)}</span>
             </div>
@@ -123,7 +123,7 @@ export default function CartPage() {
               </Link>
               <Link
                 href="/products"
-                className="block text-center py-2 text-[12px] tracking-widest border border-white/20 text-foreground/50 hover:text-foreground hover:border-white/40 transition-colors"
+                className="block text-center py-2 text-[12px] tracking-widest border border-foreground/20 text-foreground/50 hover:text-foreground hover:border-foreground/40 transition-colors"
               >
                 Continue Shopping
               </Link>
@@ -143,8 +143,8 @@ export default function CartPage() {
         </div>
       </div>
 
-      {/* Mobile sticky bottom bar */}
-      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-background border-t border-white/15 px-4 py-3">
+      {/* Mobile sticky bottom bar — sits just above the bottom nav (h-16) */}
+      <div className="lg:hidden fixed bottom-16 left-0 right-0 z-40 bg-background/95 backdrop-blur border-t border-foreground/15 px-4 py-3">
         <div className="flex items-center justify-between gap-4">
           <div>
             <p className="text-[10px] tracking-widest text-foreground/30">Total</p>
