@@ -78,7 +78,6 @@ export default async function HomePage() {
   // Banner imagery — African lifestyle shots (verified live).
   // NOTE: swap any of these freely, or drop your own into /public/banners and
   // reference e.g. "/banners/hero.jpg" (or set `video: "/banners/clip.mp4"`).
-  const bannerShopper  = "https://images.unsplash.com/photo-1591085686350-798c0f9faa7f?w=1280&h=620&fit=crop"
   const bannerDelivery = "https://images.unsplash.com/photo-1583394838336-acd977736f90?w=1280&h=620&fit=crop"
   const bannerCrew     = "https://images.unsplash.com/photo-1521577352947-9bb58764b69a?w=1280&h=620&fit=crop"
   const bannerPromo    = "https://images.unsplash.com/photo-1531384441138-2736e62e0919?w=1280&h=620&fit=crop"
@@ -86,13 +85,12 @@ export default async function HomePage() {
   // Promotional carousel slides (image-first, people/lifestyle)
   const slides: PromoSlide[] = [
     {
-      eyebrow: "Up to 80% OFF",
-      title: "Good Deals Delivered Every Day",
-      subtitle: "Enjoy bigger savings on Tech, Fashion, Shoes & more.",
-      cta: "Shop Now",
+      // Custom marketing banner — text baked into the artwork; image-only
+      eyebrow: "", title: "", subtitle: "", cta: "Shop Now",
       href: "/products",
-      image: bannerShopper,
-      gradient: "bg-[radial-gradient(120%_120%_at_0%_0%,var(--gold-soft),transparent_55%)]",
+      image: "/banners/hero.png",
+      bare: true,
+      gradient: "",
     },
     {
       eyebrow: "Weekend special",
