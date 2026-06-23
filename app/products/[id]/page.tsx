@@ -10,7 +10,7 @@ import { ShoppingCart, Zap, Minus, Plus, ChevronLeft, Truck, RotateCcw, ShieldCh
 import { toast } from "sonner"
 import type { Product, SelectedOption } from "@/types"
 import { formatPrice, getEffectivePrice, isDealActive } from "@/lib/utils"
-import { celebrateAddToCart } from "@/lib/fx"
+import { flyToCart } from "@/lib/fx"
 import { ProductTilt } from "@/components/ui/product-tilt"
 import { DealCountdown } from "@/components/DealCountdown"
 import { HaoPlusBanner } from "@/components/HaoPlusBanner"
@@ -56,8 +56,9 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
   function handleAddToCart() {
     if (!product) return
     const opts: SelectedOption[] = Object.entries(selectedOptions).map(([name, value]) => ({ name, value }))
+    const heroImg = document.querySelector<HTMLElement>("[data-product-hero] img")
+    flyToCart(product.images[selectedImage] ?? "", heroImg?.getBoundingClientRect() ?? null)
     addItem(product, quantity, opts.length ? opts : undefined)
-    celebrateAddToCart()
     toast.success(`Added: ${product.name.slice(0, 28)}`, {
       description: opts.length
         ? opts.map((o) => `${o.name}: ${o.value}`).join(" · ")
@@ -128,7 +129,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
 
       <div className="grid md:grid-cols-2 gap-10 mb-14">
         {/* ── Image gallery ── */}
-        <div className="space-y-3">
+        <div data-product-hero className="space-y-3">
           <ProductTilt className="relative aspect-square overflow-hidden rounded-3xl glass-soft" intensity={8}>
             <Image
               src={product.images[selectedImage] ?? ""}
