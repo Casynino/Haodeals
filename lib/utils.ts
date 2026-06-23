@@ -11,17 +11,15 @@ export function formatPrice(amount: number): string {
 
 /**
  * Returns the price the customer should actually pay right now.
- * If a deal timer exists and has expired → revert to originalPrice.
- * This is the single source of truth used by every page + checkout.
+ * The selling `price` is always the final purchasable price; `originalPrice`
+ * is the (strikethrough) compare-at price. The deal timer is urgency only and
+ * never changes the price. Single source of truth used by every page + checkout.
  */
 export function getEffectivePrice(product: {
   price: number
   originalPrice?: number | null
   dealEndsAt?: string | Date | null
 }): number {
-  if (!product.dealEndsAt) return product.price
-  const expired = new Date(product.dealEndsAt) <= new Date()
-  if (expired && product.originalPrice) return product.originalPrice
   return product.price
 }
 
