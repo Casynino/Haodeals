@@ -93,6 +93,14 @@ export default async function HomePage() {
       gradient: "",
     },
     {
+      // Second custom marketing banner — image-only
+      eyebrow: "", title: "", subtitle: "", cta: "Shop Now",
+      href: "/products",
+      image: "/banners/banner2.png",
+      bare: true,
+      gradient: "",
+    },
+    {
       eyebrow: "Weekend special",
       title: "Free delivery in Dar es Salaam",
       subtitle: "Order this weekend and we'll deliver it free — fast, within the city.",
