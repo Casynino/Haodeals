@@ -8,7 +8,6 @@ import { useState, useEffect } from "react"
 import dynamic from "next/dynamic"
 import { useCart } from "@/hooks/useCart"
 import type { Product } from "@/types"
-import { toast } from "sonner"
 import { formatPrice, getEffectivePrice, isDealActive } from "@/lib/utils"
 import { flyToCart } from "@/lib/fx"
 import { ProductTilt } from "@/components/ui/product-tilt"
@@ -54,9 +53,7 @@ export function ProductCard({ product }: ProductCardProps) {
     const img = card?.querySelector("img")
     flyToCart(images[0] ?? "", (img ?? (e.currentTarget as HTMLElement)).getBoundingClientRect())
     addItem({ ...product, price: effectivePrice })
-    toast.success(`Added: ${product.name.slice(0, 28)}`, {
-      description: formatPrice(effectivePrice), className: " text-xs",
-    })
+    // Feedback is the fly-to-cart animation + cart pop + live counter — no toast.
   }
 
   function handleBuyNow(e: React.MouseEvent) {

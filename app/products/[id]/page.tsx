@@ -59,12 +59,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
     const heroImg = document.querySelector<HTMLElement>("[data-product-hero] img")
     flyToCart(product.images[selectedImage] ?? "", heroImg?.getBoundingClientRect() ?? null)
     addItem(product, quantity, opts.length ? opts : undefined)
-    toast.success(`Added: ${product.name.slice(0, 28)}`, {
-      description: opts.length
-        ? opts.map((o) => `${o.name}: ${o.value}`).join(" · ")
-        : `Qty ${quantity} · ${formatPrice(product.price * quantity)}`,
-      className: " text-xs",
-    })
+    // Feedback is the fly-to-cart animation + cart pop + live counter — no toast.
   }
 
   function handleBuyNow() {
