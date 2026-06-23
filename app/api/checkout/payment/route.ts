@@ -33,9 +33,8 @@ export async function POST(request: Request) {
     }
   }
 
-  // Use originalPrice if deal timer has expired
+  // Selling price is always final; the deal timer is urgency only, never raises the price.
   function getEffectivePrice(p: { price: number; originalPrice: number | null; dealEndsAt: Date | null }): number {
-    if (p.dealEndsAt && p.dealEndsAt <= new Date() && p.originalPrice) return p.originalPrice
     return p.price
   }
 
