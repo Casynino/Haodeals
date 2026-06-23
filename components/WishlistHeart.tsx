@@ -35,9 +35,11 @@ export function WishlistHeart({ productId, productName }: Props) {
       return
     }
 
-    // Capture the source image now (before the async toggle) for the fly effect
+    // Capture the source image now (before the async toggle) for the fly effect.
+    // Product cards live in [data-pcard]; the product page gallery in [data-product-hero].
     const btn = e.currentTarget as HTMLElement
-    const img = (btn.closest("[data-pcard]") ?? btn.closest("a, article, div"))?.querySelector("img") as HTMLImageElement | null
+    const container = btn.closest("[data-pcard]") ?? btn.closest("[data-product-hero]") ?? btn.closest("a, article, div")
+    const img = container?.querySelector("img") as HTMLImageElement | null
     const src = img?.currentSrc || img?.src || ""
     const fromRect = (img ?? btn).getBoundingClientRect()
 
