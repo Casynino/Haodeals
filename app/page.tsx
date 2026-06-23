@@ -86,6 +86,14 @@ export default async function HomePage() {
   // Promotional carousel slides (image-first, people/lifestyle)
   const slides: PromoSlide[] = [
     {
+      // Custom marketing banner (text baked into the artwork) — image-only
+      eyebrow: "", title: "", subtitle: "", cta: "Shop Now",
+      href: "/products",
+      image: "/banners/hero.png",
+      bare: true,
+      gradient: "",
+    },
+    {
       eyebrow: "New deals daily",
       title: "Up to 70% off — premium deals, delivered",
       subtitle: "Tech, Fashion, Accessories, Shoes & Sports, with fast delivery across Tanzania.",

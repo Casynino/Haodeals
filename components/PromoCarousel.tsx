@@ -14,6 +14,8 @@ export interface PromoSlide {
   image?: string | null
   /** optional looping background video (e.g. /banners/clip.mp4) — takes priority over image */
   video?: string | null
+  /** image-only slide (artwork has its own text) — no overlay, whole slide links */
+  bare?: boolean
   /** tailwind gradient classes for the slide background */
   gradient: string
 }
@@ -48,46 +50,57 @@ export function PromoCarousel({ slides }: { slides: PromoSlide[] }) {
       >
         {slides.map((s, i) => (
           <div key={i} className="relative w-full flex-shrink-0">
-            <div className="relative h-[17rem] sm:h-[19rem] md:h-[23rem] overflow-hidden">
-              {/* Full-bleed banner: looping video if provided, else image with Ken Burns drift */}
-              {s.video ? (
-                <video
-                  className="absolute inset-0 w-full h-full object-cover"
-                  src={s.video}
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  poster={s.image ?? undefined}
-                />
-              ) : s.image ? (
-                <Image
-                  src={s.image}
-                  alt=""
-                  fill
-                  priority={i === 0}
-                  className={`object-cover ${i === index ? "animate-kenburns" : ""}`}
-                />
-              ) : null}
-              {/* Readability scrim + gold tint */}
-              <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/55 to-black/20" />
-              <div className={`absolute inset-0 pointer-events-none ${s.gradient}`} />
+            <div className="relative aspect-[13/6] overflow-hidden">
+              {s.bare ? (
+                /* Image-only banner (artwork has its own text) — whole slide links */
+                <Link href={s.href} className="absolute inset-0 block">
+                  {s.image && (
+                    <Image src={s.image} alt="Deals" fill priority={i === 0} className="object-cover" />
+                  )}
+                </Link>
+              ) : (
+                <>
+                  {/* Full-bleed banner: looping video if provided, else image with Ken Burns drift */}
+                  {s.video ? (
+                    <video
+                      className="absolute inset-0 w-full h-full object-cover"
+                      src={s.video}
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                      poster={s.image ?? undefined}
+                    />
+                  ) : s.image ? (
+                    <Image
+                      src={s.image}
+                      alt=""
+                      fill
+                      priority={i === 0}
+                      className={`object-cover ${i === index ? "animate-kenburns" : ""}`}
+                    />
+                  ) : null}
+                  {/* Readability scrim + gold tint */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/55 to-black/20" />
+                  <div className={`absolute inset-0 pointer-events-none ${s.gradient}`} />
 
-              {/* Overlay copy */}
-              <div className="absolute inset-0 flex items-center">
-                <div className="px-6 md:px-12 max-w-lg">
-                  <span className="inline-block text-[12px] tracking-[0.22em] uppercase text-gold mb-3">{s.eyebrow}</span>
-                  <h2 className="text-2xl sm:text-3xl md:text-[2.6rem] font-bold tracking-tight leading-[1.08] text-white mb-3 drop-shadow-[0_2px_12px_rgba(0,0,0,0.6)]">
-                    {s.title}
-                  </h2>
-                  <p className="text-sm md:text-base text-white/75 leading-relaxed mb-6 max-w-md">{s.subtitle}</p>
-                  <Link href={s.href}>
-                    <button className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gold text-black text-sm font-semibold hover:brightness-110 active:scale-[0.98] transition-all shadow-[0_12px_34px_-12px_rgba(0,0,0,0.6)]">
-                      {s.cta} <ArrowRight className="h-4 w-4" />
-                    </button>
-                  </Link>
-                </div>
-              </div>
+                  {/* Overlay copy */}
+                  <div className="absolute inset-0 flex items-center">
+                    <div className="px-6 md:px-12 max-w-lg">
+                      <span className="inline-block text-[11px] sm:text-[12px] tracking-[0.22em] uppercase text-gold mb-2 sm:mb-3">{s.eyebrow}</span>
+                      <h2 className="text-xl sm:text-2xl md:text-4xl font-bold tracking-tight leading-[1.08] text-white mb-2 sm:mb-3 drop-shadow-[0_2px_12px_rgba(0,0,0,0.6)]">
+                        {s.title}
+                      </h2>
+                      <p className="hidden sm:block text-sm md:text-base text-white/75 leading-relaxed mb-5 max-w-md">{s.subtitle}</p>
+                      <Link href={s.href}>
+                        <button className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gold text-black text-[13px] sm:text-sm font-semibold hover:brightness-110 active:scale-[0.98] transition-all shadow-[0_12px_34px_-12px_rgba(0,0,0,0.6)]">
+                          {s.cta} <ArrowRight className="h-4 w-4" />
+                        </button>
+                      </Link>
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
           </div>
         ))}
