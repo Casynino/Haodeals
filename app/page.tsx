@@ -65,6 +65,15 @@ export default async function HomePage() {
   const heroProduct = featuredProducts[0] ?? dealProducts[0]
   const heroImage = heroProduct?.images?.[0]
 
+  // Best active discount per category — powers the "Up to X% off" deal tiles
+  const discountByCat = new Map<string, number>()
+  for (const p of dealProducts) {
+    if (p.originalPrice && p.originalPrice > p.price && p.category?.slug) {
+      const d = Math.round(((p.originalPrice - p.price) / p.originalPrice) * 100)
+      discountByCat.set(p.category.slug, Math.max(discountByCat.get(p.category.slug) ?? 0, d))
+    }
+  }
+
   // Banner imagery — African lifestyle shots (verified live).
   // NOTE: swap any of these freely, or drop your own into /public/banners and
   // reference e.g. "/banners/hero.jpg" (or set `video: "/banners/clip.mp4"`).
@@ -230,38 +239,55 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ── Collections (visual category showcase) ────────────────── */}
+      {/* ── Deals by category (Walmart-style discount tiles) ──────── */}
       {categories.length > 0 && (
         <section className="container mx-auto px-4 pt-10">
           <div className="flex items-end justify-between mb-5">
             <div>
-              <h2 className="text-xl font-bold tracking-tight text-foreground">Collections</h2>
-              <p className="text-[13px] text-foreground/45 mt-1">Browse curated category edits</p>
+              <h2 className="text-xl font-bold tracking-tight text-foreground">Top deals by category</h2>
+              <p className="text-[13px] text-foreground/45 mt-1">Save big across every department</p>
             </div>
             <Link href="/products" className="flex items-center gap-1 text-[13px] text-gold hover:brightness-110 transition-all">
               View all <ArrowRight className="h-3.5 w-3.5" />
             </Link>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-            {categories.map((cat, i) => (
-              <Link
-                key={cat.id}
-                href={`/products?category=${cat.slug}`}
-                className={`group relative overflow-hidden rounded-3xl glass hover:border-gold/30 hover:-translate-y-1 transition-all ${i === 0 ? "col-span-2 md:col-span-1 aspect-[2/1] md:aspect-[4/5]" : "aspect-[4/5]"}`}
-              >
-                <Image
-                  src={cat.image || categoryImages[cat.slug] || "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=600&h=600&fit=crop"}
-                  alt={cat.name}
-                  fill
-                  className="object-cover opacity-75 group-hover:opacity-95 group-hover:scale-105 transition-all duration-500"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/25 to-transparent" />
-                <div className="absolute bottom-0 left-0 right-0 p-4">
-                  <p className="text-[15px] text-white font-semibold tracking-tight">{cat.name}</p>
-                  <p className="text-[12px] text-gold mt-0.5">{cat._count.products} items →</p>
-                </div>
-              </Link>
-            ))}
+            {categories.map((cat, i) => {
+              const disc = discountByCat.get(cat.slug)
+              return (
+                <Link
+                  key={cat.id}
+                  href={`/products?category=${cat.slug}`}
+                  className={`group relative overflow-hidden rounded-3xl glass hover:-translate-y-1 hover:shadow-[0_22px_60px_-18px_rgba(0,0,0,0.4)] transition-all ${i === 0 ? "col-span-2 md:col-span-1 aspect-[2/1] md:aspect-[4/5]" : "aspect-[4/5]"}`}
+                >
+                  <Image
+                    src={cat.image || categoryImages[cat.slug] || "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=600&h=600&fit=crop"}
+                    alt={cat.name}
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/92 via-black/35 to-black/10" />
+                  {/* Discount badge */}
+                  <div className="absolute top-3 left-3">
+                    {disc ? (
+                      <span className="inline-block bg-gold text-black text-[11px] font-extrabold px-2.5 py-1 rounded-full shadow-lg tracking-wide">
+                        UP TO {disc}% OFF
+                      </span>
+                    ) : (
+                      <span className="inline-block bg-white/90 text-black text-[11px] font-bold px-2.5 py-1 rounded-full shadow">
+                        Deals
+                      </span>
+                    )}
+                  </div>
+                  <div className="absolute bottom-0 left-0 right-0 p-4">
+                    <p className="text-[16px] text-white font-bold tracking-tight">{cat.name}</p>
+                    <span className="inline-flex items-center gap-1 text-[12px] text-gold font-semibold mt-1">
+                      Shop deals <ArrowRight className="h-3 w-3" />
+                    </span>
+                  </div>
+                </Link>
+              )
+            })}
           </div>
         </section>
       )}
