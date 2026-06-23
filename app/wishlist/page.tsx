@@ -11,6 +11,7 @@ import {
 } from "lucide-react"
 import { formatPrice } from "@/lib/utils"
 import { useCart } from "@/hooks/useCart"
+import { flyToCart } from "@/lib/fx"
 import { toast } from "sonner"
 
 /* ── Types ───────────────────────────────────────────────────────────────── */
@@ -45,13 +46,13 @@ function GridSkeleton() {
   return (
     <div className="grid grid-cols-2 gap-3">
       {[1,2,3,4].map((i) => (
-        <div key={i} className="rounded-2xl border border-white/6 bg-white/[0.02] overflow-hidden animate-pulse">
-          <div className="aspect-square bg-white/5" />
+        <div key={i} className="rounded-2xl border border-foreground/6 bg-foreground/[0.02] overflow-hidden animate-pulse">
+          <div className="aspect-square bg-foreground/5" />
           <div className="p-3 space-y-2">
-            <div className="h-2 bg-white/8 rounded w-1/2" />
-            <div className="h-3 bg-white/6 rounded w-full" />
-            <div className="h-4 bg-white/8 rounded w-2/5" />
-            <div className="h-7 bg-white/5 rounded mt-1" />
+            <div className="h-2 bg-foreground/8 rounded w-1/2" />
+            <div className="h-3 bg-foreground/6 rounded w-full" />
+            <div className="h-4 bg-foreground/8 rounded w-2/5" />
+            <div className="h-7 bg-foreground/5 rounded mt-1" />
           </div>
         </div>
       ))}
@@ -63,12 +64,12 @@ function CarouselSkeleton() {
   return (
     <div className="flex gap-3 px-4">
       {[1,2,3,4,5].map((i) => (
-        <div key={i} className="flex-shrink-0 w-40 rounded-2xl border border-white/6 bg-white/[0.02] overflow-hidden animate-pulse">
-          <div className="w-full h-40 bg-white/5" />
+        <div key={i} className="flex-shrink-0 w-40 rounded-2xl border border-foreground/6 bg-foreground/[0.02] overflow-hidden animate-pulse">
+          <div className="w-full h-40 bg-foreground/5" />
           <div className="p-3 space-y-1.5">
-            <div className="h-2 bg-white/8 rounded w-2/3" />
-            <div className="h-3 bg-white/6 rounded w-full" />
-            <div className="h-4 bg-white/8 rounded w-1/2" />
+            <div className="h-2 bg-foreground/8 rounded w-2/3" />
+            <div className="h-3 bg-foreground/6 rounded w-full" />
+            <div className="h-4 bg-foreground/8 rounded w-1/2" />
           </div>
         </div>
       ))}
@@ -95,41 +96,40 @@ function SavedCard({ item, listId, onRemove }: {
   }
 
   return (
-    <div className="group relative rounded-2xl border border-white/8 bg-white/[0.02] overflow-hidden hover:border-white/20 hover:shadow-lg hover:shadow-black/20 transition-all duration-200">
+    <div data-pcard className="group relative rounded-2xl glass overflow-hidden hover:-translate-y-1 hover:shadow-[0_18px_50px_-18px_rgba(0,0,0,0.4)] transition-all duration-200">
       {/* Remove */}
       <button onClick={remove}
-        className="absolute top-2 right-2 z-20 w-7 h-7 rounded-full bg-black/55 backdrop-blur-sm border border-white/15 flex items-center justify-center text-white/40 hover:text-rose-400 hover:border-rose-500/40 transition-all active:scale-90">
+        className="absolute top-2 right-2 z-20 w-7 h-7 rounded-full bg-background/70 backdrop-blur-sm border border-foreground/15 flex items-center justify-center text-foreground/45 hover:text-rose-500 hover:border-rose-500/40 transition-all active:scale-90">
         <X className="h-3.5 w-3.5" />
       </button>
 
       {/* Discount */}
       {disc && (
-        <div className="absolute top-2 left-2 z-10 bg-[#ee0000] text-white text-[10px] font-bold px-1.5 py-0.5 rounded-md">
-          -{disc}%
+        <div className="absolute top-2 left-2 z-10 bg-gold text-black text-[10px] font-bold px-2 py-0.5 rounded-full">
+          −{disc}%
         </div>
       )}
 
       {/* Image + info → navigates */}
       <Link href={`/products/${item.product.id}`} className="block">
-        <div className="relative aspect-square overflow-hidden bg-white/5">
+        <div className="relative aspect-square overflow-hidden bg-foreground/5">
           {img
             ? <Image src={img} alt={item.product.name} width={240} height={240}
-                className="w-full h-full object-cover opacity-85 group-hover:opacity-100 group-hover:scale-[1.03] transition-all duration-300" />
+                className="w-full h-full object-cover group-hover:scale-[1.04] transition-transform duration-300" />
             : <div className="w-full h-full flex items-center justify-center"><Heart className="h-8 w-8 text-foreground/10" /></div>
           }
           {oos && (
-            <div className="absolute inset-0 bg-background/75 flex items-center justify-center">
-              <span className="text-[10px] text-foreground/50 border border-white/20 px-2 py-0.5 rounded-md">OUT OF STOCK</span>
+            <div className="absolute inset-0 bg-background/75 backdrop-blur-sm flex items-center justify-center">
+              <span className="text-[11px] text-foreground/60 glass rounded-full px-3 py-1">Out of stock</span>
             </div>
           )}
         </div>
         <div className="p-3 space-y-1">
-          <p className="text-[10px] text-foreground/28 uppercase tracking-widest truncate">{item.product.category?.name ?? ""}</p>
-          <p className="text-[13px] font-medium text-foreground/80 line-clamp-2 leading-snug group-hover:text-foreground transition-colors">{item.product.name}</p>
-          <div className="flex items-baseline gap-1.5 pt-0.5">
-            <span className="text-sm font-bold text-emerald-400">{formatPrice(item.product.price)}</span>
-            {item.product.originalPrice && (
-              <span className="text-[11px] text-foreground/28 line-through">{formatPrice(item.product.originalPrice)}</span>
+          <p className="text-[13px] font-medium text-foreground/85 line-clamp-2 leading-snug group-hover:text-foreground transition-colors">{item.product.name}</p>
+          <div className="flex items-baseline gap-1.5 pt-0.5 flex-wrap">
+            <span className={`text-sm font-bold ${disc ? "text-green-600 dark:text-green-400" : "text-foreground"}`}>{formatPrice(item.product.price)}</span>
+            {disc && item.product.originalPrice && (
+              <span className="text-[11px] text-foreground/35 line-through">{formatPrice(item.product.originalPrice)}</span>
             )}
           </div>
         </div>
@@ -139,12 +139,17 @@ function SavedCard({ item, listId, onRemove }: {
       <div className="px-3 pb-3 flex gap-1.5">
         <button disabled={oos}
           onClick={(e) => { e.preventDefault(); setBuyNow(item.product as any); router.push("/checkout") }}
-          className="flex-1 flex items-center justify-center gap-1 py-2 bg-[#ee0000] hover:bg-red-700 text-white text-[10px] font-bold tracking-widest rounded-xl transition-all active:scale-95 disabled:opacity-40">
-          <Zap className="h-2.5 w-2.5" /> BUY NOW
+          className="flex-1 flex items-center justify-center gap-1.5 py-2 bg-gold text-black text-[11px] font-semibold rounded-full transition-all active:scale-95 disabled:opacity-40">
+          <Zap className="h-3 w-3" /> Buy Now
         </button>
         <button disabled={oos}
-          onClick={(e) => { e.preventDefault(); addItem(item.product as any); toast.success("Added to bag", { className: " text-xs" }) }}
-          className="px-3 py-2 border border-white/15 text-foreground/45 hover:text-foreground/75 hover:border-white/28 rounded-xl transition-all active:scale-95 disabled:opacity-40">
+          onClick={(e) => {
+            e.preventDefault()
+            const ci = (e.currentTarget as HTMLElement).closest("[data-pcard]")?.querySelector("img") as HTMLImageElement | null
+            flyToCart(ci?.currentSrc || ci?.src || "", (ci ?? (e.currentTarget as HTMLElement)).getBoundingClientRect())
+            addItem(item.product as any)
+          }}
+          className="px-3 py-2 glass text-foreground/55 hover:text-foreground rounded-full transition-all active:scale-95 disabled:opacity-40">
           <ShoppingCart className="h-3.5 w-3.5" />
         </button>
       </div>
@@ -160,32 +165,31 @@ function RecoCard({ product }: { product: WProduct }) {
   const disc = discount(product)
 
   return (
-    <div className="group flex-shrink-0 w-40 rounded-2xl border border-white/8 bg-white/[0.025] overflow-hidden hover:border-white/22 hover:shadow-lg hover:shadow-black/25 transition-all duration-200">
+    <div data-pcard className="group relative flex-shrink-0 w-40 rounded-2xl glass overflow-hidden hover:shadow-[0_18px_50px_-18px_rgba(0,0,0,0.4)] transition-all duration-200">
       {disc && (
-        <div className="absolute top-2 left-2 z-10 bg-[#ee0000] text-white text-[10px] font-bold px-1.5 py-0.5 rounded-md">
-          -{disc}%
+        <div className="absolute top-2 left-2 z-10 bg-gold text-black text-[10px] font-bold px-2 py-0.5 rounded-full">
+          −{disc}%
         </div>
       )}
       <Link href={`/products/${product.id}`} className="block relative">
-        <div className="w-full h-40 overflow-hidden bg-white/5 relative">
+        <div className="w-full h-40 overflow-hidden bg-foreground/5 relative">
           {img
             ? <Image src={img} alt={product.name} fill
-                className="object-cover opacity-85 group-hover:opacity-100 group-hover:scale-[1.04] transition-all duration-300" />
+                className="object-cover group-hover:scale-[1.05] transition-transform duration-300" />
             : <div className="w-full h-full flex items-center justify-center"><ShoppingBag className="h-6 w-6 text-foreground/10" /></div>
           }
           {(product.stock ?? 0) === 0 && (
-            <div className="absolute inset-0 bg-background/70 flex items-center justify-center">
-              <span className="text-[10px] text-foreground/40 border border-white/15 px-1.5 py-0.5 rounded">OUT OF STOCK</span>
+            <div className="absolute inset-0 bg-background/70 backdrop-blur-sm flex items-center justify-center">
+              <span className="text-[10px] text-foreground/60 glass rounded-full px-2 py-0.5">Out of stock</span>
             </div>
           )}
         </div>
-        <div className="p-2.5 space-y-0.5">
-          <p className="text-[10px] text-foreground/28 uppercase tracking-widest truncate">{product.category?.name ?? ""}</p>
-          <p className="text-[12px] font-medium text-foreground/78 line-clamp-2 leading-snug group-hover:text-foreground transition-colors">{product.name}</p>
-          <div className="flex items-baseline gap-1 pt-0.5">
-            <span className="text-[13px] font-bold text-emerald-400">{formatPrice(product.price)}</span>
-            {product.originalPrice && (
-              <span className="text-[10px] text-foreground/25 line-through">{formatPrice(product.originalPrice)}</span>
+        <div className="p-2.5 space-y-1">
+          <p className="text-[12px] font-medium text-foreground/85 line-clamp-2 leading-snug group-hover:text-foreground transition-colors">{product.name}</p>
+          <div className="flex items-baseline gap-1 pt-0.5 flex-wrap">
+            <span className={`text-[13px] font-bold ${disc ? "text-green-600 dark:text-green-400" : "text-foreground"}`}>{formatPrice(product.price)}</span>
+            {disc && product.originalPrice && (
+              <span className="text-[10px] text-foreground/35 line-through">{formatPrice(product.originalPrice)}</span>
             )}
           </div>
         </div>
@@ -193,9 +197,14 @@ function RecoCard({ product }: { product: WProduct }) {
       <div className="px-2.5 pb-2.5">
         <button
           disabled={(product.stock ?? 0) === 0}
-          onClick={(e) => { e.preventDefault(); addItem(product as any); toast.success("Added to bag", { className: " text-xs" }) }}
-          className="w-full flex items-center justify-center gap-1 py-1.5 border border-white/12 text-foreground/38 hover:text-foreground/68 hover:border-white/22 rounded-xl text-[10px] transition-all active:scale-95 disabled:opacity-30">
-          <Plus className="h-2.5 w-2.5" /> Add to Bag
+          onClick={(e) => {
+            e.preventDefault()
+            const ci = (e.currentTarget as HTMLElement).closest("[data-pcard]")?.querySelector("img") as HTMLImageElement | null
+            flyToCart(ci?.currentSrc || ci?.src || "", (ci ?? (e.currentTarget as HTMLElement)).getBoundingClientRect())
+            addItem(product as any)
+          }}
+          className="w-full flex items-center justify-center gap-1.5 py-2 glass text-foreground/60 hover:text-foreground rounded-full text-[11px] font-medium transition-all active:scale-95 disabled:opacity-30">
+          <Plus className="h-3 w-3" /> Add to Bag
         </button>
       </div>
     </div>
@@ -330,7 +339,7 @@ export default function WishlistPage() {
         {loading ? (
           <GridSkeleton />
         ) : items.length === 0 ? (
-          <div className="rounded-2xl border border-dashed border-white/10 py-16 text-center space-y-3">
+          <div className="rounded-2xl border border-dashed border-foreground/10 py-16 text-center space-y-3">
             <div className="w-14 h-14 rounded-full bg-rose-500/10 border border-rose-500/12 flex items-center justify-center mx-auto">
               <Heart className="h-6 w-6 text-rose-400/55" />
             </div>
@@ -375,14 +384,11 @@ export default function WishlistPage() {
               <p className="text-sm font-bold text-foreground/80">
                 {headline.title} {headline.emoji}
               </p>
-              <p className="text-[11px] text-foreground/28">
-                {items.length > 0 ? "Curated from your saved items · auto-scrolling" : "Featured picks for you · auto-scrolling"}
+              <p className="text-[12px] text-foreground/45">
+                {items.length > 0 ? "Curated from your saved items" : "Featured picks for you"}
               </p>
             </div>
           </div>
-          <span className="text-[10px] text-foreground/20 border border-white/8 px-2 py-0.5 rounded-full">
-            Hover to pause
-          </span>
         </div>
 
         {/* Carousel — full-bleed, no padding */}
@@ -390,7 +396,7 @@ export default function WishlistPage() {
           <CarouselSkeleton />
         ) : recos.length === 0 ? (
           <div className="container mx-auto px-4 max-w-lg">
-            <div className="rounded-2xl border border-dashed border-white/8 py-8 text-center">
+            <div className="rounded-2xl border border-dashed border-foreground/8 py-8 text-center">
               <p className="text-xs text-foreground/28">Save products to unlock personalised picks ✨</p>
             </div>
           </div>
