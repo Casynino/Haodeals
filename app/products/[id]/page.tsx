@@ -42,8 +42,10 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
   // Use shared utils — same logic as ProductCard and checkout
   const dealActive   = product ? isDealActive(product) : false
   const displayPrice = product ? getEffectivePrice(product) : 0
-  const discount     = product?.originalPrice && dealActive
-    ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
+  // Show discount whenever the customer pays less than the original price.
+  const hasDiscount  = !!product?.originalPrice && product.originalPrice > displayPrice
+  const discount     = hasDiscount
+    ? Math.round(((product!.originalPrice! - displayPrice) / product!.originalPrice!) * 100)
     : null
 
   const avgRating = product?.reviews?.length
@@ -135,7 +137,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
               className="object-cover"
               priority
             />
-            {dealActive && discount && (
+            {discount && (
               <div className="absolute top-4 left-4 bg-gold text-black text-[12px] font-bold px-3 py-1 rounded-full z-10">
                 −{discount}%
               </div>
@@ -198,12 +200,12 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
 
           {/* Price */}
           <div className="flex items-baseline gap-3 flex-wrap">
-            <span className="text-3xl font-bold text-foreground">{formatPrice(displayPrice)}</span>
-            {dealActive && product.originalPrice && (
-              <span className="text-base text-foreground/40 line-through">{formatPrice(product.originalPrice)}</span>
+            <span className={`text-3xl font-bold ${hasDiscount ? "text-green-600 dark:text-green-400" : "text-foreground"}`}>{formatPrice(displayPrice)}</span>
+            {hasDiscount && (
+              <span className="text-base text-foreground/40 line-through">{formatPrice(product.originalPrice!)}</span>
             )}
             {discount && (
-              <span className="text-[12px] font-semibold tracking-wide text-gold glass rounded-full px-2.5 py-1">
+              <span className="text-[12px] font-bold tracking-wide text-green-700 dark:text-green-400 bg-green-500/12 rounded-full px-2.5 py-1">
                 Save {discount}%
               </span>
             )}

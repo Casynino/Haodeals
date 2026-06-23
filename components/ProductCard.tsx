@@ -39,8 +39,12 @@ export function ProductCard({ product }: ProductCardProps) {
 
   const dealOn         = isDealActive(product)
   const effectivePrice = getEffectivePrice(product)
-  const discount       = dealOn && product.originalPrice
-    ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
+  // Show the discount whenever the customer actually pays less than the
+  // original price (active timer OR a standing lower price) — display only,
+  // the charged price (effectivePrice) is unchanged.
+  const hasDiscount    = !!product.originalPrice && product.originalPrice > effectivePrice
+  const discount       = hasDiscount
+    ? Math.round(((product.originalPrice! - effectivePrice) / product.originalPrice!) * 100)
     : null
   const avgRating = product.reviews?.length
     ? product.reviews.reduce((s, r) => s + r.rating, 0) / product.reviews.length
@@ -118,13 +122,18 @@ export function ProductCard({ product }: ProductCardProps) {
               <span className="text-[11px] text-foreground/40">({product.reviews?.length})</span>
             </div>
           )}
-          <div className="flex items-baseline gap-2 pt-0.5">
-            <span className="text-[15px] font-bold text-foreground tracking-tight">
+          <div className="flex items-baseline gap-2 pt-0.5 flex-wrap">
+            <span className={`text-[15px] font-bold tracking-tight ${hasDiscount ? "text-green-600 dark:text-green-400" : "text-foreground"}`}>
               {formatPrice(effectivePrice)}
             </span>
-            {dealOn && product.originalPrice && (
+            {hasDiscount && (
               <span className="text-[11px] text-foreground/35 line-through">
-                {formatPrice(product.originalPrice)}
+                {formatPrice(product.originalPrice!)}
+              </span>
+            )}
+            {discount && (
+              <span className="text-[10px] font-bold text-green-700 dark:text-green-400 bg-green-500/12 rounded-full px-1.5 py-0.5">
+                {discount}% OFF
               </span>
             )}
           </div>
