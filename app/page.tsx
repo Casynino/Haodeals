@@ -88,14 +88,6 @@ export default async function HomePage() {
       // Custom marketing banner — text baked into the artwork; image-only
       eyebrow: "", title: "", subtitle: "", cta: "Shop Now",
       href: "/products",
-      image: "/banners/hero.png",
-      bare: true,
-      gradient: "",
-    },
-    {
-      // Second custom marketing banner — image-only
-      eyebrow: "", title: "", subtitle: "", cta: "Shop Now",
-      href: "/products",
       image: "/banners/banner2.png",
       bare: true,
       gradient: "",
