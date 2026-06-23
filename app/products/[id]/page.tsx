@@ -61,14 +61,15 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
     const opts: SelectedOption[] = Object.entries(selectedOptions).map(([name, value]) => ({ name, value }))
     const heroImg = document.querySelector<HTMLElement>("[data-product-hero] img")
     flyToCart(product.images[selectedImage] ?? "", heroImg?.getBoundingClientRect() ?? null)
-    addItem(product, quantity, opts.length ? opts : undefined)
+    // Add at the effective price (single source of truth) so cart === page === checkout.
+    addItem({ ...product, price: displayPrice }, quantity, opts.length ? opts : undefined)
     // Feedback is the fly-to-cart animation + cart pop + live counter — no toast.
   }
 
   function handleBuyNow() {
     if (!product || !allOptionsSelected) return
     const opts: SelectedOption[] = Object.entries(selectedOptions).map(([name, value]) => ({ name, value }))
-    addItem(product, quantity, opts.length ? opts : undefined)
+    addItem({ ...product, price: displayPrice }, quantity, opts.length ? opts : undefined)
     router.push("/checkout")
   }
 
