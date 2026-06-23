@@ -135,7 +135,7 @@ export function Navbar() {
           {/* Wishlist */}
           {session && (
             <Link href="/wishlist">
-              <button className="w-8 h-8 flex items-center justify-center text-foreground/55 hover:text-rose-400 hover:bg-rose-500/8 transition-colors border border-transparent hover:border-rose-500/20">
+              <button data-wishlist-target className="w-8 h-8 flex items-center justify-center text-foreground/55 hover:text-rose-400 hover:bg-rose-500/8 transition-colors border border-transparent hover:border-rose-500/20">
                 <Heart className="h-4 w-4" />
               </button>
             </Link>

@@ -38,7 +38,7 @@ export function BottomNav() {
               href={href}
               className="relative flex flex-col items-center justify-center gap-1 transition-colors"
             >
-              <div className="relative" {...(label === "Cart" ? { "data-cart-target": "" } : {})}>
+              <div className="relative" {...(label === "Cart" ? { "data-cart-target": "" } : label === "Saved" ? { "data-wishlist-target": "" } : {})}>
                 <Icon className={`h-[22px] w-[22px] transition-colors ${active ? "text-gold" : "text-foreground/45"}`} />
                 {badge ? (
                   <span className="absolute -top-1.5 -right-2 min-w-[16px] h-4 px-1 rounded-full bg-gold text-black text-[10px] font-bold flex items-center justify-center">
