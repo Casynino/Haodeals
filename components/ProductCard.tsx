@@ -10,6 +10,7 @@ import { useCart } from "@/hooks/useCart"
 import type { Product } from "@/types"
 import { toast } from "sonner"
 import { formatPrice, getEffectivePrice, isDealActive } from "@/lib/utils"
+import { celebrateAddToCart } from "@/lib/fx"
 import { ProductTilt } from "@/components/ui/product-tilt"
 
 const WishlistHeart = dynamic(
@@ -50,6 +51,7 @@ export function ProductCard({ product }: ProductCardProps) {
   function handleAddToCart(e: React.MouseEvent) {
     e.preventDefault(); e.stopPropagation()
     addItem({ ...product, price: effectivePrice })
+    celebrateAddToCart()
     toast.success(`Added: ${product.name.slice(0, 28)}`, {
       description: formatPrice(effectivePrice), className: " text-xs",
     })

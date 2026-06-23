@@ -10,6 +10,7 @@ import { ShoppingCart, Zap, Minus, Plus, ChevronLeft, Truck, RotateCcw, ShieldCh
 import { toast } from "sonner"
 import type { Product, SelectedOption } from "@/types"
 import { formatPrice, getEffectivePrice, isDealActive } from "@/lib/utils"
+import { celebrateAddToCart } from "@/lib/fx"
 import { ProductTilt } from "@/components/ui/product-tilt"
 import { DealCountdown } from "@/components/DealCountdown"
 import { HaoPlusBanner } from "@/components/HaoPlusBanner"
@@ -56,6 +57,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
     if (!product) return
     const opts: SelectedOption[] = Object.entries(selectedOptions).map(([name, value]) => ({ name, value }))
     addItem(product, quantity, opts.length ? opts : undefined)
+    celebrateAddToCart()
     toast.success(`Added: ${product.name.slice(0, 28)}`, {
       description: opts.length
         ? opts.map((o) => `${o.name}: ${o.value}`).join(" · ")
