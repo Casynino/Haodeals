@@ -16,6 +16,7 @@ import { DealCountdown } from "@/components/DealCountdown"
 import { HaoPlusBanner } from "@/components/HaoPlusBanner"
 import { ShareButton } from "@/components/ShareButton"
 import { StockBadge } from "@/components/StockBadge"
+import { WishlistHeart } from "@/components/WishlistHeart"
 
 export default function ProductDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params)
@@ -125,6 +126,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
       <div className="grid md:grid-cols-2 gap-10 mb-14">
         {/* ── Image gallery ── */}
         <div data-product-hero className="space-y-3">
+          <div className="relative">
           <ProductTilt className="relative aspect-square overflow-hidden rounded-3xl glass-soft" intensity={8}>
             <Image
               src={product.images[selectedImage] ?? ""}
@@ -146,6 +148,11 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
               </div>
             )}
           </ProductTilt>
+            {/* Wishlist heart overlay */}
+            <div className="absolute top-4 right-4 z-20 scale-125">
+              <WishlistHeart productId={product.id} productName={product.name} />
+            </div>
+          </div>
           {product.images.length > 1 && (
             <div className="flex gap-2.5 overflow-x-auto no-scrollbar pb-1">
               {product.images.map((img, i) => (
