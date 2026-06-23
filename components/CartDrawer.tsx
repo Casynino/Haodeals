@@ -22,7 +22,7 @@ export function CartDrawer() {
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
-      <SheetTrigger className="relative w-8 h-8 flex items-center justify-center text-foreground/40 hover:text-foreground hover:bg-foreground/5 transition-colors border border-transparent hover:border-white/10">
+      <SheetTrigger data-cart-target className="relative w-8 h-8 flex items-center justify-center text-foreground/40 hover:text-foreground hover:bg-foreground/5 transition-colors border border-transparent hover:border-white/10">
         <ShoppingCart className="h-3.5 w-3.5" />
         {itemCount > 0 && (
           <span className="absolute -top-1 -right-1 w-4 h-4 flex items-center justify-center bg-foreground text-background text-[10px] font-bold">

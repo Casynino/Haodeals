@@ -10,7 +10,7 @@ import { useCart } from "@/hooks/useCart"
 import type { Product } from "@/types"
 import { toast } from "sonner"
 import { formatPrice, getEffectivePrice, isDealActive } from "@/lib/utils"
-import { celebrateAddToCart } from "@/lib/fx"
+import { flyToCart } from "@/lib/fx"
 import { ProductTilt } from "@/components/ui/product-tilt"
 
 const WishlistHeart = dynamic(
@@ -50,8 +50,10 @@ export function ProductCard({ product }: ProductCardProps) {
 
   function handleAddToCart(e: React.MouseEvent) {
     e.preventDefault(); e.stopPropagation()
+    const card = (e.currentTarget as HTMLElement).closest("[data-pcard]")
+    const img = card?.querySelector("img")
+    flyToCart(images[0] ?? "", (img ?? (e.currentTarget as HTMLElement)).getBoundingClientRect())
     addItem({ ...product, price: effectivePrice })
-    celebrateAddToCart()
     toast.success(`Added: ${product.name.slice(0, 28)}`, {
       description: formatPrice(effectivePrice), className: " text-xs",
     })
@@ -65,7 +67,7 @@ export function ProductCard({ product }: ProductCardProps) {
   }
 
   return (
-    <div className="group relative glass rounded-3xl overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_22px_60px_-18px_rgba(0,0,0,0.65)]">
+    <div data-pcard className="group relative glass rounded-3xl overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_22px_60px_-18px_rgba(0,0,0,0.65)]">
 
       {/* Wishlist heart */}
       <div className="absolute top-3 right-3 z-30">
