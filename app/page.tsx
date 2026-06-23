@@ -9,6 +9,7 @@ import Link from "next/link"
 import Image from "next/image"
 import type { Product } from "@/types"
 import { PromoCarousel, type PromoSlide } from "@/components/PromoCarousel"
+import { HaoPlusBanner } from "@/components/HaoPlusBanner"
 
 // Always fetch fresh data so new products appear immediately
 export const dynamic = "force-dynamic"
@@ -291,6 +292,11 @@ export default async function HomePage() {
           </div>
         </section>
       )}
+
+      {/* ── Hǎo+ featured service ─────────────────────────────────── */}
+      <section className="container mx-auto px-4 pt-10">
+        <HaoPlusBanner variant="home" />
+      </section>
 
       {/* ── Featured picks ────────────────────────────────────────── */}
       {featuredProducts.length > 0 && (
