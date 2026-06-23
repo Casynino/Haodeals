@@ -104,10 +104,7 @@ export function ProductCard({ product }: ProductCardProps) {
         </ProductTilt>
 
         {/* Info */}
-        <div className="px-3.5 pt-2 pb-1 space-y-1.5">
-          <p className="text-[10px] text-gold/80 tracking-[0.18em] uppercase font-medium">
-            {product.category?.name}
-          </p>
+        <div className="px-3.5 pt-2.5 pb-1 space-y-1.5">
           <h3 className="text-[13px] font-medium text-foreground/85 line-clamp-2 leading-snug group-hover:text-foreground transition-colors">
             {product.name}
           </h3>
