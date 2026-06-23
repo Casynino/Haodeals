@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation"
 import { Heart, Loader2 } from "lucide-react"
 import { toast } from "sonner"
 import { useWishlist } from "@/hooks/useWishlist"
+import { flyToWishlist } from "@/lib/fx"
 
 interface Props {
   productId:   string
@@ -34,18 +35,17 @@ export function WishlistHeart({ productId, productName }: Props) {
       return
     }
 
+    // Capture the source image now (before the async toggle) for the fly effect
+    const btn = e.currentTarget as HTMLElement
+    const img = (btn.closest("[data-pcard]") ?? btn.closest("a, article, div"))?.querySelector("img") as HTMLImageElement | null
+    const src = img?.currentSrc || img?.src || ""
+    const fromRect = (img ?? btn).getBoundingClientRect()
+
     setBusy(true)
     try {
       const nowLiked = await toggleLike(productId)
-      if (nowLiked) {
-        toast.success("Added to Wishlist ❤️", {
-          description: productName.slice(0, 42),
-          className: " text-xs",
-          action: { label: "View", onClick: () => router.push("/wishlist") },
-        })
-      } else {
-        toast("Removed from Wishlist", { className: " text-xs" })
-      }
+      // On "like", fly the product image into the wishlist icon — no toast.
+      if (nowLiked) flyToWishlist(src, fromRect)
     } catch {
       toast.error("Something went wrong", { className: " text-xs" })
     } finally {
