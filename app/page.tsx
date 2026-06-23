@@ -2,7 +2,7 @@ import { prisma } from "@/lib/prisma"
 import { auth } from "@/auth"
 import { ProductCard } from "@/components/ProductCard"
 import {
-  ArrowRight, Search, Truck, Tag, ShieldCheck,
+  ArrowRight, Search, Sparkles,
   Smartphone, Shirt, Watch, Footprints, Dumbbell, Package,
 } from "lucide-react"
 import Link from "next/link"
@@ -133,24 +133,30 @@ export default async function HomePage() {
         </Link>
       </section>
 
-      {/* ── Trust strip ───────────────────────────────────────────── */}
+      {/* ── Animated ticker ───────────────────────────────────────── */}
       <section className="container mx-auto px-4 pt-3">
-        <div className="grid grid-cols-3 gap-3">
-          {[
-            { Icon: Truck,       label: "Fast delivery",   sub: "Across Tanzania" },
-            { Icon: Tag,         label: "Up to 70% off",   sub: "Daily deals" },
-            { Icon: ShieldCheck, label: "Secure checkout", sub: "Shop with trust" },
-          ].map(({ Icon, label, sub }) => (
-            <div key={label} className="glass rounded-2xl px-3.5 py-3 flex items-center gap-3">
-              <div className="w-9 h-9 rounded-xl bg-gold-soft flex items-center justify-center flex-shrink-0">
-                <Icon className="h-4 w-4 text-gold" />
+        <div className="relative overflow-hidden rounded-2xl glass py-3">
+          {/* soft fade edges */}
+          <div className="pointer-events-none absolute inset-y-0 left-0 w-16 z-10 bg-gradient-to-r from-background to-transparent" />
+          <div className="pointer-events-none absolute inset-y-0 right-0 w-16 z-10 bg-gradient-to-l from-background to-transparent" />
+          <div className="flex carousel-track w-max">
+            {[0, 1].map((dup) => (
+              <div key={dup} className="flex items-center shrink-0">
+                {[
+                  "Good Deals, Delivered",
+                  "Fast delivery across Tanzania",
+                  "Up to 70% off — every day",
+                  "Secure checkout",
+                  "New deals daily",
+                ].map((phrase, i) => (
+                  <span key={`${dup}-${i}`} className="flex items-center whitespace-nowrap">
+                    <Sparkles className="h-3.5 w-3.5 text-gold mx-3 flex-shrink-0" />
+                    <span className="text-sm font-semibold text-foreground/70">{phrase}</span>
+                  </span>
+                ))}
               </div>
-              <div className="min-w-0">
-                <p className="text-[12px] font-semibold text-foreground/85 truncate">{label}</p>
-                <p className="text-[11px] text-foreground/40 truncate">{sub}</p>
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </section>
 
