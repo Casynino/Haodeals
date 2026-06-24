@@ -321,6 +321,10 @@
   h1, h2, h3, h4, h5, h6 {
     @apply font-sans tracking-tight;
   }
+  /* Cap the main container so content never stretches on ultra-wide screens */
+  .container {
+    max-width: min(100%, 1440px);
+  }
   /* Selection picks up the gold accent */
   ::selection { background: var(--gold-soft); color: var(--foreground); }
   /* Custom scrollbar */

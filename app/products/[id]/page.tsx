@@ -96,7 +96,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
     return (
       <div className="container mx-auto px-4 py-8 max-w-6xl">
         <div className="grid md:grid-cols-2 gap-10">
-          <div className="aspect-square rounded-3xl skeleton" />
+          <div className="aspect-[4/3] sm:aspect-square rounded-3xl skeleton" />
           <div className="space-y-4">
             <div className="h-4 w-1/3 rounded skeleton" />
             <div className="h-8 w-3/4 rounded skeleton" />
@@ -130,12 +130,12 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
         {/* ── Image gallery ── */}
         <div data-product-hero className="space-y-3">
           <div className="relative">
-          <ProductTilt className="relative aspect-square overflow-hidden rounded-3xl glass-soft" intensity={8}>
+          <ProductTilt className="relative aspect-[4/3] sm:aspect-square overflow-hidden rounded-3xl bg-white/70 dark:bg-foreground/[0.04] border border-foreground/8" intensity={8}>
             <Image
               src={product.images[selectedImage] ?? ""}
               alt={product.name}
               fill
-              className="object-cover"
+              className="object-contain p-2"
               priority
             />
             {discount && (

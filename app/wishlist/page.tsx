@@ -316,7 +316,7 @@ export default function WishlistPage() {
 
   return (
     <div className="min-h-screen bg-background pb-12">
-      <div className="container mx-auto px-4 pt-6 max-w-lg space-y-6">
+      <div className="container mx-auto px-4 pt-6 max-w-4xl space-y-6">
 
         {/* ── Header ── */}
         <div className="flex items-center justify-between pt-2">
@@ -361,7 +361,7 @@ export default function WishlistPage() {
               </p>
             </div>
 
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
               {items.map((item) => (
                 <SavedCard key={item.id} item={item} listId={list!.id} onRemove={handleRemove} />
               ))}
@@ -375,7 +375,7 @@ export default function WishlistPage() {
       ═══════════════════════════════════════════════════════════════════ */}
       <div className="mt-8 space-y-4">
         {/* Section header */}
-        <div className="container mx-auto px-4 max-w-lg flex items-center justify-between">
+        <div className="container mx-auto px-4 max-w-4xl flex items-center justify-between">
           <div className="flex items-center gap-2.5">
             <div className="w-7 h-7 rounded-full bg-violet-500/15 border border-violet-500/20 flex items-center justify-center">
               <Sparkles className="h-3.5 w-3.5 text-violet-400" />
