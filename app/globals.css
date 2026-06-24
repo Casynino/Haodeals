@@ -222,89 +222,86 @@
   --radius-4xl: calc(var(--radius) * 1.8);
 }
 
-/* ─── Light mode: inverted terminal ─────────────────────────── */
+/* ─── Light mode ─────────────────────────────────────────────── */
+/* All colors in hsl()/rgba() for maximum browser compatibility  */
 :root {
-  --background: oklch(0.97 0 0);
-  --foreground: oklch(0.06 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.06 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.06 0 0);
-  --primary: oklch(0.06 0 0);
-  --primary-foreground: oklch(0.97 0 0);
-  --secondary: oklch(0.92 0 0);
-  --secondary-foreground: oklch(0.06 0 0);
-  --muted: oklch(0.92 0 0);
-  --muted-foreground: oklch(0.45 0 0);
-  --accent: oklch(0.92 0 0);
-  --accent-foreground: oklch(0.06 0 0);
-  --destructive: oklch(0.55 0.22 27);
-  --border: oklch(0.8 0 0);
-  --input: oklch(0.88 0 0);
-  --ring: oklch(0.3 0 0);
-  --chart-1: oklch(0.4 0.12 145);
-  --chart-2: oklch(0.3 0 0);
-  --chart-3: oklch(0.55 0 0);
-  --chart-4: oklch(0.7 0 0);
-  --chart-5: oklch(0.85 0 0);
+  --background: hsl(0, 0%, 97%);
+  --foreground: hsl(0, 0%, 6%);
+  --card: hsl(0, 0%, 100%);
+  --card-foreground: hsl(0, 0%, 6%);
+  --popover: hsl(0, 0%, 100%);
+  --popover-foreground: hsl(0, 0%, 6%);
+  --primary: hsl(0, 0%, 6%);
+  --primary-foreground: hsl(0, 0%, 97%);
+  --secondary: hsl(0, 0%, 92%);
+  --secondary-foreground: hsl(0, 0%, 6%);
+  --muted: hsl(0, 0%, 92%);
+  --muted-foreground: hsl(0, 0%, 45%);
+  --accent: hsl(0, 0%, 92%);
+  --accent-foreground: hsl(0, 0%, 6%);
+  --destructive: hsl(5, 70%, 47%);
+  --border: hsl(0, 0%, 80%);
+  --input: hsl(0, 0%, 88%);
+  --ring: hsl(0, 0%, 30%);
+  --chart-1: hsl(143, 40%, 34%);
+  --chart-2: hsl(0, 0%, 30%);
+  --chart-3: hsl(0, 0%, 55%);
+  --chart-4: hsl(0, 0%, 70%);
+  --chart-5: hsl(0, 0%, 85%);
   --radius: 0.9rem;
-  /* Warm gold accent — deeper in light mode for legibility */
   --gold: #9a7611;
   --gold-soft: rgba(154, 118, 17, 0.12);
-  /* Clean white card surface with a soft, premium shadow */
   --glass-bg: rgba(255, 255, 255, 0.85);
   --glass-border: rgba(0, 0, 0, 0.05);
   --glass-shadow: 0 8px 30px -12px rgba(20, 16, 8, 0.14), 0 2px 8px -4px rgba(20, 16, 8, 0.08);
-  --sidebar: oklch(0.95 0 0);
-  --sidebar-foreground: oklch(0.06 0 0);
-  --sidebar-primary: oklch(0.06 0 0);
-  --sidebar-primary-foreground: oklch(0.97 0 0);
-  --sidebar-accent: oklch(0.9 0 0);
-  --sidebar-accent-foreground: oklch(0.06 0 0);
-  --sidebar-border: oklch(0.8 0 0);
-  --sidebar-ring: oklch(0.3 0 0);
+  --sidebar: hsl(0, 0%, 95%);
+  --sidebar-foreground: hsl(0, 0%, 6%);
+  --sidebar-primary: hsl(0, 0%, 6%);
+  --sidebar-primary-foreground: hsl(0, 0%, 97%);
+  --sidebar-accent: hsl(0, 0%, 90%);
+  --sidebar-accent-foreground: hsl(0, 0%, 6%);
+  --sidebar-border: hsl(0, 0%, 80%);
+  --sidebar-ring: hsl(0, 0%, 30%);
 }
 
-/* ─── Dark mode: pure terminal black ────────────────────────── */
+/* ─── Dark mode ──────────────────────────────────────────────── */
 .dark {
-  --background: oklch(0.04 0 0);
-  --foreground: oklch(0.95 0 0);
-  --card: oklch(0.07 0 0);
-  --card-foreground: oklch(0.95 0 0);
-  --popover: oklch(0.07 0 0);
-  --popover-foreground: oklch(0.95 0 0);
-  --primary: oklch(0.95 0 0);
-  --primary-foreground: oklch(0.04 0 0);
-  --secondary: oklch(0.12 0 0);
-  --secondary-foreground: oklch(0.95 0 0);
-  --muted: oklch(0.11 0 0);
-  --muted-foreground: oklch(0.62 0 0);
-  --accent: oklch(0.12 0 0);
-  --accent-foreground: oklch(0.95 0 0);
-  --destructive: oklch(0.62 0.2 22);
-  --border: oklch(1 0 0 / 12%);
-  --input: oklch(1 0 0 / 8%);
-  --ring: oklch(0.5 0 0);
-  --chart-1: oklch(0.72 0.16 145);
-  --chart-2: oklch(0.65 0 0);
-  --chart-3: oklch(0.45 0 0);
-  --chart-4: oklch(0.3 0 0);
-  --chart-5: oklch(0.18 0 0);
-  /* Warm gold accent — brighter on dark */
+  --background: hsl(0, 0%, 4%);
+  --foreground: hsl(0, 0%, 95%);
+  --card: hsl(0, 0%, 7%);
+  --card-foreground: hsl(0, 0%, 95%);
+  --popover: hsl(0, 0%, 7%);
+  --popover-foreground: hsl(0, 0%, 95%);
+  --primary: hsl(0, 0%, 95%);
+  --primary-foreground: hsl(0, 0%, 4%);
+  --secondary: hsl(0, 0%, 12%);
+  --secondary-foreground: hsl(0, 0%, 95%);
+  --muted: hsl(0, 0%, 11%);
+  --muted-foreground: hsl(0, 0%, 62%);
+  --accent: hsl(0, 0%, 12%);
+  --accent-foreground: hsl(0, 0%, 95%);
+  --destructive: hsl(12, 65%, 55%);
+  --border: rgba(255, 255, 255, 0.12);
+  --input: rgba(255, 255, 255, 0.08);
+  --ring: hsl(0, 0%, 50%);
+  --chart-1: hsl(142, 47%, 58%);
+  --chart-2: hsl(0, 0%, 65%);
+  --chart-3: hsl(0, 0%, 45%);
+  --chart-4: hsl(0, 0%, 30%);
+  --chart-5: hsl(0, 0%, 18%);
   --gold: #e3b341;
   --gold-soft: rgba(212, 175, 55, 0.12);
-  /* Frosted glass surface — translucent over the dark base */
   --glass-bg: rgba(255, 255, 255, 0.045);
   --glass-border: rgba(255, 255, 255, 0.09);
   --glass-shadow: 0 16px 48px -16px rgba(0, 0, 0, 0.7);
-  --sidebar: oklch(0.06 0 0);
-  --sidebar-foreground: oklch(0.95 0 0);
-  --sidebar-primary: oklch(0.95 0 0);
-  --sidebar-primary-foreground: oklch(0.04 0 0);
-  --sidebar-accent: oklch(0.12 0 0);
-  --sidebar-accent-foreground: oklch(0.95 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.4 0 0);
+  --sidebar: hsl(0, 0%, 6%);
+  --sidebar-foreground: hsl(0, 0%, 95%);
+  --sidebar-primary: hsl(0, 0%, 95%);
+  --sidebar-primary-foreground: hsl(0, 0%, 4%);
+  --sidebar-accent: hsl(0, 0%, 12%);
+  --sidebar-accent-foreground: hsl(0, 0%, 95%);
+  --sidebar-border: rgba(255, 255, 255, 0.10);
+  --sidebar-ring: hsl(0, 0%, 40%);
 }
 
 /* ─── Base reset ─────────────────────────────────────────────── */
@@ -330,8 +327,10 @@
   /* Custom scrollbar */
   ::-webkit-scrollbar { width: 6px; height: 6px; }
   ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb { background: color-mix(in srgb, var(--color-foreground) 20%, transparent); border-radius: 9999px; }
-  ::-webkit-scrollbar-thumb:hover { background: color-mix(in srgb, var(--color-foreground) 35%, transparent); }
+  ::-webkit-scrollbar-thumb { background: rgba(0, 0, 0, 0.18); border-radius: 9999px; }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(0, 0, 0, 0.32); }
+  .dark ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.18); }
+  .dark ::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.32); }
 }
 
 /* ─── Glassy Luxe surfaces ───────────────────────────────────── */

@@ -11,7 +11,6 @@ import { toast } from "sonner"
 import type { Product, SelectedOption } from "@/types"
 import { formatPrice, getEffectivePrice, isDealActive } from "@/lib/utils"
 import { flyToCart } from "@/lib/fx"
-import { ProductTilt } from "@/components/ui/product-tilt"
 import { DealCountdown } from "@/components/DealCountdown"
 import { HaoPlusBanner } from "@/components/HaoPlusBanner"
 import { ShareButton } from "@/components/ShareButton"
@@ -130,7 +129,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
         {/* ── Image gallery ── */}
         <div data-product-hero className="space-y-3">
           <div className="relative">
-          <ProductTilt className="relative aspect-[4/3] sm:aspect-square overflow-hidden rounded-3xl bg-white/70 dark:bg-foreground/[0.04] border border-foreground/8" intensity={8}>
+          <div className="relative aspect-[4/3] sm:aspect-square overflow-hidden rounded-3xl bg-white border border-foreground/8">
             <Image
               src={product.images[selectedImage] ?? ""}
               alt={product.name}
@@ -144,13 +143,13 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
               </div>
             )}
             {product.stock === 0 && (
-              <div className="absolute inset-0 bg-background/70 backdrop-blur-sm flex items-center justify-center z-10">
-                <span className="text-[13px] tracking-[0.2em] text-foreground/70 glass rounded-full px-4 py-2">
+              <div className="absolute inset-0 bg-white/70 flex items-center justify-center z-10">
+                <span className="text-[13px] tracking-[0.2em] text-foreground/70 bg-white/80 border border-foreground/10 rounded-full px-4 py-2">
                   OUT OF STOCK
                 </span>
               </div>
             )}
-          </ProductTilt>
+          </div>
             {/* Wishlist heart overlay */}
             <div className="absolute top-4 right-4 z-20 scale-125">
               <WishlistHeart productId={product.id} productName={product.name} />

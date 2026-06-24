@@ -51,7 +51,7 @@ export function ProductTilt({ children, className = "", intensity = 14 }: Produc
     >
       <div
         ref={innerRef}
-        style={{ transformStyle: "preserve-3d", width: "100%", height: "100%", position: "relative", willChange: "transform" }}
+        style={{ width: "100%", height: "100%", position: "relative", willChange: "transform" }}
       >
         {children}
         {/* Moving glare */}
