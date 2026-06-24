@@ -215,7 +215,7 @@ export default async function HomePage() {
 
       {/* ── Mid-page promo banner (image-based) ───────────────────── */}
       <section className="container mx-auto px-4 pt-10">
-        <div className="relative overflow-hidden rounded-3xl aspect-[16/9] sm:aspect-[3/1] lg:aspect-[21/7]">
+        <div className="relative overflow-hidden rounded-3xl" style={{ height: "56vw", maxHeight: "300px", minHeight: "170px" }}>
           <Image src={bannerPromo} alt="" fill className="object-cover" />
           <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/55 to-black/15" />
           <div className="gold-glow absolute -top-16 right-10 w-72 h-72 rounded-full pointer-events-none" />
@@ -257,7 +257,11 @@ export default async function HomePage() {
                 <Link
                   key={cat.id}
                   href={`/products?category=${cat.slug}`}
-                  className={`group relative overflow-hidden rounded-3xl glass hover:-translate-y-1 hover:shadow-[0_22px_60px_-18px_rgba(0,0,0,0.4)] transition-all ${i === 0 ? "col-span-2 sm:col-span-1 aspect-[2/1] sm:aspect-[4/5]" : "aspect-[4/5]"}`}
+                  className={`group relative overflow-hidden rounded-3xl glass hover:-translate-y-1 hover:shadow-[0_22px_60px_-18px_rgba(0,0,0,0.4)] transition-all ${i === 0 ? "col-span-2 sm:col-span-1" : ""}`}
+                  style={i === 0
+                    ? { height: "42vw", maxHeight: "280px", minHeight: "130px" }
+                    : { height: "56vw", maxHeight: "300px", minHeight: "160px" }
+                  }
                 >
                   <Image
                     src={cat.image || categoryImages[cat.slug] || "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=600&h=600&fit=crop"}
