@@ -132,7 +132,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
           {/* vw-based height avoids CSS aspect-ratio (unsupported on iOS < 15).
               72vw ≈ 4:3 on mobile; capped at 480px for desktop 2-col layout. */}
           <div
-            className="relative overflow-hidden rounded-3xl bg-neutral-50 dark:bg-neutral-900 border border-foreground/8"
+            className="relative overflow-hidden rounded-3xl bg-white border border-foreground/8"
             style={{ height: "72vw", maxHeight: "480px", minHeight: "200px" }}
           >
             <Image

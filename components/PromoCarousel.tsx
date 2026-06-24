@@ -50,16 +50,18 @@ export function PromoCarousel({ slides }: { slides: PromoSlide[] }) {
       >
         {slides.map((s, i) => (
           <div key={i} className="relative w-full flex-shrink-0">
-            {/* 46.25vw = matches the 1525×704 banner (2.166:1). Works on all iOS (vw supported since Safari 6). */}
+            {/* 46.25vw matches the 1525×704 banner (2.166:1). Works on all iOS (vw since Safari 6).
+                Container ratio (1.99:1) ≈ image ratio (2.166:1) → object-cover crops only ~4% per side. */}
             <div
-              className={`relative overflow-hidden${s.bare ? " bg-neutral-100 dark:bg-neutral-800" : ""}`}
+              className="relative overflow-hidden"
               style={{ height: "46.25vw", maxHeight: "420px", minHeight: "180px" }}
             >
               {s.bare ? (
-                /* Image-only banner — use object-contain so artwork text is never cropped */
+                /* Image-only bare banner — same object-cover as overlay slides; the matched
+                   aspect ratio means artwork text is never meaningfully cropped. */
                 <Link href={s.href} className="absolute inset-0 block">
                   {s.image && (
-                    <Image src={s.image} alt="Deals" fill priority={i === 0} className="object-contain" />
+                    <Image src={s.image} alt="Deals" fill priority={i === 0} className="object-cover" />
                   )}
                 </Link>
               ) : (
