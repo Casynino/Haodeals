@@ -28,7 +28,7 @@ export function BottomNav() {
   ]
 
   return (
-    <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-40 glass border-t border-foreground/10 pb-[env(safe-area-inset-bottom)]">
+    <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-background border-t border-foreground/10 pb-[env(safe-area-inset-bottom)]" style={{ boxShadow: "0 -1px 12px rgba(0,0,0,0.06)" }}>
       <div className="grid grid-cols-5 h-16">
         {items.map(({ href, label, icon: Icon, match, badge }) => {
           const active = match(pathname)

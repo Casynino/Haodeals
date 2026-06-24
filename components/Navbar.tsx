@@ -85,7 +85,7 @@ export function Navbar() {
   ]
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-white/12 bg-background/95 backdrop-blur-sm">
+    <header className="sticky top-0 z-50 w-full border-b border-foreground/10 bg-background" style={{ boxShadow: "0 1px 8px rgba(0,0,0,0.06)" }}>
       {/* Top status bar */}
       <div className="border-b border-white/8 hidden md:block">
         <div className="container mx-auto px-4 py-1.5 flex items-center justify-between">
