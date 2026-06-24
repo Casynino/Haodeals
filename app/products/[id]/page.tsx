@@ -95,7 +95,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
     return (
       <div className="container mx-auto px-4 py-8 max-w-6xl">
         <div className="grid md:grid-cols-2 gap-10">
-          <div className="aspect-[4/3] sm:aspect-square rounded-3xl skeleton" />
+          <div className="rounded-3xl skeleton" style={{ height: "72vw", maxHeight: "480px", minHeight: "200px" }} />
           <div className="space-y-4">
             <div className="h-4 w-1/3 rounded skeleton" />
             <div className="h-8 w-3/4 rounded skeleton" />
@@ -129,14 +129,22 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
         {/* ── Image gallery ── */}
         <div data-product-hero className="space-y-3">
           <div className="relative">
-          <div className="relative aspect-[4/3] sm:aspect-square overflow-hidden rounded-3xl bg-white border border-foreground/8">
-            <Image
-              src={product.images[selectedImage] ?? ""}
-              alt={product.name}
-              fill
-              className="object-contain p-2"
-              priority
-            />
+          {/* vw-based height avoids CSS aspect-ratio (unsupported on iOS < 15).
+              72vw ≈ 4:3 on mobile; capped at 480px for desktop 2-col layout. */}
+          <div
+            className="relative overflow-hidden rounded-3xl bg-neutral-50 dark:bg-neutral-900 border border-foreground/8"
+            style={{ height: "72vw", maxHeight: "480px", minHeight: "200px" }}
+          >
+            {/* Inner inset so image never touches the rounded corners */}
+            <div className="absolute inset-3">
+              <Image
+                src={product.images[selectedImage] ?? ""}
+                alt={product.name}
+                fill
+                className="object-contain"
+                priority
+              />
+            </div>
             {discount && (
               <div className="absolute top-4 left-4 bg-gold text-black text-[12px] font-bold px-3 py-1 rounded-full z-10">
                 −{discount}%
