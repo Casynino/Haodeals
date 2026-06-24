@@ -50,10 +50,10 @@ export function PromoCarousel({ slides }: { slides: PromoSlide[] }) {
       >
         {slides.map((s, i) => (
           <div key={i} className="relative w-full flex-shrink-0">
-            {/* height: 75vw (vw-based, works on all iOS) capped at 460px */}
+            {/* 46.25vw = matches the 1525×704 banner (2.166:1). Works on all iOS (vw supported since Safari 6). */}
             <div
               className={`relative overflow-hidden${s.bare ? " bg-neutral-100 dark:bg-neutral-800" : ""}`}
-              style={{ height: "75vw", maxHeight: "460px" }}
+              style={{ height: "46.25vw", maxHeight: "420px", minHeight: "180px" }}
             >
               {s.bare ? (
                 /* Image-only banner — use object-contain so artwork text is never cropped */

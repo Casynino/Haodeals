@@ -127,7 +127,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
 
       <div className="grid md:grid-cols-2 gap-10 mb-14">
         {/* ── Image gallery ── */}
-        <div data-product-hero className="space-y-3">
+        <div data-product-hero className="space-y-3 min-w-0">
           <div className="relative">
           {/* vw-based height avoids CSS aspect-ratio (unsupported on iOS < 15).
               72vw ≈ 4:3 on mobile; capped at 480px for desktop 2-col layout. */}
@@ -135,16 +135,14 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
             className="relative overflow-hidden rounded-3xl bg-neutral-50 dark:bg-neutral-900 border border-foreground/8"
             style={{ height: "72vw", maxHeight: "480px", minHeight: "200px" }}
           >
-            {/* Inner inset so image never touches the rounded corners */}
-            <div className="absolute inset-3">
-              <Image
-                src={product.images[selectedImage] ?? ""}
-                alt={product.name}
-                fill
-                className="object-contain"
-                priority
-              />
-            </div>
+            <Image
+              src={product.images[selectedImage] ?? ""}
+              alt={product.name}
+              fill
+              sizes="(max-width: 768px) calc(100vw - 32px), calc(50vw - 20px)"
+              className="object-contain"
+              priority
+            />
             {discount && (
               <div className="absolute top-4 left-4 bg-gold text-black text-[12px] font-bold px-3 py-1 rounded-full z-10">
                 −{discount}%
@@ -164,7 +162,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
             </div>
           </div>
           {product.images.length > 1 && (
-            <div className="flex gap-2.5 overflow-x-auto no-scrollbar pb-1">
+            <div className="flex gap-2.5 overflow-x-auto no-scrollbar pb-1 min-w-0">
               {product.images.map((img, i) => (
                 <button
                   key={i}
@@ -181,7 +179,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
         </div>
 
         {/* ── Product info ── */}
-        <div className="space-y-5">
+        <div className="space-y-5 min-w-0">
           <div>
             <div className="flex items-center justify-between gap-4 mb-2">
               <p className="text-[12px] tracking-[0.2em] uppercase text-gold">{product.category?.name}</p>
