@@ -50,7 +50,7 @@ export function PromoCarousel({ slides }: { slides: PromoSlide[] }) {
       >
         {slides.map((s, i) => (
           <div key={i} className="relative w-full flex-shrink-0">
-            <div className="relative aspect-[13/6] overflow-hidden">
+            <div className="relative aspect-[4/3] sm:aspect-[16/9] md:aspect-[2/1] lg:aspect-[13/6] overflow-hidden">
               {s.bare ? (
                 /* Image-only banner (artwork has its own text) — whole slide links */
                 <Link href={s.href} className="absolute inset-0 block">
