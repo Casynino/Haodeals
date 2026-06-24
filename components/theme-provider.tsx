@@ -16,7 +16,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     setMounted(true)
-    const stored = localStorage.getItem("hao-theme") as Theme | null
+    const stored = localStorage.getItem("hao-theme-v2") as Theme | null
     if (stored === "light" || stored === "dark") setThemeState(stored)
   }, [])
 
@@ -25,7 +25,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     const root = document.documentElement
     root.classList.remove("dark", "light")
     root.classList.add(theme)
-    localStorage.setItem("hao-theme", theme)
+    localStorage.setItem("hao-theme-v2", theme)
   }, [theme, mounted])
 
   function setTheme(t: Theme) {
