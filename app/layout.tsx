@@ -8,6 +8,7 @@ import { Footer } from "@/components/Footer"
 import { WhatsAppButton } from "@/components/WhatsAppButton"
 import { BottomNav } from "@/components/BottomNav"
 import { AddToCartFx } from "@/components/AddToCartFx"
+import { UpdateBanner } from "@/components/UpdateBanner"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -87,6 +88,7 @@ export default function RootLayout({
           <WhatsAppButton />
           <BottomNav />
           <AddToCartFx />
+          <UpdateBanner />
         </Providers>
       </body>
     </html>
