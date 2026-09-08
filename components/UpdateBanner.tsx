@@ -41,15 +41,17 @@ export function UpdateBanner() {
       role="status"
       aria-live="polite"
       onClick={() => window.location.reload()}
-      className="fixed top-4 right-4 z-[9999] flex items-center gap-2.5
-                 bg-background border border-foreground/10 rounded-2xl
-                 px-4 py-2.5 shadow-[0_8px_32px_rgba(0,0,0,0.14)]
-                 hover:bg-foreground/[0.03] active:scale-[0.98] transition-all cursor-pointer"
+      className="fixed top-[72px] right-4 z-[9999] flex items-center gap-2.5
+                 bg-white text-gray-800 border border-gray-200
+                 rounded-2xl px-4 py-2.5
+                 shadow-[0_4px_24px_rgba(0,0,0,0.18)]
+                 hover:shadow-[0_6px_28px_rgba(0,0,0,0.22)]
+                 active:scale-[0.97] transition-all cursor-pointer"
     >
-      <span className="text-[13px] font-medium text-foreground/70 whitespace-nowrap">
+      <span className="text-[13px] font-semibold whitespace-nowrap">
         New update is up
       </span>
-      <RotateCw className="h-3.5 w-3.5 text-foreground/40 flex-shrink-0" />
+      <RotateCw className="h-3.5 w-3.5 text-gray-400 flex-shrink-0" />
     </button>
   )
 }
