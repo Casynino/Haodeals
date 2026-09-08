@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import { RotateCw } from "lucide-react"
 
 // Baked into the JS bundle at build time by Vercel.
 // In local dev this is undefined → banner never shows.
@@ -36,24 +37,19 @@ export function UpdateBanner() {
   if (!show) return null
 
   return (
-    <div
+    <button
       role="status"
       aria-live="polite"
-      className="fixed top-4 right-4 z-[9999] flex items-center gap-3
+      onClick={() => window.location.reload()}
+      className="fixed top-4 right-4 z-[9999] flex items-center gap-2.5
                  bg-background border border-foreground/10 rounded-2xl
-                 px-4 py-2.5 shadow-[0_8px_32px_rgba(0,0,0,0.14)]"
+                 px-4 py-2.5 shadow-[0_8px_32px_rgba(0,0,0,0.14)]
+                 hover:bg-foreground/[0.03] active:scale-[0.98] transition-all cursor-pointer"
     >
       <span className="text-[13px] font-medium text-foreground/70 whitespace-nowrap">
-        New update is up.
+        New update is up
       </span>
-      <button
-        onClick={() => window.location.reload()}
-        className="px-3.5 py-1 rounded-full bg-[#5cb85c] text-white
-                   text-[12px] font-semibold tracking-wide
-                   hover:brightness-110 active:scale-95 transition-all"
-      >
-        Update now
-      </button>
-    </div>
+      <RotateCw className="h-3.5 w-3.5 text-foreground/40 flex-shrink-0" />
+    </button>
   )
 }
