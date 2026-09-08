@@ -12,7 +12,7 @@ const BUILD_VERSION =
 const INTERVAL_MS = 5 * 60 * 1000
 
 export function UpdateBanner() {
-  const [show, setShow] = useState(true) // PREVIEW — revert to false after checking
+  const [show, setShow] = useState(false)
 
   useEffect(() => {
     // Skip in local dev — no deployments to detect.
